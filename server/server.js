@@ -124,23 +124,38 @@ app.use(bodyParser.urlencoded({ extended: true }));
 app.use(bodyParser.json());
 app.use(cors());
 
-// Connect to MongoDB using Mongoose
-mongoose.connect("mongodb://localhost:27017/BSU", {
-  useNewUrlParser: true,
-  useUnifiedTopology: true,
+
+const dbUrl = "mongodb+srv://tawoplays11:1109200213G@clusterpos.hftfpg5.mongodb.net/BukSU_MoniTour";
+
+const connectionParams = {
+    useNewUrlParser: true,
+    useUnifiedTopology: true
+};
+
+
+mongoose.connect(dbUrl, connectionParams).then(() =>
+ {console.info("Connected to the DB");
+}).catch((e) => {
+    console.log("Error;", e);
 });
 
-const db = mongoose.connection;
+// // Connect to MongoDB using Mongoose
+// mongoose.connect("mongodb://localhost:27017/BSU", {
+//   useNewUrlParser: true,
+//   useUnifiedTopology: true,
+// });
 
-// Event listener for successful MongoDB connection
-db.on("connected", () => {
-  console.log("Connected to MongoDB");
-});
+// const db = mongoose.connection;
 
-// Event listener for MongoDB connection error
-db.on("error", (err) => {
-  console.error("MongoDB connection error:", err);
-});
+// // Event listener for successful MongoDB connection
+// db.on("connected", () => {
+//   console.log("Connected to MongoDB");
+// });
+
+// // Event listener for MongoDB connection error
+// db.on("error", (err) => {
+//   console.error("MongoDB connection error:", err);
+// });
 
 
 //BookingRoutes
