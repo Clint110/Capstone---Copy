@@ -1,0 +1,100 @@
+{
+  "name": "frontend",
+  "version": "0.1.0",
+  "private": true,
+  "dependencies": {
+    "@chakra-ui/icon": "^3.2.0",
+    "@chakra-ui/icons": "^2.1.1",
+    "@chakra-ui/react": "^2.8.2",
+    "@emotion/react": "^11.11.3",
+    "@emotion/styled": "^11.11.0",
+    "@fortawesome/fontawesome-svg-core": "^6.5.1",
+    "@fortawesome/free-brands-svg-icons": "^6.5.1",
+    "@fortawesome/free-regular-svg-icons": "^6.5.1",
+    "@fortawesome/free-solid-svg-icons": "^6.5.1",
+    "@fortawesome/react-fontawesome": "^0.2.0",
+    "@hookform/resolvers": "^3.3.4",
+    "@lordicon/element": "^1.4.2",
+    "@mui/material": "^5.15.2",
+    "@react-google-maps/api": "^2.19.3",
+    "@react-oauth/google": "^0.7.3",
+    "@tanstack/react-query": "^5.17.9",
+    "@testing-library/jest-dom": "^5.17.0",
+    "@testing-library/react": "^13.4.0",
+    "@testing-library/user-event": "^13.5.0",
+    "@types/react-big-calendar": "^1.8.8",
+    "@vitejs/plugin-react": "^4.2.1",
+    "axios": "^1.6.3",
+    "babel-preset-react-app": "^10.0.1",
+    "bootstrap": "^5.3.2",
+    "cdbreact": "^1.5.18",
+    "cors": "^2.8.5",
+    "cross-env": "^7.0.3",
+    "datatables": "^1.10.18",
+    "date-fns": "^3.2.0",
+    "date-fns-timezone": "^0.1.4",
+    "date-fns-tz": "^2.0.0",
+    "dotenv": "^16.3.1",
+    "font-awesome": "^4.7.0",
+    "fontawesome-common-types": "^6.4.0",
+    "formik": "^2.4.5",
+    "jwt-decode": "^4.0.0",
+    "lottie-web": "^5.12.2",
+    "mdb-react-ui-kit": "^7.0.0",
+    "moment": "^2.30.1",
+    "primereact": "^10.3.3",
+    "react": "^18.2.0",
+    "react-big-calendar": "^1.8.6",
+    "react-bootstrap": "^2.9.2",
+    "react-data-table-component": "^7.6.2",
+    "react-date-picker": "^10.6.0",
+    "react-datepicker": "^4.25.0",
+    "react-datetime-picker": "^5.6.0",
+    "react-dom": "^18.2.0",
+    "react-hook-form": "^7.49.3",
+    "react-icons": "^4.12.0",
+    "react-redux": "^9.0.4",
+    "react-router-dom": "^6.21.1",
+    "react-scripts": "5.0.1",
+    "react-to-print": "^2.14.15",
+    "react-widgets": "^5.8.4",
+    "reactstrap": "^9.2.1",
+    "redux": "^5.0.1",
+    "redux-actions": "^3.0.0",
+    "redux-persist": "^6.0.0",
+    "redux-thunk": "^3.1.0",
+    "sass": "^1.69.7",
+    "scss": "^0.2.4",
+    "tailwindcss": "^3.4.0",
+    "vite": "^5.0.10",
+    "web-vitals": "^2.1.4",
+    "yup": "^1.3.3"
+  },
+  "scripts": {
+    "start": "react-scripts start",
+    "build": "react-scripts build",
+    "test": "react-scripts test",
+    "eject": "react-scripts eject"
+  },
+  "eslintConfig": {
+    "extends": [
+      "react-app",
+      "react-app/jest"
+    ]
+  },
+  "browserslist": {
+    "production": [
+      ">0.2%",
+      "not dead",
+      "not op_mini all"
+    ],
+    "development": [
+      "last 1 chrome version",
+      "last 1 firefox version",
+      "last 1 safari version"
+    ]
+  },
+  "devDependencies": {
+    "@types/react-datepicker": "^4.19.5"
+  }
+}

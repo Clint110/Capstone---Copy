@@ -1,0 +1,58 @@
+
+/* :root{
+    background: var(--primary);
+} */
+.container-Logout{
+    margin: 15% auto;
+    padding: 20px;
+    border: 1px solid #dadada;
+    border-radius: 5px;
+    width: 30%;
+    height: 250px;
+    text-align: center;
+    background-color: #ffffff;
+    position: sticky;
+}
+
+
+.logouts{
+    background-color: #596fac ;
+    height: 100%;
+    width: 100%;
+    background-repeat: no-repeat;
+    background-size: cover;
+}
+
+.white-button {
+    background-color: rgb(253, 253, 253);
+    color: rgb(10, 10, 10);
+    padding: 10px 30px;
+    margin: 5px;
+    border: none;
+    border-radius: 5px;
+    cursor: pointer;
+    float: right;
+  }
+  
+  .red-button {
+    background-color: rgb(252, 63, 63);
+    color: white;
+    padding: 10px 20px;
+    margin: 5px;
+    border: none;
+    border-radius: 5px;
+    cursor: pointer;
+    float: right;
+  }
+  
+  .white-button:hover, .red-button:hover {
+    opacity: 0.8;
+  }
+
+  hr{
+    color: rgb(231, 228, 228);
+  }
+
+  h3{
+    text-align: left;
+  }

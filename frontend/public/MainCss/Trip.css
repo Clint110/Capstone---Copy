@@ -1,0 +1,293 @@
+.Trip-container{
+    display: flex;
+   
+    
+  }
+  .trip-wrapper{
+    display: flex;
+    flex-grow: 1;
+    align-items: center;
+    justify-content: center;
+    margin-top: 50px;
+    padding: 20px;
+    font-size: 20px;
+    line-height: 20px;
+    /* color: #ffe8c3; */
+    /* background-color: #eab768;
+    border-radius: 10px;
+    border: 10px solid #f5cc8b; */
+  }
+
+  @import url("https://fonts.googleapis.com/css2?family=Newsreader:ital,wght@0,400;0,500;0,600;0,700;0,800;0,900;1,400;1,500;1,600;1,700;1,800;1,900&display=swap");
+.parent-div {
+  width: 1440px;
+  height: 1024px;
+  overflow: hidden;
+  margin: 0px;
+  padding: 0px;
+  box-sizing: border-box;
+}
+.node-367366 {
+  position: absolute;
+  width: 1440px;
+  height: 1024px;
+  top: 0px;
+  left: 0px;
+  opacity: 1;
+  z-index: 24;
+  transform: rotate(0deg);
+  overflow: hidden;
+  border-radius: 0px 0px 0px 0px;
+  background: #ffffffff;
+}
+.node-367369 {
+  position: absolute;
+  width: 1440px;
+  height: 120px;
+  top: 0px;
+  left: 0px;
+  opacity: 1;
+  z-index: 0;
+  transform: rotate(0deg);
+  border-radius: 0px 0px 0px 0px;
+  background: #ffffffff;
+  box-sizing: border-box;
+  border-left: 1px solid #dedbdbff;
+  border-right: 1px solid #dedbdbff;
+  border-top: 1px solid #dedbdbff;
+  border-bottom: 1px solid #dedbdbff;
+}
+.node-367370 {
+  position: absolute;
+  width: 964px;
+  height: 910px;
+  top: 135px;
+  left: 116px;
+  opacity: 1;
+  z-index: 1;
+  transform: rotate(0deg);
+  border-radius: 0px 0px 0px 0px;
+  background: #ffffffff;
+  box-sizing: border-box;
+  border-left: 1px solid #dedbdbff;
+  border-right: 1px solid #dedbdbff;
+  border-top: 1px solid #dedbdbff;
+  border-bottom: 1px solid #dedbdbff;
+}
+.node-368391 {
+  position: absolute;
+  width: 850px;
+  height: 562px;
+  top: 411px;
+  left: 173px;
+  opacity: 1;
+  z-index: 2;
+  transform: rotate(0deg);
+  border-radius: 0px 0px 0px 0px;
+  background: #ffffffff;
+  box-sizing: border-box;
+  border-left: 1px solid #000000ff;
+  border-right: 1px solid #000000ff;
+  border-top: 1px solid #000000ff;
+  border-bottom: 1px solid #000000ff;
+}
+.node-368371 {
+  position: absolute;
+  width: 120px;
+  height: 107px;
+  top: 174px;
+  left: 902px;
+  opacity: 1;
+  z-index: 9;
+  transform: rotate(0deg);
+  border-radius: 0px 0px 0px 0px;
+  background: #ffffffff;
+  box-sizing: border-box;
+  border-left: 1px solid #dedbdbff;
+  border-right: 1px solid #dedbdbff;
+  border-top: 1px solid #dedbdbff;
+  border-bottom: 1px solid #dedbdbff;
+}
+.nodeBg-367367 {
+  position: absolute;
+  width: 100%;
+  height: 100%;
+  background-color: transparent;
+  background-size: cover;
+  background-position: center;
+  background-repeat: no-repeat;
+  background-image: url("https://s3-alpha-sig.figma.com/img/842a/e42e/bf9ecc3df2d8817ceb1c920b6a161cf7?Expires=1705881600&Key-Pair-Id=APKAQ4GOSFWCVNEHN3O4&Signature=YQUrCWYkPuGmLfgKe8kcfyggTl7ih3sCwWLHCb5cOPurDoUhpvng6x7Pedc-jguOIDST9M39SkKxmpCcEWTGXWmlm0s2kA3t12HjONfRFuQJz0lCUrWRuYyD5DKJxfiu2LLew2RAoJVKKK5bzvwAmi-Cv~0B8ts7m8GVWBYHqyhU~etOB9UEs8hLwz-rae9EwBAAQHRFsVsH5m9j4WSfAIR39QcGbTPer8CtUZznAVjNK2J9ucLHByMpVE90NAzUC0D2ptHjG~U8GqVTdiBWazg-2yHjjrKLs~D7TFnHXj0Y-Iozdq8lG6n3v3TPMpAxONDAXNXn7dmXZAdwGFPn0Q__");
+  opacity: 1;
+}
+.node-367367 {
+  position: absolute;
+  width: 105px;
+  height: 107px;
+  top: 168px;
+  left: 199px;
+  opacity: 1;
+  z-index: 10;
+  transform: rotate(0deg);
+  overflow: hidden;
+  border-radius: 0px 0px 0px 0px;
+}
+.node-367368 {
+  position: absolute;
+  width: 104px;
+  height: 1024px;
+  top: 0px;
+  left: 0px;
+  opacity: 1;
+  z-index: 11;
+  transform: rotate(0deg);
+  border-radius: 0px 0px 0px 0px;
+  background: #3b559fff;
+  box-sizing: border-box;
+  border-left: 1px solid #dedbdbff;
+  border-right: 1px solid #dedbdbff;
+  border-top: 1px solid #dedbdbff;
+  border-bottom: 1px solid #dedbdbff;
+}
+.node-368372 {
+  position: absolute;
+  width: 540px;
+  height: 25px;
+  top: 198px;
+  left: 337px;
+  opacity: 1;
+  z-index: 3;
+  transform: rotate(0deg);
+  text-align: left;
+  line-height: 0px;
+}
+.node-368372-0 {
+  font-size: 31px;
+  font-family: Newsreader;
+  font-weight: 600;
+
+  text-decoration: none;
+  text-transform: none;
+
+  line-height: 32px;
+  color: #000000ff;
+}
+
+.node-368388 {
+  position: absolute;
+  width: 480px;
+  height: 25px;
+  top: 308px;
+  left: 452px;
+  opacity: 1;
+  z-index: 4;
+  transform: rotate(0deg);
+  text-align: left;
+  line-height: 0px;
+}
+.node-368388-0 {
+  font-size: 23px;
+  font-family: Newsreader;
+  font-weight: 600;
+
+  text-decoration: none;
+  text-transform: none;
+
+  line-height: 24px;
+  color: #000000ff;
+}
+
+.node-368389 {
+  position: absolute;
+  width: 786px;
+  height: 63px;
+  top: 351px;
+  left: 236px;
+  opacity: 1;
+  z-index: 5;
+  transform: rotate(0deg);
+  text-align: left;
+  line-height: 0px;
+}
+.node-368389-0 {
+  font-size: 23px;
+  font-family: Newsreader;
+  font-weight: 400;
+
+  text-decoration: none;
+  text-transform: none;
+
+  line-height: 24px;
+  color: #000000ff;
+}
+
+.node-368390 {
+  position: absolute;
+  width: 382px;
+  height: 63px;
+  top: 374px;
+  left: 407px;
+  opacity: 1;
+  z-index: 6;
+  transform: rotate(0deg);
+  text-align: left;
+  line-height: 0px;
+}
+.node-368390-0 {
+  font-size: 23px;
+  font-family: Newsreader;
+  font-weight: 400;
+
+  text-decoration: none;
+  text-transform: none;
+
+  line-height: 24px;
+  color: #000000ff;
+}
+
+.node-368386 {
+  position: absolute;
+  width: 422px;
+  height: 19px;
+  top: 232px;
+  left: 387px;
+  opacity: 1;
+  z-index: 7;
+  transform: rotate(0deg);
+  text-align: left;
+  line-height: 0px;
+}
+.node-368386-0 {
+  font-size: 14px;
+  font-family: Newsreader;
+  font-weight: 400;
+
+  text-decoration: none;
+  text-transform: none;
+
+  line-height: 15px;
+  color: #000000ff;
+}
+
+.node-368387 {
+  position: absolute;
+  width: 583px;
+  height: 19px;
+  top: 250px;
+  left: 325px;
+  opacity: 1;
+  z-index: 8;
+  transform: rotate(0deg);
+  text-align: left;
+  line-height: 0px;
+}
+.node-368387-0 {
+  font-size: 14px;
+  font-family: Newsreader;
+  font-weight: 400;
+
+  text-decoration: none;
+  text-transform: none;
+
+  line-height: 15px;
+  color: #000000ff;
+}
