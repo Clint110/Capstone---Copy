@@ -56,6 +56,19 @@ exports.vecstatus = async (req, res) => {
       }
   };
 
+  exports.getPlateNumbers = async (req, res) => {
+    try {
+      // Fetch all distinct plate numbers from the Vehicle model
+      const plateNumbers = await Vehicle.find().distinct('plateNumber');
+  
+      // Send the plate numbers as JSON response
+      res.json(plateNumbers);
+    } catch (error) {
+      console.error('Error fetching plate numbers:', error);
+      res.status(500).json({ error: 'Internal server error' });
+    }
+  };
+
   exports.getVehicleDetails = async (req, res) => {
     try {
       const { plateNumber } = req.params;

@@ -108,6 +108,40 @@ function AddBook() {
 
   console.log(formData);
 
+  const [plateNumbers, setPlateNumbers] = useState([]);
+  const [selectedPlateNumber, setSelectedPlateNumber] = useState("");
+
+  useEffect(() => {
+    const fetchPlateNumbers = async () => {
+      try {
+        const response = await fetch("http://localhost:3000/vehiclestatus");
+        if (response.ok) {
+          const data = await response.json();
+          console.log(data);
+          // const plateNumbers = data.map(vehicle => vehicle.plateNumber);
+
+          const plateNumberArray = Object.keys(data).map(plateNumber => ({
+            plateNumber: plateNumber,
+            status: data[plateNumber]
+          }));
+
+          console.log(plateNumberArray);
+          setPlateNumbers(plateNumberArray);
+        } else {
+          console.error("Failed to fetch plate numbers from the server");
+        }
+      } catch (error) {
+        console.error("Error during fetch:", error);
+      }
+    };
+
+    fetchPlateNumbers();
+  }, []);
+
+  const handlePlateNumberChange = (event) => {
+    setSelectedPlateNumber(event.target.value);
+  };
+
 
 
 
@@ -557,9 +591,27 @@ const formatTime = (timeString) => {
    <form id='addbook' onSubmit={handlebookingsub}>
         <label>
             PLATE NUMBER
-            <input type="text" className='bookingInput' 
-             value={formData.plateNumber} onChange={(e) => setFormData({ ...formData, plateNumber: e.target.value })}
-             />
+            {/* <select
+                             
+                              value={formData.plateNumber}
+                              onChange={(e) => setFormData({ ...formData, plateNumber: e.target.value })}
+                            >
+                              <option value="">Select Plate Number</option>
+                              {plateNumbers.map((plateNumber) => (
+                                <option key={plateNumber} value={plateNumber}>
+                                  {plateNumber}
+                                </option>
+                              ))}
+                            </select> */}
+
+                            <select  className="bookingInput" value={selectedPlateNumber} onChange={handlePlateNumberChange}>
+                                <option value="" disabled>Select Plate Number</option>
+                                {plateNumbers.map(({ plateNumber, status }) => (
+                                  <option key={plateNumber} value={plateNumber}>
+                                    {plateNumber} - {status}
+                                  </option>
+                                ))}
+                              </select>
         </label>
         <label>
          DRIVER’s NAME
