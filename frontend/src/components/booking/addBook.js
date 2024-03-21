@@ -110,6 +110,8 @@ function AddBook() {
 
   const [plateNumbers, setPlateNumbers] = useState([]);
   const [selectedPlateNumber, setSelectedPlateNumber] = useState("");
+  const [plateNumberStatuses, setPlateNumberStatuses] = useState({});
+  const [selectedPlateNumberStatus, setSelectedPlateNumberStatus] = useState("");
 
   useEffect(() => {
     const fetchPlateNumbers = async () => {
@@ -120,6 +122,7 @@ function AddBook() {
           console.log(data);
           // const plateNumbers = data.map(vehicle => vehicle.plateNumber);
 
+          const plateNumberStatuses = data;
           const plateNumberArray = Object.keys(data).map(plateNumber => ({
             plateNumber: plateNumber,
             status: data[plateNumber]
@@ -127,6 +130,7 @@ function AddBook() {
 
           console.log(plateNumberArray);
           setPlateNumbers(plateNumberArray);
+          setPlateNumberStatuses(plateNumberStatuses);
         } else {
           console.error("Failed to fetch plate numbers from the server");
         }
@@ -139,7 +143,10 @@ function AddBook() {
   }, []);
 
   const handlePlateNumberChange = (event) => {
-    setSelectedPlateNumber(event.target.value);
+    // setSelectedPlateNumber(event.target.value);
+    const selectedPlateNumber = event.target.value;
+    setSelectedPlateNumber(selectedPlateNumber);
+    setSelectedPlateNumberStatus(plateNumberStatuses[selectedPlateNumber]);
   };
 
 
@@ -606,12 +613,14 @@ const formatTime = (timeString) => {
 
                             <select  className="bookingInput" value={selectedPlateNumber} onChange={handlePlateNumberChange}>
                                 <option value="" disabled>Select Plate Number</option>
-                                {plateNumbers.map(({ plateNumber, status }) => (
+                                {plateNumbers.map(({ plateNumber }) => (
                                   <option key={plateNumber} value={plateNumber}>
-                                    {plateNumber} - {status}
+                                   {plateNumber}
                                   </option>
                                 ))}
                               </select>
+                          
+                              <p>Status: {selectedPlateNumberStatus}</p>
         </label>
         <label>
          DRIVER’s NAME
