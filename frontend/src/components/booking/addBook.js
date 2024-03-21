@@ -147,6 +147,7 @@ function AddBook() {
     const selectedPlateNumber = event.target.value;
     setSelectedPlateNumber(selectedPlateNumber);
     setSelectedPlateNumberStatus(plateNumberStatuses[selectedPlateNumber]);
+    setFormData({ ...formData, plateNumber: selectedPlateNumber });
   };
 
 
