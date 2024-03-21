@@ -1,20 +1,4 @@
 
-.LOGIN{
-background: rgb(169,167,208);
-background: linear-gradient(90deg, rgba(169,167,208,1) 0%, rgb(21, 21, 186) 100%);
-display: cover;
-}
-
-@media (min-width: 796px)  {
-  .LOGIN {
-    background: rgb(169,167,208);
-    background: linear-gradient(90deg, rgba(169,167,208,1) 0%, rgb(21, 21, 186) 100%);
-    display: cover;
-     width: 100%
-  }
-}
-
-
 
 .LoginBtn a {
   text-decoration: none;
@@ -175,5 +159,136 @@ body{
     right: 0;
         z-index: 2;
   }
+}
+
+
+.Loginheader{
+  background-image: url(src/imagesMotorpool-bus.jpg);
+  background-position: center;
+  background-size: cover;
+  height: 100vh;
+  width: 100%;
+  position: relative;
+  overflow: hidden;
+}
+.Loginheader::after{
+  position: absolute;
+  content: '';
+  width: 100%;
+  height: 200vh;
+  background-color: #161d3fb0;
+  top: -70%;
+  left: -50%;
+  transform: rotate(25deg);
+}
+.Logincontainer{
+  width: 80%;
+  margin: auto;
+  height: 100%;
+  position: relative;
+  z-index: 2;
+}
+.Logincontainer nav{
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  height: 120px;
+}
+.Logincontainer nav .logos{
+  color: #fff;
+  text-decoration: none;
+  font-size: 30px;
+  font-weight:bold;
+  text-transform: uppercase;
+}
+.Logincontainer nav ul li{
+  display: inline-block;
+  margin-right: 25px;
+}
+.Logincontainer nav ul li a{
+ text-decoration: none;
+ color: #ffffff;
+ font-weight: 600;
+ text-transform: capitalize;
+ transition: 0.4s;
+ font-size: 20px;
+}
+.Logincontainer nav ul li:hover a,
+.Logincontainer nav ul li.active a{
+  color: #fff;
+}
+.Logincontainer nav .btn{
+  padding: 10px 20px;
+  background-color: #3a79f9;
+  border-radius: 25px;
+  color: #fff;
+  text-decoration: none;
+  transition: 0.4s;
+}
+.Logincontainer nav .btn:hover{
+  background-color: #fff;
+  color: #3a79f9;
+}
+.content{
+  position: absolute;
+  top: 50%;
+  transform:translateY(-50%) ;
+}
+.content h1{
+  color: #fff;
+  font-size: 55px;
+  margin-bottom: 30px;
+  text-transform: capitalize;
+}
+.content p{
+  color: #bdbdbd;
+  line-height: 2;
+  margin-bottom: 30px;
+}
+.content .btn{
+  padding: 15px 30px;
+  background-color: #3a79f9;
+  border-radius: 25px;
+  color: #fff;
+  text-decoration: none;
+  transition: 0.4s;
+  font-size: 20px;
+  transition: 0.3s;
+}
+.Logincontainer .btn:hover{
+  background-color: #fff;
+  color: #3a79f9;
+}
+
+@media (min-width: 576px) {
+  .modal-dialog {
+    max-width: 400px;
+  }
+  .modal-dialog .modal-content {
+    padding: 1rem;
+  }
+}
+.modal-header .close {
+  margin-top: -1.5rem;
+}
+
+.form-title {
+  margin: -2rem 0rem 2rem;
+}
+
+.btn-round {
+  border-radius: 3rem;
+}
+
+.delimiter {
+  padding: 1rem;
+}
+
+.social-buttons .btn {
+  margin: 0 0.5rem 1rem;
+}
+
+.signup-section {
+  padding: 0.3rem 0rem;
 }
 

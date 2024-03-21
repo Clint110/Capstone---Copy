@@ -1,14 +1,14 @@
 
 
-import React , {useState} from 'react'
+import React , {useState, useEffect} from 'react'
 import loginImage from '../images/login.png'
 import logo from '../images/buksu-logo.png'
 import { GoogleLogin,  useGoogleLogin } from '@react-oauth/google';
 import { TfiEmail } from "react-icons/tfi";
 import { RiLockPasswordLine } from "react-icons/ri";
 import { useNavigate } from "react-router-dom";
-
-
+import motorpoolBusImage from '../images/Motorpool-bus.jpg'
+import $ from 'jquery';
 
 function Login() {
 
@@ -57,9 +57,11 @@ function Login() {
       }else if(data.message == "User not found" ){
         alert("User not found")
       }
+      $("#loginModal").modal("hide"); // Hide the modal
     } catch (error) {
       console.error("Error during login", error);
     }
+    
   };
 
 
@@ -95,33 +97,43 @@ function Login() {
         alert('Google login unsuccessful');
         // Add logic to handle Google login failure (e.g., show error message)
       }
+      $("#loginModal").modal("hide");
     } catch (error) {
       console.error('Error during Google login', error);
     }
   };
   
-  return (
-    <div className='LOGIN'>
-     <img className="logo mb-5" src={logo} alt="logo"/>
+  document.addEventListener("DOMContentLoaded", function() {             
+    document.querySelector('#loginModal').modal('show');
+      document.querySelector(function () {
+        document.querySelector('[data-toggle="tooltip"]').tooltip()
+      })
+    });
 
-    <div className="container d-flex justify-content-center align-items-center min-vh-100">
-          {/*--------------------- Login Container ------------------------*/}
-          <div className="row rounded-5  bg-white shadow box-area">
-            {/*------------------------- Left Box ---------------------------*/}
-            <div className="col-md-6 border rounded-4 d-flex justify-content-center align-items-center flex-column left-box" style={{background: 'linear-gradient(90deg, rgba(169,167,208,1) 0%, rgba(21, 21, 186, 0.6) 100%)' }}>
-              <div className="featured-image mb-3">
-                <img src={loginImage} className="img-fluid " style={{width: '500px'}} />
+    useEffect(() => {
+      // Remove modal backdrop when component unmounts
+      return () => {
+        $('.modal-backdrop').remove(); // Remove the modal backdrop
+      };
+    }, []);
+
+  return (
+    // <div className='LOGIN'>
+  <div className="Loginheader" style={{ backgroundImage: `url(${motorpoolBusImage})` }}>
+     <div className="modal fade" id="loginModal" tabIndex={-1} role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
+        <div className="modal-dialog modal-dialog-centered" role="document">
+          <div className="modal-content">
+            <div className="modal-header border-bottom-0">
+              <button type="button" className="close" data-dismiss="modal" aria-label="Close">
+                <span aria-hidden="true">×</span>
+              </button>
+            </div>
+            <div className="modal-body">
+              <div className="form-title text-center">
+                <h4>Login</h4>
               </div>
-             
-            </div> 
-            {/*------------------ ------ Right Box --------------------------*/}
-            <div className="col-md-6 right-box p-3">
-              <div className="row align-items-center mt-5 pt-4">
-                <div className="header-text mb-4 text-center">
-                  <h2>BukSU MoniTour</h2>
-                  <p>Tracking success, ensuring safety with BukSU MoniTour.</p>
-                </div>
-            <form className='ml-4' onSubmit={handleSubmit}>
+              <div className="d-flex flex-column text-center">
+              <form className='ml-4' onSubmit={handleSubmit}>
                 <div className="input-group mb-3 col-10">
                 <TfiEmail  className='iIcon'/>
                   <input type="text" className="EmaiL" name='email' placeholder="Email address" value={email}onChange={(e) => setEmail(e.target.value)} />
@@ -157,14 +169,33 @@ function Login() {
                 </div> */}
                 </form>
               </div>
-              
-            </div> 
-            
-          </div>
+            </div>
           
+          </div>
         </div>
-        
       </div>
+        <div className="Logincontainer">
+          <nav>
+            <a href="#" className="logos">BukSU MoniTour</a>
+            <ul>
+             
+              <li><a href="#">Contact Us</a></li>
+              <li><a href="#">About</a></li>
+              <button type="button" class="btn btn-info btn-round" data-toggle="modal" data-target="#loginModal">
+Login</button>  
+            </ul>
+          </nav>
+          <div className="content">
+            <h1>University Vehicle <br /> Tracking &amp; Monitoring </h1>
+            <p>Stay on track with our university vehicle tracking and monitoring system! <br />  Ensure safety, efficiency, and accountability for all campus vehicles.</p>
+            <a data-toggle="modal" data-target="#loginModal" className="btn">Get Started</a>
+          </div>
+        </div>
+
+
+       
+      </div>
+      // </div>
     
     
     
