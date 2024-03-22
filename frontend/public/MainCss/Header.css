@@ -65,8 +65,8 @@
 
 
 
-.header-container h1{
-    padding-top: 10px;
+.header-container h3{
+    padding-top: 20px;
     padding-left: 10px;
 }
 
@@ -78,7 +78,7 @@
     position: fixed;
       top: 0;
       right: 0;
-      z-index: 9999;
+      z-index: 999;
    /* position: absolute; */
     text-align: right;
    

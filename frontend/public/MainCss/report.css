@@ -10,9 +10,9 @@
     display: flex;
     flex-grow: 1;
     padding: 10px;
-    font-size: 20px;
+    font-size: 15px;
     line-height: 20px;
-   
+   /* width: 1100px; */
     align-items: stretch;
     height: 400px;
     /* background-color: #eab768;
@@ -36,17 +36,17 @@
   
   }
   
-   th.reportTable , td {
-    width: 100px;
+   th.reportTable {
+    width: 200px;
     height: 40px;
-  
+  font-size: 18px;
     word-break: break-all;
     text-overflow: ellipsis;
     box-shadow: 0em 1px  0em  rgba( 0, 0, 0, 0.4 )
   }
 
-  td.reportTable {
-    width: 100px;
+  td.reportTable, td{
+    width: 200px;
     height: 40px;
     font-size: 15px;
     word-break: break-all;
@@ -81,3 +81,12 @@ font-size: 15px;
     font-size: 20px;
     margin-left: 10px;
   }
+
+  
+.datatable-crud-demo .table-header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+}
+
+

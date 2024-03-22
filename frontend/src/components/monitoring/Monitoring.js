@@ -32,6 +32,9 @@ function Monitoring() {
   const [filteredVehicleList, setFilteredVehicleList] = useState([]);
   const [role, setUserRole] = useState('');
 
+
+  
+  
   useEffect(() => {
     // Fetch vehicle status data from your server
     const fetchVehicleStatus = async () => {
@@ -83,6 +86,7 @@ function Monitoring() {
   const toggleHistory = () => {
     setHistoryVisible(!isHistoryVisible);
   };
+
 
   const handlePlateNumberClick = async (plateNumber) => {
     try {
@@ -142,7 +146,7 @@ function Monitoring() {
   }, [searchInput, vehicleStatus]);
 
   
-
+ 
 
 
   // const column= [
@@ -318,8 +322,8 @@ useEffect(() => {
     <> 
     <div className="header-wrapper">
     <div className='header-container'>   
-            <h1><strong>Monitoring</strong>    <p className="userName">{role}</p>
-    </h1>
+            <h3><strong>MONITORING</strong>    <p className="userName">{role}</p>
+    </h3>
     </div></div>
     <div className='Monitoring-container'>
     <div className='Container row'>
@@ -349,7 +353,7 @@ useEffect(() => {
       
       <CiSquarePlus className='pluscar' onClick={toggleOpen}  />
 </h4> 
-<div> <p className='noCars'><IoCarSportOutline />  {filteredVehicleList.length} Vehicle Total </p></div>
+<div> <p className='noCars'><IoCarSportOutline />{filteredVehicleList.length} Vehicle Total </p></div>
 {/* <button className='button-all'>All </button>
 <button className='button-all'>Available </button>
 <button className='button-all'>Used</button> */}
@@ -514,7 +518,7 @@ useEffect(() => {
 
 
 
- {isHistoryVisible && (
+ {/* {isHistoryVisible && (
 <div className="historyRight">
 <div className='pictureArea'>
     <div className='Picture'> 
@@ -572,12 +576,12 @@ useEffect(() => {
             </li>
           </ul>
         </nav> */}
-        </div>
+        {/* </div>
 
 
 
 </div>
- )}
+ )}  */}
   </div>
   <div>
   <MDBModal tabIndex='-1' open={centredModal} setOpen={setCentredModal}>

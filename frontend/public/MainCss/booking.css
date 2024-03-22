@@ -7,7 +7,7 @@
     display: flex;
     flex-grow: 1;
     margin: 1%;
-    padding-top: 80px;
+    padding-top: 60px;
     /* font-size: 20px; */
     line-height: 20px;
     /* color: #ffe8c3; */
@@ -27,6 +27,7 @@
 
   .addB_Container{
     margin-left: 32%;
+    z-index: 10000;
   }
 
 
@@ -57,6 +58,8 @@
 
   .bookingInput{
     display: block;
+    margin-bottom: 10px;
+    margin-top: 5px;
     width: 400px;
     color: rgb(36, 35, 42);
     font-size: 16px;
@@ -131,7 +134,7 @@
     float: left;
     box-shadow: rgb(0 0 0 / 12%) 0px 1px 3px, rgb(0 0 0 / 24%) 0px 1px 2px;
 
-    margin-left: 5px;
+    /* margin-left: 5px; */
     width: 250px;
     
   }
@@ -150,7 +153,7 @@
   text-align: center;
   justify-content: center;
   border: 1px solid transparent;
-  margin: 10px 40px 10px 40px;
+  margin: 10px 40px 1px 40px;
   font-size: 16px;
   border-radius: .25rem;
   transition: color .15s ease-in-out,background-color .15s ease-in-out,border-color .15s ease-in-out,box-shadow .15s ease-in-out;
@@ -257,3 +260,4 @@
 .coco{
   background-attachment: fixed;
 }
+

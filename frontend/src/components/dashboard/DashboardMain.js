@@ -20,8 +20,8 @@ function DashboardMain() {
     <>
     <div className="header-wrapper">
 <div className='header-container'>   
-        <h1><strong>Dashboard</strong>    <p className="userName">Administrator</p>
-</h1>
+        <h3><strong>DASHBOARD</strong>    <p className="userName">Administrator</p>
+</h3>
 </div></div>
     <div className='Dashboard-container'>
     <section class="spacethis">

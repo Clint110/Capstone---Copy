@@ -256,8 +256,8 @@ setNewEvent({ title: "", driver: "", start: null, end: null });
     <>
         <div className="header-wrapper">
     <div className='header-container'>   
-            <h1><strong>Booking</strong>    <p className="userName">Administrator</p>
-    </h1>
+            <h3><strong>BOOKING</strong>    <p className="userName">Administrator</p>
+    </h3>
     </div></div>
     <div className='Booking-container'>
     <div className='Container row'>
@@ -266,8 +266,7 @@ setNewEvent({ title: "", driver: "", start: null, end: null });
   <div className='add_booking_area'>
 <hr/>
 <div className="reminder-Head">
-<h6>FILTER</h6>
-<p><FaRegSquare className="iconRemind"/> View All</p>
+<h6>SCHEDULE</h6>
 </div>
 
   <div className="reminder-container">

@@ -124,22 +124,23 @@ function Login() {
         <div className="modal-dialog modal-dialog-centered" role="document">
           <div className="modal-content">
             <div className="modal-header border-bottom-0">
-              <button type="button" className="close" data-dismiss="modal" aria-label="Close">
-                <span aria-hidden="true">×</span>
-              </button>
+            {/* <button type="button" data-dismiss="modal" aria-label="Close">
+            <span aria-hidden="true">×</span>
+          </button> */}
             </div>
+            
             <div className="modal-body">
               <div className="form-title text-center">
-                <h4>Login</h4>
+                <h2>Login</h2>
               </div>
               <div className="d-flex flex-column text-center">
               <form className='ml-4' onSubmit={handleSubmit}>
                 <div className="input-group mb-3 col-10">
-                <TfiEmail  className='iIcon'/>
+                {/* <TfiEmail  className='iIcon'/> */}
                   <input type="text" className="EmaiL" name='email' placeholder="Email address" value={email}onChange={(e) => setEmail(e.target.value)} />
                 </div>
                 <div className="input-group mb-1 col-10 ">
-               <RiLockPasswordLine className='iIcon'/>
+               {/* <RiLockPasswordLine className='iIcon'/> */}
                   <input type="password" className="PassworD" name='password' placeholder="Password"   value={password}onChange={(e) => setPassword(e.target.value)} />
                 </div>
                 <div className="input-group ml-5 mb-5 d-flex justify-content-between">
