@@ -119,7 +119,7 @@ function Login() {
               <div className="row align-items-center mt-5 pt-4">
                 <div className="header-text mb-4 text-center">
                   <h2>BukSU MoniTour</h2>
-                  <p>Tracking success, ensuring safety with BukSU MoniTour.hahahahh</p>
+                  <p>Tracking success, ensuring safety with BukSU MoniTour </p>
                 </div>
             <form className='ml-4' onSubmit={handleSubmit}>
                 <div className="input-group mb-3 col-10">
