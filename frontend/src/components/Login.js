@@ -1,6 +1,6 @@
 
 
-import React , {useState} from 'react'
+import React , {useState, useEffect} from 'react'
 import loginImage from '../images/login.png'
 import logo from '../images/buksu-logo.png'
 import { GoogleLogin,  useGoogleLogin } from '@react-oauth/google';
@@ -9,7 +9,6 @@ import { RiLockPasswordLine } from "react-icons/ri";
 import { useNavigate } from "react-router-dom";
 import motorpoolBusImage from '../images/Motorpool-bus.jpg'
 import $ from 'jquery';
-
 
 function Login() {
 
@@ -58,9 +57,11 @@ function Login() {
       }else if(data.message == "User not found" ){
         alert("User not found")
       }
+      $("#loginModal").modal("hide"); // Hide the modal
     } catch (error) {
       console.error("Error during login", error);
     }
+    
   };
 
 
@@ -96,15 +97,29 @@ function Login() {
         alert('Google login unsuccessful');
         // Add logic to handle Google login failure (e.g., show error message)
       }
+      $("#loginModal").modal("hide");
     } catch (error) {
       console.error('Error during Google login', error);
     }
   };
   
+  document.addEventListener("DOMContentLoaded", function() {             
+    document.querySelector('#loginModal').modal('show');
+      document.querySelector(function () {
+        document.querySelector('[data-toggle="tooltip"]').tooltip()
+      })
+    });
+
+    useEffect(() => {
+      // Remove modal backdrop when component unmounts
+      return () => {
+        $('.modal-backdrop').remove(); // Remove the modal backdrop
+      };
+    }, []);
+
   return (
-    <div className='LOGIN'>
-    
-    <div className="Loginheader" style={{ backgroundImage: `url(${motorpoolBusImage})` }}>
+    // <div className='LOGIN'>
+  <div className="Loginheader" style={{ backgroundImage: `url(${motorpoolBusImage})` }}>
      <div className="modal fade" id="loginModal" tabIndex={-1} role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
         <div className="modal-dialog modal-dialog-centered" role="document">
           <div className="modal-content">
@@ -118,16 +133,8 @@ function Login() {
               <div className="form-title text-center">
                 <h2>Login</h2>
               </div>
-             
-            </div> 
-            {/*------------------ ------ Right Box --------------------------*/}
-            <div className="col-md-6 right-box p-3">
-              <div className="row align-items-center mt-5 pt-4">
-                <div className="header-text mb-4 text-center">
-                  <h2>BukSU MoniTour</h2>
-                  <p>Tracking success, ensuring safety with BukSU MoniTour.hahahahh</p>
-                </div>
-            <form className='ml-4' onSubmit={handleSubmit}>
+              <div className="d-flex flex-column text-center">
+              <form className='ml-4' onSubmit={handleSubmit}>
                 <div className="input-group mb-3 col-10">
                 {/* <TfiEmail  className='iIcon'/> */}
                   <input type="text" className="EmaiL" name='email' placeholder="Email address" value={email}onChange={(e) => setEmail(e.target.value)} />
@@ -189,7 +196,7 @@ Login</button>
 
        
       </div>
-      </div>
+      // </div>
     
     
     
