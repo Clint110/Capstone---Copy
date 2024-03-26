@@ -7,7 +7,7 @@
     display: flex;
     flex-grow: 1;
     margin: 1%;
-    padding-top: 80px;
+    padding-top: 60px;
     /* font-size: 20px; */
     line-height: 20px;
     /* color: #ffe8c3; */
@@ -27,6 +27,7 @@
 
   .addB_Container{
     margin-left: 32%;
+    z-index: 10000;
   }
 
 
@@ -57,6 +58,8 @@
 
   .bookingInput{
     display: block;
+    margin-bottom: 10px;
+    margin-top: 5px;
     width: 400px;
     color: rgb(36, 35, 42);
     font-size: 16px;

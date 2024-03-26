@@ -318,8 +318,8 @@ useEffect(() => {
     <> 
     <div className="header-wrapper">
     <div className='header-container'>   
-            <h1><strong>Monitoring</strong>    <p className="userName">{role}</p>
-    </h1>
+    <h3><strong>MONITORING</strong>    <p className="userName">{role}</p>
+       </h3>
     </div></div>
     <div className='Monitoring-container'>
     <div className='Container row'>

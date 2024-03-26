@@ -8,7 +8,6 @@ import BookingTicket from "./components/booking/BookingTicket";
 import DashboardMain from "./components/dashboard/DashboardMain";
 import Monitoring from "./components/monitoring/Monitoring";
 import Booking from "./components/booking/Booking";
-import FuelReport from "./components/reports/FuelReport";
 import TripReport from "./components/reports/TripReport";
 import AddBook from "./components/booking/addBook";
 import SideBar2 from "./components/sidebaraddbooking/Sidebaraddname";
@@ -30,7 +29,6 @@ function App() {
           <Route path="/dashboard" element={<DashboardMain />} />   
           <Route path="/booking" element={<Booking />} />
           <Route path="/monitoring" element={<Monitoring />} />
-          <Route path="/report-fuel_consumption" element={<FuelReport/>}/>
           <Route path="/reports" element={<TripReport/>}/>
         </Routes>
       </Sidebar>

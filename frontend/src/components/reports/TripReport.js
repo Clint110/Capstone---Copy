@@ -2,6 +2,11 @@ import React , {useEffect, useState} from 'react';
 import { FaHistory } from "react-icons/fa";
 import { IoDocumentAttachOutline } from "react-icons/io5";
 import axios from 'axios';
+import { DataTable } from 'primereact/datatable';
+import { Column } from 'primereact/column';
+import "primereact/resources/themes/lara-light-indigo/theme.css";
+import "primereact/resources/primereact.min.css";
+import "primeicons/primeicons.css";
 
 
 function formatDateTime(dateTimeString) {
@@ -37,53 +42,36 @@ function TripReport() {
     <> 
     
     <div className="header-wrapper">
-    <div className='header-container'>   
-            <h1><strong>Report</strong>    <p className="userName">Administrator</p>
-    </h1>
-    </div></div>
-
-    <div className="header-wrapper">
 <div className='header-container'>   
-        <h1><strong>Report</strong>    <p className="userName">Administrator</p>
-</h1>
+        <h3><strong>REPORT</strong>    <p className="userName">Administrator</p>
+</h3>
 </div></div>
-    <div className='Report-container'>
+<div className='Report-container'>
     <div className='report-wrapper'>
-      <div className='TableReportContainer'>
-      <table className='reportTable'>
-  <thead>
-    <tr>
-      <th>PLATE NO.</th>
-      <th>DEPARTURE</th>
-      <th>DESTINATION</th>
-      <th>DEPARTURE</th>
-      <th>RETURN</th>
-      <th>KM</th>
-      <th>ACTION</th>
-     
-    </tr>
-  </thead>
-  <tbody>
-  {bookingData.map((booking) => (
-                  <tr key={booking._id}>
-                    <td>{booking.plateNumber}</td>
-                    <td>{booking.boundFor}</td>
-                    <td>{booking.destination}</td>
-                    <td>{formatDateTime(booking.timeForBound)}</td>
-                    <td>{formatDateTime(booking.returnDate)}</td>
-                    <td>km</td>
-                    <td>
-                      <FaHistory className='actionBtn' />
-                      <IoDocumentAttachOutline className='actionBtn' />
-                    </td>
-                  </tr>
-                ))}
-  </tbody>
-</table>
+
+    <DataTable value={bookingData}
+        size="large"
+        showGridlines
+        removableSort
+        paginator rows={9}>
+            <Column field="plateNumber" header="Plate No."  />
+            <Column field="boundFor" header="Departure" />
+            <Column field="destination" header="Destination" />
+            <Column field="timeForBound" header="Departure" body={(rowData) => formatDateTime(rowData.timeForBound)} sortable/>
+            <Column field="returnDate" header="Return" body={(rowData) => formatDateTime(rowData.returnDate)} sortable/>
+            <Column header="Action" body={() => (
+              <React.Fragment>
+                <FaHistory className='actionBtn' />
+                <IoDocumentAttachOutline className='actionBtn' />
+              </React.Fragment>
+            )} />
+          </DataTable>
+          
+   
       </div>
-</div>
-    </div>
+      </div>
     </>
+
 
 
   )

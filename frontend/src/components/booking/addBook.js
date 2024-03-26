@@ -456,8 +456,7 @@ const formatTime = (timeString) => {
     <main>
       <div className='header-wrapper'>
         <div className='header-container'>   
-          <h1><strong>Booking</strong>    <p className="userName">SECRETARY</p></h1>
-        </div>
+        <h3><strong>BOOKING</strong>    <p className="userName">SECRETARY</p></h3>        </div>
       </div>
       <div className='Booking-container'>
         <div className='Container row'>
@@ -466,12 +465,11 @@ const formatTime = (timeString) => {
         <div className='booking-wrapper'>
   <div className='add_booking_area'>
   <button className='add_booking_area_btn' onClick={() => setScrollableModal(!scrollableModal)}>
-    + add booking</button>
+    + ADD BOOKING</button>
 <hr/>
 <div className="reminder-Head">
-<h6>FILTER</h6>
-<p><FaRegSquare className="iconRemind"/> View All</p>
-</div>
+<h6>SCHEDULE</h6></div>
+
 
   <div className="reminder-container">
   <div className="reminder-content">
@@ -486,6 +484,7 @@ const formatTime = (timeString) => {
       </td>
     </tr>
   ))}
+  
 </tbody>
 </div>
   </div>
@@ -525,7 +524,7 @@ const formatTime = (timeString) => {
     </div> */}
    <form id='addbook' onSubmit={handlebookingsub}>
         <label>
-            PLATE NUMBER
+            Plate Number
             {/* <select
                              
                               value={formData.plateNumber}
@@ -550,27 +549,27 @@ const formatTime = (timeString) => {
                           
                               <p>Status: {selectedPlateNumberStatus}</p>
         </label>
-        <label>
+        {/* <label>
          DRIVER’s NAME
             <input type="text" className='bookingInput' value={formData.driverName} onChange={(e) => setFormData({ ...formData, driverName: e.target.value })}/>
-        </label>
+        </label> */}
         <label>
-            CLIENT NAME
+            Client Name(Office)
             <input type="text" className='bookingInput' value={formData.clientName} onChange={(e) => setFormData({ ...formData, clientName: e.target.value })} />
         </label>
         <label>
-        PASSENGER QUANTITY
+        Passenger Quantity
             <input type="number" className='bookingInput' value={formData.passengerQuantity} onChange={(e) => setFormData({ ...formData, passengerQuantity: e.target.value })} />
         </label>
         <label>
-        DESTINATION
+        Destination
         <select className='bookingInput' value={formData.destination} onChange={(e) => setFormData({ ...formData, destination: e.target.value })}>
             <option value='WOS'>Within Official Station </option>
             <option value='BOS'>Beyond Official Station </option>
         </select>
         </label>
         <label>
-            BOUND FOR
+            Bound For:
             <input type="text" className='bookingInput' value={formData.boundFor} onChange={(e) => setFormData({ ...formData, boundFor: e.target.value })}/>
 
             Time <br></br>
@@ -587,7 +586,7 @@ const formatTime = (timeString) => {
         </label>
 
         <label>
-         DATE & TIME
+         Date
          <DatePicker
     className='bookingInput'
     selected={formData.timeAndDate}
@@ -597,7 +596,7 @@ const formatTime = (timeString) => {
         </label>
         
         <label>
-        RETURN DATE
+        Return Date
         <DatePicker
     className='bookingInput'
     selected={formData.returnDate}
@@ -605,7 +604,7 @@ const formatTime = (timeString) => {
   />
          </label>
         <label>
-        PURPOSE
+        Purpose
             <input type="text" className='bookingInput' style={{ height: '250px' }} value={formData.purpose} onChange={(e) => setFormData({ ...formData, purpose: e.target.value })}/>
         </label>
         <button  className='submitBooking' 
