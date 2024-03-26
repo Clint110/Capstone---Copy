@@ -169,6 +169,8 @@ app.use('/', require('./routes/userRoutes'));
 //VehicleRoutes
 app.use('/', require('./routes/vehicleRoutes'));
 
+app.use('/', require('./routes/dataRoutes'));
+
   const path = require('path');
 
 
