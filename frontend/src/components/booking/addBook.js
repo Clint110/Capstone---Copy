@@ -339,7 +339,7 @@ const [userRole, setUserRole] = useState('');
     return (
       <div className="EventComponent">
       <strong>{event.title}</strong>
-      {`${event.plateNumber}`}<br />
+      Platenumber: {`${event.plateNumber}`}<br />
       
       <span className="timeForBound">{`${event.timeForBound ? `Time: ${formatTime(event.timeForBound)} -` : ''} ${event.boundFor ? `Bound For: ${event.boundFor}` : ''}`}</span>
     </div>
