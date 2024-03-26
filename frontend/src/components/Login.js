@@ -118,8 +118,16 @@ function Login() {
               <div className="form-title text-center">
                 <h2>Login</h2>
               </div>
-              <div className="d-flex flex-column text-center">
-              <form className='ml-4' onSubmit={handleSubmit}>
+             
+            </div> 
+            {/*------------------ ------ Right Box --------------------------*/}
+            <div className="col-md-6 right-box p-3">
+              <div className="row align-items-center mt-5 pt-4">
+                <div className="header-text mb-4 text-center">
+                  <h2>BukSU MoniTour</h2>
+                  <p>Tracking success, ensuring safety with BukSU MoniTour.hahahahh</p>
+                </div>
+            <form className='ml-4' onSubmit={handleSubmit}>
                 <div className="input-group mb-3 col-10">
                 {/* <TfiEmail  className='iIcon'/> */}
                   <input type="text" className="EmaiL" name='email' placeholder="Email address" value={email}onChange={(e) => setEmail(e.target.value)} />
