@@ -4,7 +4,7 @@ import Reminder from './Reminder';
 import { GoogleMap, LoadScript } from '@react-google-maps/api';
 
 function Map() {
-  const [coordinates, setCoordinates] = useState([]);
+  const [coordinates, setCoordinates] = useState({ latitude: 0, longitude: 0 });
   const [isVisible, setIsVisible] = useState(true);
 
   const toggleVisibility = () => {
