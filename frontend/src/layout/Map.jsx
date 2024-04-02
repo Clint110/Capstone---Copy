@@ -49,6 +49,7 @@ function Map() {
   const longitude = coordinates.longitude.toString();
   // Google Maps URL
   const googleMapUrl = `https://maps.google.com/maps?q=${encodeURIComponent(latitude)},${encodeURIComponent(longitude)}&t=&z=17&ie=UTF8&iwloc=B&output=embed`;
+  
 
   // const googleMapUrl = `https://www.google.com/maps/embed/v1/view?key=empty&zoom=10&center=0,0${coordinates.length > 0 ? coordinates.map(coordinate => `&markers=${coordinate.latitude},${coordinate.longitude}`).join('') : ''}`;
   return (
