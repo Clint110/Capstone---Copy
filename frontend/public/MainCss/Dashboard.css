@@ -1,6 +1,8 @@
-/* .main-container {
-  width: 100%;
-} */
+/* .Dashboard-container{
+  display: flex;
+  */
+  
+/* } */
 
 .Container{
   display: flex;
@@ -9,6 +11,7 @@
   overflow-y: hidden; /* Hide vertical scroll bar */
   overflow: hidden;
   
+
 }
 
 body{
@@ -18,19 +21,30 @@ body{
 }
 .Dashboard-container{
   margin-top: 80px;
+  width: 10px;
   display: inline-block;
   vertical-align: top; 
  
 }
 
+.header-wrapper h4{
+  text-align: left;
+  margin-top: 40px;
+  margin-left: 20px;
+}
+.header-wrapper p{
+  text-align: right;
+  margin-top: 20px;
+  size: 12px;
+  margin-right: 80px;
+}
 
-
-/* .dashboard-wrapper{
+.dashboard-wrapper{
   display: flex;
   flex-grow: 1;
   align-items: center;
   justify-content: center;
-  margin-top:50px;
+  margin-top:55px;
   padding: 20px;
   font-size: 20px;
   line-height: 20px;
@@ -40,13 +54,14 @@ body{
   justify-content: space-between;
   flex-direction: column;
   background-color: aquamarine;
-} */
+}
 
 
 .dashboard-Reminder{
   display: inline-block;
   width: 33.33%; /* Adjust the width as needed */
   vertical-align: top;
+  margin-left: 20px;
 
 }
 
@@ -54,11 +69,12 @@ body{
   position: fixed;
       right: 0;
       z-index: 9999; 
-  width: 250px;
-  height: 540px;
-  padding: 10px;
-  
-  margin-right: 5px;
+  width: 230px;
+  margin-top: 12px;
+  height: 500px;
+  padding: 2px;
+  color: black;
+  margin-right: 70px;
   border-radius: 10px;
   background-color: white;
   box-shadow: rgba(0, 0, 0, 0.12) 0px 1px 3px, rgba(0, 0, 0, 0.24) 0px 1px 2px;
@@ -76,15 +92,18 @@ body{
     }
   }  */
 
-  h6.dashboard-Reminder {
+ .dashboard-Reminder h6 {
     position: sticky;
-    top: 0; 
+    text-align: center;
+    top: 11px; 
 
   }
 
 
 .dashboard-Reminder {
-  padding-right: 1px;  
+  padding-right: 0px; 
+  padding-top: 10px;
+  margin-top: 30px; 
 }
 
 .dashboard-Reminder::-webkit-scrollbar-thumb {
@@ -107,6 +126,7 @@ body{
   background-color: white;
   display: inline-block;
   width: 100px;
+  margin-top: 10px;
   height: 200px;
   position: sticky;
   display: flex;
@@ -134,4 +154,3 @@ body{
   color: rgba(128, 128, 128, 0.808);
 
 }
-
