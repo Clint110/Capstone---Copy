@@ -2,6 +2,7 @@ import React, { useState, useEffect } from 'react';
 import map from "../images/map.jpg";
 import Reminder from './Reminder';
 import { GoogleMap, LoadScript } from '@react-google-maps/api';
+import io from 'socket.io-client';
 
 function Map() {
   const [coordinates, setCoordinates] = useState({ latitude: 0, longitude: 0 });
@@ -26,6 +27,7 @@ function Map() {
           // Check if responseData contains 'data' array and it has at least one element
           if (responseData.data && responseData.data.length > 0) {
             const { longitude, latitude } = responseData.data[0];
+            console.log(longitude, latitude);
             setCoordinates({ longitude, latitude });
           } else {
             console.error('Latitude or longitude data is undefined');
@@ -39,8 +41,171 @@ function Map() {
     };
   
     fetchDataFromDatabase();
-  }, []);
+
+  // Establish connection with Flask SocketIO server
+  const socket = io('http://192.168.1.243:8766'); // Adjust the URL to match your Flask server's IP and port
+
+  // Handle connection
+  socket.on('connect', () => {
+    console.log('Connected to Flask SocketIO server');
+  });
+
+  // Handle disconnection
+  socket.on('disconnect', () => {
+    console.log('Disconnected from Flask SocketIO server');
+  });
+
+  // Handle received message
+  socket.on('received_message', (messageData) => {
+    console.log('Received message from Flask SocketIO server:', messageData);
+    // Handle the received message as needed in your React component
+  });
+
+  // Cleanup function
+  return () => {
+    socket.disconnect(); // Disconnect the socket when the component unmounts
+  };
+}, []); // Empty dependency array ensures this effect runs only once
+
+
+
+// useEffect(() => {
+//   // Establish connection with Flask SocketIO server
+//   const socket = io('http://192.168.1.243:8765'); // Adjust the URL to match your Flask server's IP and port
+
+//   // Handle connection
+//   socket.on('connect', () => {
+//     console.log('Connected to Flask SocketIO server');
+//   });
+
+//   // Handle disconnection
+//   socket.on('disconnect', () => {
+//     console.log('Disconnected from Flask SocketIO server');
+//   });
+
+//   // Handle received message
+//   socket.on('received_message', async (messageData) => {
+//     console.log('Received message from Flask SocketIO server:', messageData);
+    
+//     // Extract required fields from the received message data
+//     const { content } = messageData;
+//     const lines = content.split('\n');
+//     let plateNumber, latitude, longitude;
+
+//     lines.forEach(line => {
+//       const parts = line.split(':');
+//       const key = parts[0].trim();
+//       const value = parts[1].trim();
+
+//       if (key.toLowerCase() === 'platenumber') {
+//         plateNumber = value;
+//       } else if (key.toLowerCase() === 'latitude') {
+//         latitude = value;
+//       } else if (key.toLowerCase() === 'longitude') {
+//         longitude = value;
+//       }
+//     });
+
+//     // Upload extracted data to the database
+//     try {
+//       const response = await fetch('http://localhost:3000/store-data', {
+//         method: 'POST',
+//         headers: {
+//           'Content-Type': 'application/json'
+//         },
+//         body: JSON.stringify({ plateNumber, latitude, longitude })
+//       });
+
+//       if (response.ok) {
+//         console.log('Data uploaded to the database successfully');
+//       } else {
+//         console.error('Failed to upload data to the database');
+//       }
+//     } catch (error) {
+//       console.error('Error during fetch:', error);
+//     }
+//   });
+
+//   // Cleanup function
+//   return () => {
+//     socket.disconnect(); // Disconnect the socket when the component unmounts
+//   };
+// }, []);
+
   
+useEffect(() => {
+  // Establish connection with Flask SocketIO server
+  const socket = io('http://192.168.1.243:8766'); // Adjust the URL to match your Flask server's IP and port
+
+  // Handle connection
+  socket.on('connect', () => {
+    console.log('Connected to Flask SocketIO server');
+  });
+
+  // Handle disconnection
+  socket.on('disconnect', () => {
+    console.log('Disconnected from Flask SocketIO server');
+  });
+
+  // Handle received message
+  socket.on('received_message', async (messageData) => {
+    console.log('Received message from Flask SocketIO server:', messageData);
+    
+    // Extract required fields from the received message data
+    const { content } = messageData;
+    const lines = content.split('\n');
+    let plateNumber, latitude, longitude;
+  
+    lines.forEach(line => {
+      const parts = line.split(':');
+      const key = parts[0].trim();
+      const value = parts[1].trim();
+  
+      if (key.toLowerCase() === 'platenumber') {
+        plateNumber = value;
+      } else if (key.toLowerCase() === 'latitude') {
+        latitude = parseFloat(value);
+      } else if (key.toLowerCase() === 'longitude') {
+        longitude = parseFloat(value);
+      }
+    });
+  
+    // Check if plateNumber exists in the database
+    try {
+      const response = await fetch(`http://localhost:3000/check-plate/${plateNumber}`);
+      if (response.ok) {
+        const data = await response.json();
+        if (data.exists) {
+          // Plate number exists in the database, update latitude and longitude
+          const updateResponse = await fetch(`http://localhost:3000/update-data/${plateNumber}`, {
+            method: 'PUT',
+            headers: {
+              'Content-Type': 'application/json'
+            },
+            body: JSON.stringify({ latitude, longitude })
+          });
+          if (updateResponse.ok) {
+            console.log(`Data for plate number ${plateNumber} updated successfully`);
+          } else {
+            console.error(`Failed to update data for plate number ${plateNumber}`);
+          }
+        } else {
+          console.log(`Plate number ${plateNumber} does not exist in the database`);
+        }
+      } else {
+        console.error('Failed to check plate number in the database');
+      }
+    } catch (error) {
+      console.error('Error during fetch:', error);
+    }
+  });
+  
+  // Cleanup function
+  return () => {
+    socket.disconnect(); // Disconnect the socket when the component unmounts
+  };
+}, []);
+
 
 
   // const googleMapUrl = `https://www.google.com/maps?q=${coordinates.latitude},${coordinates.longitude}`;

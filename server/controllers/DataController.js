@@ -37,3 +37,79 @@ exports.getData = async (req, res) => {
     res.status(500).json({ success: false, error: 'Internal server error' });
   }
 };
+
+
+// exports.checkPlate = async (req, res) => {
+//   try {
+//     let plateNumber = req.params.plateNumber;
+
+//     console.log(plateNumber);
+
+
+//     // Convert plateNumber to string if it's not already a string
+//     if (typeof plateNumber !== 'string') {
+//       plateNumber = plateNumber.toString();
+
+//        // Find the data in the database by plateNumber
+//     const existingData = await Data.findOne({ plateNumber });
+    
+//     if (existingData) {
+//       res.json({ exists: true });
+//     } else {
+//       res.json({ exists: false });
+//     }
+//     }
+
+//   } catch (error) {
+//     console.error('Error checking plate number:', error);
+//     res.status(500).json({ success: false, error: 'Internal server error' });
+//   }
+// }
+
+exports.checkPlate = async (req, res) => {
+  try {
+    const plateNumber = req.params.plateNumber;
+
+    // Find the data in the database by plateNumber
+    const existingData = await Data.findOne({ plateNumber });
+    
+    if (existingData) {
+      res.json({ exists: true });
+    } else {
+      res.json({ exists: false });
+    }
+  } catch (error) {
+    console.error('Error checking plate number:', error);
+    res.status(500).json({ success: false, error: 'Internal server error' });
+  }
+}
+
+
+
+exports.updateData = async (req, res) => {
+  try {
+    const plateNumber = req.params.plateNumber;
+    const { latitude, longitude } = req.body;
+
+    // Convert latitude and longitude to numbers
+    const latitudeNumber = parseFloat(latitude);
+    const longitudeNumber = parseFloat(longitude);
+
+    // Check if latitude and longitude are valid numbers
+    if (isNaN(latitudeNumber) || isNaN(longitudeNumber)) {
+      return res.status(400).json({ success: false, error: 'Latitude and longitude must be valid numbers' });
+    }
+
+    // Use findOneAndUpdate with upsert option to update existing data or insert new data
+    const updatedData = await Data.findOneAndUpdate(
+      { plateNumber },
+      { latitude: latitudeNumber, longitude: longitudeNumber },
+      { new: true, upsert: true }
+    );
+    
+    res.json({ success: true, message: 'Data updated successfully', data: updatedData });
+  } catch (error) {
+    console.error('Error updating data:', error);
+    res.status(500).json({ success: false, error: 'Internal server error' });
+  }
+}
