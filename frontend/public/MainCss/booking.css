@@ -1,36 +1,61 @@
 .Booking-container{
-    display: flex;
-   
-    
-  }
-  .booking-wrapper{
-    display: flex;
-    flex-grow: 1;
-    margin: 1%;
-    padding-top: 60px;
-    /* font-size: 20px; */
-    line-height: 20px;
-    /* color: #ffe8c3; */
-    /* background-color: #eab768;
-    border-radius: 10px;
-    border: 10px solid #f5cc8b; */
-  }
+  display: flex;
+ 
+  
+}
+.booking-wrapper{
+  display: flex;
+  flex-grow: 1;
+  margin: 1%;
+  padding-top: 60px;
+  /* font-size: 20px; */
+  line-height: 20px;
+  /* color: #ffe8c3; */
+  /* background-color: #eab768;
+  border-radius: 10px;
+  border: 10px solid #f5cc8b; */
+}
+.header-wrapper h4{
+  text-align: left;
+  margin-top: 20px;
+  margin-left: 20px;
+}
+.header-wrapper p{
+  text-align: right;
+  margin-top: 30px;
+  size: 10px;
+  color: #5c5a5a;
+  margin-right: 80px;
+}
 
-  #searchBar{
-    width: 300px;
-    float: right;
-    padding-bottom: 10px;
-    margin-top: -45px;
-    margin-left: auto;
-    margin-right: 250px;
-  }
+#searchBar{
+  width: 300px;
+  float: right;
+  padding-bottom: 10px;
+  margin-top: -45px;
+  margin-left: auto;
+  margin-right: 250px;
+}
 
-  .addB_Container{
-    margin-left: 32%;
-    z-index: 10000;
-  }
+.addB_Container{
+  margin-left: 32%;
+  z-index: 10000;
+}
 
 
+.addbookingscroll{
+  height: 90vh;
+  width: 100%;
+  right: 0;
+  position: absolute;
+  direction: ltr;
+  overflow: auto;
+ margin-left: 20px;
+}
+
+
+
+@media (max-width: 796px) {
   .addbookingscroll{
     height: 90vh;
     width: 100%;
@@ -38,225 +63,214 @@
     position: absolute;
     direction: ltr;
     overflow: auto;
-   margin-left: 20px;
+ display: inline-block;
   }
-
- 
-
-  @media (max-width: 796px) {
-    .addbookingscroll{
-      height: 90vh;
-      width: 100%;
-      right: 0;
-      position: absolute;
-      direction: ltr;
-      overflow: auto;
-   display: inline-block;
-    }
-  }
+}
 
 
-  .bookingInput{
-    display: block;
-    margin-bottom: 10px;
-    margin-top: 5px;
-    width: 400px;
-    color: rgb(36, 35, 42);
-    font-size: 16px;
-    line-height: 20px;
-    min-height: 28px;
-    border-radius: 4px;
-    padding: 8px 16px;
-    border: 2px solid transparent;
-    box-shadow: rgb(0 0 0 / 12%) 0px 1px 3px, rgb(0 0 0 / 24%) 0px 1px 2px;
-    background: rgb(251, 251, 251);
-    transition: all 0.1s ease 0s;
-    :focus{
-        border: 2px solid rgb(124, 138, 255);
-    }
-
-  }
-
-  .submitBooking{
-   margin-top: 5px;
-    display: inline-block;
-    outline: none;
-    cursor: pointer;
-    font-size: 14px;
-    line-height: 1;
-    border-radius: 500px;
-    transition-property: background-color,border-color,color,box-shadow,filter;
-    transition-duration: .3s;
-    border: 1px solid transparent;
-    letter-spacing: 2px;
-    min-width: 80px;
-    text-transform: uppercase;
-    white-space: normal;
-    font-weight: 700;
-    text-align: center;
-    padding: 16px 14px 18px;
-    color: #fff;
-    background-color: #2a51dd;
-    height: 48px;
-    :hover{
-        background-color: #6379c5a7;
-    }
-
-  }
-
-  .cancelBooking{
-    display: inline-block;
-    outline: none;
-    cursor: pointer;
-    font-size: 14px;
-    line-height: 1;
-    border-radius: 500px;
-    transition-property: background-color,border-color,color,box-shadow,filter;
-    transition-duration: .3s;
-    border: 1px solid transparent;
-    letter-spacing: 2px;
-    min-width: 100px;
-    text-transform: uppercase;
-    white-space: normal;
-    font-weight: 700;
-    text-align: center;
-    padding: 16px 14px 18px;
-    margin-left: 30px;
-    color: #fff;
-    background-color: #8a8b90;
-    height: 48px;
-    :hover{
-        background-color: rgba(121, 138, 196, 0.71);
-    }
-  }
-
-  .add_booking_area{
-    float: left;
-    box-shadow: rgb(0 0 0 / 12%) 0px 1px 3px, rgb(0 0 0 / 24%) 0px 1px 2px;
-
-    margin-left: 5px;
-    width: 250px;
-    
-  }
-
-  .add_booking_area_btn{ 
-    height: 35px;
-    width: 150px;
-  cursor: pointer;
-  outline: 0;
-  color: #fff;
-  background-color: #0d6efd;
-  border-color: #0d6efd;
-  display: inline-block;
-  font-weight: bold;
-  line-height: 1.5;
-  text-align: center;
-  justify-content: center;
-  border: 1px solid transparent;
-  margin: 10px 40px 10px 40px;
+.bookingInput{
+  display: block;
+  margin-bottom: 10px;
+  margin-top: 5px;
+  width: 400px;
+  color: rgb(36, 35, 42);
   font-size: 16px;
-  border-radius: .25rem;
-  transition: color .15s ease-in-out,background-color .15s ease-in-out,border-color .15s ease-in-out,box-shadow .15s ease-in-out;
-  :hover {
-      color: #fff;
-      background-color: #0b5ed7;
-      border-color: #0a58ca;
+  line-height: 20px;
+  min-height: 28px;
+  border-radius: 4px;
+  padding: 8px 16px;
+  border: 2px solid transparent;
+  box-shadow: rgb(0 0 0 / 12%) 0px 1px 3px, rgb(0 0 0 / 24%) 0px 1px 2px;
+  background: rgb(251, 251, 251);
+  transition: all 0.1s ease 0s;
+  :focus{
+      border: 2px solid rgb(124, 138, 255);
   }
+
+}
+
+.submitBooking{
+ margin-top: 5px;
+  display: inline-block;
+  outline: none;
+  cursor: pointer;
+  font-size: 14px;
+  line-height: 1;
+  border-radius: 500px;
+  transition-property: background-color,border-color,color,box-shadow,filter;
+  transition-duration: .3s;
+  border: 1px solid transparent;
+  letter-spacing: 2px;
+  min-width: 80px;
+  text-transform: uppercase;
+  white-space: normal;
+  font-weight: 700;
+  text-align: center;
+  padding: 16px 14px 18px;
+  color: #fff;
+  background-color: #2a51dd;
+  height: 48px;
+  :hover{
+      background-color: #6379c5a7;
   }
 
+}
 
+.cancelBooking{
+  display: inline-block;
+  outline: none;
+  cursor: pointer;
+  font-size: 14px;
+  line-height: 1;
+  border-radius: 500px;
+  transition-property: background-color,border-color,color,box-shadow,filter;
+  transition-duration: .3s;
+  border: 1px solid transparent;
+  letter-spacing: 2px;
+  min-width: 100px;
+  text-transform: uppercase;
+  white-space: normal;
+  font-weight: 700;
+  text-align: center;
+  padding: 16px 14px 18px;
+  margin-left: 30px;
+  color: #fff;
+  background-color: #8a8b90;
+  height: 48px;
+  :hover{
+      background-color: rgba(121, 138, 196, 0.71);
+  }
+}
 
+.add_booking_area{
+  /* float: left;
+  box-shadow: rgb(0 0 0 / 12%) 0px 1px 3px, rgb(0 0 0 / 24%) 0px 1px 2px; */
 
-  /* BOOKING REMINDER CSSS PART */
-.reminder-Head{
-  margin-top: -5px;
-  margin-left: 10px;
+  margin-left: 5px;
+  width: 250px;
   
 }
+
+.add_booking_area_btn{ 
+  height: 35px;
+  width: 150px;
+cursor: pointer;
+outline: 0;
+color: #fff;
+background-color: #0d6efd;
+border-color: #0d6efd;
+display: inline-block;
+font-weight: bold;
+line-height: 1.5;
+text-align: center;
+justify-content: center;
+border: 1px solid transparent;
+margin: 10px 40px 10px 40px;
+font-size: 16px;
+border-radius: .25rem;
+transition: color .15s ease-in-out,background-color .15s ease-in-out,border-color .15s ease-in-out,box-shadow .15s ease-in-out;
+:hover {
+    color: #fff;
+    background-color: #0b5ed7;
+    border-color: #0a58ca;
+}
+}
+
+
+
+
+/* BOOKING REMINDER CSSS PART */
+/* .reminder-Head{
+margin-top: -5px;
+margin-left: 10px;
+ */
+/* } */
 
 .iconRemind{
-  border-radius: 2px;
-  background-color: #5F74BD;
-  color: #5F74BD;
-  font-size: 25px;
-  margin-left: 10px;
+border-radius: 2px;
+background-color: #5F74BD;
+color: #5F74BD;
+font-size: 25px;
+margin-left: 10px;
 }
-  .reminder-container{
-    /* margin: 10px; */
-    border:1px solid #7070749a;
-    border-radius: 5px;
-    height: 380px;
-    overflow: scroll;
-    position: relative;
- }
+.reminder-container{
+  /* margin: 10px; */
+  border:1px solid #7070749a;
+  border-radius: 5px;
+  margin-top: 13px;
+  height: 485px;
+  margin-left: 20px;
+  overflow: scroll;
+  position: relative;
+}
+
+.BookingList td{
+  font-size: 13px;
+  width: 200px;
+  height: inherit;
+ /* margin-left: 10px; */
+ margin-right: 30px;
+ padding-top: 20px;
+ padding-bottom: 10px;
+  border-bottom:1px  #8a8b90;
+  display: block;
+  align-items: center;
   
-  .BookingList td{
-    font-size: 13px;
-    width: 200px;
-    height: inherit;
-   margin-left: 20px;
-   margin-right: 20px;
-   padding-top: 20px;
-   padding-bottom: 10px;
-    border-bottom:1px solid #8a8b90;
-    display: block;
-    align-items: center;
-    
-  }
-  
-  .reminder-content {
-    padding-right: 4px; 
-    
-  
-  }
-  
-  .reminder-container::-webkit-scrollbar {
-    width: 0; /* Remove scrollbar width for Chrome, Safari, and Opera */
-  }
-  
-  .reminder-container::-webkit-scrollbar-thumb {
-    background-color: transparent; /* Hide scrollbar thumb for Chrome, Safari, and Opera */
-  }
-  
-  .reminder-container::-webkit-scrollbar-track {
-    background-color: transparent; /* Hide scrollbar track for Chrome, Safari, and Opera */
-  }
+}
+
+.reminder-content {
+  padding-right: 1px; 
   
 
-  .addPop{
-   background-color: #fff;
-  }
+}
 
+.reminder-container::-webkit-scrollbar {
+  width: 0; /* Remove scrollbar width for Chrome, Safari, and Opera */
+}
+
+.reminder-container::-webkit-scrollbar-thumb {
+  background-color: transparent; /* Hide scrollbar thumb for Chrome, Safari, and Opera */
+}
+
+.reminder-container::-webkit-scrollbar-track {
+  background-color: transparent; /* Hide scrollbar track for Chrome, Safari, and Opera */
+}
+
+
+.addPop{
+ background-color: #fff;
+}
+
+.rbc-calendar {
+  width: 790px; 
+  margin-top: 45px;
+  margin-left: 1px;
+  height: 910px;
+}
+
+@media (max-width: 796px) {
   .rbc-calendar {
-    width: 900px; 
-    margin-top: 40px;
-    margin-left: 1px;
-    height: 900px;
+    width: 400px; /* Set a minimum width of 500px */
+    height: 300px;
   }
+}
 
-  @media (max-width: 796px) {
-    .rbc-calendar {
-      width: 400px; /* Set a minimum width of 500px */
-      height: 300px;
-    }
-  }
-
-  .EventComponent {
-    font-size: 16px;
-    margin-bottom: 10px;
+.EventComponent {
+  font-size: 16px;
+  margin-bottom: 10px;
 }
 
 .EventComponent strong {
-    display: block;
-    font-size: 18px;
+  display: block;
+  font-size: 18px;
 }
 
 .EventComponent .timeForBound {
-    margin-top: 5px;
-    color: #f9f8f8; /* Adjust the color as needed */
-    font-size: 14px;
+  margin-top: 5px;
+  color: #f9f8f8; /* Adjust the color as needed */
+  font-size: 14px;
 }
 
 .coco{
-  background-attachment: fixed;
+background-attachment: fixed;
 }

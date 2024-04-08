@@ -268,31 +268,21 @@ function Monitoring() {
     };
 
 
-// const [filter, setFilter] = useState('all'); // Default filter is 'all'
-
-// // Filter the vehicles based on the selected filter
-// const filteredVehicles = useMemo(() => {
-//   if (filter === 'all') {
-//     return Object.keys(vehicleStatus);
-//   } else if (filter === 'available') {
-//     return Object.keys(vehicleStatus).filter((plateNumber) => vehicleStatus[plateNumber] === 'Available');
-//   } else if (filter === 'used') {
-//     return Object.keys(vehicleStatus).filter((plateNumber) => vehicleStatus[plateNumber] === 'Used');
-//   }
-// }, [filter, vehicleStatus]);
-
-// // Handler function for filter buttons
-// const handleFilter = (selectedFilter) => {
-//   setFilter(selectedFilter);
-// };
 
 
 const [filter, setFilter] = useState('all'); // Default filter is 'all'
 
-// Handler function for filter buttons
-const handleFilter = (selectedFilter) => {
-  setFilter(selectedFilter);
-}
+  // Handler function for filter buttons
+  const handleFilter = (selectedFilter) => {
+    setFilter(selectedFilter);
+  };
+
+  // Function to determine if a button should be active based on the current filter
+  const isActive = (selectedFilter) => {
+    return selectedFilter === filter ? 'active' : '';
+  };
+
+
 
 // Filter the vehicles based on the selected filter and search input
 useEffect(() => {
@@ -314,19 +304,23 @@ useEffect(() => {
 
 
 
+
+
+
   return (
     <> 
     <div className="header-wrapper">
     <div className='header-container'>   
-    <h3><strong>MONITORING</strong>    <p className="userName">{role}</p>
-       </h3>
+    <h4><strong>MONITORING</strong>  </h4>  <p className="userName">{role}</p>
+       
     </div></div>
     <div className='Monitoring-container'>
     <div className='Container row'>
     
 </div>
 <div className='monitoring-wrapper'>
-  <div className='vehicleList'>
+  <div > 
+  {/* className='vehicleList' */}
   <h4>BukSU Vehicle  
 
  <div className="search-container">
@@ -355,99 +349,56 @@ useEffect(() => {
 <button className='button-all'>Used</button> */}
 
 
-<button className='button-all' onClick={() => handleFilter('all')}>All</button>
-<button className='button-all' onClick={() => handleFilter('available')}>Available</button>
-<button className='button-all' onClick={() => handleFilter('used')}>Used</button>
+<div>
+      <button className={`button-all ${isActive('all')}`} onClick={() => handleFilter('all')}>
+        All
+      </button>
+      <button className={`button-available ${isActive('available')}`} onClick={() => handleFilter('available')}>
+        Available
+      </button>
+      <button className={`button-used ${isActive('used')}`} onClick={() => handleFilter('used')}>
+        Used
+      </button>
+    </div>
 
-<div className='ListVehicle'>
-  <table className='ListVehicleTable'>
-    <thead><tr>
-    <th>Plate Number</th>
-    <th>Status</th>
-    </tr>
+
+    
+    <div className='ListVehicle'>
+  <div class="container">
+    {/* <div class="row"> */}
+    <div className="container">
+  <table className="table table-bordered">
+    <thead>
+      <tr>
+        <th scope="col">Plate Number</th>
+        <th scope="col">Status</th>
+      </tr>
     </thead>
-
-    <tbody className='vList'>
-  {filteredVehicleList.map((plateNumber) => (
-    <tr
-      key={plateNumber}
-      onClick={() => handlePlateNumberClick(plateNumber)}
-      style={{ cursor: 'pointer' }}
-    >
-      <td>{plateNumber}</td>
-      <td>{vehicleStatus[plateNumber] === 'Used' ? 'Used' : 'Available'}</td>
-    </tr>
-  ))}
-</tbody>
   </table>
- </div>
-
-
- </div>
-
-
- {/* {isHistoryVisible || (
- <div className='vehicleListRight'>
-  <div className='pictureArea'>
-    <div className='Picture'> 
-      <img width="150px" style={{float:"left"}} src={car1} />
-    </div>
-
-    <div className='picText'>
-    <h3>KDC 099 S</h3>
-    <p>Toyota Fortuner</p>
-    <p> White</p>
-    </div>
+  <div className="scrollable-container">
+    <table className="table table-bordered">
+      <tbody className="scrollable-tbody">
+        {filteredVehicleList.map((plateNumber) => (
+          <tr
+            key={plateNumber}
+            onClick={() => handlePlateNumberClick(plateNumber)}
+            style={{ cursor: 'pointer' }}
+          >
+            <td>{plateNumber}</td>
+            <td>{vehicleStatus[plateNumber] === 'Used' ? 'Used' : 'Available'}</td>
+          </tr>
+        ))}
+      </tbody>
+    </table>
   </div>
- <div>
- <div style={{ display: 'block', width: 600, padding: 10 }}> 
-      <Row> 
-        <Col className="column3" style={{ 
-          backgroundColor: 'white', margin: 5, padding:10, lineHeight:0.5
-        }}> 
-        <p className='detail'> Engine </p>
-        <p className='detailAnswer'> Running</p>
-        <p className='detail'> Speed</p>
-        <p className='detailAnswer'> 42 km/h</p>
-        <p className='detail'> Mileage </p>
-        <p className='detailAnswer'> 3.7 km</p>
-
-        <button className='detailButton'onClick={() => { hideVehicleList(); toggleHistory(); }} >History</button>
-      </Col> 
+</div>
+   
+  </div>
+</div>
 
 
-        <Col className="column3" style={{ 
-          backgroundColor: 'white', margin: 5,  padding:10, lineHeight:0.5
-        }}> 
-          
-        <p className='detail'> Client  Name </p>
-        <p className='detailAnswer'> ComSoc Officer</p>
-        <p className='detail'> Quantity</p>
-        <p className='detailAnswer'> 42 </p>
-        <p className='detail'> Destination  </p>
-        <p className='detailAnswer'> Cagayan De Oro</p>
-        <p className='detail'> Date</p>
-        <p className='detailAnswer'> Nov 7, 2023</p>
-        <p className='detail'> Return Date  </p>
-        <p className='detailAnswer'> Nov 8, 2023 </p>
-
-
-      </Col> 
-
-
-        <Col className="column3" style={{ 
-          backgroundColor: 'white', margin: 5
-        }}> 
-
-        <button className='detailButton'>Full Transit</button>
-
-      </Col> 
-
-
-      </Row> 
-    </div> 
  </div>
- </div> )} */}
+
 
 
 {selectedPlateNumber && selectedVehicleDetails && (
@@ -585,21 +536,21 @@ useEffect(() => {
           <MDBModalContent>
             <MDBModalHeader>
               <MDBModalTitle>Add Vehicle</MDBModalTitle>
-              <MDBBtn className='btn-close' color='none' onClick={toggleOpen}></MDBBtn>
+             
             </MDBModalHeader>
             <MDBModalBody>
               <form id='addvec' onSubmit={handlesubmitvec}>
                
               <label>
-            PLATE NUMBER
+            Plate Number
             <input type="text" className='addVehicle' required value={formData.plateNumber2} onChange={(e) => setFormData({ ...formData, plateNumber2: e.target.value })} />
         </label>
         <label>
-         VEHICLE
+         Vehicle
             <input type="text" className='addVehicle' value={formData.addvehicles} onChange={(e) => setFormData({ ...formData, addvehicles: e.target.value })}/>
         </label>
         <label>
-         INSERT IMAGE:
+         Insert Image
             {/* <input type="file" className='addVehicle' accept="image/*" onChange={handleImageChange}/> */}
             <input type="file" name="carImage" className='addVehicle' onChange={(e) => setFormData({ ...formData, carImage: e.target.files[0] })} />
         </label>

@@ -29,7 +29,7 @@ function DashboardMain() {
         {/* <div >
       <Reminder/>
       </div> */}
-					<div className= "container-9 text-success text-center p-2 border border-success fw-bolder alert-success">
+					<div className= "container-9 text-center p-2 ">
           <Reminder/>
           <Map/>
         </div>
@@ -38,10 +38,6 @@ function DashboardMain() {
 
 </div>
 
-
-
-  {/* </div>
-  */}
 
 </>
   )

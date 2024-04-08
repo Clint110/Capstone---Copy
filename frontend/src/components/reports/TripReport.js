@@ -9,6 +9,7 @@ import "primereact/resources/primereact.min.css";
 import "primeicons/primeicons.css";
 
 
+
 function formatDateTime(dateTimeString) {
   const options = { year: 'numeric', month: 'long', day: 'numeric', hour: 'numeric', minute: 'numeric', second: 'numeric', timeZoneName: 'short' };
   return new Date(dateTimeString).toLocaleDateString('en-US', options);
@@ -37,6 +38,15 @@ function TripReport() {
     fetchBookingData();
   }, []);
 
+  const handleDocumentClick = () => {
+    // Define the functionality for handling the document click
+    console.error('Document clicked');
+  };
+
+  // const handleDocumentClick = () => {
+  //   // Pass bookingData to the report page
+  //   history.push(`/generate-report?bookingData=${JSON.stringify(bookingData)}`);
+  // };
 
   return (
     <> 
@@ -45,13 +55,19 @@ function TripReport() {
 <div className='header-container'>   
         <h3><strong>REPORT</strong>    <p className="userName">Administrator</p>
 </h3>
-</div></div>
+</div>
+
+</div>
+<div style={{marginTop:"80px", float:"right", marginRight:"50px"}}>
+<button type="button" class="btn btn-success right">Generate Report</button>
+</div>
 <div className='Report-container'>
     <div className='report-wrapper'>
 
     <DataTable value={bookingData}
         size="large"
         showGridlines
+        border
         removableSort
         paginator rows={9}>
             <Column field="plateNumber" header="Plate No."  />
@@ -62,7 +78,9 @@ function TripReport() {
             <Column header="Action" body={() => (
               <React.Fragment>
                 <FaHistory className='actionBtn' />
-                <IoDocumentAttachOutline className='actionBtn' />
+                <button onClick={handleDocumentClick} className='actionBtn btn-primary'>
+               <IoDocumentAttachOutline /> 
+               </button>
               </React.Fragment>
             )} />
           </DataTable>

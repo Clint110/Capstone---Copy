@@ -9,7 +9,6 @@
 
 .a{
   text-decoration: none;
-  dsds
 }
 
 @import url('https://fonts.googleapis.com/css2?family=Poppins:wght@400;500&display=swap');
@@ -67,71 +66,85 @@ body{
 
 }
 
-.iIcon{
-  font-size: 30px;
-  padding-right: 8px;
-} 
+.iIcon {
+  position: absolute; /* Position the icon absolute to the input field container */
+  left: 10px; /* Adjust the left position of the icon */
+  top: 50%; /* Align the icon vertically in the middle */
+  transform: translateY(-50%); /* Adjust to vertically center the icon */
+  pointer-events: none; /* Make the icon non-interactive */
+  z-index: 1; /* Ensure the icon appears above the input field */
+  width: 20px; /* Adjust icon width as needed */
+  height: auto; /* Maintain aspect ratio */
+}
+
+/* Adjust input field padding to make space for the icon */
+.input-group > input {
+  padding-left: 40px; /* Adjust as needed to accommodate the icon */
+}
+
 @media (max-width: 796px) {
   .iIcon{
       display: none;
   }
 }
 
-.PassworD, .EmaiL{
+.PassworD, .EmaiL {
   width: 420px;
   height: 45px;
   padding: 6px 12px;
-  font-size: 16px;
+  font-size: 18px;
   font-weight: 400;
   line-height: 1.5;
   color: #212529;
   background-color: #fff;
   background-clip: padding-box;
-  border: 1px solid #ced4da;
+  border: 2px solid #ced4da;
   appearance: none;
-  border-radius: 8px;
-  transition: border-color .15s ease-in-out,box-shadow .15s ease-in-out;
-  :focus{
-      color: #212529;
-      background-color: #fff;
-      border-color: #86b7fe;
-      outline: 0;
-      box-shadow: 0 0 0 0.25rem rgb(13 110 253 / 25%);
-  }
+  border-radius: 8px; /* Apply border-radius to both focused and unfocused states */
+  transition: border-color .15s ease-in-out;
   
 }
 
-.LoginBtn{
-  width: 70%;
+.PassworD:focus, .EmaiL:focus {
+  color: #212529;
+  background-color: #fff;
+  border-color: skyblue;
+  outline: 0;
+  border-radius: 8px; /* Ensure border-radius is consistent in the focused state */
+}
+
+.LoginBtn {
+  width: 420px;
+  height: 45px;
+  padding: 6px 12px;
   cursor: pointer;
   outline: 0;
   color: #fff;
-  background-color: #0d6efd;
-  border-color: #0d6efd;
-  display: inline-block;
+  background-color: #0a58ca;
+  border: 1px solid #7BD3EA;
   font-weight: 400;
   line-height: 1.5;
   text-align: center;
-  border: 1px solid transparent;
-  padding: 6px 12px;
-  margin-left: 10%;
-  margin-right: 10%;
-  font-size: 16px;
+  font-size: 18px;
   border-radius: .25rem;
-  transition: color .15s ease-in-out,background-color .15s ease-in-out,border-color .15s ease-in-out,box-shadow .15s ease-in-out;
-  :hover {
-      color: #fff;
-      background-color: #0b5ed7;
-      border-color: #0a58ca;
-  }
-
+  transition: color .15s ease-in-out, background-color .15s ease-in-out, border-color .15s ease-in-out, box-shadow .15s ease-in-out;
 }
 
+.LoginBtn:hover {
+  background-color: rgb(230, 247, 253); /* Change background color on hover */
+  color: #0a58ca; /* Change text color on hover */
+}
 
-.googleArea{
-  margin-left: 100px;
-  margin-right: 100px;
+.googleArea {
+  margin-left: auto;
+  margin-right: auto;
   width: 200px;
+}
+
+.googleLoginButton {
+  display: block; /* Ensure the button takes up the full width */
+  margin: 0 auto; /* Center the button horizontally */
+  /* Additional button styles */
 }
 
 
@@ -218,6 +231,7 @@ body{
 .Logincontainer nav .btn{
   padding: 10px 20px;
   background-color: #3a79f9;
+  
   border-radius: 25px;
   color: #fff;
   text-decoration: none;
@@ -226,6 +240,7 @@ body{
 .Logincontainer nav .btn:hover{
   background-color: #fff;
   color: #3a79f9;
+  
 }
 .content{
   position: absolute;
@@ -234,12 +249,13 @@ body{
 }
 .content h1{
   color: #fff;
-  font-size: 55px;
+  font-size: 53px;
   margin-bottom: 30px;
   text-transform: capitalize;
 }
 .content p{
   color: #bdbdbd;
+  font-family: 'Montserrat', sans-serif;
   line-height: 2;
   margin-bottom: 30px;
 }
@@ -270,8 +286,35 @@ body{
   margin-top: -1.5rem;
 }
 
+.modal-header .close-btn {
+  cursor: pointer;
+  position: absolute; /* Aligns the close button to the right */
+  top: 7%;
+  right: 10%;
+  margin-top: -1.5rem; /* Adjust as needed */
+  margin-right: -1.5rem; /* Adjust as needed */
+  font-size: 2rem;
+  color: black; /* Default color */
+  transition: color 0.3s ease; /* Smooth transition for color change */
+}
+
+.modal-header .close-btn:hover {
+  color: skyblue; /* Color change when hovering */
+}
 .form-title {
   margin: -2rem 0rem 2rem;
+}
+
+.form-title h2 {
+  font-size: 25px;
+  font-family:'Lucida Sans', 'Lucida Sans Regular', 'Lucida Grande', 'Lucida Sans Unicode', Geneva, Verdana, sans-serif;
+  color: #0a58ca;
+}
+
+.form-title p {
+  font-size: 17px;
+  font-family: 'Roboto', sans-serif;
+  text-align: center; /* Center the text */
 }
 
 .btn-round {
