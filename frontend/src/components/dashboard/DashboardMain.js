@@ -31,7 +31,7 @@ function DashboardMain() {
       <Reminder/>
       </div> */}
 					<div className= "container-9 text-success text-center ">
-          <Reminder/>
+          {/* <Reminder/> */}
           <Map/>
         </div>
 </div>
