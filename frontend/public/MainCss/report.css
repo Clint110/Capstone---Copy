@@ -1,5 +1,4 @@
 .Report-container{
-    
   margin-top: 10px;
   display: inline-block;
   vertical-align: top; 
@@ -18,7 +17,7 @@
   /* background-color: #eab768;
   border-radius: 10px;
   border: 10px solid #f5cc8b; */
-  
+  gwa
 }
 
 .TableReportContainer{
@@ -26,7 +25,7 @@
   overflow: hidden;
   height: 500px;
   box-shadow: rgb(0 0 0 / 12%) 0px 1px 3px, rgb(0 0 0 / 24%) 0px 1px 2px;
-overflow-y: scroll;
+  overflow-y: scroll;
 }
 
 table.reportTable {
@@ -39,7 +38,7 @@ border-collapse: collapse;
  th.reportTable {
   width: 200px;
   height: 40px;
-font-size: 18px;
+  font-size: 18px;
   word-break: break-all;
   text-overflow: ellipsis;
   box-shadow: 0em 1px  0em  rgba( 0, 0, 0, 0.4 )
@@ -64,7 +63,7 @@ font-size: 15px;
 }
 
 .reportTable td{
-  width: 180px;
+  width: 150px;
   font-size: 15px;
   white-space: normal; 
 
