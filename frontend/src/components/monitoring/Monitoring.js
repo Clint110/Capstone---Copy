@@ -3,10 +3,13 @@ import car1 from "../car1.png"
 import axios from 'axios'
 // import Data from "../Data.json"
 
-import 'bootstrap/dist/css/bootstrap.css'; 
+
+
+
+import 'bootstrap/dist/css/bootstrap.css';
 import DataTable from 'react-data-table-component'
-import Col from 'react-bootstrap/Col'; 
-import Row from 'react-bootstrap/Row'; 
+import Col from 'react-bootstrap/Col';
+import Row from 'react-bootstrap/Row';
  import { CiSquarePlus } from "react-icons/ci";
  import { TfiSearch } from "react-icons/tfi";
  import {
@@ -20,10 +23,15 @@ import Row from 'react-bootstrap/Row';
   MDBModalFooter,
 } from 'mdb-react-ui-kit';
 import { IoCarSportOutline } from "react-icons/io5";
+import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
+import { faCircleUser } from '@fortawesome/free-solid-svg-icons';
+
+
 
 
 function Monitoring() {
   const [centredModal, setCentredModal] = useState(false);
+  const [vehicleDetailsModalOpen, setVehicleDetailsModalOpen] = useState(false);
   const toggleOpen = () => setCentredModal(!centredModal);
   const [selectedPlateNumber, setSelectedPlateNumber] = useState(null);
   const [selectedVehicleDetails, setSelectedVehicleDetails] = useState(null);
@@ -31,6 +39,10 @@ function Monitoring() {
   const [searchInput, setSearchInput] = useState('');
   const [filteredVehicleList, setFilteredVehicleList] = useState([]);
   const [role, setUserRole] = useState('');
+
+  const toggleVehicleDetailsModalOpen = () => {
+    setVehicleDetailsModalOpen(!vehicleDetailsModalOpen);
+  };
 
   useEffect(() => {
     // Fetch vehicle status data from your server
@@ -46,7 +58,9 @@ function Monitoring() {
     fetchVehicleStatus();
   }, []);
 
-  const userToken = '123abcdef'; 
+
+  const userToken = '123abcdef';
+
 
   // useEffect(() => {
   //   // Make an API call to fetch user details
@@ -62,6 +76,7 @@ function Monitoring() {
   //     });
   // }, []);
 
+
   useEffect(() => {
     const fetchUserRole = async () => {
       try {
@@ -74,15 +89,18 @@ function Monitoring() {
         console.error('Error fetching user details:', error.message);
       }
     };
-  
+ 
     fetchUserRole();
   }, []);
 
-    
+
+   
+
 
   const toggleHistory = () => {
     setHistoryVisible(!isHistoryVisible);
   };
+
 
   const handlePlateNumberClick = async (plateNumber) => {
     try {
@@ -90,7 +108,7 @@ function Monitoring() {
       if (vehicleStatus[plateNumber] === 'Used') {
         const response = await axios.get(`http://localhost:3000/vehicle/details/${plateNumber}`);
         const details = response.data;
-  
+ 
         console.log('Details:', details);
         // Update the state with the selected plate number and its details
         setSelectedPlateNumber(plateNumber);
@@ -105,6 +123,7 @@ function Monitoring() {
     }
   };
 
+
   const hideVehicleList = () => {
     // You can add logic to hide the vehicleListRight here
     // For example, you might want to set a state to control its visibility
@@ -112,7 +131,11 @@ function Monitoring() {
 
 
 
+
+
+
   const [vehicleStatus, setVehicleStatus] = useState({});
+
 
   useEffect(() => {
     // Fetch vehicle status data from your server
@@ -121,6 +144,7 @@ function Monitoring() {
         const response = await axios.get('http://localhost:3000/vehiclestatus'); // Replace with your actual API endpoint
         const vehicleStatusData = response.data;
 
+
         // Update the vehicleStatus state with the fetched data
         setVehicleStatus(vehicleStatusData);
       } catch (error) {
@@ -128,9 +152,12 @@ function Monitoring() {
       }
     };
 
+
     // Call the fetch function
     fetchVehicleStatus();
   }, []);
+
+
 
 
   useEffect(() => {
@@ -141,7 +168,11 @@ function Monitoring() {
     );
   }, [searchInput, vehicleStatus]);
 
-  
+
+ 
+
+
+
 
 
 
@@ -171,16 +202,18 @@ function Monitoring() {
    
   // ];
 
+
   // useEffect(()=> {
   //   const fetData = async () => {
   //     // CHANGE LANG DAYON NI SA IYANG DATABASE JUD GI TRY TRY RA NKO NI
   //     axios.get('http://localhost:3001/accounts')
   //     .then(res=> Data(res.data))
   //     .catch(err => console.log(err));
-  
+ 
   //   }
   //   fetData();
   // }, [])
+
 
   // const customStyle = {
   //   headRow:{
@@ -202,7 +235,8 @@ function Monitoring() {
   //   }
   // }
 
-  
+
+ 
   // const [records, setRecords] = useState([])
   // const recordsPerPage = 5;
   // const [currentPage, setCurrentPage] = useState(1)
@@ -213,10 +247,14 @@ function Monitoring() {
   // const numbers = [...Array(npage + 1).keys()].slice(1)
 
 
+
+
   // const handleImageChange = (e) => {
   //   const file = e.target.files[0];
   //   setFormData({ ...formData, carImage: file });
   // };
+
+
 
 
   const [formData, setFormData] = useState({
@@ -225,11 +263,14 @@ function Monitoring() {
     carImage: null,
   });
 
+
   console.log(formData)
+
 
    
   const handlesubmitvec  = async (e) => {
     e.preventDefault();
+
 
     // Use FormData to handle file uploads
   const formDataForUpload = new FormData();
@@ -237,8 +278,10 @@ function Monitoring() {
   formDataForUpload.append('addvehicles', formData.addvehicles);
   formDataForUpload.append('carImage', formData.carImage); // Use formData.carImage here
 
+
   try {
     const response = await axios.post('http://localhost:3000/addvehicle', formDataForUpload);
+
 
     if (response.data.success) {
       // Handle success, e.g., clear the form or close the modal
@@ -257,8 +300,10 @@ function Monitoring() {
     // Handle network error
     console.error('Network error:', error);
   }
-          
+         
     };
+
+
 
 
     const formatDate = (date) => {
@@ -270,12 +315,35 @@ function Monitoring() {
 
 
 
+// const [filter, setFilter] = useState('all'); // Default filter is 'all'
+
+
+// // Filter the vehicles based on the selected filter
+// const filteredVehicles = useMemo(() => {
+//   if (filter === 'all') {
+//     return Object.keys(vehicleStatus);
+//   } else if (filter === 'available') {
+//     return Object.keys(vehicleStatus).filter((plateNumber) => vehicleStatus[plateNumber] === 'Available');
+//   } else if (filter === 'used') {
+//     return Object.keys(vehicleStatus).filter((plateNumber) => vehicleStatus[plateNumber] === 'Used');
+//   }
+// }, [filter, vehicleStatus]);
+
+
+// // Handler function for filter buttons
+// const handleFilter = (selectedFilter) => {
+//   setFilter(selectedFilter);
+// };
+
+
 const [filter, setFilter] = useState('all'); // Default filter is 'all'
+
 
   // Handler function for filter buttons
   const handleFilter = (selectedFilter) => {
     setFilter(selectedFilter);
   };
+
 
   // Function to determine if a button should be active based on the current filter
   const isActive = (selectedFilter) => {
@@ -284,10 +352,14 @@ const [filter, setFilter] = useState('all'); // Default filter is 'all'
 
 
 
+
+
+
 // Filter the vehicles based on the selected filter and search input
 useEffect(() => {
   console.log("Filter:", filter); // Log selected filter
   console.log("Search input:", searchInput); // Log search input
+
 
   setFilteredVehicleList(
     Object.keys(vehicleStatus).filter((plateNumber) => {
@@ -307,21 +379,25 @@ useEffect(() => {
 
 
 
+
+
+
+
   return (
-    <> 
+    <>
     <div className="header-wrapper">
-    <div className='header-container'>   
-    <h4><strong>MONITORING</strong>  </h4>  <p className="userName">{role}</p>
-       
+    <div className='header-container'>  
+    <h4><strong>MONITORING</strong>  </h4>    <span className="userName">Administrator <FontAwesomeIcon icon={faCircleUser} /></span>
     </div></div>
     <div className='Monitoring-container'>
     <div className='Container row'>
-    
+   
 </div>
 <div className='monitoring-wrapper'>
-  <div > 
+  <div >
   {/* className='vehicleList' */}
   <h4>BukSU Vehicle  
+
 
  <div className="search-container">
   <form action="#" method="get">
@@ -340,13 +416,16 @@ useEffect(() => {
   </form>
 </div>
 
-      
+
+     
       <CiSquarePlus className='pluscar' onClick={toggleOpen}  />
-</h4> 
+</h4>
 <div> <p className='noCars'><IoCarSportOutline />  {filteredVehicleList.length} Vehicle Total </p></div>
 {/* <button className='button-all'>All </button>
 <button className='button-all'>Available </button>
 <button className='button-all'>Used</button> */}
+
+
 
 
 <div>
@@ -362,7 +441,9 @@ useEffect(() => {
     </div>
 
 
-    
+
+
+   
     <div className='ListVehicle'>
   <div class="container">
     {/* <div class="row"> */}
@@ -385,7 +466,13 @@ useEffect(() => {
             style={{ cursor: 'pointer' }}
           >
             <td>{plateNumber}</td>
-            <td>{vehicleStatus[plateNumber] === 'Used' ? 'Used' : 'Available'}</td>
+            <td style={{
+              textDecoration: vehicleStatus[plateNumber] === 'Used' ? 'underline' : 'none',
+              cursor: 'pointer',
+              color: vehicleStatus[plateNumber] === 'Used' ? '#f80f0f' : '#1adf1a'
+            }}>
+            {vehicleStatus[plateNumber] === 'Used' ? 'Used' : 'Available'}</td>
+
           </tr>
         ))}
       </tbody>
@@ -397,80 +484,20 @@ useEffect(() => {
 </div>
 
 
+
+
  </div>
 
 
 
-{selectedPlateNumber && selectedVehicleDetails && (
-  <div className='vehicleListRight'>
-    <div className='pictureArea'>
-      <div className='Picture'> 
-        {/* Updated image source */}
-        <img 
-          width="150px" 
-          height="100px"
-          style={{ float: "left" }} 
-          src={`${selectedVehicleDetails.vehicle.carImage}`} 
-          alt='Car' 
-        />
-      </div>
-      <div className='picText'>
-        <h3>{selectedPlateNumber}</h3>
-        <p>{selectedVehicleDetails.vehicleModel}</p>
-        <p>{selectedVehicleDetails.vehicleColor}</p>
-      </div>
-    </div>
-    <div>
-      <div style={{ display: 'block', width: 600, padding: 10 }}>
-        {/* Display additional details */}
-        <Row>
-          <Col className="column3" style={{ 
-            backgroundColor: 'white', margin: 5, padding:10, lineHeight:0.5
-          }}>
-            <p className='detail'> Engine </p>
-            <p className='detailAnswer'> Running</p>
-            <p className='detail'> Speed</p>
-            <p className='detailAnswer'> 42 km/h</p>
-            <p className='detail'> Mileage </p>
-            <p className='detailAnswer'> 3.7 km</p>
-            <button className='detailButton' onClick={() => { hideVehicleList(); toggleHistory(); }}>History</button>
-          </Col>
-          <Col className="column3" style={{ 
-            backgroundColor: 'white', margin: 5,  padding:10, lineHeight:0.5
-          }}>
-            {/* ... (unchanged part) ... */}
-            <p className='detail'> Client  Name </p>
-            <p className='detailAnswer'> {selectedVehicleDetails.booking.clientName}</p>
-            <p className='detail'> Quantity</p>
-            <p className='detailAnswer'> {selectedVehicleDetails.booking.passengerQuantity} </p>
-            <p className='detail'> Destination  </p>
-            <p className='detailAnswer'> {selectedVehicleDetails.booking.boundFor}</p>
-            <p className='detail'> Date</p>
-            <p className='detailAnswer'> {formatDate(selectedVehicleDetails.booking.timeAndDate)}</p>
-            <p className='detail'> Return Date </p>
-            <p className='detailAnswer'> {formatDate(selectedVehicleDetails.booking.returnDate)}</p>
-          </Col>
-          <Col className="column3" style={{ 
-            backgroundColor: 'white', margin: 5
-          }}>
-            <button className='detailButton'>Full Transit</button>
-          </Col>
-        </Row>
-      </div>
-    </div>
-  </div>
-)}
 
-
-
-
-
- {isHistoryVisible && (
-<div className="historyRight">
-<div className='pictureArea'>
-    <div className='Picture'> 
+ {/* {isHistoryVisible || (
+ <div className='vehicleListRight'>
+  <div className='pictureArea'>
+    <div className='Picture'>
       <img width="150px" style={{float:"left"}} src={car1} />
     </div>
+
 
     <div className='picText'>
     <h3>KDC 099 S</h3>
@@ -478,57 +505,133 @@ useEffect(() => {
     <p> White</p>
     </div>
   </div>
+ <div>
+ <div style={{ display: 'block', width: 600, padding: 10 }}>
+      <Row>
+        <Col className="column3" style={{
+          backgroundColor: 'white', margin: 5, padding:10, lineHeight:0.5
+        }}>
+        <p className='detail'> Engine </p>
+        <p className='detailAnswer'> Running</p>
+        <p className='detail'> Speed</p>
+        <p className='detailAnswer'> 42 km/h</p>
+        <p className='detail'> Mileage </p>
+        <p className='detailAnswer'> 3.7 km</p>
 
-        <div className='historyTables'>
-        {/* <DataTable 
-        columns={column}
-        data={records}
-        customStyles={customStyle}
-        pagination
-        ></DataTable> */}
-        {/* <table className='HistoryTabs'>
-          <thead>
-            <th>DATE</th>
-            <th>DESTINATION</th>
-            <th>KILOMETER</th>
-            <th>FUEL USED</th>
-          </thead>
-          <tbody>
-            {records.map((d,i) =>(
-              <tr key={i}>
-                <td>{d.Date}</td>
-                <td>{d.Destination}</td>
-                <td>{d.km}</td>
-                <td>{d.Fused}</td>
 
-              </tr>
-            ))}
-          </tbody>
-          
-        </table>
-        <nav>
-          <ul className='pagination'>
-            <li className='page-item'>
-              <a href='#' className='pageLink' onClick={prePage}> Prev </a>
-            </li>
-            {
-              numbers.map((n,i)=>(
-                <li className={`page-item ${currentPage === n ? 'active': ''}`} key={i}>
-                  <a href='#' className='page-item' onClick={()=> changeCPage(n)} > {n} </a>
-                </li>
-              ))
-            }
-              <li className='page-item'>
-              <a href='#' className='pageLink' onClick={nextPage}> Next </a>
-            </li>
-          </ul>
-        </nav> */}
-        </div>
+        <button className='detailButton'onClick={() => { hideVehicleList(); toggleHistory(); }} >History</button>
+      </Col>
 
 
 
+
+        <Col className="column3" style={{
+          backgroundColor: 'white', margin: 5,  padding:10, lineHeight:0.5
+        }}>
+         
+        <p className='detail'> Client  Name </p>
+        <p className='detailAnswer'> ComSoc Officer</p>
+        <p className='detail'> Quantity</p>
+        <p className='detailAnswer'> 42 </p>
+        <p className='detail'> Destination  </p>
+        <p className='detailAnswer'> Cagayan De Oro</p>
+        <p className='detail'> Date</p>
+        <p className='detailAnswer'> Nov 7, 2023</p>
+        <p className='detail'> Return Date  </p>
+        <p className='detailAnswer'> Nov 8, 2023 </p>
+
+
+
+
+      </Col>
+
+
+
+
+        <Col className="column3" style={{
+          backgroundColor: 'white', margin: 5
+        }}>
+
+
+        <button className='detailButton'>Full Transit</button>
+
+
+      </Col>
+
+
+
+
+      </Row>
+    </div>
+ </div>
+ </div> )} */}
+<div>
+<MDBModal tabIndex='-1' open={selectedPlateNumber !== null || isHistoryVisible} setOpen={setVehicleDetailsModalOpen}>
+  <MDBModalDialog>
+    <MDBModalContent>
+      <MDBModalHeader>
+        <MDBModalTitle>{isHistoryVisible ? 'History' : 'Vehicle Details'}</MDBModalTitle>
+        <button className="btn-close" onClick={() => {
+          setSelectedPlateNumber(null);
+          setHistoryVisible(false);
+        }}></button>
+      </MDBModalHeader>
+      <MDBModalBody>
+        {/* Vehicle Details */}
+        {selectedPlateNumber && selectedVehicleDetails && !isHistoryVisible && (
+  <div>
+    <div className='pictureArea'>
+      <div className='Picture'>
+        {/* <p>image here:</p>  */}
+        <img
+          width="150px"
+          height="100px"
+          style={{ float: "left" }}
+          src={`${selectedVehicleDetails.vehicle.carImage}`}
+          alt='Car'
+        />
+      </div>
+      <div className='picText'>
+        <h3 className="plate-number"> Plate Number: {selectedPlateNumber}</h3> {/* Added class name for plate number */}
+        <p className="vehicle-details"> {selectedVehicleDetails.addvehicles}</p> 
+      </div>
+    </div>
+    <div>
+      <div style={{ display: 'block', width: 600, padding: 10 }}>
+        {/* Display additional details */}
+        <Row>
+          {/* Remaining content */}
+        </Row>
+      </div>
+    </div>
+  </div>
+)}
+
+{/* History */}
+{isHistoryVisible && (
+  <div className="historyRight">
+    <div className='pictureArea'>
+      <div className='Picture'>
+        <img width="120px" style={{ float: "left" }} src={car1} />
+      </div>
+      <div className='picText'>
+         <h3 className="plate-number">{selectedPlateNumber}</h3> {/* Added class name for plate number */}
+        <p className="vehicle-details">{selectedVehicleDetails.addvehicles}</p> {/* Added class name for vehicle details */}
+      </div>
+    </div>
+    <div className='historyTables'>
+      {/* Display history tables */}
+    </div>
+  </div>
+)}
+
+      </MDBModalBody>
+    </MDBModalContent>
+  </MDBModalDialog>
+</MDBModal>
 </div>
- )}
+  </div>
+  <div>
   </div>
   <div>
   <MDBModal tabIndex='-1' open={centredModal} setOpen={setCentredModal}>
@@ -555,20 +658,22 @@ useEffect(() => {
             <input type="file" name="carImage" className='addVehicle' onChange={(e) => setFormData({ ...formData, carImage: e.target.files[0] })} />
         </label>
      <div className='btnDown'>
-        <button className="closeM mt-2 " onClick={toggleOpen}> Close</button>
+        <button className="closeM mt-2 " onClick={toggleOpen}> Cancel</button>
               <button className='saveCar'> Save</button>
+
 
               </div>
         </form>
-        
+       
             </MDBModalBody>
             {/* <MDBModalFooter>
               <button className="closeM" onClick={toggleOpen}> Close</button>
               <button className='saveCar'> Save</button>
-              
+             
             </MDBModalFooter> */}
 
-      
+
+     
           </MDBModalContent>
         </MDBModalDialog>
       </MDBModal>
@@ -577,16 +682,22 @@ useEffect(() => {
     </>
   )
 
+
   // function prePage(){
+
 
   // }
   // function nextPage(){
 
+
   // }
+
 
   // function changeCPage(id){
 
+
   // }
 }
+
 
 export default Monitoring
