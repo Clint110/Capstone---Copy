@@ -124,25 +124,27 @@ function Login() {
         <div className="modal-dialog modal-dialog-centered" role="document">
           <div className="modal-content">
             <div className="modal-header border-bottom-0">
-            {/* <button type="button" data-dismiss="modal" aria-label="Close">
-            <span aria-hidden="true">×</span>
-          </button> */}
+            <div className="close-btn" data-dismiss="modal" aria-label="Close">
+              <span aria-hidden="true">×</span>
+            </div>
             </div>
             
             <div className="modal-body">
               <div className="form-title text-center">
-                <h2>Login</h2>
+                <h3>Log in to your account</h3>
+                <p>Access your account securely by logging in with your credentials</p>
               </div>
+  
               <div className="d-flex flex-column text-center">
               <form className='ml-4' onSubmit={handleSubmit}>
-                <div className="input-group mb-3 col-10">
-                {/* <TfiEmail  className='iIcon'/> */}
-                  <input type="text" className="EmaiL" name='email' placeholder="Email address" value={email}onChange={(e) => setEmail(e.target.value)} />
-                </div>
-                <div className="input-group mb-1 col-10 ">
-               {/* <RiLockPasswordLine className='iIcon'/> */}
-                  <input type="password" className="PassworD" name='password' placeholder="Password"   value={password}onChange={(e) => setPassword(e.target.value)} />
-                </div>
+              <div className="input-group mb-3 col-10 position-relative">
+               <TfiEmail className='iIcon' />
+               <input type="text" className="EmaiL" name='email' placeholder="Email Address" value={email} onChange={(e) => setEmail(e.target.value)} />
+              </div>
+              <div className="input-group mb-1 col-10 position-relative">
+               <RiLockPasswordLine className='iIcon' />
+               <input type="password" className="PassworD" name='password' placeholder="Password" value={password} onChange={(e) => setPassword(e.target.value)} />
+              </div>
                 <div className="input-group ml-5 mb-5 d-flex justify-content-between">
                   <div className="form-check">
                     <input type="checkbox" className="form-check-input" id="formCheck" />
@@ -178,18 +180,22 @@ function Login() {
         <div className="Logincontainer">
           <nav>
             <a href="#" className="logos">BukSU MoniTour</a>
-            <ul>
+            {/* <ul> */}
              
-              <li><a href="#">Contact Us</a></li>
+              {/* <li><a href="#">Contact Us</a></li>
               <li><a href="#">About</a></li>
-              <button type="button" class="btn btn-info btn-round" data-toggle="modal" data-target="#loginModal">
+ */}
+
+
+              
+              {/* <button type="button" class="btn btn-info btn-round" data-toggle="modal" data-target="#loginModal">
 Login</button>  
-            </ul>
+            </ul> */}
           </nav>
           <div className="content">
             <h1>University Vehicle <br /> Tracking &amp; Monitoring </h1>
             <p>Stay on track with our university vehicle tracking and monitoring system! <br />  Ensure safety, efficiency, and accountability for all campus vehicles.</p>
-            <a data-toggle="modal" data-target="#loginModal" className="btn">Get Started</a>
+            <a data-toggle="modal" data-target="#loginModal" className="btn">Login</a>
           </div>
         </div>
 
