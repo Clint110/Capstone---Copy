@@ -18,45 +18,10 @@
   width: 1000px;
   align-items: stretch;
   height: 400px;
-  margin-left: 150%;
-  margin-top:30px;
-  margin-right: 150%;
-  
-  /* background-color: #e7e7e7; */
-  /* border-color: azure; */
-  /* border-radius: 0px; */
-  /* border: 10px solid #f5cc8b; */
-  
-}
-
-.generate-button:hover {
-  /* Add your hover styles here */
-  background-color: #3c79fd; /* Example background color */
-  cursor: pointer; /* Change cursor to pointer on hover */
-}
-
-.header-wrapper h4{
-  text-align: left;
-  margin-top: 20px;
-  margin-left: 20px;
-}
-.userName{
-  text-align: right;
-  margin-top: 25px;
-  size: 8px;
-  color: #5c5a5a;
-  margin-right: 100px;
-}
-
-.generate-button {
-  background-color: blue;
-  color: white;
-  padding: 10px;
-  border-radius: 5px;
-  border: none;
-  cursor: pointer;
-  margin-top: 100px;
-  margin-left: 900px;
+  /* background-color: #eab768;
+  border-radius: 10px;
+  border: 10px solid #f5cc8b; */
+  gwa
 }
 
 .TableReportContainer{
