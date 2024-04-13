@@ -38,6 +38,18 @@ exports.getData = async (req, res) => {
   }
 };
 
+exports.getData2 = async (req, res) => {
+  try {
+    // Fetch longitude and latitude data from the database
+    const data = await Data.find({}, 'plateNumber longitude latitude');
+    res.json({ success: true, data });
+  } catch (error) {
+    console.error('Error fetching data:', error);
+    res.status(500).json({ success: false, error: 'Internal server error' });
+  }
+};
+
+
 
 // exports.checkPlate = async (req, res) => {
 //   try {
