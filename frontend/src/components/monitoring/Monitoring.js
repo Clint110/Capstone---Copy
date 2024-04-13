@@ -123,6 +123,29 @@ function Monitoring() {
     }
   };
 
+  const handleDeleteVehicle = (plateNumber) => {
+    // Show confirmation dialog
+    const isConfirmed = window.confirm(`Are you sure you want to delete the vehicle with plate number ${plateNumber}?`);
+    
+    // Check if the user confirmed the action
+    if (isConfirmed) {
+      // Filter out the deleted vehicle from the list and update the state
+      setFilteredVehicleList(filteredVehicleList.filter((plate) => plate !== plateNumber));
+      // Example: You might want to send a DELETE request to your server
+      console.log(`Deleting vehicle with plate number ${plateNumber}`);
+  
+      // Check if the plate number being deleted matches the one in the form
+      if (formData.plateNumber === plateNumber) {
+        // Reset the form data to clear the input field
+        setFormData({ ...formData, plateNumber: '' });
+      }
+    } else {
+      // User cancelled the action
+      console.log('Deletion cancelled.');
+    }
+  };
+  
+
 
   const hideVehicleList = () => {
     // You can add logic to hide the vehicleListRight here
@@ -445,38 +468,37 @@ useEffect(() => {
 
    
     <div className='ListVehicle'>
-  <div class="container">
-    {/* <div class="row"> */}
+  <div className="container">
     <div className="container">
-  <table className="table table-bordered">
-    <thead>
-      <tr>
-        <th scope="col">Plate Number</th>
-        <th scope="col">Status</th>
-      </tr>
-    </thead>
-  </table>
-  <div className="scrollable-container">
-    <table className="table table-bordered">
-      <tbody className="scrollable-tbody">
-        {filteredVehicleList.map((plateNumber) => (
-          <tr
-            key={plateNumber}
-            onClick={() => handlePlateNumberClick(plateNumber)}
-            style={{ cursor: 'pointer' }}
-          >
-            <td>{plateNumber}</td>
-            <td style={{
-              textDecoration: vehicleStatus[plateNumber] === 'Used' ? 'underline' : 'none',
-              cursor: 'pointer',
-              color: vehicleStatus[plateNumber] === 'Used' ? '#f80f0f' : '#1adf1a'
-            }}>
-            {vehicleStatus[plateNumber] === 'Used' ? 'Used' : 'Available'}</td>
-
+      <table className="table table-bordered">
+        <thead>
+          <tr>
+            <th scope="col">Plate Number</th>
+            <th scope="col">Status</th>
+            <th scope="col">Action</th>
           </tr>
-        ))}
-      </tbody>
-    </table>
+        </thead>
+      </table>
+      <div className="scrollable-container">
+        <table className="table table-bordered">
+          <tbody className="scrollable-tbody">
+            {filteredVehicleList.map((plateNumber) => (
+              <tr key={plateNumber} style={{ cursor: 'pointer' }}>
+                <td>{plateNumber}</td>
+                <td style={{
+                  textDecoration: vehicleStatus[plateNumber] === 'Used' ? 'underline' : 'none',
+                  cursor: 'pointer',
+                  color: vehicleStatus[plateNumber] === 'Used' ? '#f80f0f' : '#1adf1a'
+                }}>
+                  {vehicleStatus[plateNumber] === 'Used' ? 'Used' : 'Available'}
+                </td>
+                <td>
+                  <button onClick={() => handleDeleteVehicle(plateNumber)} className="btn btn-danger">Delete</button>
+                </td>
+              </tr>
+            ))}
+          </tbody>
+        </table>
   </div>
 </div>
    

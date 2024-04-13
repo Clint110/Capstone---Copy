@@ -107,3 +107,17 @@ exports.vecstatus = async (req, res) => {
       res.status(500).json({ error: 'Internal Server Error' });
     }
   }
+
+  // exports.deleteVehicle = async (req, res) => {
+  //   try {
+  //     const plateNumber = req.params.plateNumber;
+  
+  //     // Delete the vehicle with the specified plate number from the database
+  //     // Add your deletion logic here
+      
+  //     res.status(200).json({ success: true, message: 'Vehicle deleted successfully' });
+  //   } catch (error) {
+  //     console.error('Error deleting vehicle:', error);
+  //     res.status(500).json({ success: false, error: 'Internal server error' });
+  //   }
+  // }
