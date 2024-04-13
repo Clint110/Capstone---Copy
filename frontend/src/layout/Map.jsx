@@ -188,6 +188,7 @@ useEffect(() => {
           });
           if (updateResponse.ok) {
             console.log(`Data for plate number ${plateNumber} updated successfully`);
+            window.location.reload();
           } else {
             console.error(`Failed to update data for plate number ${plateNumber}`);
           }
