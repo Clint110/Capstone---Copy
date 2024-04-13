@@ -2,7 +2,6 @@ const mongoose = require("mongoose");
 
 const bookingSchema = new mongoose.Schema({
   plateNumber: { type: Number, required: true },
-  driverName: { type: String, required: true },
   clientName: { type: String, required: true },
   passengerQuantity: { type: Number, required: true },
   destination: { type: String, enum: ['WOS', 'BOS'], required: true },

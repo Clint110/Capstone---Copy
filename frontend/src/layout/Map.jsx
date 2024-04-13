@@ -7,6 +7,7 @@ import io from 'socket.io-client';
 function Map() {
   const [coordinates, setCoordinates] = useState({ latitude: 0, longitude: 0 });
   const [isVisible, setIsVisible] = useState(true);
+  const [mapKey, setMapKey] = useState(0);
 
   const toggleVisibility = () => {
     setIsVisible((prevVisible) => !prevVisible);
@@ -29,6 +30,8 @@ function Map() {
             const { longitude, latitude } = responseData.data[0];
             console.log(longitude, latitude);
             setCoordinates({ longitude, latitude });
+
+            setMapKey(prevKey => prevKey + 1);
           } else {
             console.error('Latitude or longitude data is undefined');
           }
@@ -151,26 +154,38 @@ useEffect(() => {
   socket.on('received_message', async (messageData) => {
     console.log('Received message from Flask SocketIO server:', messageData);
     
+    if (messageData && typeof messageData.content === 'string') {
     // Extract required fields from the received message data
     const { content } = messageData;
-    const lines = content.split('\n');
+    const parts = content.split(/(?<=\d)(?=[a-zA-Z])/); 
+
+    console.log('Parts:', parts);
+
     let plateNumber, latitude, longitude;
   
-    lines.forEach(line => {
-      const parts = line.split(':');
-      const key = parts[0].trim();
-      const value = parts[1].trim();
+    parts.forEach(part => {
+      const keyValue = part.split(':');
+      if (keyValue.length === 2) { // Check if keyValue array has exactly 2 elements
+        const key = keyValue[0].trim();
+        const value = keyValue[1].trim();
   
-      if (key.toLowerCase() === 'platenumber') {
-        plateNumber = value;
-      } else if (key.toLowerCase() === 'latitude') {
-        latitude = parseFloat(value);
-      } else if (key.toLowerCase() === 'longitude') {
-        longitude = parseFloat(value);
+        if (key.toLowerCase() === 'plat') {
+          plateNumber = value;
+        } else if (key.toLowerCase() === 'lat') {
+          latitude = parseFloat(value);
+        } else if (key.toLowerCase() === 'long') {
+          longitude = parseFloat(value);
+        }
       }
     });
+
+    console.log('Plate Number:', plateNumber); // Log plateNumber to check its value
+    console.log('Latitude:', latitude); // Log latitude to check its value
+    console.log('Longitude:', longitude);
   
     // Check if plateNumber exists in the database
+    if (longitude !== undefined && latitude !== undefined && plateNumber !== undefined) {
+      // Upload extracted data to the database
     try {
       const response = await fetch(`http://localhost:3000/check-plate/${plateNumber}`);
       if (response.ok) {
@@ -186,6 +201,7 @@ useEffect(() => {
           });
           if (updateResponse.ok) {
             console.log(`Data for plate number ${plateNumber} updated successfully`);
+            // window.location.reload();
           } else {
             console.error(`Failed to update data for plate number ${plateNumber}`);
           }
@@ -198,6 +214,14 @@ useEffect(() => {
     } catch (error) {
       console.error('Error during fetch:', error);
     }
+  } else {
+    // Alert if any required field is missing
+    alert('No data for longitude, latitude, or plateNumber');
+  }
+} else {
+  // Handle the case when 'content' is not a string or does not exist
+  console.error('Invalid message format:', messageData);
+}
   });
   
   // Cleanup function
@@ -229,6 +253,7 @@ useEffect(() => {
         {/* <img className="map" src={map}  style={{ width: '900px', height: '500px' }} /> */}
 
         <iframe
+          key={mapKey} // Use key prop to force re-render of the map
             width="900"
             height="500"
             frameBorder="0"

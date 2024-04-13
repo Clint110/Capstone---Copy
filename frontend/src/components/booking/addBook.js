@@ -95,7 +95,6 @@ function AddBook() {
 
   const [formData, setFormData] = useState({
     plateNumber: '',
-    driverName: '',
     clientName: '',
     passengerQuantity: '',
     destination: 'WOS',
@@ -169,7 +168,6 @@ const handlebookingsub = async (e) => {
 
   const newBookingEvent = {
     title: formData.plateNumber,
-    driver: formData.driverName,
     start: new Date(formData.timeAndDate),
     end: new Date(formData.returnDate),
     timeForBound: formData.timeForBound,
@@ -181,7 +179,6 @@ const handlebookingsub = async (e) => {
   // Clear the form fields
   setFormData({
     plateNumber: '',
-    driverName: '',
     clientName: '',
     passengerQuantity: '',
     destination: 'WOS',
@@ -324,7 +321,7 @@ const handlebookingsub = async (e) => {
 },
 
 {
-  path: "/logout",
+  path: "/logoutsec",
   name: "Logout",
    icon: <BiLogOut  className="iconL"/>,
   
@@ -429,7 +426,7 @@ const formatTime = (timeString) => {
                   key={index}
                   // className="link"
                   activeClassName="active"
-                  className={`link ${route.path === '/logout' ? 'logout-link' : ''}`}
+                  className={`link ${route.path === '/logoutsec' ? 'logout-link' : ''}`}
                   
                 >
                   <div className="icon">{route.icon}</div>
