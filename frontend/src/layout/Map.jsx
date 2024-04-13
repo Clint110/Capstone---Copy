@@ -151,6 +151,7 @@ useEffect(() => {
   socket.on('received_message', async (messageData) => {
     console.log('Received message from Flask SocketIO server:', messageData);
     
+    if (messageData && typeof messageData.content === 'string') {
     // Extract required fields from the received message data
     const { content } = messageData;
     const lines = content.split('\n');
@@ -205,6 +206,10 @@ useEffect(() => {
     // Alert if any required field is missing
     alert('No data for longitude, latitude, or plateNumber');
   }
+} else {
+  // Handle the case when 'content' is not a string or does not exist
+  console.error('Invalid message format:', messageData);
+}
   });
   
   // Cleanup function
