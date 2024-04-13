@@ -59,7 +59,7 @@ function TripReport() {
     },
     
     {
-      path: "/logout",
+      path: "/logoutsec",
       name: "Logout",
        icon: <BiLogOut  className="iconL"/>,
       
@@ -135,7 +135,7 @@ function TripReport() {
                   key={index}
                   // className="link"
                   activeClassName="active"
-                  className={`link ${route.path === '/logout' ? 'logout-link' : ''}`}
+                  className={`link ${route.path === '/logoutsec' ? 'logout-link' : ''}`}
                   
                 >
                   <div className="icon">{route.icon}</div>

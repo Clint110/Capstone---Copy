@@ -3,6 +3,7 @@ import { useState } from "react";
 import Login from "./components/Login";
 import "bootstrap/dist/css/bootstrap.min.css";
 import Logout from "./components/Logout";
+import LogoutSec from "./components/Logout-copy";
 import Sidebar from "./components/Sidebar";
 import BookingTicket from "./components/booking/BookingTicket";
 import DashboardMain from "./components/dashboard/DashboardMain";
@@ -22,6 +23,7 @@ function App() {
         <Route path="/booking-ticket" element={<BookingTicket />} />
         <Route path="/addbook" element={<AddBook />} />
         <Route path="/logout" element={<Logout />} />
+        <Route path="/logoutsec" element={<LogoutSec />} />
         <Route path="/tripreport" element={<TripReport2 />} />
       </Routes>
       <Sidebar>
