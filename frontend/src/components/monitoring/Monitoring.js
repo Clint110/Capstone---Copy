@@ -551,13 +551,13 @@ useEffect(() => {
             onClick={() => handlePlateNumberClick(plateNumber)}
             style={{ cursor: 'pointer' }}
           >
-            <td>{plateNumber}</td>
+            <td><strong>{plateNumber}</strong></td>
             <td style={{
               textDecoration: vehicleStatus[plateNumber] === 'Used' ? 'underline' : 'none',
               cursor: 'pointer',
-              color: vehicleStatus[plateNumber] === 'Used' ? '#f80f0f' : '#1adf1a'
-            }}>
-            {vehicleStatus[plateNumber] === 'Used' ? 'Used' : 'Available'}</td>
+              color: vehicleStatus[plateNumber] === 'Used' ? '#f80f0f' : '#02bf02'
+            }}> <strong>
+            {vehicleStatus[plateNumber] === 'Used' ? 'Used' : 'Available'} </strong></td>
 
           </tr>
         ))}
