@@ -95,7 +95,6 @@ function AddBook() {
 
   const [formData, setFormData] = useState({
     plateNumber: '',
-    driverName: '',
     clientName: '',
     passengerQuantity: '',
     destination: 'WOS',
@@ -169,7 +168,6 @@ const handlebookingsub = async (e) => {
 
   const newBookingEvent = {
     title: formData.plateNumber,
-    driver: formData.driverName,
     start: new Date(formData.timeAndDate),
     end: new Date(formData.returnDate),
     timeForBound: formData.timeForBound,
@@ -181,7 +179,6 @@ const handlebookingsub = async (e) => {
   // Clear the form fields
   setFormData({
     plateNumber: '',
-    driverName: '',
     clientName: '',
     passengerQuantity: '',
     destination: 'WOS',

@@ -51,7 +51,6 @@ export default function AddBooking() {
 
   const [formData, setFormData] = useState({
     plateNumber: '',
-    driverName: '',
     clientName: '',
     passengerQuantity: '',
     destination: 'WOS',
@@ -84,7 +83,6 @@ export default function AddBooking() {
       // Handle success, e.g., clear the form or close the modal
       setFormData({
         plateNumber: '',
-        driverName: '',
         clientName: '',
         passengerQuantity: '',
         destination: 'WOS',
@@ -147,10 +145,6 @@ export default function AddBooking() {
                 <label>
                     PLATE NUMBER
                     <input type="text" className='bookingInput'  value={formData.plateNumber} onChange={(e) => setFormData({ ...formData, plateNumber: e.target.value })} />
-                </label>
-                <label>
-                 DRIVER’s NAME
-                    <input type="text" className='bookingInput'  value={formData.driverName} onChange={(e) => setFormData({ ...formData, driverName: e.target.value })}/>
                 </label>
                 <label>
                     CLIENT NAME
