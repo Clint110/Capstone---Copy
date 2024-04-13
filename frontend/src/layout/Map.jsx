@@ -7,6 +7,7 @@ import io from 'socket.io-client';
 function Map() {
   const [coordinates, setCoordinates] = useState({ latitude: 0, longitude: 0 });
   const [isVisible, setIsVisible] = useState(true);
+  const [mapKey, setMapKey] = useState(0);
 
   const toggleVisibility = () => {
     setIsVisible((prevVisible) => !prevVisible);
@@ -29,6 +30,8 @@ function Map() {
             const { longitude, latitude } = responseData.data[0];
             console.log(longitude, latitude);
             setCoordinates({ longitude, latitude });
+
+            setMapKey(prevKey => prevKey + 1);
           } else {
             console.error('Latitude or longitude data is undefined');
           }
@@ -198,7 +201,7 @@ useEffect(() => {
           });
           if (updateResponse.ok) {
             console.log(`Data for plate number ${plateNumber} updated successfully`);
-            window.location.reload();
+            // window.location.reload();
           } else {
             console.error(`Failed to update data for plate number ${plateNumber}`);
           }
@@ -250,6 +253,7 @@ useEffect(() => {
         {/* <img className="map" src={map}  style={{ width: '900px', height: '500px' }} /> */}
 
         <iframe
+          key={mapKey} // Use key prop to force re-render of the map
             width="900"
             height="500"
             frameBorder="0"
