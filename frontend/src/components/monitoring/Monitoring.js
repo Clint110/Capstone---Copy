@@ -102,60 +102,82 @@ function Monitoring() {
   };
 
 
-  const handlePlateNumberClick = async (plateNumber) => {
-    try {
-      // Check if the vehicle is available
-      if (vehicleStatus[plateNumber] === 'Used') {
-        const response = await axios.get(`http://localhost:3000/vehicle/details/${plateNumber}`);
-        const details = response.data;
+  // const handlePlateNumberClick = async (plateNumber) => {
+  //   try {
+  //     // Check if the vehicle is available
+  //     if (vehicleStatus[plateNumber] === 'Used') {
+  //       const response = await axios.get(`http://localhost:3000/vehicle/details/${plateNumber}`);
+  //       const details = response.data;
  
-        console.log('Details:', details);
-        // Update the state with the selected plate number and its details
-        setSelectedPlateNumber(plateNumber);
-        setSelectedVehicleDetails(details);
-      } else {
-        // Vehicle is available, show alert
-        alert(`Vehicle with the Plate Number: ${plateNumber} is available and not in use.`);
-        // You can also use a modal alert or any other way to display the message
-      }
-    } catch (error) {
-      console.error('Error fetching vehicle details:', error);
-    }
-  };
+  //       console.log('Details:', details);
+  //       // Update the state with the selected plate number and its details
+  //       setSelectedPlateNumber(plateNumber);
+  //       setSelectedVehicleDetails(details);
+  //     } else {
+  //       // Vehicle is available, show alert
+  //       alert(`Vehicle with the Plate Number: ${plateNumber} is available and not in use.`);
+  //       // You can also use a modal alert or any other way to display the message
+  //     }
+  //   } catch (error) {
+  //     console.error('Error fetching vehicle details:', error);
+  //   }
+  // };
 
 
-  const hideVehicleList = () => {
-    // You can add logic to hide the vehicleListRight here
-    // For example, you might want to set a state to control its visibility
-  };
-
-
-
+  // const hideVehicleList = () => {
+  //   // You can add logic to hide the vehicleListRight here
+  //   // For example, you might want to set a state to control its visibility
+  // };
 
 
 
-  const [vehicleStatus, setVehicleStatus] = useState({});
 
 
-  useEffect(() => {
-    // Fetch vehicle status data from your server
-    const fetchVehicleStatus = async () => {
-      try {
-        const response = await axios.get('http://localhost:3000/vehiclestatus'); // Replace with your actual API endpoint
-        const vehicleStatusData = response.data;
+
+//   const [vehicleStatus, setVehicleStatus] = useState({});
 
 
-        // Update the vehicleStatus state with the fetched data
-        setVehicleStatus(vehicleStatusData);
-      } catch (error) {
-        console.error('Error fetching vehicle status:', error);
-      }
-    };
+//  // Define the fetchVehicleStatus function outside of the useEffect hook
+//  const fetchVehicleStatus = async () => {
+//   try {
+//     const response = await axios.get('http://localhost:3000/vehiclestatus');
+//     const vehicleStatusData = response.data;
+//     setVehicleStatus(vehicleStatusData);
+//   } catch (error) {
+//     console.error('Error fetching vehicle status:', error);
+//   }
+// };
+
+// useEffect(() => {
+//   // Call the fetchVehicleStatus function inside the useEffect hook
+//   fetchVehicleStatus();
+// }, []);
 
 
-    // Call the fetch function
-    fetchVehicleStatus();
-  }, []);
+const [vehicleStatus, setVehicleStatus] = useState({});
+
+// Define the fetchVehicleStatus function outside of the useEffect hook
+const fetchVehicleStatus = async () => {
+  try {
+    const response = await axios.get('http://localhost:3000/vehiclestatus');
+    const vehicleStatusData = response.data;
+    setVehicleStatus(vehicleStatusData);
+  } catch (error) {
+    console.error('Error fetching vehicle status:', error);
+  }
+};
+
+useEffect(() => {
+  // Define a function to fetch vehicle status periodically
+  const intervalId = setInterval(fetchVehicleStatus, 5000); // Fetch every 5 seconds
+
+  // Fetch vehicle status when the component mounts
+  fetchVehicleStatus();
+
+  // Cleanup function to clear the interval when the component unmounts
+  return () => clearInterval(intervalId);
+}, []);
+
 
 
 
@@ -167,6 +189,70 @@ function Monitoring() {
       )
     );
   }, [searchInput, vehicleStatus]);
+
+
+
+// const handlePlateNumberClick = async (plateNumber) => {
+//   try {
+//     // Fetch booking details for the selected plate number
+//     const response = await axios.get(`http://localhost:3000/booking-details/${plateNumber}`);
+//     const bookingDetails = response.data;
+
+//     // Check if the booking has ended
+//     const returnDate = new Date(bookingDetails.returnDate);
+//     const currentDate = new Date();
+
+//     if (currentDate > returnDate) {
+//       // Make a request to mark the vehicle as available again
+//       await axios.post(`http://localhost:3000/mark-available/${plateNumber}`);
+//       // Refresh the list of vehicles
+//       await fetchVehicleStatus();
+//       // Show alert indicating that the vehicle is now available
+//       alert(`Vehicle with the Plate Number: ${plateNumber} is now available.`);
+//     } else {
+//       // Vehicle is still in use, show alert
+//       alert(`Vehicle with the Plate Number: ${plateNumber} is currently in use.`);
+//     }
+//   } catch (error) {
+//     // If there's an error or the booking details are not found, it means the vehicle is available
+//     alert(`Vehicle with the Plate Number: ${plateNumber} is available and not in use.`);
+//   }
+// };
+
+
+const handlePlateNumberClick = async (plateNumber) => {
+  try {
+    // Fetch booking details for the selected plate number
+    const response = await axios.get(`http://localhost:3000/booking-details/${plateNumber}`);
+    const bookingDetails = response.data;
+
+    // Check if the booking has ended
+    const returnDate = new Date(bookingDetails.returnDate);
+    const currentDate = new Date();
+
+    if (currentDate > returnDate) {
+      // Make a request to mark the vehicle as available again
+      await axios.post(`http://localhost:3000/mark-available/${plateNumber}`);
+      // Refresh the list of vehicles
+      await fetchVehicleStatus();
+      // Show alert indicating that the vehicle is now available
+      alert(`Vehicle with the Plate Number: ${plateNumber} is now available.`);
+    } else {
+      // Vehicle is still in use, fetch and display vehicle details
+      const detailsResponse = await axios.get(`http://localhost:3000/vehicle/details/${plateNumber}`);
+      const details = detailsResponse.data;
+
+      console.log('Details:', details);
+      // Update the state with the selected plate number and its details
+      setSelectedPlateNumber(plateNumber);
+      setSelectedVehicleDetails(details);
+    }
+  } catch (error) {
+    // If there's an error or the booking details are not found, it means the vehicle is available
+    alert(`Vehicle with the Plate Number: ${plateNumber} is available and not in use.`);
+  }
+};
+
 
 
  

@@ -21,5 +21,6 @@ const upload = multer({ storage: storage });
 router.post('/addvehicle', upload.single('carImage'), vehicleController.addvehicle);
 router.get('/vehiclestatus', vehicleController.vecstatus);
 router.get('/vehicle/details/:plateNumber', vehicleController.getVehicleDetails);
+router.post('/mark-available/:plateNumber', vehicleController.markAvailable);
 
 module.exports = router;

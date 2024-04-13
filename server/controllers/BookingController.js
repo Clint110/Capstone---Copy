@@ -21,3 +21,20 @@ exports.addBooking = async (req, res) => {
     res.status(500).json({ success: false, message: "Internal server error" });
   }
 };
+
+exports.getBookingDetailsByPlateNumber = async (req, res) => {
+  try {
+    const plateNumber = req.params.plateNumber;
+    // Find booking details based on the provided plate number
+    const bookingDetails = await Booking.findOne({ plateNumber });
+
+    if (!bookingDetails) {
+      return res.status(404).json({ error: 'Booking details not found for the provided plate number' });
+    }
+
+    res.json(bookingDetails);
+  } catch (error) {
+    console.error('Error fetching booking details:', error);
+    res.status(500).json({ error: 'Internal Server Error' });
+  }
+};

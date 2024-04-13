@@ -26,35 +26,76 @@ exports.addvehicle = async (req, res) => {
       }
 };
 
-exports.vecstatus = async (req, res) => {
-    try {
-        // Fetch all distinct plate numbers from the Vehicle model
-        const plateNumbersInVehicles = await Vehicle.find().distinct('plateNumber');
+// exports.vecstatus = async (req, res) => {
+//     try {
+//         // Fetch all distinct plate numbers from the Vehicle model
+//         const plateNumbersInVehicles = await Vehicle.find().distinct('plateNumber');
 
-        const statusObject = {};
+//         const statusObject = {};
         
-        plateNumbersInVehicles.forEach((plateNumber) => {
+//         plateNumbersInVehicles.forEach((plateNumber) => {
+//           statusObject[plateNumber] = 'Available';
+//         });
+    
+//         // Use Promise.all to handle asynchronous operations
+//         await Promise.all(plateNumbersInVehicles.map(async (plateNumber) => {
+//           // Check if the plate number is used in the Booking model
+//           const isPlateNumberUsed = await Booking.exists({ plateNumber });
+    
+//           // If used, update the status to "Used"
+//           if (isPlateNumberUsed) {
+//             statusObject[plateNumber] = 'Used';
+//           }
+//         }));
+    
+//         // Send the vehicle status as JSON response
+//         res.json(statusObject);
+//       } catch (error) {
+//         console.error('Error fetching vehicle status:', error);
+//         res.status(500).json({ error: 'Internal server error' });
+//       }
+//   };
+
+
+exports.vecstatus = async (req, res) => {
+  try {
+    // Fetch all distinct plate numbers from the Vehicle model
+    const plateNumbersInVehicles = await Vehicle.find().distinct('plateNumber');
+
+    const statusObject = {};
+
+    // Initialize all vehicle statuses as 'Available' by default
+    plateNumbersInVehicles.forEach((plateNumber) => {
+      statusObject[plateNumber] = 'Available';
+    });
+
+    // Use Promise.all to handle asynchronous operations
+    await Promise.all(plateNumbersInVehicles.map(async (plateNumber) => {
+      // Check if there is any booking for the plate number
+      const latestBooking = await Booking.findOne({ plateNumber }).sort({ returnDate: -1 });
+
+      if (latestBooking) {
+        // If a booking is found, check if the return date has passed
+        const returnDate = new Date(latestBooking.returnDate);
+        const currentDate = new Date();
+        if (currentDate > returnDate) {
+          // If return date has passed, mark the vehicle as 'Available'
           statusObject[plateNumber] = 'Available';
-        });
-    
-        // Use Promise.all to handle asynchronous operations
-        await Promise.all(plateNumbersInVehicles.map(async (plateNumber) => {
-          // Check if the plate number is used in the Booking model
-          const isPlateNumberUsed = await Booking.exists({ plateNumber });
-    
-          // If used, update the status to "Used"
-          if (isPlateNumberUsed) {
-            statusObject[plateNumber] = 'Used';
-          }
-        }));
-    
-        // Send the vehicle status as JSON response
-        res.json(statusObject);
-      } catch (error) {
-        console.error('Error fetching vehicle status:', error);
-        res.status(500).json({ error: 'Internal server error' });
+        } else {
+          // If return date has not passed, mark the vehicle as 'Used'
+          statusObject[plateNumber] = 'Used';
+        }
       }
-  };
+    }));
+
+    // Send the vehicle status as JSON response
+    res.json(statusObject);
+  } catch (error) {
+    console.error('Error fetching vehicle status:', error);
+    res.status(500).json({ error: 'Internal server error' });
+  }
+};
+
 
   exports.getPlateNumbers = async (req, res) => {
     try {
@@ -107,3 +148,20 @@ exports.vecstatus = async (req, res) => {
       res.status(500).json({ error: 'Internal Server Error' });
     }
   }
+
+  exports.markAvailable = async (req, res) => {
+    try {
+      const { plateNumber } = req.params;
+      // Check if there is an active booking for this vehicle
+      const booking = await Booking.findOne({ plateNumber, returnDate: { $gte: new Date() } });
+      if (booking) {
+        return res.status(400).json({ error: 'Cannot mark vehicle as available. There is an active booking for this vehicle.' });
+      }
+      // Update the status of the vehicle to "Available"
+      await Vehicle.updateOne({ plateNumber }, { $set: { status: 'Available' } });
+      res.json({ success: true, message: 'Vehicle marked as available.' });
+    } catch (error) {
+      console.error('Error marking vehicle as available:', error);
+      res.status(500).json({ error: 'Internal server error' });
+    }
+  };
