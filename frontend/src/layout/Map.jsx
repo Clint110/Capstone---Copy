@@ -154,22 +154,31 @@ useEffect(() => {
     if (messageData && typeof messageData.content === 'string') {
     // Extract required fields from the received message data
     const { content } = messageData;
-    const lines = content.split('\n');
+    const parts = content.split(/(?<=\d)(?=[a-zA-Z])/); 
+
+    console.log('Parts:', parts);
+
     let plateNumber, latitude, longitude;
   
-    lines.forEach(line => {
-      const parts = line.split(':');
-      const key = parts[0].trim();
-      const value = parts[1].trim();
+    parts.forEach(part => {
+      const keyValue = part.split(':');
+      if (keyValue.length === 2) { // Check if keyValue array has exactly 2 elements
+        const key = keyValue[0].trim();
+        const value = keyValue[1].trim();
   
-      if (key.toLowerCase() === 'plat') {
-        plateNumber = value;
-      } else if (key.toLowerCase() === 'lat') {
-        latitude = parseFloat(value);
-      } else if (key.toLowerCase() === 'long') {
-        longitude = parseFloat(value);
+        if (key.toLowerCase() === 'plat') {
+          plateNumber = value;
+        } else if (key.toLowerCase() === 'lat') {
+          latitude = parseFloat(value);
+        } else if (key.toLowerCase() === 'long') {
+          longitude = parseFloat(value);
+        }
       }
     });
+
+    console.log('Plate Number:', plateNumber); // Log plateNumber to check its value
+    console.log('Latitude:', latitude); // Log latitude to check its value
+    console.log('Longitude:', longitude);
   
     // Check if plateNumber exists in the database
     if (longitude !== undefined && latitude !== undefined && plateNumber !== undefined) {
