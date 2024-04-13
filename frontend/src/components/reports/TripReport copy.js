@@ -325,7 +325,9 @@ function TripReport() {
                     <td>km</td>
                     <td>
                       <FaHistory className='actionBtn' />
-                      <IoDocumentAttachOutline className='actionBtn' />
+                      <button onClick={handleGenerateReport} className='actionBtn '>
+                  <IoDocumentAttachOutline />
+                  </button>
                     </td>
                   </tr>
                 ))}
