@@ -64,20 +64,11 @@ const Sidebaraddname = ({ children }) => {
     <>
       <div className="main-container">
         <motion.div
-          animate={{
-            width: isOpen ? "200px" : "75px",
-
-            transition: {
-              duration: 0.5,
-              type: "spring",
-              damping: 10,
-            },
-          }}
           className={`sidebar `}
         >
           
-          <div className="top_section">
-            <AnimatePresence>
+          {/* <div className="top_section"> */}
+            {/* <AnimatePresence>
               {isOpen && (
                 <motion.h1
                   variants={showAnimation}
@@ -89,20 +80,20 @@ const Sidebaraddname = ({ children }) => {
                   
                 </motion.h1>
               )}
-            </AnimatePresence>
+            </AnimatePresence> */}
 
-            <div className="bars">
+            {/* <div className="bars">
               <FaBars onClick={toggle} />
-            </div>
+            </div> */}
 
-          </div>
+          {/* </div> */}
           <div className="pl-5">
         <img
             alt="logoSide"
               src={logo}
               className="rounded-circle usr-image"
-              height={isOpen  ? "150" : "40"}
-              width={isOpen  ? "150" : "40"}
+              height="150"
+              width="150"
             ></img>
           </div>
           <section className="routes">
@@ -113,7 +104,7 @@ const Sidebaraddname = ({ children }) => {
                     setIsOpen={setIsOpen}
                     route={route}
                     showAnimation={showAnimation}
-                    isOpen={isOpen}
+                    key={index}
                   />
                 );
               }
@@ -129,7 +120,7 @@ const Sidebaraddname = ({ children }) => {
                 >
                   <div className="icon">{route.icon}</div>
                   <AnimatePresence>
-                    {isOpen && (
+                
                       <motion.div
                         variants={showAnimation}
                         initial="hidden"
@@ -140,7 +131,7 @@ const Sidebaraddname = ({ children }) => {
                       >
                         {route.name}
                       </motion.div>
-                    )}
+                
                   </AnimatePresence>
                   </NavLink>
       

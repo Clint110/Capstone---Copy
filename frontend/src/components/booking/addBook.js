@@ -383,28 +383,20 @@ const formatTime = (timeString) => {
   return (
     <div className="main-container">
     <motion.div
-      animate={{
-        width: isOpen ? "200px" : "75px",
-        transition: {
-          duration: 0.5,
-          type: "spring",
-          damping: 10,
-        },
-      }}
       className={`sidebar `}
     >
-      <div className="top_section">
+      {/* <div className="top_section">
         <div className="bars">
           <FaBars onClick={toggle} />
         </div>
-      </div>
+      </div> */}
       <div className="pl-5">
         <img
           alt="logoSide"
           src={logo} // Make sure to import your logo and replace "logo" with the actual variable holding your logo image path
           className="rounded-circle usr-image"
-          height={isOpen ? "150" : "40"}
-          width={isOpen ? "150" : "40"}
+          height="150"
+          width="150"
         />
       </div>
       <section className="routes">
@@ -415,7 +407,7 @@ const formatTime = (timeString) => {
                     setIsOpen={setIsOpen}
                     route={route}
                     showAnimation={showAnimation}
-                    isOpen={isOpen}
+                    key={index}
                   />
                 );
               }
@@ -431,7 +423,6 @@ const formatTime = (timeString) => {
                 >
                   <div className="icon">{route.icon}</div>
                   <AnimatePresence>
-                    {isOpen && (
                       <motion.div
                         variants={showAnimation}
                         initial="hidden"
@@ -442,7 +433,6 @@ const formatTime = (timeString) => {
                       >
                         {route.name}
                       </motion.div>
-                    )}
                   </AnimatePresence>
                   </NavLink>
       
