@@ -161,11 +161,11 @@ useEffect(() => {
       const key = parts[0].trim();
       const value = parts[1].trim();
   
-      if (key.toLowerCase() === 'platenumber') {
+      if (key.toLowerCase() === 'plat') {
         plateNumber = value;
-      } else if (key.toLowerCase() === 'latitude') {
+      } else if (key.toLowerCase() === 'lat') {
         latitude = parseFloat(value);
-      } else if (key.toLowerCase() === 'longitude') {
+      } else if (key.toLowerCase() === 'long') {
         longitude = parseFloat(value);
       }
     });
