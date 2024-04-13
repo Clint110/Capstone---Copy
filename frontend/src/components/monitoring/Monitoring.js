@@ -26,9 +26,6 @@ import { IoCarSportOutline } from "react-icons/io5";
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faCircleUser } from '@fortawesome/free-solid-svg-icons';
 
-
-
-
 function Monitoring() {
   const [centredModal, setCentredModal] = useState(false);
   const [vehicleDetailsModalOpen, setVehicleDetailsModalOpen] = useState(false);
@@ -39,11 +36,25 @@ function Monitoring() {
   const [searchInput, setSearchInput] = useState('');
   const [filteredVehicleList, setFilteredVehicleList] = useState([]);
   const [role, setUserRole] = useState('');
+  const [showConfirmationModal, setShowConfirmationModal] = useState(false);
+  const [plateNumberToDelete, setPlateNumberToDelete] = useState('');
+  const [showEditModal, setShowEditModal] = useState(false);
+  const [editedPlateNumber, setEditedPlateNumber] = useState('');
+  const [editedVehicle, setEditedVehicle] = useState('');
+  const [editedCarImage, setEditedCarImage] = useState('');
+  const [vehicles, setVehicles] = useState([]);
+  const [plateNumber, setPlateNumber] = useState(''); 
+
+
+
 
   const toggleVehicleDetailsModalOpen = () => {
     setVehicleDetailsModalOpen(!vehicleDetailsModalOpen);
   };
 
+//   const toggleShowConfirmationModal = () => {
+//     setShowConfirmationModal(!showConfirmationModal);
+// };
   useEffect(() => {
     // Fetch vehicle status data from your server
     const fetchVehicleStatus = async () => {
@@ -122,29 +133,6 @@ function Monitoring() {
       console.error('Error fetching vehicle details:', error);
     }
   };
-
- const handleDeleteVehicle = (plateNumber) => {
-  // Show confirmation dialog
-  const isConfirmed = window.confirm(`Are you sure you want to delete the vehicle with plate number ${plateNumber}?`);
-  
-  // Check if the user confirmed the action
-  if (isConfirmed) {
-    // Filter out the deleted vehicle from the list and update the state
-    setFilteredVehicleList(filteredVehicleList.filter((plate) => plate !== plateNumber));
-    // Example: You might want to send a DELETE request to your server
-    console.log(`Deleting vehicle with plate number ${plateNumber}`);
-
-    // Check if the plate number being deleted matches the one in the form
-    if (formData.plateNumber === plateNumber) {
-      // Reset the form data to clear the input field
-      setFormData({ ...formData, plateNumber: '' });
-    }
-  } else {
-    // User cancelled the action
-    console.log('Deletion cancelled.');
-  }
-};
-
 
 
   const hideVehicleList = () => {
@@ -397,12 +385,127 @@ useEffect(() => {
   );
 }, [filter, searchInput, vehicleStatus]);
 
+// const handleDeleteConfirmation = (plateNumber) => {
+//   // Show a confirmation dialog
+//   if (window.confirm('Are you sure you want to delete this vehicle?')) {
+//     // If the user confirms, proceed with deletion
+//     console.log('Delete confirmed for plate number:', plateNumber);
+//     // Perform further actions such as sending a request to delete the vehicle
+//     // and then close the modal
+//     setShowConfirmationModal(false);
+//   } else {
+//     // If the user cancels, do nothing
+//     console.log('Delete canceled');
+//   }
+// };
+
+// const handleDeleteConfirmation = (plateNumber) => {
+//   // Show the confirmation modal
+//   setShowConfirmationModal(true);
+//   // Set the plate number to delete
+//   setPlateNumberToDelete(plateNumber);
+// };
+
+// const handleConfirmDelete = () => {
+//   // Logic for confirming deletion
+//   console.log('Delete confirmed for plate number:', plateNumberToDelete);
+//   // Perform further actions such as sending a request to delete the vehicle
+//   // and then close the modal
+//   setShowConfirmationModal(false);
+// };
+
+// const handleCancelDelete = () => {
+//   // Logic for canceling deletion
+//   console.log('Delete canceled');
+//   // Close the modal
+//   setShowConfirmationModal(false);
+// };
 
 
 
+const handleConfirmDelete = () => {
+  // Logic for confirming deletion
+  console.log('Delete confirmed for plate number:', plateNumberToDelete);
+  // Perform further actions such as sending a request to delete the vehicle
+  // and then close the modal
+  setShowConfirmationModal(false);
+};
 
+const handleCancelDelete = () => {
+  // Logic for canceling deletion
+  console.log('Delete canceled');
+  // Close the modal
+  setShowConfirmationModal(false);
+};
 
+const handleDeleteConfirmation = (plateNumber) => {
+  // Close any other modals if open
+  setVehicleDetailsModalOpen(false); // Close vehicle details modal if open
 
+  // Show the confirmation modal
+  setShowConfirmationModal(true);
+
+  // Set the plate number to delete
+  setPlateNumberToDelete(plateNumber);
+};
+
+const handleEditButtonClick = (plateNumber) => {
+  // Set the initial values for editing based on the selected vehicle's details
+  const selectedVehicle = vehicles.find(vehicle => vehicle.plateNumber === plateNumber);
+  if (selectedVehicle) {
+    setEditedPlateNumber(selectedVehicle.plateNumber);
+    setEditedVehicle(selectedVehicle.addvehicles);
+    setEditedCarImage(selectedVehicle.carImage);
+  }
+  setShowEditModal(true); // Open the edit modal
+};
+
+// Function to handle saving changes in the edit modal
+const handleConfirmEdit = () => {
+  // Implement the logic to save the edited vehicle details
+  // This can involve sending a request to update the vehicle details in the database, for example
+  // After saving, you can close the edit modal
+  setShowEditModal(false);
+};
+
+// Function to handle canceling the edit operation and close the modal
+const handleCancelEdit = () => {
+  setShowEditModal(false); // Close the edit modal
+};
+
+const handleEditVehicle = (editedPlateNumber, editedVehicle, editedCarImage) => {
+  // Find the index of the vehicle to be edited in the vehicles array
+  const vehicleIndex = vehicles.findIndex(vehicle => vehicle.plateNumber === editedPlateNumber);
+  
+  // If the vehicle is found
+  if (vehicleIndex !== -1) {
+      // Create a copy of the vehicles array to modify
+      const updatedVehicles = [...vehicles];
+      
+      // Update the vehicle details
+      updatedVehicles[vehicleIndex] = {
+          ...updatedVehicles[vehicleIndex],
+          addvehicles: editedVehicle,
+          carImage: editedCarImage
+          // Add more properties to update as needed
+      };
+      
+      // Update the state with the modified vehicles array
+      setVehicles(updatedVehicles);
+      
+      // Close the edit modal or perform any other necessary actions
+      // For example:
+      // setEditModalOpen(false);
+      
+      // Optionally, you might want to clear the edited vehicle state
+      setEditedPlateNumber(null);
+      setEditedVehicle('');
+      setEditedCarImage(null);
+  } else {
+      // Handle the case where the vehicle with the provided plate number is not found
+      console.error(`Vehicle with plate number ${editedPlateNumber} not found.`);
+  }
+};
 
 
 
@@ -468,43 +571,50 @@ useEffect(() => {
 
    
     <div className='ListVehicle'>
-  <div className="container">
+  <div class="container">
+    {/* <div class="row"> */}
     <div className="container">
-      <table className="table table-bordered">
-        <thead>
-          <tr>
-            <th scope="col">Plate Number</th>
-            <th scope="col">Status</th>
-            <th scope="col">Action</th>
+  <table className="table table-bordered">
+    <thead>
+      <tr>
+        <th scope="col">Plate Number</th>
+        <th scope="col">Status</th>
+      </tr>
+    </thead>
+  </table>
+  <div className="scrollable-container">
+    <table className="table table-bordered">
+      <tbody className="scrollable-tbody">
+        {filteredVehicleList.map((plateNumber) => (
+          <tr
+            key={plateNumber}
+            onClick={() => handlePlateNumberClick(plateNumber)}
+            style={{ cursor: 'pointer' }}
+          >
+            <td>{plateNumber}</td>
+            <td style={{
+              textDecoration: vehicleStatus[plateNumber] === 'Used' ? 'underline' : 'none',
+              cursor: 'pointer',
+              color: vehicleStatus[plateNumber] === 'Used' ? '#f80f0f' : '#1adf1a'
+            }}>
+            {vehicleStatus[plateNumber] === 'Used' ? 'Used' : 'Available'}</td>
           </tr>
-        </thead>
-      </table>
-      <div className="scrollable-container">
-        <table className="table table-bordered">
-          <tbody className="scrollable-tbody">
-            {filteredVehicleList.map((plateNumber) => (
-              <tr key={plateNumber} style={{ cursor: 'pointer' }}>
-                <td>{plateNumber}</td>
-                <td style={{
-                  textDecoration: vehicleStatus[plateNumber] === 'Used' ? 'underline' : 'none',
-                  cursor: 'pointer',
-                  color: vehicleStatus[plateNumber] === 'Used' ? '#f80f0f' : '#1adf1a'
-                }}>
-                  {vehicleStatus[plateNumber] === 'Used' ? 'Used' : 'Available'}
-                </td>
-                <td>
-                  <button onClick={() => handleDeleteVehicle(plateNumber)} className="btn btn-danger">Delete</button>
-                </td>
-              </tr>
-            ))}
-          </tbody>
-        </table>
+        ))}
+      </tbody>
+    </table>
   </div>
 </div>
    
   </div>
 </div>
-
+{/* 
+{showConfirmationModal && (
+        <DeleteConfirmationModal
+          plateNumber={plateNumberToDelete}
+          onDeleteConfirmed={handleDeleteConfirmation}
+          onClose={() => setShowConfirmationModal(false)}
+        />
+      )} */}
 
 
 
@@ -587,6 +697,76 @@ useEffect(() => {
     </div>
  </div>
  </div> )} */}
+ <div>
+  <MDBModal tabIndex='-1' open={showEditModal} setOpen={setShowEditModal}>
+    <MDBModalDialog>
+      <MDBModalContent>
+        <MDBModalHeader>
+          <MDBModalTitle>Edit Vehicle</MDBModalTitle>
+          <button className="btn-close" onClick={handleCancelEdit}></button>
+        </MDBModalHeader>
+        <MDBModalBody>
+          {/* Form for editing vehicle details */}
+          <form onSubmit={handleEditVehicle}>
+            <label>
+              Plate Number
+              <input
+                type="text"
+                className='editVehicle'
+                value={editedPlateNumber}
+                onChange={(e) => setEditedPlateNumber(e.target.value)}
+              />
+            </label>
+            <label>
+              Vehicle
+              <input
+                type="text"
+                className='editVehicle'
+                value={editedVehicle}
+                onChange={(e) => setEditedVehicle(e.target.value)}
+              />
+            </label>
+            <label>
+              Insert Image
+              <input
+                type="file"
+                name="carImage"
+                className='editVehicle'
+                onChange={(e) => setEditedCarImage(e.target.files[0])}
+              />
+            </label>
+          </form>
+        </MDBModalBody>
+        <MDBModalFooter>
+          <button className="btn btn-secondary" onClick={handleCancelEdit}>Cancel</button>
+          <button className='btn btn-primary' onClick={handleConfirmEdit}>Save Changes</button>
+        </MDBModalFooter>
+      </MDBModalContent>
+    </MDBModalDialog>
+  </MDBModal>
+</div>
+
+
+<div>
+<MDBModal tabIndex='-1' open={showConfirmationModal} setOpen={setShowConfirmationModal}>
+        <MDBModalDialog>
+          <MDBModalContent>
+            <MDBModalHeader>
+              <MDBModalTitle>Confirmation</MDBModalTitle>
+              <button className="btn-close" onClick={handleCancelDelete}></button>
+            </MDBModalHeader>
+            <MDBModalBody>
+            <p style={{ textAlign: 'center', padding: '20px' }}>Are you sure you want to delete vehicle with plate number {plateNumberToDelete}?</p>
+            </MDBModalBody>
+            <MDBModalFooter>
+              <button className="btn btn-secondary" onClick={handleCancelDelete}>Cancel</button>
+              <button className='btn btn-danger' onClick={handleConfirmDelete}>Delete</button>
+            </MDBModalFooter>
+          </MDBModalContent>
+        </MDBModalDialog>
+      </MDBModal>
+  </div>
+
 <div>
 <MDBModal tabIndex='-1' open={selectedPlateNumber !== null || isHistoryVisible} setOpen={setVehicleDetailsModalOpen}>
   <MDBModalDialog>
@@ -618,6 +798,10 @@ useEffect(() => {
         <p className="vehicle-details"> {selectedVehicleDetails.addvehicles}</p> 
       </div>
     </div>
+     {/* Insert the delete button here */}
+     <button onClick={() => handleDeleteConfirmation(selectedPlateNumber)} className="btn btn-danger">Delete</button>
+     <button onClick={() => handleEditButtonClick(plateNumber)} className="btn btn-primary">Edit</button>
+
     <div>
       <div style={{ display: 'block', width: 600, padding: 10 }}>
         {/* Display additional details */}
@@ -701,6 +885,10 @@ useEffect(() => {
       </MDBModal>
   </div>
     </div>
+
+  
+          
+
     </>
   )
 
