@@ -10,6 +10,8 @@ import { FaRegCalendarCheck } from "react-icons/fa";
 import { FaRegFileLines } from "react-icons/fa6";
 import logo from "../sidebaraddbooking/images/buksu-logo.png"
 import { FaBars } from "react-icons/fa";
+import jsPDF from 'jspdf';
+import 'jspdf-autotable';
 
 function formatDateTime(dateTimeString) {
   const options = { year: 'numeric', month: 'long', day: 'numeric', hour: 'numeric', minute: 'numeric', second: 'numeric', timeZoneName: 'short' };
@@ -68,7 +70,142 @@ function TripReport() {
   
 
 
-  const [bookingData, setBookingData] = useState([]);
+    // const TripReport = () => {
+      const [bookingData, setBookingData] = useState([]);
+    
+      const generatePDF = () => {
+        try {
+          const doc = new jsPDF();
+      
+          doc.addImage(logo, 'PNG', 50, 15, 20, 18);
+    
+          // doc.setFont('helvetica', 'bold'); // Set font to bold
+          doc.text('Bukidnon State University', 75, 25);
+          
+      
+          doc.setFontSize(10); // Adjust font size here
+          doc.text('Malaybalay City, Bukidnon', 86, 32);
+    
+          doc.setFontSize(12); // Adjust font size here
+          doc.text('GSU - Motorpool Section', 83, 50);
+    
+          doc.setFontSize(14); // Adjust font size here
+          doc.text('NUMBER OF TRIP VEHICLE FOR THE MONTH OF APRIL 2024', 35, 60);
+    
+          doc.setFontSize(13); // Adjust font size here
+          doc.text('Within and Beyond Official Station', 72, 67);
+    
+          const tableData = bookingData.map((booking, index) => [
+            booking.plateNumber,
+            booking.boundFor,
+            booking.destination,
+            formatDateTime(booking.timeForBound),
+            formatDateTime(booking.returnDate)
+          ]);
+    
+          doc.autoTable({
+            startY: 87,
+            head: [['Plate Number', 'Bound For', 'Destination', 'Time For Bound', 'Return Date']],
+            body: tableData,
+            headStyles: {
+              fillColor: [255, 255, 255], // White background for header
+              textColor: [0, 0, 0],       // Black text color for header
+              lineColor: [0, 0, 0],       // Set header cell border color
+              lineWidth: 0.2,             // Set header cell border width
+              halign: 'center',           // Center align the header content horizontally
+              fontSize: 11,               // Adjust font size of the header
+              fontStyle: 'arialnarrow'    // Set font style to Arial Narrow
+            },
+            bodyStyles: {
+              fillColor: false,           // Remove background color for body cells
+              // fontStyle: 'bold',
+              // fontSize: 11, 
+              textColor: [0, 0, 0],       // Black text color for body
+              lineColor: [0, 0, 0],       // Set body cell border color
+              lineWidth: 0.2              // Set body cell border width
+            },
+            tableLineWidth: 0.2,          // Set table border width
+            tableLineColor: [0, 0, 0],    // Set table border color
+            margin: { top: 0 }            // Adjust table margin if needed
+          });
+          // Convert the PDF content into a data URL
+          const dataUri = doc.output('datauristring');
+    
+          // Create a new HTML file with the PDF content
+          const htmlContent = `<html><head><title>Monthly Trip Report</title></head><body><iframe width="100%" height="100%" src="${dataUri}"></iframe></body></html>`;
+          const blob = new Blob([htmlContent], { type: 'text/html' });
+          const url = URL.createObjectURL(blob);
+    
+          // Open the new HTML file in a new tab
+          window.open(url, '_blank');
+          
+        } catch (error) {
+          console.error('Error generating PDF:', error);
+        }
+      };
+
+      const handleGenerateReport = () => {
+        try {
+          const doc = new jsPDF();
+      
+          doc.addImage(logo, 'PNG', 50, 15, 20, 18);
+    
+          // doc.setFont('helvetica', 'bold'); // Set font to bold
+          doc.text('Bukidnon State University', 75, 25);
+          
+      
+          doc.setFontSize(10); // Adjust font size here
+          doc.text('Malaybalay City, Bukidnon', 86, 32);
+    
+          doc.setFontSize(12); // Adjust font size here
+          doc.text('GSU - Motorpool Section', 83, 50);
+    
+          doc.setFontSize(14); // Adjust font size here
+          doc.text('NUMBER OF TRIP VEHICLE FOR THE MONTH OF APRIL 2024', 35, 60);
+    
+          doc.setFontSize(13); // Adjust font size here
+          doc.text('Within and Beyond Official Station', 72, 67);
+    
+          const tableData = bookingData.map((booking, index) => [
+            booking.plateNumber,
+            booking.boundFor,
+            booking.destination,
+            formatDateTime(booking.timeForBound),
+            formatDateTime(booking.returnDate)
+          ]);
+    
+          doc.autoTable({
+            startY: 87,
+            head: [['Plate Number', 'Bound For', 'Destination', 'Time For Bound', 'Return Date']],
+            body: tableData,
+            headStyles: {
+              fillColor: [255, 255, 255], // White background for header
+              textColor: [0, 0, 0],       // Black text color for header
+              lineColor: [0, 0, 0],       // Set header cell border color
+              lineWidth: 0.2,             // Set header cell border width
+              halign: 'center',           // Center align the header content horizontally
+              fontSize: 11,               // Adjust font size of the header
+              fontStyle: 'arialnarrow'    // Set font style to Arial Narrow
+            },
+            bodyStyles: {
+              fillColor: false,           // Remove background color for body cells
+              // fontStyle: 'bold',
+              // fontSize: 11, 
+              textColor: [0, 0, 0],       // Black text color for body
+              lineColor: [0, 0, 0],       // Set body cell border color
+              lineWidth: 0.2              // Set body cell border width
+            },
+            tableLineWidth: 0.2,          // Set table border width
+            tableLineColor: [0, 0, 0],    // Set table border color
+            margin: { top: 0 }            // Adjust table margin if needed
+          });
+    
+          // Save the PDF
+          doc.save('Monthly Trip Report.pdf');
+        } catch (error) {
+          console.error('Error generating PDF:', error);
+        }
+      };
 
   useEffect(() => {
     // Fetch booking data from the server
@@ -92,28 +229,20 @@ function TripReport() {
   return (
     <div className="main-container">
     <motion.div
-      animate={{
-        width: isOpen ? "200px" : "75px",
-        transition: {
-          duration: 0.5,
-          type: "spring",
-          damping: 10,
-        },
-      }}
       className={`sidebar `}
     >
-      <div className="top_section">
+      {/* <div className="top_section">
         <div className="bars">
           <FaBars onClick={toggle} />
         </div>
-      </div>
+      </div> */}
       <div className="pl-5">
         <img
           alt="logoSide"
           src={logo} // Make sure to import your logo and replace "logo" with the actual variable holding your logo image path
           className="rounded-circle usr-image"
-          height={isOpen ? "150" : "40"}
-          width={isOpen ? "150" : "40"}
+          height="150"
+          width="150"
         />
       </div>
       <section className="routes">
@@ -124,7 +253,7 @@ function TripReport() {
                     setIsOpen={setIsOpen}
                     route={route}
                     showAnimation={showAnimation}
-                    isOpen={isOpen}
+                    key={index}
                   />
                 );
               }
@@ -140,7 +269,7 @@ function TripReport() {
                 >
                   <div className="icon">{route.icon}</div>
                   <AnimatePresence>
-                    {isOpen && (
+                  
                       <motion.div
                         variants={showAnimation}
                         initial="hidden"
@@ -151,7 +280,7 @@ function TripReport() {
                       >
                         {route.name}
                       </motion.div>
-                    )}
+                 
                   </AnimatePresence>
                   </NavLink>
       
@@ -160,13 +289,17 @@ function TripReport() {
       </section>
     </motion.div>
     <main>
+    <div>
+      <button onClick={generatePDF} className="generate-button">Generate Report</button>
+      </div>
       <div className='header-wrapper'>
         <div className='header-container'>   
           <h1><strong>Reports</strong>    <p className="userName">SECRETARY</p></h1>
         </div>
       </div>
-      <div className='Report-container'>
-    <div className='report-wrapper'>
+      {/* <div className='Report-container'>
+    <div className='report-wrapper'> */}
+  
       <div className='TableReportContainer'>
       <table className='reportTable'>
   <thead>
@@ -176,7 +309,6 @@ function TripReport() {
       <th>DESTINATION</th>
       <th>DEPARTURE</th>
       <th>RETURN</th>
-      <th>KM</th>
       <th>ACTION</th>
      
     </tr>
@@ -189,21 +321,23 @@ function TripReport() {
                     <td>{booking.destination}</td>
                     <td>{formatDateTime(booking.timeForBound)}</td>
                     <td>{formatDateTime(booking.returnDate)}</td>
-                    <td>km</td>
+                    
                     <td>
                       <FaHistory className='actionBtn' />
-                      <IoDocumentAttachOutline className='actionBtn' />
+                      <button onClick={handleGenerateReport} className='actionBtn '>
+                  <IoDocumentAttachOutline />
+                  </button>
                     </td>
                   </tr>
                 ))}
   </tbody>
 </table>
-      </div>
-</div>
+      {/* </div>
+</div> */}
     </div>
     </main>
   </div>
-  )
-}
+  );
+};
 
-export default TripReport
+export default TripReport;

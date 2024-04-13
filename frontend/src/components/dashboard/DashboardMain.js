@@ -1,7 +1,7 @@
 // import Sidebar from '../Sidebar'
 import React, { useState } from 'react';
 import { GoScreenFull } from "react-icons/go";
-import Reminder from '../../layout/Reminder';
+import Reminder from '../../layout/Remindercopy';
 import Map from '../../layout/Map';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faCircleUser } from '@fortawesome/free-solid-svg-icons';
@@ -31,7 +31,7 @@ function DashboardMain() {
       <Reminder/>
       </div> */}
 					<div className= "container-9 text-success text-center ">
-          {/* <Reminder/> */}
+          <Reminder/>
           <Map/>
         </div>
 </div>

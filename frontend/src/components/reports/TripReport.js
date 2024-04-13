@@ -184,9 +184,41 @@ const TripReport = () => {
 
         </div>
       </div>
-      <div className='Report-container'>
-        <div className='report-wrapper'>
-          <DataTable value={bookingData}
+      {/* <div className='Report-container'>
+        <div className='report-wrapper'> */}
+        <div className='TableReportContainer'>
+      <table className='reportTable'>
+  <thead>
+    <tr>
+      <th>PLATE NO.</th>
+      <th>DEPARTURE</th>
+      <th>DESTINATION</th>
+      <th>DEPARTURE</th>
+      <th>RETURN</th>
+      <th>ACTION</th>
+     
+    </tr>
+  </thead>
+  <tbody>
+  {bookingData.map((booking) => (
+                  <tr key={booking._id}>
+                    <td>{booking.plateNumber}</td>
+                    <td>{booking.boundFor}</td>
+                    <td>{booking.destination}</td>
+                    <td>{formatDateTime(booking.timeForBound)}</td>
+                    <td>{formatDateTime(booking.returnDate)}</td>
+                
+                    <td>
+                      <FaHistory className='actionBtn' />
+                      <IoDocumentAttachOutline className='actionBtn' />
+                    </td>
+                  </tr>
+                ))}
+  </tbody>
+</table>
+      </div>
+
+          {/* <DataTable value={bookingData}
             size="large"
             showGridlines
             removableSort
@@ -204,9 +236,9 @@ const TripReport = () => {
                   </button>
               </React.Fragment>
             )} />
-          </DataTable>
-        </div>
-      </div>
+          </DataTable> */}
+        {/* </div>
+      </div> */}
     </>
   );
 };
