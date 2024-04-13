@@ -171,6 +171,8 @@ useEffect(() => {
     });
   
     // Check if plateNumber exists in the database
+    if (longitude !== undefined && latitude !== undefined && plateNumber !== undefined) {
+      // Upload extracted data to the database
     try {
       const response = await fetch(`http://localhost:3000/check-plate/${plateNumber}`);
       if (response.ok) {
@@ -198,6 +200,10 @@ useEffect(() => {
     } catch (error) {
       console.error('Error during fetch:', error);
     }
+  } else {
+    // Alert if any required field is missing
+    alert('No data for longitude, latitude, or plateNumber');
+  }
   });
   
   // Cleanup function
