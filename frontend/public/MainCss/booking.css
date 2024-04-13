@@ -3,6 +3,9 @@
  
   
 }
+.reminder-Head h6{
+  margin-left: 23px;
+}
 .booking-wrapper{
   display: flex;
   flex-grow: 1;
@@ -20,12 +23,12 @@
   margin-top: 20px;
   margin-left: 20px;
 }
-.header-wrapper p{
+.userName{
   text-align: right;
-  margin-top: 30px;
-  size: 10px;
+  margin-top: 25px;
+  size: 8px;
   color: #5c5a5a;
-  margin-right: 80px;
+  margin-right: 100px;
 }
 
 #searchBar{
@@ -40,12 +43,13 @@
 .addB_Container{
   margin-left: 32%;
   z-index: 10000;
+  width:10px;
 }
 
 
 .addbookingscroll{
   height: 90vh;
-  width: 100%;
+  width: 90%;
   right: 0;
   position: absolute;
   direction: ltr;
@@ -55,10 +59,10 @@
 
 
 
-@media (max-width: 796px) {
+@media (max-width: 700px) {
   .addbookingscroll{
     height: 90vh;
-    width: 100%;
+    width: 90%;
     right: 0;
     position: absolute;
     direction: ltr;
@@ -72,15 +76,15 @@
   display: block;
   margin-bottom: 10px;
   margin-top: 5px;
-  width: 400px;
+  width: 360px;
   color: rgb(36, 35, 42);
-  font-size: 16px;
+  font-size: 14px;
   line-height: 20px;
   min-height: 28px;
   border-radius: 4px;
   padding: 8px 16px;
   border: 2px solid transparent;
-  box-shadow: rgb(0 0 0 / 12%) 0px 1px 3px, rgb(0 0 0 / 24%) 0px 1px 2px;
+  box-shadow: rgb(97, 97, 97) 0px 1px 3px, rgb(0 0 0 / 24%) 0px 1px 2px;
   background: rgb(251, 251, 251);
   transition: all 0.1s ease 0s;
   :focus{
@@ -88,7 +92,11 @@
   }
 
 }
+.bookingInput p{
+  color: #0a58ca;
+}
 
+/* 
 .submitBooking{
  margin-top: 5px;
   display: inline-block;
@@ -139,34 +147,73 @@
   height: 48px;
   :hover{
       background-color: rgba(121, 138, 196, 0.71);
-  }
+  } */
+/* } */
+
+.submitBooking, .cancelBooking {
+  display: inline-block;
+  outline: none;
+  cursor: pointer;
+  font-size: 12px;
+  margin-left: 10px;
+  margin-top: 10px;
+  line-height: 1;
+  border-radius: 20px; /* Adjust border-radius to make it look like a normal button */
+  transition: background-color 0.3s; /* Simplify transition property */
+  border: 1px solid transparent;
+  letter-spacing: 1px; /* Adjust letter-spacing for better readability */
+  min-width: 100px; /* Adjust min-width for button size */
+  text-transform: uppercase;
+  white-space: nowrap; /* Prevent line breaks in button text */
+  font-weight: 500;
+  text-align: center;
+  padding: 12px 28px; /* Adjust padding for better button appearance */
+  color: #fff;
 }
 
+.submitBooking {
+  background-color: #2a51dd;
+}
+
+.submitBooking:hover {
+  background-color: #6379c5a7;
+}
+
+.cancelBooking { 
+  margin-right: 50px; /* Adjust margin for spacing between buttons */
+  background-color: #8a8b90;
+}
+
+.cancelBooking:hover {
+  background-color: rgba(121, 138, 196, 0.71);
+}
 .add_booking_area{
   /* float: left;
   box-shadow: rgb(0 0 0 / 12%) 0px 1px 3px, rgb(0 0 0 / 24%) 0px 1px 2px; */
-
-  margin-left: 5px;
+  margin-top:10px;
+  margin-left: 10px;
   width: 250px;
   
 }
 
 .add_booking_area_btn{ 
-  height: 35px;
-  width: 150px;
+  height: 40px;
+  width: 145px;
 cursor: pointer;
 outline: 0;
 color: #fff;
-background-color: #0d6efd;
-border-color: #0d6efd;
-display: inline-block;
+margin-top: 20px;
+background-color: #2a51dd;
+border-color: #2a51dd;
+/* display: inline-block; */
 font-weight: bold;
 line-height: 1.5;
 text-align: center;
+margin-left: 10px;
 justify-content: center;
 border: 1px solid transparent;
 margin: 10px 40px 10px 40px;
-font-size: 16px;
+font-size: 14px;
 border-radius: .25rem;
 transition: color .15s ease-in-out,background-color .15s ease-in-out,border-color .15s ease-in-out,box-shadow .15s ease-in-out;
 :hover {
@@ -198,12 +245,21 @@ margin-left: 10px;
   border:1px solid #7070749a;
   border-radius: 5px;
   margin-top: 13px;
-  height: 485px;
-  margin-left: 20px;
+  height: 400px;
+  margin-left: 16px;
   overflow: scroll;
   position: relative;
 }
-
+.reminder-containers{
+/* margin: 10px; */
+border:1px solid #7070749a;
+border-radius: 5px;
+margin-top: 13px;
+height: 447px;
+margin-left: 16px;
+overflow: scroll;
+position: relative;
+}
 .BookingList td{
   font-size: 13px;
   width: 200px;
@@ -256,7 +312,7 @@ margin-left: 10px;
 }
 
 .EventComponent {
-  font-size: 16px;
+  font-size: 14px;
   margin-bottom: 10px;
 }
 
@@ -267,7 +323,7 @@ margin-left: 10px;
 
 .EventComponent .timeForBound {
   margin-top: 5px;
-  color: #f9f8f8; /* Adjust the color as needed */
+  color: #f9f8f8; 
   font-size: 14px;
 }
 

@@ -24,7 +24,13 @@
 .search-container {
   margin-right: auto; /* Push the search container to the right */
 }
-
+.userName{
+  text-align: right;
+  margin-top: 25px;
+  size: 8px;
+  color: #5c5a5a;
+  margin-right: 100px;
+}
 
 
 .vehicleList {
@@ -166,7 +172,7 @@ pointer-events: none;
   position: absolute;
   left: 39px; /* Button width - 1px */
   outline: none;
-  font-size: 14px;
+  /* font-size: 14px; */
   border: none;
   padding: 0;
   width: auto; /* Set initial width to auto */
@@ -190,6 +196,7 @@ pointer-events: none;
 .expandright {
 left: auto;
 right: 49px; /* Button width-1px */
+font-size: 14px;
 }
 
 .expandright:focus {
@@ -216,7 +223,56 @@ display: block;
 }
 }
 
+/* .saveCar{
+outline: none;
+  cursor: pointer;
+  font-size: 14px;
+  line-height: 1;
+  border-radius: 500px;
+  transition-property: background-color,border-color,color,box-shadow,filter;
+  transition-duration: .3s;
+  border: 1px solid transparent;
+  letter-spacing: 2px;
+  min-width: 80px;
+  text-transform: uppercase;
+  white-space: normal;
+  font-weight: 700;
+  text-align: center;
+  padding: 16px 14px 18px;
+  color: #fff;
+  background-color: #2a51dd;
+  height: 48px;
+  :hover{
+      background-color: #6379c5a7;
+}
+}
 
+
+.closeM{
+  display: inline-block;
+  outline: none;
+  cursor: pointer;
+  font-size: 12px;
+  line-height: 1;
+  border-radius: 300px;
+  transition-property: background-color,border-color,color,box-shadow,filter;
+  transition-duration: .3s;
+  border: 1px solid transparent;
+  letter-spacing: 2px;
+  min-width: 100px;
+  text-transform: uppercase;
+  white-space: normal;
+  font-weight: 700;
+  text-align: center;
+  padding: 16px 14px 18px;
+  margin-left: 30px;
+  color: #fff;
+  background-color: #8a8b90;
+  height: 48px;
+  :hover{
+      background-color: rgba(121, 138, 196, 0.71);
+  }
+} */
 .saveCar, .closeM {
   display: inline-block;
   outline: none;
@@ -237,20 +293,20 @@ display: block;
 }
 
 .saveCar {
-  background-color: #1adf1a;
+  background-color: #2a51dd;
 }
 
 .saveCar:hover {
-  background-color: #73c563a7;
+  background-color: #6379c5a7;
 }
 
 .closeM { 
   margin-right: 10px; /* Adjust margin for spacing between buttons */
-  background-color: #f80f0f;
+  background-color: #8a8b90;
 }
 
 .closeM:hover {
-  background-color: rgba(196, 121, 121, 0.71);
+  background-color: rgba(121, 138, 196, 0.71);
 }
 
 
@@ -370,6 +426,67 @@ display: block;
   outline: 1px solid transparent; /* Maintain outline transparency */
 }
 
+/* .button-available{
+  display: inline-block;
+  outline: 0;
+  cursor: pointer;
+  text-align: center;
+  border: 1px solid #babfc3;
+  padding: 7px 16px;
+  min-height: 36px;
+  width: 100px;
+  color: #202223;
+  background: #ffffff;
+  border-radius: 4px;
+  font-weight: 500;
+  font-size: 14px;
+  box-shadow: rgba(0, 0, 0, 0.05) 0px 1px 0px 0px;
+  margin-left: 50px;
+  margin-right: 20px;
+}
+
+.button-available:hover{
+  background-color: #3838f3ae;
+  outline: 1px solid transparent;
+  color: white;
+}
+
+.button-available:active{
+  background-color: #4040f4ca;
+  outline: 1px solid transparent;
+  color:white;
+}
+
+.button-use{
+  display: inline-block;
+  outline: 0;
+  cursor: pointer;
+  text-align: center;
+  border: 1px solid #babfc3;
+  padding: 7px 16px;
+  min-height: 36px;
+  width: 100px;
+  color: #202223;
+  background: #ffffff;
+  border-radius: 4px;
+  font-weight: 500;
+  font-size: 14px;
+  box-shadow: rgba(0, 0, 0, 0.05) 0px 1px 0px 0px;
+  margin-left: 50px;
+  margin-right: 20px;
+}
+
+.button-use:hover{
+  background-color: #3838f3ae;
+  outline: 1px solid transparent;
+  color: white;
+}
+
+.button-use .active{
+  background-color: #4040f4ca;
+  outline: 1px solid transparent;
+  color:white;
+} */
 
 .ListVehicle {
   font-family: arial, sans-serif;
@@ -417,7 +534,25 @@ display: block;
   margin-top: 0px;
 }
 
+/* .ListVehicle th {
+  
+  top: 10;
+  background-color: #3535f0;
+  text-align: center;  
+  
+} */
 
+/* .table th {
+  background-color: #3535f0;
+  color: white;
+  height: 40px;
+  height:20px;
+} */
+
+/* .custom-table {
+  background-color: #3535f0;
+  color: white;
+} */
 .table thead th {
   background-color: #3535f0; 
   height: 30px;
@@ -468,36 +603,59 @@ tbody.vList{
   margin-left: 10px;
 }
 
+.custom-modal-content {
+  width: 80%;
+}
+
 .pictureArea{
   padding-left: 40px;
  display: flex;  
  line-height: 2px;
  background-color: white;
- height: 150px;
+ height: 200px;
  border-radius: 10px;
  padding: 10px;
- width: 100%;
+ width: 97%;
 align-content: center;
 align-items: center;
 box-shadow: 0 1px 3px rgba(0,0,0,0.12), 0 1px 2px rgba(0,0,0,0.24);
 
 }
-.Picture {
-  flex: 1;
-  padding: 10px;
-margin-left: 20%;
 
+.Picture img {
+  width: 180px;
+  height: 100px;
+  float: left;
+  margin-left: 35px;
 }
 
-.picText{
-display: block;
-margin-right: 20%;
-grid: 1;
+.picText {
+  padding: 10px; /* Add padding around the content */
+}
+
+.plate-number {
+  color: #333; /* Set color for plate number */
+  font-size: 15px; /* Set font size for plate number */
+  margin-bottom: 5px;
+  margin-left: 12px;
+  justify-content: center;
+   /* Add some space below the plate number */
+}
+
+.vehicle-details {
+  color: #666; /* Set color for vehicle details */
+  font-size: 16px; /* Set font size for vehicle details */
+}
+
+
+.picText p {
+  font-size: 16px;
+  color: #1adf1a; /* Set the font size for paragraphs */
 }
 
 .detail{
 font-size: 15px;
-color: #8a8b90;
+color: #1adf1a;
 font-weight: bold;
 }
 .detailAnswer{
@@ -557,3 +715,4 @@ box-shadow: 0 1px 3px rgba(0,0,0,0.12), 0 1px 2px rgba(0,0,0,0.24);}
  float: right;
  
 }
+

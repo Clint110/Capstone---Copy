@@ -32,13 +32,13 @@ body{
   margin-top: 40px;
   margin-left: 20px;
 }
-.header-wrapper p{
+.userName{
   text-align: right;
-  margin-top: 20px;
-  size: 12px;
-  margin-right: 80px;
+  margin-top: 25px;
+  size: 8px;
+  color: #5c5a5a;
+  margin-right: 100px;
 }
-
 .dashboard-wrapper{
   display: flex;
   flex-grow: 1;
@@ -154,3 +154,4 @@ body{
   color: rgba(128, 128, 128, 0.808);
 
 }
+

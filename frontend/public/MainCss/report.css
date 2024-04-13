@@ -1,24 +1,62 @@
 .Report-container{
     
-  margin-top: 10px;
+  margin-top: 80px;
   display: inline-block;
-  vertical-align: top; 
+  vertical-align: top;
+  width: 10px;
+  margin-left: 10px;
+ 
 }
 
 
 .report-wrapper{
   display: flex;
   flex-grow: 1;
-  padding: 10px;
-  font-size: 15px;
+  padding: 5px;
+  font-size: 12px;
   line-height: 20px;
- /* width: 1100px; */
+  width: 1000px;
   align-items: stretch;
   height: 400px;
-  /* background-color: #eab768;
-  border-radius: 10px;
-  border: 10px solid #f5cc8b; */
+  margin-left: 150%;
+  margin-top:30px;
+  margin-right: 150%;
   
+  /* background-color: #e7e7e7; */
+  /* border-color: azure; */
+  /* border-radius: 0px; */
+  /* border: 10px solid #f5cc8b; */
+  
+}
+
+.generate-button:hover {
+  /* Add your hover styles here */
+  background-color: #3c79fd; /* Example background color */
+  cursor: pointer; /* Change cursor to pointer on hover */
+}
+
+.header-wrapper h4{
+  text-align: left;
+  margin-top: 20px;
+  margin-left: 20px;
+}
+.userName{
+  text-align: right;
+  margin-top: 25px;
+  size: 8px;
+  color: #5c5a5a;
+  margin-right: 100px;
+}
+
+.generate-button {
+  background-color: blue;
+  color: white;
+  padding: 10px;
+  border-radius: 5px;
+  border: none;
+  cursor: pointer;
+  margin-top: 100px;
+  margin-left: 900px;
 }
 
 .TableReportContainer{
@@ -27,6 +65,7 @@
   height: 500px;
   box-shadow: rgb(0 0 0 / 12%) 0px 1px 3px, rgb(0 0 0 / 24%) 0px 1px 2px;
 overflow-y: scroll;
+
 }
 
 table.reportTable {
@@ -34,23 +73,27 @@ table.reportTable {
 overflow: hidden; */
 border-collapse: collapse;
 
+
 }
 
  th.reportTable {
   width: 200px;
   height: 40px;
-font-size: 18px;
-  word-break: break-all;
-  text-overflow: ellipsis;
-  box-shadow: 0em 1px  0em  rgba( 0, 0, 0, 0.4 )
+  font-size: 12px;
+  text-align: left;
+  /* word-break: break-all;
+  text-overflow: ellipsis; */
+  box-shadow: 0em 1px  0em  rgba(66, 66, 66, 0.4)
 }
 
 td.reportTable, td{
   width: 200px;
   height: 40px;
-  font-size: 15px;
-  word-break: break-all;
-  text-overflow: ellipsis;
+  font-size: 12px;
+  margin-left: 10px;
+  margin-top: 10px;
+  /* word-break: break-all;
+  text-overflow: ellipsis; */
   box-shadow: 0em 1px  0em  rgba( 0, 0, 0, 0.4 )
 }
 
@@ -64,16 +107,23 @@ font-size: 15px;
 }
 
 .reportTable td{
-  width: 180px;
-  font-size: 15px;
+  width: 150px;
+  font-size: 12px;
   white-space: normal; 
 
 }
 .reportTable thead th:first-child {
-  padding-left: 20px;
+  padding-left: 10px;
+  padding-top: 10px;
 }
 .reportTable tbody td:first-child {
- padding-left: 20px;
+ padding-left: 10px;
+ padding-top: 10px;
+
+}
+
+.DataTable th {
+  border: 2px solid #8f0a0a; /* Border color */
 }
 
 

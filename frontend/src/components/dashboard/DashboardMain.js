@@ -3,7 +3,8 @@ import React, { useState } from 'react';
 import { GoScreenFull } from "react-icons/go";
 import Reminder from '../../layout/Reminder';
 import Map from '../../layout/Map';
-
+import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
+import { faCircleUser } from '@fortawesome/free-solid-svg-icons';
 
 
 function DashboardMain() {
@@ -20,8 +21,8 @@ function DashboardMain() {
     <>
     <div className="header-wrapper">
 <div className='header-container'>   
-<h3><strong>DASHBOARD</strong>    <p className="userName">Administrator</p>
-	</h3>
+<h4><strong>DASHBOARD</strong> 	</h4>    <span className="userName">Administrator <FontAwesomeIcon icon={faCircleUser} /></span>
+	
 </div></div>
     <div className='Dashboard-container'>
     <section class="spacethis">
@@ -29,8 +30,8 @@ function DashboardMain() {
         {/* <div >
       <Reminder/>
       </div> */}
-					<div className= "container-9 text-center p-2 ">
-          <Reminder/>
+					<div className= "container-9 text-success text-center ">
+          {/* <Reminder/> */}
           <Map/>
         </div>
 </div>
@@ -38,6 +39,10 @@ function DashboardMain() {
 
 </div>
 
+
+
+  {/* </div>
+  */}
 
 </>
   )

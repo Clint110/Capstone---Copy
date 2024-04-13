@@ -8,6 +8,8 @@ import 'react-datepicker/dist/react-datepicker.css';
 
 import React, { useState, useEffect } from "react";
 import "react-datepicker/dist/react-datepicker.css";
+import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
+import { faCircleUser } from '@fortawesome/free-solid-svg-icons';
 
 // import 'react-big-calendar/lib/sass/styles';
 
@@ -256,8 +258,8 @@ setNewEvent({ title: "", driver: "", start: null, end: null });
     <>
         <div className="header-wrapper">
     <div className='header-container'>   
-            <h1><strong>Booking</strong>    <p className="userName">Administrator</p>
-    </h1>
+            <h4><strong>BOOKING</strong> </h4>   <span className="userName">Administrator <FontAwesomeIcon icon={faCircleUser} /></span>
+    
     </div></div>
     <div className='Booking-container'>
     <div className='Container row'>
@@ -265,12 +267,11 @@ setNewEvent({ title: "", driver: "", start: null, end: null });
 <div className='booking-wrapper'>
   <div className='add_booking_area'>
 <hr/>
-<div className="reminder-Head">
-<h6>FILTER</h6>
-<p><FaRegSquare className="iconRemind"/> View All</p>
-</div>
 
-  <div className="reminder-container">
+<div className="reminder-Head">
+<h6>SCHEDULES</h6></div>
+
+  <div className="reminder-containers">
   <div className="reminder-content">
   <tbody className="BookingList">
   {allEvents.slice(0).reverse().map((event, index) => (
