@@ -43,7 +43,7 @@ function Map() {
     fetchDataFromDatabase();
 
   // Establish connection with Flask SocketIO server
-  const socket = io('http://192.168.254.100:8766'); // Adjust the URL to match your Flask server's IP and port
+  const socket = io('http://192.168.1.243:8766'); // Adjust the URL to match your Flask server's IP and port
 
   // Handle connection
   socket.on('connect', () => {
@@ -135,7 +135,7 @@ function Map() {
   
 useEffect(() => {
   // Establish connection with Flask SocketIO server
-  const socket = io('http://192.168.254.100:8766'); // Adjust the URL to match your Flask server's IP and port
+  const socket = io('http://192.168.1.243:8766'); // Adjust the URL to match your Flask server's IP and port
 
   // Handle connection
   socket.on('connect', () => {
