@@ -21,6 +21,7 @@ function formatDateTime(dateTimeString) {
 
 const TripReport = () => {
   const [bookingData, setBookingData] = useState([]);
+  const [editableData, setEditableData] = useState({});
 
   const generatePDF = () => {
     try {
@@ -175,6 +176,38 @@ const TripReport = () => {
     fetchBookingData();
   }, []);
 
+
+
+  const handleEdit = (index) => {
+    setEditableData({ ...bookingData[index] });
+  };
+
+  const handleChange = (e, key) => {
+    const { value } = e.target;
+    setEditableData(prevState => ({
+      ...prevState,
+      [key]: value
+    }));
+  };
+
+  const handleSubmit = async (index) => {
+    try {
+      // Update data in the database
+      await axios.put(`http://localhost:3000/editbook/${editableData._id}`, editableData);
+      
+      // Update data in the UI
+      const updatedBookingData = [...bookingData];
+      updatedBookingData[index] = editableData;
+      setBookingData(updatedBookingData);
+
+      // Clear editable data
+      setEditableData({});
+    } catch (error) {
+      console.error('Error updating booking data:', error);
+    }
+  };
+
+
   return (
     <>
       <div>
@@ -202,7 +235,7 @@ const TripReport = () => {
     </tr>
   </thead>
   <tbody>
-  {bookingData.map((booking) => (
+  {/* {bookingData.map((booking) => (
                   <tr key={booking._id}>
                     <td>{booking.plateNumber}</td>
                     <td>{booking.boundFor}</td>
@@ -211,8 +244,25 @@ const TripReport = () => {
                     <td>{formatDateTime(booking.returnDate)}</td>
                 
                     <td>
-                      <button type="button" class="btn btn-warning btn-sm">Edit</button>&nbsp; 
-                      <button type="button" class="btn btn-danger btn-sm">Delete</button>
+                    <button type="button" class="btn btn-warning btn-sm" onClick={() => handleEditBooking(booking.plateNumber)}>Edit</button>&nbsp; 
+                      <button type="button" class="btn btn-warning btn-sm">Edit</button>&nbsp;  */}
+                       {bookingData.map((booking, index) => (
+              <tr key={booking._id}>
+                <td>{editableData._id === booking._id ? <input type="text" value={editableData.plateNumber} onChange={(e) => handleChange(e, 'plateNumber')} /> : booking.plateNumber}</td>
+                <td>{editableData._id === booking._id ? <input type="text" value={editableData.boundFor} onChange={(e) => handleChange(e, 'boundFor')} /> : booking.boundFor}</td>
+                <td>{editableData._id === booking._id ? <input type="text" value={editableData.destination} onChange={(e) => handleChange(e, 'destination')} /> : booking.destination}</td>
+                <td>{editableData._id === booking._id ? <input type="text" value={editableData.timeForBound} onChange={(e) => handleChange(e, 'timeForBound')} /> : booking.timeForBound}</td>
+                <td>{editableData._id === booking._id ? <input type="text" value={editableData.returnDate} onChange={(e) => handleChange(e, 'returnDate')} /> : booking.returnDate}</td>
+                <td>
+                  {editableData._id === booking._id ? (
+                    <>
+                      <button type="button" class="btn btn-warning btn-sm" onClick={() => handleSubmit(index)}>Submit</button>&nbsp;
+                      <button type="button" class="btn btn-danger btn-sm" onClick={() => setEditableData({})}>Cancel</button>
+                    </>
+                  ) : (
+                    <button type="button" class="btn btn-warning btn-sm" onClick={() => handleEdit(index)}>Edit</button>
+                  )}
+                      &nbsp;<button type="button" class="btn btn-danger btn-sm">Delete</button>
                       <button onClick={handleGenerateReport} className='actionBtn '
                       ><IoDocumentAttachOutline />
                       </button>

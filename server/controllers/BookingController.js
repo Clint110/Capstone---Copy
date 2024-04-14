@@ -51,3 +51,22 @@ exports.getBookingDetailsByPlateNumber = async (req, res) => {
     res.status(500).json({ error: 'Internal Server Error' });
   }
 };
+
+exports.editBooking = async (req, res) => {
+  try {
+    const bookingId = req.params.id;
+    const updatedData = req.body;
+
+    // Find the booking by id and update it with the new data
+    const updatedBooking = await Booking.findByIdAndUpdate(bookingId, updatedData, { new: true });
+
+    if (!updatedBooking) {
+      return res.status(404).json({ error: 'Booking not found' });
+    }
+
+    res.json({ success: true, message: 'Booking updated successfully', booking: updatedBooking });
+  } catch (error) {
+    console.error('Error updating booking:', error);
+    res.status(500).json({ success: false, message: 'Internal Server Error' });
+  }
+};
