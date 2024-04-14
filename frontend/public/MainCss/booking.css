@@ -257,8 +257,10 @@ border-radius: 5px;
 margin-top: 13px;
 height: 447px;
 margin-left: 16px;
-overflow: scroll;
+/* overflow-y: hidden; */
 position: relative;
+overflow: hidden;
+overflow-y: auto;
 }
 .BookingList td{
   font-size: 13px;
@@ -276,7 +278,8 @@ position: relative;
 
 .reminder-content {
   padding-right: 1px; 
-  
+
+
 
 }
 
