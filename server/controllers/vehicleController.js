@@ -186,3 +186,13 @@ exports.vecstatus = async (req, res) => {
       res.status(500).json({ error: 'Internal Server Error' });
     }
   }
+
+
+exports.markAvailable = async (req, res) => {
+    try {
+      // Your implementation for marking a vehicle as available
+    } catch (error) {
+      console.error('Error marking vehicle as available:', error);
+      res.status(500).json({ error: 'Internal server error' });
+    }
+  };
