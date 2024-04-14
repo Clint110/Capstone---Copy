@@ -186,20 +186,3 @@ exports.vecstatus = async (req, res) => {
       res.status(500).json({ error: 'Internal Server Error' });
     }
   }
-
-  exports.markAvailable = async (req, res) => {
-    try {
-      const { plateNumber } = req.params;
-      // Check if there is an active booking for this vehicle
-      const booking = await Booking.findOne({ plateNumber, returnDate: { $gte: new Date() } });
-      if (booking) {
-        return res.status(400).json({ error: 'Cannot mark vehicle as available. There is an active booking for this vehicle.' });
-      }
-      // Update the status of the vehicle to "Available"
-      await Vehicle.updateOne({ plateNumber }, { $set: { status: 'Available' } });
-      res.json({ success: true, message: 'Vehicle marked as available.' });
-    } catch (error) {
-      console.error('Error marking vehicle as available:', error);
-      res.status(500).json({ error: 'Internal server error' });
-    }
-  };
