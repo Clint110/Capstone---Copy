@@ -29,6 +29,7 @@ function formatDateTime(dateTimeString) {
 
 const TripReport = () => {
   const [bookingData, setBookingData] = useState([]);
+  const [editableData, setEditableData] = useState({});
 
   const generatePDF = () => {
     try {
@@ -208,6 +209,38 @@ const TripReport = () => {
     // Call the fetch function
     fetchBookingData();
   }, []);
+
+  const handleEdit = (index) => {
+    setEditableData({ ...bookingData[index] });
+  };
+
+  const handleChange = (e, key) => {
+    const { value } = e.target;
+    setEditableData((prevState) => ({
+      ...prevState,
+      [key]: value,
+    }));
+  };
+
+  const handleSubmit = async (index) => {
+    try {
+      // Update data in the database
+      await axios.put(
+        `http://localhost:3000/editbook/${editableData._id}`,
+        editableData
+      );
+
+      // Update data in the UI
+      const updatedBookingData = [...bookingData];
+      updatedBookingData[index] = editableData;
+      setBookingData(updatedBookingData);
+
+      // Clear editable data
+      setEditableData({});
+    } catch (error) {
+      console.error("Error updating booking data:", error);
+    }
+  };
 
   return (
     <>
