@@ -30,21 +30,6 @@ function formatDateTime(dateTimeString) {
 const TripReport = () => {
   const [bookingData, setBookingData] = useState([]);
 
-  const [showEditModal, setShowEditModal] = useState(false);
-
-  const handleEditButtonClick = (plateNumber) => {
-    // Set the initial values for editing based on the selected vehicle's details
-    const selectedVehicle = vehicles.find(
-      (vehicle) => vehicle.plateNumber === plateNumber
-    );
-    if (selectedVehicle) {
-      setEditedPlateNumber(selectedVehicle.plateNumber);
-      setEditedVehicle(selectedVehicle.addvehicles);
-      setEditedCarImage(selectedVehicle.carImage);
-    }
-    setShowEditModal(true); // Open the edit modal
-  };
-
   const generatePDF = () => {
     try {
       const doc = new jsPDF();
