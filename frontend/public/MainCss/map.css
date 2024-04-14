@@ -84,7 +84,7 @@
 #check{
   display: none;
 }
-.alert_box .icon{
+.alert_box .iconNi{
   height: 100px;
   width: 100px;
   color: #f23b26;
@@ -97,9 +97,11 @@
   font-size: 35px;
   font-weight: 500;
   margin: 10px 0;
+  color: black;
 }
 .alert_box p{
   font-size: 20px;
+  color: black;
 }
 .alert_box .btns{
   margin-top: 20px;
@@ -138,3 +140,4 @@
   /* p {
     font-size: 12px; 
   } */
+
