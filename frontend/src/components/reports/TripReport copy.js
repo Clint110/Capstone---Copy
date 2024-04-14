@@ -274,6 +274,14 @@ function TripReport() {
   };
 
   const handleDeleteBooking = async (plateNumber) => {
+    // Ask for confirmation before deleting
+    const confirmDelete = window.confirm(
+      "Are you sure you want to delete this booking?"
+    );
+    if (!confirmDelete) {
+      return; // If user cancels, exit the function
+    }
+
     try {
       const response = await axios.delete(
         `http://localhost:3000/deletebook/${plateNumber}`
