@@ -61,7 +61,7 @@ body{
   display: inline-block;
   width: 33.33%; /* Adjust the width as needed */
   vertical-align: top;
-  margin-left: 20px;
+  margin-left: 50px;
 
 }
 
@@ -69,18 +69,18 @@ body{
   position: fixed;
       right: 0;
       z-index: 9999; 
-  width: 230px;
-  margin-top: 12px;
-  height: 500px;
+  width: 250px;
+  margin-top: 5px;
+  height: 530px;
   padding: 2px;
   color: black;
-  margin-right: 70px;
+  margin-right: 10px;
   border-radius: 10px;
   background-color: white;
   box-shadow: rgba(0, 0, 0, 0.12) 0px 1px 3px, rgba(0, 0, 0, 0.24) 0px 1px 2px;
   text-align: center;
   overflow: scroll;
-  
+
 } 
 
 /* @media (max-width: 796px) {
@@ -95,7 +95,7 @@ body{
  .dashboard-Reminder h6 {
     position: sticky;
     text-align: center;
-    top: 11px; 
+    /* top: 11px;  */
 
   }
 
@@ -103,7 +103,7 @@ body{
 .dashboard-Reminder {
   padding-right: 0px; 
   padding-top: 10px;
-  margin-top: 30px; 
+  margin-top: 10px; 
 }
 
 .dashboard-Reminder::-webkit-scrollbar-thumb {
