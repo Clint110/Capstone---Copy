@@ -242,19 +242,21 @@ const TripReport = () => {
     }
   };
 
-
   const handleDeleteBooking = async (plateNumber) => {
     try {
-      const response = await axios.delete(`http://localhost:3000/deletebook/${plateNumber}`);
+      const response = await axios.delete(
+        `http://localhost:3000/deletebook/${plateNumber}`
+      );
       if (response.data.success) {
         // Remove the deleted booking from the state
-        setBookingData(prevData => prevData.filter(booking => booking.plateNumber !== plateNumber));
+        setBookingData((prevData) =>
+          prevData.filter((booking) => booking.plateNumber !== plateNumber)
+        );
       }
     } catch (error) {
-      console.error('Error deleting booking:', error);
+      console.error("Error deleting booking:", error);
     }
   };
-
 
   return (
     <>
@@ -275,21 +277,20 @@ const TripReport = () => {
       </div>
       {/* <div className='Report-container'>
         <div className='report-wrapper'> */}
-        <div className='TableReportContainer'>
-      <table className='reportTable'>
-  <thead>
-    <tr>
-      <th>PLATE NO.</th>
-      <th>DEPARTURE</th>
-      <th>DESTINATION</th>
-      <th>DEPARTURE</th>
-      <th>RETURN</th>
-      <th>ACTION</th>
-     
-    </tr>
-  </thead>
-  <tbody>
-  {/* {bookingData.map((booking) => (
+      <div className="TableReportContainer">
+        <table className="reportTable">
+          <thead>
+            <tr>
+              <th>PLATE NO.</th>
+              <th>DEPARTURE</th>
+              <th>DESTINATION</th>
+              <th>DEPARTURE</th>
+              <th>RETURN</th>
+              <th>ACTION</th>
+            </tr>
+          </thead>
+          <tbody>
+            {/* {bookingData.map((booking) => (
                   <tr key={booking._id}>
                     <td>{booking.plateNumber}</td>
                     <td>{booking.boundFor}</td>
@@ -300,32 +301,113 @@ const TripReport = () => {
                     <td>
                     <button type="button" class="btn btn-warning btn-sm" onClick={() => handleEditBooking(booking.plateNumber)}>Edit</button>&nbsp; 
                       <button type="button" class="btn btn-warning btn-sm">Edit</button>&nbsp;  */}
-                       {bookingData.map((booking, index) => (
+            {bookingData.map((booking, index) => (
               <tr key={booking._id}>
-                <td>{editableData._id === booking._id ? <input type="text" value={editableData.plateNumber} onChange={(e) => handleChange(e, 'plateNumber')} /> : booking.plateNumber}</td>
-                <td>{editableData._id === booking._id ? <input type="text" value={editableData.boundFor} onChange={(e) => handleChange(e, 'boundFor')} /> : booking.boundFor}</td>
-                <td>{editableData._id === booking._id ? <input type="text" value={editableData.destination} onChange={(e) => handleChange(e, 'destination')} /> : booking.destination}</td>
-                <td>{editableData._id === booking._id ? <input type="text" value={editableData.timeForBound} onChange={(e) => handleChange(e, 'timeForBound')} /> : booking.timeForBound}</td>
-                <td>{editableData._id === booking._id ? <input type="text" value={editableData.returnDate} onChange={(e) => handleChange(e, 'returnDate')} /> : booking.returnDate}</td>
+                <td>
+                  {editableData._id === booking._id ? (
+                    <input
+                      type="text"
+                      value={editableData.plateNumber}
+                      onChange={(e) => handleChange(e, "plateNumber")}
+                      required
+                    />
+                  ) : (
+                    booking.plateNumber
+                  )}
+                </td>
+                <td>
+                  {editableData._id === booking._id ? (
+                    <input
+                      type="text"
+                      value={editableData.boundFor}
+                      onChange={(e) => handleChange(e, "boundFor")}
+                      required
+                    />
+                  ) : (
+                    booking.boundFor
+                  )}
+                </td>
+                <td>
+                  {editableData._id === booking._id ? (
+                    <input
+                      type="text"
+                      value={editableData.destination}
+                      onChange={(e) => handleChange(e, "destination")}
+                      required
+                    />
+                  ) : (
+                    booking.destination
+                  )}
+                </td>
+                <td>
+                  {editableData._id === booking._id ? (
+                    <input
+                      type="text"
+                      value={editableData.timeForBound}
+                      onChange={(e) => handleChange(e, "timeForBound")}
+                      required
+                    />
+                  ) : (
+                    booking.timeForBound
+                  )}
+                </td>
+                <td>
+                  {editableData._id === booking._id ? (
+                    <input
+                      type="text"
+                      value={editableData.returnDate}
+                      onChange={(e) => handleChange(e, "returnDate")}
+                      required
+                    />
+                  ) : (
+                    booking.returnDate
+                  )}
+                </td>
                 <td>
                   {editableData._id === booking._id ? (
                     <>
-                      <button type="button" class="btn btn-warning btn-sm" onClick={() => handleSubmit(index)}>Submit</button>&nbsp;
-                      <button type="button" class="btn btn-danger btn-sm" onClick={() => setEditableData({})}>Cancel</button>
+                      <button
+                        type="button"
+                        class="btn btn-success btn-sm"
+                        onClick={() => handleSubmit(index)}
+                      >
+                        Submit
+                      </button>
+                      &nbsp;
+                      <button
+                        type="button"
+                        class="btn btn-primary btn-sm"
+                        onClick={() => setEditableData({})}
+                      >
+                        Cancel
+                      </button>
                     </>
                   ) : (
-                    <button type="button" class="btn btn-warning btn-sm" onClick={() => handleEdit(index)}>Edit</button>
+                    <button
+                      type="button"
+                      class="btn btn-warning btn-sm"
+                      onClick={() => handleEdit(index)}
+                    >
+                      Edit
+                    </button>
                   )}
-                      {/* &nbsp;<button type="button" class="btn btn-danger btn-sm">Delete</button> */}
-                     &nbsp; <button type="button" className="btn btn-danger btn-sm" onClick={() => handleDeleteBooking(booking.plateNumber)}>Delete</button>
-                      <button onClick={handleGenerateReport} className='actionBtn '
-                      ><IoDocumentAttachOutline />
-                      </button>
-                    </td>
-                  </tr>
-                ))}
-  </tbody>
-</table>
+                  {/* &nbsp;<button type="button" class="btn btn-danger btn-sm">Delete</button> */}
+                  &nbsp;{" "}
+                  <button
+                    type="button"
+                    className="btn btn-danger btn-sm"
+                    onClick={() => handleDeleteBooking(booking.plateNumber)}
+                  >
+                    Delete
+                  </button>
+                  <button onClick={handleGenerateReport} className="actionBtn ">
+                    <IoDocumentAttachOutline />
+                  </button>
+                </td>
+              </tr>
+            ))}
+          </tbody>
+        </table>
       </div>
 
       {/* <DataTable value={bookingData}
