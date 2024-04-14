@@ -121,7 +121,7 @@ height: 40px;
 .reportTable thead th:last-child {
   padding-left: 10px;
   padding-top: 1px;
-  width: 100px;
+  width: 200px;
 }
 .reportTable tbody td:last-child {
  padding-left: 10px;
