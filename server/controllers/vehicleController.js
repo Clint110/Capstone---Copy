@@ -225,5 +225,4 @@ exports.vecstatus = async (req, res) => {
       console.error('Error marking vehicle as available:', error);
       res.status(500).json({ error: 'Internal server error' });
     }
-  };
-  
+  }

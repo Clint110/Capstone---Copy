@@ -7,5 +7,7 @@ router.get('/get-data', DataController.getData);
 router.get('/get-data-plate', DataController.getData2);
 router.get('/check-plate/:plateNumber', DataController.checkPlate);
 router.put('/update-data/:plateNumber', DataController.updateData);
+// router.delete('/delete-data/:plateNumber', DataController.deleteVehicle);
+
 
 module.exports = router;

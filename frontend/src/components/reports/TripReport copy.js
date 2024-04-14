@@ -309,7 +309,6 @@ function TripReport() {
       <th>DESTINATION</th>
       <th>DEPARTURE</th>
       <th>RETURN</th>
-      <th>KM</th>
       <th>ACTION</th>
      
     </tr>
@@ -322,10 +321,12 @@ function TripReport() {
                     <td>{booking.destination}</td>
                     <td>{formatDateTime(booking.timeForBound)}</td>
                     <td>{formatDateTime(booking.returnDate)}</td>
-                    <td>km</td>
+                    
                     <td>
                       <FaHistory className='actionBtn' />
-                      <IoDocumentAttachOutline className='actionBtn' />
+                      <button onClick={handleGenerateReport} className='actionBtn '>
+                  <IoDocumentAttachOutline />
+                  </button>
                     </td>
                   </tr>
                 ))}

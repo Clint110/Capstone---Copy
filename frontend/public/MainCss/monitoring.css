@@ -10,7 +10,7 @@
   font-size: 18px;
   line-height: 10px;
   min-width: 1100px;
-  margin-top: 21%;
+  margin-top: 19%;
   margin-left:10px;
   /* margin-left: 10px; */
   width: 10px;
@@ -500,6 +500,7 @@ outline: none;
 .scrollable-container {
   max-height: 250px; /* Adjust height for better UI */
   overflow-y: auto;
+  width: 970px;
 }
 
 
@@ -507,13 +508,13 @@ outline: none;
 .table thead th,
 .scrollable-tbody td {
   /* Ensure consistent width with the scrollbar */
-  width: 40%;
+  width: 50%;
   height: inherit;
   padding-top: 5px;
   padding-left: 10px;
   margin-top: 0;
   text-align: center; /* Optional: Center-align content */
-
+  font-size: 13px;
 }
 
 
@@ -521,7 +522,7 @@ outline: none;
   font-family: Arial, sans-serif;
   /* margin: 85px auto 0; */
   max-height: 330px;
-  width: 900px;
+  width: 1000px;
   margin-left:81px;
   margin-top: 60px;
   
@@ -554,7 +555,7 @@ outline: none;
   color: white;
 } */
 .table thead th {
-  background-color: #3535f0; 
+  background-color: #38383bf9; 
   height: 30px;
   color: white;
   text-align: center;
@@ -716,3 +717,11 @@ box-shadow: 0 1px 3px rgba(0,0,0,0.12), 0 1px 2px rgba(0,0,0,0.24);}
  
 }
 
+.custom-delete-button {
+  /* Add your custom styles here */
+  background-color: red;
+  border-color: red;
+  font-size: 10px; /* Adjust the font size */
+  padding: 8px 10px; /* Adjust the padding */
+  /* Add any other styles you want */
+}
