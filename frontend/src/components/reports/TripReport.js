@@ -243,6 +243,19 @@ const TripReport = () => {
   };
 
 
+  const handleDeleteBooking = async (plateNumber) => {
+    try {
+      const response = await axios.delete(`http://localhost:3000/deletebook/${plateNumber}`);
+      if (response.data.success) {
+        // Remove the deleted booking from the state
+        setBookingData(prevData => prevData.filter(booking => booking.plateNumber !== plateNumber));
+      }
+    } catch (error) {
+      console.error('Error deleting booking:', error);
+    }
+  };
+
+
   return (
     <>
       <div>
@@ -303,7 +316,8 @@ const TripReport = () => {
                   ) : (
                     <button type="button" class="btn btn-warning btn-sm" onClick={() => handleEdit(index)}>Edit</button>
                   )}
-                      &nbsp;<button type="button" class="btn btn-danger btn-sm">Delete</button>
+                      {/* &nbsp;<button type="button" class="btn btn-danger btn-sm">Delete</button> */}
+                     &nbsp; <button type="button" className="btn btn-danger btn-sm" onClick={() => handleDeleteBooking(booking.plateNumber)}>Delete</button>
                       <button onClick={handleGenerateReport} className='actionBtn '
                       ><IoDocumentAttachOutline />
                       </button>
