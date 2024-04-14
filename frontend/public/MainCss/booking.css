@@ -3,8 +3,8 @@
  
   
 }
-.reminder-Head h6{
-  margin-left: 23px;
+.reminder-Head {
+  margin-left: 10px;
 }
 .booking-wrapper{
   display: flex;
@@ -244,36 +244,36 @@ margin-left: 10px;
   /* margin: 10px; */
   border:1px solid #7070749a;
   border-radius: 5px;
-  margin-top: 13px;
-  height: 400px;
-  margin-left: 16px;
+  margin-top: 5px;
+  margin-left: 5px;
   overflow: scroll;
   position: relative;
+  width: 250px;
+  text-align: center;
 }
-.reminder-containers{
-/* margin: 10px; */
+/* .reminder-containers{
 border:1px solid #7070749a;
 border-radius: 5px;
 margin-top: 13px;
 height: 447px;
 margin-left: 16px;
-/* overflow-y: hidden; */
 position: relative;
 overflow: hidden;
 overflow-y: auto;
-}
+
+} */
+
 .BookingList td{
   font-size: 13px;
-  width: 200px;
+  width: 230px;
   height: inherit;
- /* margin-left: 10px; */
- margin-right: 30px;
- padding-top: 20px;
- padding-bottom: 10px;
-  border-bottom:1px  #8a8b90;
+ padding: 7px;
+  border-top:2px  thin #8a8b90;
+  border-bottom:1px solid #8a8b90;
+  border-left: 2px solid rgb(44, 63, 229);
   display: block;
   align-items: center;
-  
+ 
 }
 
 .reminder-content {

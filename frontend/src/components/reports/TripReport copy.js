@@ -12,6 +12,9 @@ import logo from "../sidebaraddbooking/images/buksu-logo.png"
 import { FaBars } from "react-icons/fa";
 import jsPDF from 'jspdf';
 import 'jspdf-autotable';
+import { faCircleUser } from '@fortawesome/free-solid-svg-icons';
+import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
+
 
 function formatDateTime(dateTimeString) {
   const options = { year: 'numeric', month: 'long', day: 'numeric', hour: 'numeric', minute: 'numeric', second: 'numeric', timeZoneName: 'short' };
@@ -294,7 +297,7 @@ function TripReport() {
       </div>
       <div className='header-wrapper'>
         <div className='header-container'>   
-          <h1><strong>Reports</strong>    <p className="userName">SECRETARY</p></h1>
+        <h4><strong>REPORT</strong>  </h4>    <span className="userName">Secretary <FontAwesomeIcon icon={faCircleUser} /></span>
         </div>
       </div>
       {/* <div className='Report-container'>

@@ -271,7 +271,7 @@ setNewEvent({ title: "", driver: "", start: null, end: null });
 <div className="reminder-Head">
 <h6>SCHEDULES</h6></div>
 
-  <div className="reminder-containers">
+  <div className="reminder-container" style={{height:"470px"}}>
   <div className="reminder-content">
   <tbody className="BookingList">
   {allEvents.slice(0).reverse().map((event, index) => (

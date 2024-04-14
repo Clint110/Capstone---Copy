@@ -16,6 +16,8 @@ import { BiLogOut, BiSearch } from "react-icons/bi";
 import { AnimatePresence } from "framer-motion";
 import { FaRegCalendarCheck } from "react-icons/fa";
 import { FaRegFileLines } from "react-icons/fa6";
+import { faCircleUser } from '@fortawesome/free-solid-svg-icons';
+import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 
 // import 'react-big-calendar/lib/sass/styles';
 
@@ -443,7 +445,8 @@ const formatTime = (timeString) => {
     <main>
       <div className='header-wrapper'>
         <div className='header-container'>   
-        <h3><strong>BOOKING</strong>    <p className="userName">SECRETARY</p></h3>        </div>
+        <h4><strong>BOOKING</strong>  </h4>    <span className="userName">Secretary <FontAwesomeIcon icon={faCircleUser} /></span>
+        </div>
       </div>
       <div className='Booking-container'>
         <div className='Container row'>
@@ -458,7 +461,7 @@ const formatTime = (timeString) => {
 <h6>SCHEDULE</h6></div>
 
 
-  <div className="reminder-container">
+  <div className="reminder-container" style={{height:"390px"}}>
   <div className="reminder-content">
   <tbody className="BookingList">
   {allEvents.slice(0).reverse().map((event, index) => (
