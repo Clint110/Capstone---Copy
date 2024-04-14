@@ -187,19 +187,43 @@ exports.vecstatus = async (req, res) => {
     }
   }
 
+  // exports.markAvailable = async (req, res) => {
+  //   try {
+  //     const { plateNumber } = req.params;
+  //     // Check if there is an active booking for this vehicle
+  //     const booking = await Booking.findOne({ plateNumber, returnDate: { $gte: new Date() } });
+  //     if (booking) {
+  //       return res.status(400).json({ error: 'Cannot mark vehicle as available. There is an active booking for this vehicle.' });
+  //     }
+  //     // Update the status of the vehicle to "Available"
+  //     await Vehicle.updateOne({ plateNumber }, { $set: { status: 'Available' } });
+  //     res.json({ success: true, message: 'Vehicle marked as available.' });
+  //   } catch (error) {
+  //     console.error('Error marking vehicle as available:', error);
+  //     res.status(500).json({ error: 'Internal server error' });
+  //   }
+  // };
+
   exports.markAvailable = async (req, res) => {
     try {
       const { plateNumber } = req.params;
-      // Check if there is an active booking for this vehicle
-      const booking = await Booking.findOne({ plateNumber, returnDate: { $gte: new Date() } });
-      if (booking) {
-        return res.status(400).json({ error: 'Cannot mark vehicle as available. There is an active booking for this vehicle.' });
+  
+      // Check if the plate number is already in use
+      const vehicle = await Vehicle.findOne({ plateNumber });
+      if (!vehicle) {
+        return res.status(404).json({ error: 'Vehicle not found.' });
       }
+  
+      if (vehicle.status === 'Used') {
+        return res.status(400).json({ error: 'Cannot mark vehicle as available. The vehicle is currently in use.' });
+      }
+  
       // Update the status of the vehicle to "Available"
       await Vehicle.updateOne({ plateNumber }, { $set: { status: 'Available' } });
-      res.json({ success: true, message: 'Vehicle marked as available.' });
+      res.json({ success: true, message: `Vehicle with the Plate Number: ${plateNumber} marked as available.` });
     } catch (error) {
       console.error('Error marking vehicle as available:', error);
       res.status(500).json({ error: 'Internal server error' });
     }
   };
+  

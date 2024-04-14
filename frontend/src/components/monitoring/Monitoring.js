@@ -39,6 +39,8 @@ function Monitoring() {
   const [searchInput, setSearchInput] = useState('');
   const [filteredVehicleList, setFilteredVehicleList] = useState([]);
   const [role, setUserRole] = useState('');
+  const [plateNumberStatuses, setPlateNumberStatuses] = useState({});
+
 
   const toggleVehicleDetailsModalOpen = () => {
     setVehicleDetailsModalOpen(!vehicleDetailsModalOpen);
@@ -161,23 +163,20 @@ const fetchVehicleStatus = async () => {
   try {
     const response = await axios.get('http://localhost:3000/vehiclestatus');
     const vehicleStatusData = response.data;
+    console.log(vehicleStatusData);
     setVehicleStatus(vehicleStatusData);
+
+    // Update plateNumberStatuses with the latest status data
+    const statusObject = {};
+    Object.keys(vehicleStatusData).forEach((plateNumber) => {
+      statusObject[plateNumber] = vehicleStatusData[plateNumber] ? 'Used' : 'Available';
+    });
+    console.log(statusObject);
+    setPlateNumberStatuses(statusObject);
   } catch (error) {
     console.error('Error fetching vehicle status:', error);
   }
 };
-
-useEffect(() => {
-  // Define a function to fetch vehicle status periodically
-  const intervalId = setInterval(fetchVehicleStatus, 5000); // Fetch every 5 seconds
-
-  // Fetch vehicle status when the component mounts
-  fetchVehicleStatus();
-
-  // Cleanup function to clear the interval when the component unmounts
-  return () => clearInterval(intervalId);
-}, []);
-
 
 
 
@@ -220,6 +219,40 @@ useEffect(() => {
 // };
 
 
+// const handlePlateNumberClick = async (plateNumber) => {
+//   try {
+//     // Fetch booking details for the selected plate number
+//     const response = await axios.get(`http://localhost:3000/booking-details/${plateNumber}`);
+//     const bookingDetails = response.data;
+
+//     // Check if the booking has ended
+//     const returnDate = new Date(bookingDetails.returnDate);
+//     const currentDate = new Date();
+
+//     if (currentDate > returnDate) {
+//       // Make a request to mark the vehicle as available again
+//       await axios.post(`http://localhost:3000/mark-available/${plateNumber}`);
+//       // Refresh the list of vehicles
+//       await fetchVehicleStatus();
+//       // Show alert indicating that the vehicle is now available
+//       alert(`Vehicle with the Plate Number: ${plateNumber} is now available.`);
+//     } else {
+//       // Vehicle is still in use, fetch and display vehicle details
+//       const detailsResponse = await axios.get(`http://localhost:3000/vehicle/details/${plateNumber}`);
+//       const details = detailsResponse.data;
+
+//       console.log('Details:', details);
+//       // Update the state with the selected plate number and its details
+//       setSelectedPlateNumber(plateNumber);
+//       setSelectedVehicleDetails(details);
+//     }
+//   } catch (error) {
+//     // If there's an error or the booking details are not found, it means the vehicle is available
+//     alert(`Vehicle with the Plate Number: ${plateNumber} is available and not in use.`);
+//   }
+// };
+
+
 const handlePlateNumberClick = async (plateNumber) => {
   try {
     // Fetch booking details for the selected plate number
@@ -249,18 +282,15 @@ const handlePlateNumberClick = async (plateNumber) => {
     }
   } catch (error) {
     // If there's an error or the booking details are not found, it means the vehicle is available
-    alert(`Vehicle with the Plate Number: ${plateNumber} is available and not in use.`);
+    // Check the status of the vehicle to determine the alert message
+    const status = plateNumberStatuses[plateNumber];
+    if (status === 'Used') {
+      alert(`Vehicle with the Plate Number: ${plateNumber} is in use.`);
+    } else {
+      alert(`Vehicle with the Plate Number: ${plateNumber} is available and not in use.`);
+    }
   }
 };
-
-
-
- 
-
-
-
-
-
 
   // const column= [
   //   // Add your reduced data here

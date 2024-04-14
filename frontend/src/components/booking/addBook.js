@@ -573,23 +573,25 @@ const formatTime = (timeString) => {
         </label>
 
         <label>
-         Date
-         <DatePicker
+          Date
+  <DatePicker
     className='bookingInput'
     selected={formData.timeAndDate}
     onChange={(date) => setFormData({ ...formData, timeAndDate: date })}
+    minDate={new Date(new Date().getFullYear(), new Date().getMonth(), 1)} // Set minDate to the first day of the current month
   />
-          
-        </label>
+</label>
         
         <label>
-        Return Date
-        <DatePicker
+  Return Date
+  <DatePicker
     className='bookingInput'
     selected={formData.returnDate}
     onChange={(date) => setFormData({ ...formData, returnDate: date })}
+    minDate={new Date(new Date().getFullYear(), new Date().getMonth(), 1)} // Set minDate to the first day of the current month
   />
-         </label>
+</label>
+
         <label>
         Purpose
             <input type="text" className='bookingInput' style={{ height: '250px' }} value={formData.purpose} onChange={(e) => setFormData({ ...formData, purpose: e.target.value })}/>
