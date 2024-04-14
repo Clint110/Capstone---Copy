@@ -62,7 +62,15 @@ function Map() {
   socket.on('received_message', (messageData) => {
     console.log('Received message from Flask SocketIO server:', messageData);
     // Handle the received message as needed in your React component
-  });
+
+  if (
+    messageData &&
+    messageData.longitude === 125.1253695 &&
+    messageData.latitude === 8.1569808
+  ) {
+    alert("The vehicle is now outside the school area or premises");
+  }
+});
 
   // Cleanup function
   return () => {
@@ -153,6 +161,8 @@ useEffect(() => {
   // Handle received message
   socket.on('received_message', async (messageData) => {
     console.log('Received message from Flask SocketIO server:', messageData);
+
+
     
     if (messageData && typeof messageData.content === 'string') {
     // Extract required fields from the received message data
