@@ -70,3 +70,21 @@ exports.editBooking = async (req, res) => {
     res.status(500).json({ success: false, message: 'Internal Server Error' });
   }
 };
+
+exports.deleteBooking = async (req, res) => {
+  try {
+    const plateNumber = req.params.plateNumber;
+
+    // Find the booking by plate number and delete it
+    const deletedBooking = await Booking.findOneAndDelete({ plateNumber });
+
+    if (!deletedBooking) {
+      return res.status(404).json({ error: 'Booking not found' });
+    }
+
+    res.json({ success: true, message: 'Booking deleted successfully', booking: deletedBooking });
+  } catch (error) {
+    console.error('Error deleting booking:', error);
+    res.status(500).json({ success: false, message: 'Internal Server Error' });
+  }
+};

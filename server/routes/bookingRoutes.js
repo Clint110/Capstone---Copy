@@ -9,6 +9,7 @@ router.get("/allbook", BookingController.getAllBookings);
 router.post("/addbook", BookingController.addBooking);
 router.get("/booking-details/:plateNumber", BookingController.getBookingDetailsByPlateNumber);
 router.put("/editbook/:id", BookingController.editBooking);
+router.delete("/deletebook/:plateNumber", BookingController.deleteBooking);
 
 
 module.exports = router;
