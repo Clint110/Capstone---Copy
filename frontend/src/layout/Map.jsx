@@ -9,6 +9,7 @@ function Map() {
   const [coordinates, setCoordinates] = useState({ latitude: 0, longitude: 0 });
   const [isVisible, setIsVisible] = useState(true);
   const [mapKey, setMapKey] = useState(0);
+  const [showModal, setShowModal] = useState(false);
 
   const toggleVisibility = () => {
     setIsVisible((prevVisible) => !prevVisible);
@@ -68,8 +69,10 @@ function Map() {
     messageData &&
     messageData.longitude === 125.1253695 &&
     messageData.latitude === 8.1569808
+    
   ) {
-    alert("The vehicle is now outside the school area or premises");
+    // alert("The vehicle is now outside the school area or premises");
+    setShowModal(true);
   }
 });
 
@@ -276,7 +279,7 @@ useEffect(() => {
        
     </div>
     {/* </div> */}
-    
+    {showModal && (
     <div class="container">
       <input type="checkbox" id="check"/>
       <label class="show_button" for="check">Click Me</label>
@@ -291,10 +294,11 @@ useEffect(() => {
         <header>Departure Confirmation</header>
         <p>Plate number [insert plate number] has successfully exited the premise. Thank you!</p>
         <div class="btns">
-          <label for="check">Proceed</label>
+          <label for="check" onClick={() => setShowModal(false)}>Proceed</label>
         </div>
       </div>
     </div>
+       )}
     </>
   );
 }
