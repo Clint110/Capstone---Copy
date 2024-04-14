@@ -3,6 +3,7 @@ import map from "../images/map.jpg";
 import Reminder from './Reminder';
 import { GoogleMap, LoadScript } from '@react-google-maps/api';
 import io from 'socket.io-client';
+import { BsExclamationLg } from "react-icons/bs";
 
 function Map() {
   const [coordinates, setCoordinates] = useState({ latitude: 0, longitude: 0 });
@@ -254,8 +255,6 @@ useEffect(() => {
   return (
     <>
     <div className='Map-container'>
- 
-
 {/* <button onClick={toggleVisibility} style={{ zIndex: 4, position: 'absolute' }}>
         {isVisible ? 'Hide Containers' : 'Show Containers'}
       </button> */}
@@ -277,6 +276,25 @@ useEffect(() => {
        
     </div>
     {/* </div> */}
+    
+    <div class="container">
+      <input type="checkbox" id="check"/>
+      <label class="show_button" for="check">Click Me</label>
+      
+      <div class="background"></div>
+      <div class="alert_box">
+        <div class="iconNi">
+        <BsExclamationLg style={{
+      color: "#000000" , fontSize:"90px"
+    }} />
+        </div>
+        <header>Departure Confirmation</header>
+        <p>Plate number [insert plate number] has successfully exited the premise. Thank you!</p>
+        <div class="btns">
+          <label for="check">Proceed</label>
+        </div>
+      </div>
+    </div>
     </>
   );
 }

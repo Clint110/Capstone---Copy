@@ -323,7 +323,8 @@ function TripReport() {
                     <td>{formatDateTime(booking.returnDate)}</td>
                     
                     <td>
-                      <FaHistory className='actionBtn' />
+                    <button type="button" class="btn btn-warning btn-sm">Edit</button>&nbsp; 
+                      <button type="button" class="btn btn-danger btn-sm">Delete</button>
                       <button onClick={handleGenerateReport} className='actionBtn '>
                   <IoDocumentAttachOutline />
                   </button>
