@@ -528,7 +528,7 @@ const formatTime = (timeString) => {
                               ))}
                             </select> */}
 
-                            <select  className="bookingInput" value={selectedPlateNumber} onChange={handlePlateNumberChange}>
+                            <select  className="bookingInput" value={selectedPlateNumber} onChange={handlePlateNumberChange} required>
                                 <option value="" disabled>Select Plate Number</option>
                                 {plateNumbers.map(({ plateNumber }) => (
                                   <option key={plateNumber} value={plateNumber}>
@@ -545,22 +545,22 @@ const formatTime = (timeString) => {
         </label> */}
         <label>
             Client Name(Office)
-            <input type="text" className='bookingInput' value={formData.clientName} onChange={(e) => setFormData({ ...formData, clientName: e.target.value })} />
+            <input type="text" className='bookingInput' value={formData.clientName} onChange={(e) => setFormData({ ...formData, clientName: e.target.value })} required/>
         </label>
         <label>
         Passenger Quantity
-            <input type="number" className='bookingInput' value={formData.passengerQuantity} onChange={(e) => setFormData({ ...formData, passengerQuantity: e.target.value })} />
+            <input type="number" className='bookingInput' value={formData.passengerQuantity} onChange={(e) => setFormData({ ...formData, passengerQuantity: e.target.value })} required/>
         </label>
         <label>
         Destination
-        <select className='bookingInput' value={formData.destination} onChange={(e) => setFormData({ ...formData, destination: e.target.value })}>
+        <select className='bookingInput' value={formData.destination} onChange={(e) => setFormData({ ...formData, destination: e.target.value })} required>
             <option value='WOS'>Within Official Station </option>
             <option value='BOS'>Beyond Official Station </option>
         </select>
         </label>
         <label>
             Bound For:
-            <input type="text" className='bookingInput' value={formData.boundFor} onChange={(e) => setFormData({ ...formData, boundFor: e.target.value })}/>
+            <input type="text" className='bookingInput' value={formData.boundFor} onChange={(e) => setFormData({ ...formData, boundFor: e.target.value })} required/>
 
             Time <br></br>
             <DatePicker
@@ -572,7 +572,7 @@ const formatTime = (timeString) => {
             dateFormat="h:mm aa"
             selected={formData.timeForBound}
             onChange={(time) => setFormData({ ...formData, timeForBound: time })}
-          />
+            required />
         </label>
 
         <label>
@@ -582,7 +582,7 @@ const formatTime = (timeString) => {
     selected={formData.timeAndDate}
     onChange={(date) => setFormData({ ...formData, timeAndDate: date })}
     minDate={new Date(new Date().getFullYear(), new Date().getMonth(), 1)} // Set minDate to the first day of the current month
-  />
+    required />
 </label>
         
         <label>
@@ -592,12 +592,12 @@ const formatTime = (timeString) => {
     selected={formData.returnDate}
     onChange={(date) => setFormData({ ...formData, returnDate: date })}
     minDate={new Date(new Date().getFullYear(), new Date().getMonth(), 1)} // Set minDate to the first day of the current month
-  />
+    required />
 </label>
 
         <label>
         Purpose
-            <input type="text" className='bookingInput' style={{ height: '250px' }} value={formData.purpose} onChange={(e) => setFormData({ ...formData, purpose: e.target.value })}/>
+            <input type="text" className='bookingInput' style={{ height: '250px' }} value={formData.purpose} onChange={(e) => setFormData({ ...formData, purpose: e.target.value })} required/>
         </label>
         <button  className='submitBooking' 
         onClick={handleAddEvent} 

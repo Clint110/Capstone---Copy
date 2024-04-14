@@ -107,50 +107,52 @@ const TripReport = () => {
       doc.text('Malaybalay City, Bukidnon', 86, 32);
 
       doc.setFontSize(12); // Adjust font size here
-      doc.text('GSU - Motorpool Section', 83, 50);
+      doc.text('GENERAL SERVICE UNIT', 83, 50);
 
-      doc.setFontSize(14); // Adjust font size here
-      doc.text('NUMBER OF TRIP VEHICLE FOR THE MONTH OF APRIL 2024', 35, 60);
+      doc.setFontSize(12); // Adjust font size here
+      doc.text('TRANSPORTATION SERVICE (Motorpool Section)', 83, 50);
 
-      doc.setFontSize(13); // Adjust font size here
-      doc.text('Within and Beyond Official Station', 72, 67);
 
-      const tableData = bookingData.map((booking, index) => [
-        booking.plateNumber,
-        booking.boundFor,
-        booking.destination,
-        formatDateTime(booking.timeForBound),
-        formatDateTime(booking.returnDate)
-      ]);
 
-      doc.autoTable({
-        startY: 87,
-        head: [['Plate Number', 'Bound For', 'Destination', 'Time For Bound', 'Return Date']],
-        body: tableData,
-        headStyles: {
-          fillColor: [255, 255, 255], // White background for header
-          textColor: [0, 0, 0],       // Black text color for header
-          lineColor: [0, 0, 0],       // Set header cell border color
-          lineWidth: 0.2,             // Set header cell border width
-          halign: 'center',           // Center align the header content horizontally
-          fontSize: 11,               // Adjust font size of the header
-          fontStyle: 'arialnarrow'    // Set font style to Arial Narrow
-        },
-        bodyStyles: {
-          fillColor: false,           // Remove background color for body cells
-          // fontStyle: 'bold',
-          // fontSize: 11, 
-          textColor: [0, 0, 0],       // Black text color for body
-          lineColor: [0, 0, 0],       // Set body cell border color
-          lineWidth: 0.2              // Set body cell border width
-        },
-        tableLineWidth: 0.2,          // Set table border width
-        tableLineColor: [0, 0, 0],    // Set table border color
-        margin: { top: 0 }            // Adjust table margin if needed
-      });
+      // doc.setFontSize(13); // Adjust font size here
+      // doc.text('Within and Beyond Official Station', 72, 67);
+
+      // const tableData = bookingData.map((booking, index) => [
+      //   booking.plateNumber,
+      //   booking.boundFor,
+      //   booking.destination,
+      //   formatDateTime(booking.timeForBound),
+      //   formatDateTime(booking.returnDate)
+      // ]);
+
+      // doc.autoTable({
+      //   startY: 87,
+      //   head: [['Plate Number', 'Bound For', 'Destination', 'Time For Bound', 'Return Date']],
+      //   body: tableData,
+      //   headStyles: {
+      //     fillColor: [255, 255, 255], // White background for header
+      //     textColor: [0, 0, 0],       // Black text color for header
+      //     lineColor: [0, 0, 0],       // Set header cell border color
+      //     lineWidth: 0.2,             // Set header cell border width
+      //     halign: 'center',           // Center align the header content horizontally
+      //     fontSize: 11,               // Adjust font size of the header
+      //     fontStyle: 'arialnarrow'    // Set font style to Arial Narrow
+      //   },
+      //   bodyStyles: {
+      //     fillColor: false,           // Remove background color for body cells
+      //     // fontStyle: 'bold',
+      //     // fontSize: 11, 
+      //     textColor: [0, 0, 0],       // Black text color for body
+      //     lineColor: [0, 0, 0],       // Set body cell border color
+      //     lineWidth: 0.2              // Set body cell border width
+      //   },
+      //   tableLineWidth: 0.2,          // Set table border width
+      //   tableLineColor: [0, 0, 0],    // Set table border color
+      //   margin: { top: 0 }            // Adjust table margin if needed
+      // });
 
       // Save the PDF
-      doc.save('Monthly Trip Report.pdf');
+      doc.save('individual Report.pdf');
     } catch (error) {
       console.error('Error generating PDF:', error);
     }

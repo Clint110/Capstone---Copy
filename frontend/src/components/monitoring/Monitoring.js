@@ -966,7 +966,7 @@ const handleEditVehicle = (editedPlateNumber, editedVehicle, editedCarImage) => 
         </label>
         <label>
          Vehicle
-            <input type="text" className='addVehicle' value={formData.addvehicles} onChange={(e) => setFormData({ ...formData, addvehicles: e.target.value })}/>
+            <input type="text" className='addVehicle' required value={formData.addvehicles} onChange={(e) => setFormData({ ...formData, addvehicles: e.target.value })}/>
         </label>
         <label>
          Insert Image
