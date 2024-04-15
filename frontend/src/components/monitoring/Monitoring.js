@@ -232,87 +232,6 @@ const fetchVehicleStatus = async () => {
 // };
 
 
-// const handlePlateNumberClick = async (plateNumber) => {
-//   try {
-//     // Fetch booking details for the selected plate number
-//     const response = await axios.get(`http://localhost:3000/booking-details/${plateNumber}`);
-//     const bookingDetails = response.data;
-
-//     // Check if the booking has ended
-//     const returnDate = new Date(bookingDetails.returnDate);
-//     const currentDate = new Date();
-
-//     if (currentDate > returnDate) {
-//       // Make a request to mark the vehicle as available again
-//       await axios.post(`http://localhost:3000/mark-available/${plateNumber}`);
-//       // Refresh the list of vehicles
-//       await fetchVehicleStatus();
-//       // Show alert indicating that the vehicle is now available
-//       alert(`Vehicle with the Plate Number: ${plateNumber} is now available.`);
-//     } else {
-//       // Vehicle is still in use, fetch and display vehicle details
-//       const detailsResponse = await axios.get(`http://localhost:3000/vehicle/details/${plateNumber}`);
-//       const details = detailsResponse.data;
-
-//       console.log('Details:', details);
-//       // Update the state with the selected plate number and its details
-//       setSelectedPlateNumber(plateNumber);
-//       setSelectedVehicleDetails(details);
-//     }
-//   } catch (error) {
-//     // If there's an error or the booking details are not found, it means the vehicle is available
-//     alert(`Vehicle with the Plate Number: ${plateNumber} is available and not in use.`);
-//   }
-// };
-
-
-// const handlePlateNumberClick = async (plateNumber) => {
-//   try {
-//     // Fetch booking details for the selected plate number
-//     const response = await axios.get(`http://localhost:3000/booking-details/${plateNumber}`);
-//     const bookingDetails = response.data;
-
-//     // Check if the booking has ended
-//     console.log('Return Date:', bookingDetails.returnDate);
-//     const returnDate = new Date(bookingDetails.returnDate);
-//     const currentDate = new Date();
-
-//     if (currentDate > returnDate) {
-//       // Make a request to mark the vehicle as available again
-//       await axios.post(`http://localhost:3000/mark-available/${plateNumber}`);
-//       // Refresh the list of vehicles
-//       await fetchVehicleStatus();
-//       // Show alert indicating that the vehicle is now available
-//       alert(`Vehicle with the Plate Number: ${plateNumber} is now available.`);
-//     } else {
-//       // Vehicle is still in use, fetch and display vehicle details
-//       const detailsResponse = await axios.get(`http://localhost:3000/vehicle/details/${plateNumber}`);
-//       const details = detailsResponse.data;
-
-//       console.log('Details:', details);
-//       // Update the state with the selected plate number and its details
-//       setSelectedPlateNumber(plateNumber);
-//       setSelectedVehicleDetails(details);
-//     }
-//   } catch (error) {
-//     // If there's an error or the booking details are not found, it means the vehicle is available
-//     // Check the status of the vehicle to determine the alert message
-//     const status = plateNumberStatuses[plateNumber];
-//     if (status === 'Used') {
-//       const detailsResponse = await axios.get(`http://localhost:3000/vehicle/details/${plateNumber}`);
-//       const details = detailsResponse.data;
-
-//       console.log('Details:', details);
-//       //alert(`Vehicle with the Plate Number: ${plateNumber} is in use.`);
-//       setSelectedPlateNumber(plateNumber);
-//       setSelectedVehicleDetails(details);
-//     } else {
-//       alert(`Vehicle with the Plate Number: ${plateNumber} is available and not in use.`);
-//     }
-//   }
-// };
-
-
 const handlePlateNumberClick = async (plateNumber) => {
   try {
     // Fetch booking details for the selected plate number
@@ -356,7 +275,13 @@ const handlePlateNumberClick = async (plateNumber) => {
       setSelectedPlateNumber(plateNumber);
       setSelectedVehicleDetails(details);
     } else {
-      alert(`Vehicle with the Plate Number: ${plateNumber} is available and not in use.`);
+      //alert(`Vehicle with the Plate Number: ${plateNumber} is available and not in use.`);
+      const detailsResponse = await axios.get(`http://localhost:3000/vehicle-details/${plateNumber}`);
+      const details = detailsResponse.data;
+
+      console.log('Details:', details);
+      setSelectedPlateNumber(plateNumber);
+      setSelectedVehicleDetails(details);
     }
   }
 };
@@ -635,7 +560,7 @@ const handleEditVehicle = async () => {
 const handleDeleteButtonClick = async (plateNumber) => {
   try {
     console.log("Plate"+ plateNumber);
-    const response = await axios.delete(`/vehicle/delete/${plateNumber}`);
+    const response = await axios.delete(`http://localhost:3000/vehicle/delete/${plateNumber}`);
     console.log(response.data);
     // Optionally, you can perform any additional actions after successful deletion
   } catch (error) {
