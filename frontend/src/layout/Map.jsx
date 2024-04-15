@@ -166,14 +166,14 @@ useEffect(() => {
   socket.on('received_message', async (messageData) => {
     console.log('Received message from Flask SocketIO server:', messageData);
 
-    if (
-      messageData &&
-      messageData.longitude === 125.1253695 &&
-      messageData.latitude === 8.1569808
-    ) {
-      // If coordinates match, set showModal to true
-      setShowModal(true);
-    }
+    // if (
+    //   messageData &&
+    //   messageData.longitude === 125.1253695 &&
+    //   messageData.latitude === 8.1569808
+    // ) {
+    //   // If coordinates match, set showModal to true
+    //   setShowModal(true);
+    // }
 
     
     if (messageData && typeof messageData.content === 'string') {
@@ -206,9 +206,9 @@ useEffect(() => {
     console.log('Latitude:', latitude); // Log latitude to check its value
     console.log('Longitude:', longitude);
 
-    // if(longitude ==125.1253695 && latitude == 8.1569808) {
-    //   setShowModal(true);
-    // }
+    if(longitude ==125.1253695 && latitude == 8.1569808) {
+      setShowModal(true);
+    }
   
     // Check if plateNumber exists in the database
     if (longitude !== undefined && latitude !== undefined && plateNumber !== undefined) {
