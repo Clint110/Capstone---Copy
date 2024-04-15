@@ -44,6 +44,7 @@ function Monitoring() {
   const [plateNumberToDelete, setPlateNumberToDelete] = useState('');
   const [showEditModal, setShowEditModal] = useState(false);
   const [editedPlateNumber, setEditedPlateNumber] = useState('');
+  const [notPlateNumber, setnotPlateNumber] = useState('');
   const [editedVehicle, setEditedVehicle] = useState('');
   const [editedCarImage, setEditedCarImage] = useState('');
   const [vehicles, setVehicles] = useState([]);
@@ -360,86 +361,6 @@ const handlePlateNumberClick = async (plateNumber) => {
   }
 };
 
-  // const column= [
-  //   // Add your reduced data here
-  //   // Include only the rows you want to display
-  //   {
-  //     name: 'Time & Date',
-  //     selector: row => row.timeDate,
-  //     sortable:true
-  //   },
-  //   {
-  //     name: 'Destination',
-  //     selector: row => row.destination,
-  //     sortable:true
-  //   },
-  //   {
-  //     name: 'Kilometer',
-  //     selector: row => row.km,
-  //     sortable:true
-  //   },
-  //   {
-  //     name: 'Fuel Used',
-  //     selector: row => row.emailadd,
-  //     sortable:true
-  //   },
-   
-  // ];
-
-
-  // useEffect(()=> {
-  //   const fetData = async () => {
-  //     // CHANGE LANG DAYON NI SA IYANG DATABASE JUD GI TRY TRY RA NKO NI
-  //     axios.get('http://localhost:3001/accounts')
-  //     .then(res=> Data(res.data))
-  //     .catch(err => console.log(err));
- 
-  //   }
-  //   fetData();
-  // }, [])
-
-
-  // const customStyle = {
-  //   headRow:{
-  //     style:{
-  //       backgroundColor: 'blue',
-  //       color:'white'
-  //     }
-  //   },
-  //   headCells:{
-  //     style:{
-  //       fontSize:'15px',
-  //       textTransform:'uppercase'
-  //     }
-  //   },
-  //   cells:{
-  //     style:{
-  //       fontSize:'15px'
-  //     }
-  //   }
-  // }
-
-
- 
-  // const [records, setRecords] = useState([])
-  // const recordsPerPage = 5;
-  // const [currentPage, setCurrentPage] = useState(1)
-  // const lastIndex= currentPage * recordsPerPage;
-  // const firstIndex = lastIndex - recordsPerPage;
-  // const records = Data.slice(firstIndex,lastIndex);
-  // const npage = Math.ceil(Data.lenght/ recordsPerPage);
-  // const numbers = [...Array(npage + 1).keys()].slice(1)
-
-
-
-
-  // const handleImageChange = (e) => {
-  //   const file = e.target.files[0];
-  //   setFormData({ ...formData, carImage: file });
-  // };
-
-
-
 
   const [formData, setFormData] = useState({
     plateNumber2: '',
@@ -499,27 +420,6 @@ const handlePlateNumberClick = async (plateNumber) => {
 
 
 
-// const [filter, setFilter] = useState('all'); // Default filter is 'all'
-
-
-// // Filter the vehicles based on the selected filter
-// const filteredVehicles = useMemo(() => {
-//   if (filter === 'all') {
-//     return Object.keys(vehicleStatus);
-//   } else if (filter === 'available') {
-//     return Object.keys(vehicleStatus).filter((plateNumber) => vehicleStatus[plateNumber] === 'Available');
-//   } else if (filter === 'used') {
-//     return Object.keys(vehicleStatus).filter((plateNumber) => vehicleStatus[plateNumber] === 'Used');
-//   }
-// }, [filter, vehicleStatus]);
-
-
-// // Handler function for filter buttons
-// const handleFilter = (selectedFilter) => {
-//   setFilter(selectedFilter);
-// };
-
-
 const [filter, setFilter] = useState('all'); // Default filter is 'all'
 
 
@@ -558,42 +458,6 @@ useEffect(() => {
   );
 }, [filter, searchInput, vehicleStatus]);
 
-// const handleDeleteConfirmation = (plateNumber) => {
-//   // Show a confirmation dialog
-//   if (window.confirm('Are you sure you want to delete this vehicle?')) {
-//     // If the user confirms, proceed with deletion
-//     console.log('Delete confirmed for plate number:', plateNumber);
-//     // Perform further actions such as sending a request to delete the vehicle
-//     // and then close the modal
-//     setShowConfirmationModal(false);
-//   } else {
-//     // If the user cancels, do nothing
-//     console.log('Delete canceled');
-//   }
-// };
-
-// const handleDeleteConfirmation = (plateNumber) => {
-//   // Show the confirmation modal
-//   setShowConfirmationModal(true);
-//   // Set the plate number to delete
-//   setPlateNumberToDelete(plateNumber);
-// };
-
-// const handleConfirmDelete = () => {
-//   // Logic for confirming deletion
-//   console.log('Delete confirmed for plate number:', plateNumberToDelete);
-//   // Perform further actions such as sending a request to delete the vehicle
-//   // and then close the modal
-//   setShowConfirmationModal(false);
-// };
-
-// const handleCancelDelete = () => {
-//   // Logic for canceling deletion
-//   console.log('Delete canceled');
-//   // Close the modal
-//   setShowConfirmationModal(false);
-// };
-
 
 
 const handleConfirmDelete = () => {
@@ -604,6 +468,7 @@ const handleConfirmDelete = () => {
   setShowConfirmationModal(false);
 };
 
+
 const handleCancelDelete = () => {
   // Logic for canceling deletion
   console.log('Delete canceled');
@@ -611,74 +476,174 @@ const handleCancelDelete = () => {
   setShowConfirmationModal(false);
 };
 
-const handleDeleteConfirmation = (plateNumber) => {
-  // Close any other modals if open
-  setVehicleDetailsModalOpen(false); // Close vehicle details modal if open
 
-  // Show the confirmation modal
-  setShowConfirmationModal(true);
+// const handleEditButtonClick = async (plateNumber) => {
+//   try {
+//     const response = await fetch(`/api/vehicle/details/${plateNumber}`);
+//     if (response.ok) {
+//       const data = await response.json();
+//       // Check if the response contains the expected vehicle data
+//       if (data && data.vehicle) {
+//         // Set the initial values for editing based on the selected vehicle's details
+//         setEditedPlateNumber(data.vehicle.plateNumber);
+//         setEditedVehicle(data.vehicle.vehicleName);
+//         setEditedCarImage(data.vehicle.carImage);
+//         // Open the edit modal
+//         setShowEditModal(true);
+//       } else {
+//         console.error('Error fetching vehicle details: Invalid response format');
+//       }
+//     } else {
+//       console.error('Error fetching vehicle details:', response.statusText);
+//     }
+//   } catch (error) {
+//     console.error('Error fetching vehicle details:', error);
+//   }
+// };
 
-  // Set the plate number to delete
-  setPlateNumberToDelete(plateNumber);
-};
 
-const handleEditButtonClick = (plateNumber) => {
-  // Set the initial values for editing based on the selected vehicle's details
-  const selectedVehicle = vehicles.find(vehicle => vehicle.plateNumber === plateNumber);
-  if (selectedVehicle) {
-    setEditedPlateNumber(selectedVehicle.plateNumber);
-    setEditedVehicle(selectedVehicle.addvehicles);
-    setEditedCarImage(selectedVehicle.carImage);
+const handleEditButtonClick = async (plateNumber) => {
+  console.log('Plate Number:', plateNumber);
+  try {
+    const response = await axios.get(`http://localhost:3000/vehicle/details/${plateNumber}`);
+    if (response.status === 200) {
+      const data = response.data;
+      console.log(data);
+      // Check if the response contains the expected vehicle data
+      if (data && data.vehicle) {
+        // Set the initial values for editing based on the selected vehicle's details
+        setnotPlateNumber(data.vehicle.plateNumber);
+        setEditedPlateNumber(data.vehicle.plateNumber);
+        setEditedVehicle(data.vehicle.vehicleName);
+        // Note: You need to handle image editing separately, depending on your implementation
+        // For now, let's assume you're not editing the image
+        setEditedCarImage(data.vehicle.carImage);
+        // Open the edit modal
+        setShowEditModal(true);
+      } else {
+        console.error('Error fetching vehicle details: Invalid response format');
+      }
+    } else {
+      console.error('Error fetching vehicle details:', response.statusText);
+    }
+  } catch (error) {
+    console.error('Error fetching vehicle details:', error);
   }
-  setShowEditModal(true); // Open the edit modal
 };
 
-// Function to handle saving changes in the edit modal
-const handleConfirmEdit = () => {
-  // Implement the logic to save the edited vehicle details
-  // This can involve sending a request to update the vehicle details in the database, for example
-  // After saving, you can close the edit modal
-  setShowEditModal(false);
+
+const handleOrigPlateNumberChange = (e) => {
+  setnotPlateNumber(e.target.value);
 };
+
+
+const handleEditPlateNumberChange = (e) => {
+  setEditedPlateNumber(e.target.value);
+};
+
+const handleEditVehicleChange = (e) => {
+  setEditedVehicle(e.target.value);
+};
+
+const handleEditCarImageChange = (e) => {
+  setEditedCarImage(e.target.files[0]);
+};
+
+
+
+const handleConfirmEdit = async () => {
+  try {
+    console.log('Edited Plate Number:', editedPlateNumber);
+    console.log('Edited Vehicle:', editedVehicle);
+    console.log('Edited Car Image:', editedCarImage);
+
+    const updatedData = {
+      newPlateNumber: editedPlateNumber,
+      vehicleName: editedVehicle,
+      // Remove the carImage property if you don't want to edit the image
+    };
+
+    console.log('Updated data:', updatedData);
+
+    const response = await axios.put(`http://localhost:3000/vehicle/edit/${notPlateNumber}`, updatedData);
+    if (response.status === 200) {
+      setShowEditModal(false);
+      await fetchVehicleStatus();
+    } else {
+      console.error('Error editing vehicle details:', response.statusText);
+    }
+  } catch (error) {
+    console.error('Error editing vehicle details:', error);
+  }
+};
+
+
+
+
 
 // Function to handle canceling the edit operation and close the modal
 const handleCancelEdit = () => {
   setShowEditModal(false); // Close the edit modal
 };
 
-const handleEditVehicle = (editedPlateNumber, editedVehicle, editedCarImage) => {
-  // Find the index of the vehicle to be edited in the vehicles array
-  const vehicleIndex = vehicles.findIndex(vehicle => vehicle.plateNumber === editedPlateNumber);
-  
-  // If the vehicle is found
-  if (vehicleIndex !== -1) {
-      // Create a copy of the vehicles array to modify
-      const updatedVehicles = [...vehicles];
-      
-      // Update the vehicle details
-      updatedVehicles[vehicleIndex] = {
-          ...updatedVehicles[vehicleIndex],
-          addvehicles: editedVehicle,
-          carImage: editedCarImage
-          // Add more properties to update as needed
-      };
-      
-      // Update the state with the modified vehicles array
-      setVehicles(updatedVehicles);
-      
-      // Close the edit modal or perform any other necessary actions
-      // For example:
-      // setEditModalOpen(false);
-      
-      // Optionally, you might want to clear the edited vehicle state
-      setEditedPlateNumber(null);
-      setEditedVehicle('');
-      setEditedCarImage(null);
-  } else {
-      // Handle the case where the vehicle with the provided plate number is not found
-      console.error(`Vehicle with plate number ${editedPlateNumber} not found.`);
+
+// const handleEditVehicle = async () => {
+//   try {
+//     // Implement the logic to save the edited vehicle details
+//     // This can involve sending a request to update the vehicle details in the database, for example
+//     // After saving, you can close the edit modal
+//     setShowEditModal(false);
+//   } catch (error) {
+//     // Handle any errors that occur during the editing process
+//     console.error('Error editing vehicle details:', error);
+//   }
+// };
+
+const handleEditVehicle = async () => {
+  try {
+    // Implement the logic to save the edited vehicle details
+    const editedVehicleData = {
+      plateNumber: editedPlateNumber,
+      addvehicles: editedVehicle,
+      // Note: You need to handle image editing separately, depending on your implementation
+      // For now, let's assume you're not editing the image
+      // carImage: editedCarImage,
+    };
+
+    console.log('Editing vehicle with data:', editedVehicleData);
+    
+    const response = await axios.put(`http://localhost:3000/vehicle/edit/${editedPlateNumber}`, editedVehicleData);
+    if (response.status === 200) {
+      // Close the edit modal
+      setShowEditModal(false);
+      // Optionally, you can refresh the vehicle list after editing
+      await fetchVehicleStatus();
+    } else {
+      console.error('Error editing vehicle details:', response.statusText);
+    }
+  } catch (error) {
+    // Handle any errors that occur during the editing process
+    console.error('Error editing vehicle details:', error);
   }
 };
+
+// const handleDeleteButtonClick = async (plateNumber)  => {
+//   const plate = plateNumber;
+//   console.log("Plate:" + plate);
+// };
+
+const handleDeleteButtonClick = async (plateNumber) => {
+  try {
+    console.log("Plate"+ plateNumber);
+    const response = await axios.delete(`/vehicle/delete/${plateNumber}`);
+    console.log(response.data);
+    // Optionally, you can perform any additional actions after successful deletion
+  } catch (error) {
+    console.error('Error deleting vehicle:', error);
+    // Optionally, handle the error or show a notification to the user
+  }
+};
+
 
 
 
@@ -781,97 +746,9 @@ const handleEditVehicle = (editedPlateNumber, editedVehicle, editedCarImage) => 
    
   </div>
 </div>
-{/* 
-{showConfirmationModal && (
-        <DeleteConfirmationModal
-          plateNumber={plateNumberToDelete}
-          onDeleteConfirmed={handleDeleteConfirmation}
-          onClose={() => setShowConfirmationModal(false)}
-        />
-      )} */}
-
 
 
  </div>
-
-
-
-
- {/* {isHistoryVisible || (
- <div className='vehicleListRight'>
-  <div className='pictureArea'>
-    <div className='Picture'>
-      <img width="150px" style={{float:"left"}} src={car1} />
-    </div>
-
-
-    <div className='picText'>
-    <h3>KDC 099 S</h3>
-    <p>Toyota Fortuner</p>
-    <p> White</p>
-    </div>
-  </div>
- <div>
- <div style={{ display: 'block', width: 600, padding: 10 }}>
-      <Row>
-        <Col className="column3" style={{
-          backgroundColor: 'white', margin: 5, padding:10, lineHeight:0.5
-        }}>
-        <p className='detail'> Engine </p>
-        <p className='detailAnswer'> Running</p>
-        <p className='detail'> Speed</p>
-        <p className='detailAnswer'> 42 km/h</p>
-        <p className='detail'> Mileage </p>
-        <p className='detailAnswer'> 3.7 km</p>
-
-
-        <button className='detailButton'onClick={() => { hideVehicleList(); toggleHistory(); }} >History</button>
-      </Col>
-
-
-
-
-        <Col className="column3" style={{
-          backgroundColor: 'white', margin: 5,  padding:10, lineHeight:0.5
-        }}>
-         
-        <p className='detail'> Client  Name </p>
-        <p className='detailAnswer'> ComSoc Officer</p>
-        <p className='detail'> Quantity</p>
-        <p className='detailAnswer'> 42 </p>
-        <p className='detail'> Destination  </p>
-        <p className='detailAnswer'> Cagayan De Oro</p>
-        <p className='detail'> Date</p>
-        <p className='detailAnswer'> Nov 7, 2023</p>
-        <p className='detail'> Return Date  </p>
-        <p className='detailAnswer'> Nov 8, 2023 </p>
-
-
-
-
-      </Col>
-
-
-
-
-        <Col className="column3" style={{
-          backgroundColor: 'white', margin: 5
-        }}>
-
-
-        <button className='detailButton'>Full Transit</button>
-
-
-      </Col>
-
-
-
-
-      </Row>
-    </div>
- </div>
- </div> )} */}
-
 
 
 
@@ -907,8 +784,9 @@ const handleEditVehicle = (editedPlateNumber, editedVehicle, editedCarImage) => 
       </div>
     </div>
      {/* Insert the delete button here */}
-     <button onClick={() => handleEditButtonClick(plateNumber)} className="btn btn-primary">Edit</button> &nbsp; &nbsp;
-     <button onClick={() => handleDeleteConfirmation(selectedPlateNumber)} className="btn btn-danger">Delete</button> 
+     <button onClick={() => handleEditButtonClick(selectedPlateNumber)} className="btn btn-primary">Edit</button> &nbsp; &nbsp;
+       <button onClick={() => handleDeleteButtonClick(selectedPlateNumber)} className="btn btn-danger">Delete</button> 
+     {/* <button onClick={() => handleDeleteConfirmation(selectedPlateNumber)} className="btn btn-danger">Delete</button>  */}
 
     <div>
       <div style={{ display: 'block', width: 600, padding: 10 }}>
@@ -1013,7 +891,8 @@ const handleEditVehicle = (editedPlateNumber, editedVehicle, editedCarImage) => 
             </MDBModalBody>
             <MDBModalFooter>
               <button className="btn btn-secondary" onClick={handleCancelDelete}>Cancel</button>
-              <button className='btn btn-danger' onClick={handleConfirmDelete}>Delete</button>
+              {/* <button className='btn btn-danger' onClick={handleConfirmDelete}>Delete</button> */}
+              <button className='btn btn-danger' >Delete</button>
             </MDBModalFooter>
           </MDBModalContent>
         </MDBModalDialog>
@@ -1034,12 +913,20 @@ const handleEditVehicle = (editedPlateNumber, editedVehicle, editedCarImage) => 
           {/* Form for editing vehicle details */}
           <form onSubmit={handleEditVehicle}>
             <label>
-              Plate Number
+              Original Plate Number
+              <input
+                type="text"
+                className='form-control'
+                value={notPlateNumber}
+                onChange={handleOrigPlateNumberChange}
+                disabled="true"
+              />
+              Edited Plate Number
               <input
                 type="text"
                 className='form-control'
                 value={editedPlateNumber}
-                onChange={(e) => setEditedPlateNumber(e.target.value)}
+                onChange={handleEditPlateNumberChange}
               />
             </label>
             <div>
@@ -1049,7 +936,7 @@ const handleEditVehicle = (editedPlateNumber, editedVehicle, editedCarImage) => 
                 type="text"
                 className='form-control '
                 value={editedVehicle}
-                onChange={(e) => setEditedVehicle(e.target.value)}
+                onChange={handleEditVehicleChange}
               />
             </label>
             </div>
@@ -1059,14 +946,14 @@ const handleEditVehicle = (editedPlateNumber, editedVehicle, editedCarImage) => 
                 type="file"
                 name="carImage"
                 className='form-control'
-                onChange={(e) => setEditedCarImage(e.target.files[0])}
+                onChange={handleEditCarImageChange}
               />
             </label>
           </form>
         </MDBModalBody>
         <MDBModalFooter>
           <button className="btn btn-secondary" onClick={handleCancelEdit}>Cancel</button>
-          <button className='btn btn-primary' onClick={handleConfirmEdit}>Save Changes</button>
+          <button type="submit" className='btn btn-primary' onClick={handleConfirmEdit}>Save Changes</button>
         </MDBModalFooter>
       </MDBModalContent>
     </MDBModalDialog>
@@ -1076,22 +963,6 @@ const handleEditVehicle = (editedPlateNumber, editedVehicle, editedCarImage) => 
 
     </>
   )
-
-
-  // function prePage(){
-
-
-  // }
-  // function nextPage(){
-
-
-  // }
-
-
-  // function changeCPage(id){
-
-
-  // }
 }
 
 

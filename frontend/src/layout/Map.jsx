@@ -62,7 +62,7 @@ function Map() {
 
   // Handle received message
   socket.on('received_message', (messageData) => {
-    console.log('Received message from Flask SocketIO server:', messageData);
+    console.log('Received message from Flask SocketIO server: kani', messageData);
     // Handle the received message as needed in your React component
 
   if (
@@ -166,12 +166,21 @@ useEffect(() => {
   socket.on('received_message', async (messageData) => {
     console.log('Received message from Flask SocketIO server:', messageData);
 
+    if (
+      messageData &&
+      messageData.longitude === 125.1253695 &&
+      messageData.latitude === 8.1569808
+    ) {
+      // If coordinates match, set showModal to true
+      setShowModal(true);
+    }
 
     
     if (messageData && typeof messageData.content === 'string') {
     // Extract required fields from the received message data
     const { content } = messageData;
-    const parts = content.split(/(?<=\d)(?=[a-zA-Z])/); 
+    const parts = content.split('\n'); 
+    // const parts = content.split(/(?<=\d)(?=[a-zA-Z])/);
 
     console.log('Parts:', parts);
 
@@ -183,11 +192,11 @@ useEffect(() => {
         const key = keyValue[0].trim();
         const value = keyValue[1].trim();
   
-        if (key.toLowerCase() === 'plat') {
+        if (key.toLowerCase() === 'platenumber') {
           plateNumber = value;
-        } else if (key.toLowerCase() === 'lat') {
+        } else if (key.toLowerCase() === 'latitude') {
           latitude = parseFloat(value);
-        } else if (key.toLowerCase() === 'long') {
+        } else if (key.toLowerCase() === 'longitude') {
           longitude = parseFloat(value);
         }
       }
@@ -196,6 +205,10 @@ useEffect(() => {
     console.log('Plate Number:', plateNumber); // Log plateNumber to check its value
     console.log('Latitude:', latitude); // Log latitude to check its value
     console.log('Longitude:', longitude);
+
+    // if(longitude ==125.1253695 && latitude == 8.1569808) {
+    //   setShowModal(true);
+    // }
   
     // Check if plateNumber exists in the database
     if (longitude !== undefined && latitude !== undefined && plateNumber !== undefined) {
@@ -215,7 +228,7 @@ useEffect(() => {
           });
           if (updateResponse.ok) {
             console.log(`Data for plate number ${plateNumber} updated successfully`);
-            window.location.reload();
+            //window.location.reload();
           } else {
             console.error(`Failed to update data for plate number ${plateNumber}`);
           }

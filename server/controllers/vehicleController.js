@@ -171,13 +171,13 @@ exports.vecstatus = async (req, res) => {
           vehicleName: vehicleDetails.vehicleName,
           carImage: `http://localhost:3000/imagesforupload/${vehicleDetails.carImage}`,
         },
-        booking: {
-          clientName: bookingDetails.clientName,
-          passengerQuantity: bookingDetails.passengerQuantity,
-          boundFor: bookingDetails.boundFor,
-          timeAndDate: bookingDetails.timeAndDate,
-          returnDate: bookingDetails.returnDate,
-        },
+        // booking: {
+        //   clientName: bookingDetails.clientName,
+        //   passengerQuantity: bookingDetails.passengerQuantity,
+        //   boundFor: bookingDetails.boundFor,
+        //   timeAndDate: bookingDetails.timeAndDate,
+        //   returnDate: bookingDetails.returnDate,
+        // },
       };
 
       console.log(details);
@@ -266,3 +266,83 @@ exports.markAvailable = async (req, res) => {
     res.status(500).json({ error: 'Internal server error' });
   }
 }
+
+
+// exports.editVehicle = async (req, res) => {
+//   try {
+//     const { plateNumber2 } = req.params;
+//     console.log(plateNumber2);
+//     const { newPlateNumber, vehicleName } = req.body; // Remove carImage from here
+//     console.log(newPlateNumber, vehicleName);
+
+//     // Find the vehicle by the original plate number
+//     const vehicle = await Vehicle.findOne({ plateNumber: plateNumber2 });
+
+//     if (!vehicle) {
+//       return res.status(404).json({ error: 'Vehicle not found.' });
+//     }
+
+//     // Update the vehicle details
+//     vehicle.plateNumber = newPlateNumber;
+//     vehicle.vehicleName = vehicleName;
+    
+//     // Check if a new image is uploaded
+//     if (req.file) {
+//       vehicle.carImage = req.file.filename; // Store the file path or identifier
+//     }
+
+//     // Save the updated vehicle
+//     await vehicle.save();
+
+//     res.json({ success: true, message: 'Vehicle updated successfully.' });
+//   } catch (error) {
+//     console.error('Error editing vehicle:', error);
+//     res.status(500).json({ error: 'Internal Server Error' });
+//   }
+// };
+
+
+exports.editVehicle = async (req, res) => {
+  try {
+    const plateNumber = req.params.plateNumber2; // Corrected parameter name
+    const { newPlateNumber, vehicleName } = req.body; // Destructure the updated data
+
+    // Find the vehicle by plate number and update both plateNumber and vehicleName
+    const updatedVehicle = await Vehicle.findOneAndUpdate(
+      { plateNumber },
+      { plateNumber: newPlateNumber, vehicleName },
+      { new: true }
+    );
+
+    if (!updatedVehicle) {
+      return res.status(404).json({ error: 'Vehicle not found' });
+    }
+
+    res.json({ success: true, message: 'Vehicle updated successfully', vehicle: updatedVehicle });
+  } catch (error) {
+    console.error('Error updating vehicle:', error);
+    res.status(500).json({ success: false, message: 'Internal Server Error' });
+  }
+};
+
+
+exports.deleteVehicle = async (req, res) => {
+  try {
+    const plateNumber = req.params.plateNumber; // Get the plate number from the request parameters
+    console.log(plateNumber);
+    
+    // Find the vehicle by plate number and delete it
+    const deletedVehicle = await Vehicle.findOneAndDelete({ plateNumber });
+
+    if (!deletedVehicle) {
+      return res.status(404).json({ error: 'Vehicle not found' });
+    }
+
+    res.json({ success: true, message: 'Vehicle deleted successfully', vehicle: deletedVehicle });
+  } catch (error) {
+    console.error('Error deleting vehicle:', error);
+    res.status(500).json({ success: false, message: 'Internal Server Error' });
+  }
+};
+
+
