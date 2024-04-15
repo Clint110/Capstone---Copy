@@ -385,12 +385,11 @@ useEffect(() => {
 
 
 
-const handleConfirmDelete = () => {
+const handleDeleteConfirmation = async (plateNumber) => {
   // Logic for confirming deletion
-  console.log('Delete confirmed for plate number:', plateNumberToDelete);
-  // Perform further actions such as sending a request to delete the vehicle
-  // and then close the modal
-  setShowConfirmationModal(false);
+  console.log('Delete confirmed for plate number:', plateNumber);
+  setShowConfirmationModal(true);
+
 };
 
 
@@ -562,6 +561,8 @@ const handleDeleteButtonClick = async (plateNumber) => {
     console.log("Plate"+ plateNumber);
     const response = await axios.delete(`http://localhost:3000/vehicle/delete/${plateNumber}`);
     console.log(response.data);
+
+    setVehicleDetailsModalOpen(false);
     // Optionally, you can perform any additional actions after successful deletion
   } catch (error) {
     console.error('Error deleting vehicle:', error);
@@ -802,7 +803,7 @@ const handleDeleteButtonClick = async (plateNumber) => {
 
 {/* DELETEEE MODAL */}
     <div>
-<MDBModal tabIndex='-1' open={showConfirmationModal} setOpen={setShowConfirmationModal}>
+<MDBModal tabIndex='-1' setOpen={setShowConfirmationModal}>
         <MDBModalDialog>
           <MDBModalContent>
             <MDBModalHeader>
@@ -812,12 +813,12 @@ const handleDeleteButtonClick = async (plateNumber) => {
             <MDBModalBody>
            <div className="iconNi" style={{ display: 'flex', justifyContent: 'center' }}>
             <MdDangerous style={{color:"#ff0000", fontSize:"90px"}}/>  </div>
-            <p style={{ textAlign: 'center', padding: '20px' }}>Are you sure you want to delete vehicle with plate number {plateNumberToDelete}?</p>
+            <p style={{ textAlign: 'center', padding: '20px' }}>Are you sure you want to delete vehicle with plate number {selectedPlateNumber}?</p>
             </MDBModalBody>
             <MDBModalFooter>
               <button className="btn btn-secondary" onClick={handleCancelDelete}>Cancel</button>
               {/* <button className='btn btn-danger' onClick={handleConfirmDelete}>Delete</button> */}
-              <button className='btn btn-danger' >Delete</button>
+              <button className='btn btn-danger' onClick={() => handleDeleteButtonClick(selectedPlateNumber)} >Delete</button>
             </MDBModalFooter>
           </MDBModalContent>
         </MDBModalDialog>

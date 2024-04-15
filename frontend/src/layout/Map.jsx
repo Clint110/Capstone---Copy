@@ -191,8 +191,8 @@ useEffect(() => {
     if (messageData && typeof messageData.content === 'string') {
     // Extract required fields from the received message data
     const { content } = messageData;
-    const parts = content.split('\n'); 
-    // const parts = content.split(/(?<=\d)(?=[a-zA-Z])/);
+    // const parts = content.split('\n'); 
+    const parts = content.split(/(?<=\d)(?=[a-zA-Z])/);
 
     console.log('Parts:', parts);
 
@@ -204,11 +204,11 @@ useEffect(() => {
         const key = keyValue[0].trim();
         const value = keyValue[1].trim();
   
-        if (key.toLowerCase() === 'platenumber') {
+        if (key.toLowerCase() === 'plat') {
           plateNumber = value;
-        } else if (key.toLowerCase() === 'latitude') {
+        } else if (key.toLowerCase() === 'lat') {
           latitude = parseFloat(value);
-        } else if (key.toLowerCase() === 'longitude') {
+        } else if (key.toLowerCase() === 'long') {
           longitude = parseFloat(value);
         }
       }
