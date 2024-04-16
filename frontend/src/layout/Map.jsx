@@ -257,7 +257,7 @@ useEffect(() => {
     }
   } else {
     // Alert if any required field is missing
-    alert('No data for longitude, latitude, or plateNumber');
+    console.log('No data for longitude, latitude, or plateNumber');
   }
 } else {
   // Handle the case when 'content' is not a string or does not exist
