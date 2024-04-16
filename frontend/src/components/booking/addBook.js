@@ -399,7 +399,7 @@ const formatTime = (timeString) => {
           className="rounded-circle usr-image"
           height="150"
           width="150"
-        />
+        />  <div className="logo-text">MoniTour</div>
       </div>
       <section className="routes">
       {routes.map((route, index) => {
@@ -445,7 +445,8 @@ const formatTime = (timeString) => {
     <main>
       <div className='header-wrapper'>
         <div className='header-container'>   
-        <h4><strong>BOOKING</strong>  </h4>    <span className="userName">Secretary <FontAwesomeIcon icon={faCircleUser} /></span>
+        <h4><strong>BOOKING</strong>  </h4>    <span className="userName"><span className="userName-text">Secretary</span>   <FontAwesomeIcon icon={faCircleUser} className="icon-circle" /></span>
+
         </div>
       </div>
       <div className='Booking-container'>

@@ -629,9 +629,8 @@ function Monitoring() {
           <h4>
             <strong>MONITORING</strong>{" "}
           </h4>{" "}
-          <span className="userName">
-            Administrator <FontAwesomeIcon icon={faCircleUser} />
-          </span>
+          <span className="userName"><span className="userName-text">Administrator</span>   <FontAwesomeIcon icon={faCircleUser} className="icon-circle" /></span>
+
         </div>
       </div>
       <div className="Monitoring-container">
