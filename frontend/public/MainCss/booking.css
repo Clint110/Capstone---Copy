@@ -217,8 +217,8 @@ cursor: pointer;
 outline: 0;
 color: #fff;
 margin-top: 20px;
-background-color: #2a51dd;
-border-color: #2a51dd;
+background-color: #3a79f9;
+border-color: #3a79f9;
 /* display: inline-block; */
 font-weight: bold;
 line-height: 1.5;
@@ -232,8 +232,8 @@ border-radius: .25rem;
 transition: color .15s ease-in-out,background-color .15s ease-in-out,border-color .15s ease-in-out,box-shadow .15s ease-in-out;
 :hover {
     color: #fff;
-    background-color: #0b5ed7;
-    border-color: #0a58ca;
+    background-color: #3a79f9;
+    border-color: #3a79f9;
 }
 }
 
@@ -315,7 +315,7 @@ overflow-y: auto;
 }
 
 .rbc-calendar {
-  width: 790px; 
+  width: 830px; 
   margin-top: 45px;
   margin-left: 1px;
   height: 910px;
