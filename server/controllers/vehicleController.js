@@ -150,6 +150,7 @@ exports.vecstatus = async (req, res) => {
     }
   };
 
+
   exports.getVehicleDetails = async (req, res) => {
     try {
       const { plateNumber } = req.params;
@@ -189,6 +190,35 @@ exports.vecstatus = async (req, res) => {
     }
   }
 
+  exports.vehicdetails = async (req, res) => {
+    try {
+      const { plateNumber } = req.params;
+
+      console.log(plateNumber);
+      const vehicleDetails = await Vehicle.findOne({ plateNumber });
+      
+      if (!vehicleDetails) {
+        return res.status(404).json({ error: 'Vehicle details not found' });
+      } 
+      
+        const details = {
+          vehicle: {
+            plateNumber: vehicleDetails.plateNumber,
+            vehicleName: vehicleDetails.vehicleName,
+            carImage: `http://localhost:3000/imagesforupload/${vehicleDetails.carImage}`,
+          },
+        };
+      
+
+      console.log(details);
+  
+      res.json(details);
+    } catch (error) {
+      console.error('Error fetching vehicle details:', error);
+      res.status(500).json({ error: 'Internal Server Error' });
+    }
+  }
+
   // exports.markAvailable = async (req, res) => {
   //   try {
   //     const { plateNumber } = req.params;
@@ -205,30 +235,6 @@ exports.vecstatus = async (req, res) => {
   //     res.status(500).json({ error: 'Internal server error' });
   //   }
   // };
-
-  // exports.markAvailable = async (req, res) => {
-  //   try {
-  //     const { plateNumber } = req.params;
-  
-  //     // Check if the plate number is already in use
-  //     const vehicle = await Vehicle.findOne({ plateNumber });
-  //     if (!vehicle) {
-  //       return res.status(404).json({ error: 'Vehicle not found.' });
-  //     }
-  
-  //     if (vehicle.status === 'Used') {
-  //       return res.status(400).json({ error: 'Cannot mark vehicle as available. The vehicle is currently in use.' });
-  //     }
-  
-  //     // Update the status of the vehicle to "Available"
-  //     await Vehicle.updateOne({ plateNumber }, { $set: { status: 'Available' } });
-  //     res.json({ success: true, message: `Vehicle with the Plate Number: ${plateNumber} marked as available.` });
-  //   } catch (error) {
-  //     console.error('Error marking vehicle as available:', error);
-  //     res.status(500).json({ error: 'Internal server error' });
-  //   }
-  // }
-
 
   
 exports.markAvailable = async (req, res) => {

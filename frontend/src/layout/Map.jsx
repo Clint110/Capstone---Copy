@@ -4,12 +4,24 @@ import Reminder from './Reminder';
 import { GoogleMap, LoadScript } from '@react-google-maps/api';
 import io from 'socket.io-client';
 import { BsExclamationLg } from "react-icons/bs";
+import {
+  MDBBtn,
+  MDBModal,
+  MDBModalDialog,
+  MDBModalContent,
+  MDBModalHeader,
+  MDBModalTitle,
+  MDBModalBody,
+  MDBModalFooter,
+} from 'mdb-react-ui-kit';
+import { MdDangerous } from "react-icons/md";
 
 function Map() {
   const [coordinates, setCoordinates] = useState({ latitude: 0, longitude: 0 });
   const [isVisible, setIsVisible] = useState(true);
   const [mapKey, setMapKey] = useState(0);
   const [showModal, setShowModal] = useState(false);
+  const [showConfirmationModal, setShowConfirmationModal] = useState(false);
 
   const toggleVisibility = () => {
     setIsVisible((prevVisible) => !prevVisible);
@@ -179,8 +191,8 @@ useEffect(() => {
     if (messageData && typeof messageData.content === 'string') {
     // Extract required fields from the received message data
     const { content } = messageData;
-    const parts = content.split('\n'); 
-    // const parts = content.split(/(?<=\d)(?=[a-zA-Z])/);
+    // const parts = content.split('\n'); 
+    const parts = content.split(/(?<=\d)(?=[a-zA-Z])/);
 
     console.log('Parts:', parts);
 
@@ -192,11 +204,11 @@ useEffect(() => {
         const key = keyValue[0].trim();
         const value = keyValue[1].trim();
   
-        if (key.toLowerCase() === 'platenumber') {
+        if (key.toLowerCase() === 'plat') {
           plateNumber = value;
-        } else if (key.toLowerCase() === 'latitude') {
+        } else if (key.toLowerCase() === 'lat') {
           latitude = parseFloat(value);
-        } else if (key.toLowerCase() === 'longitude') {
+        } else if (key.toLowerCase() === 'long') {
           longitude = parseFloat(value);
         }
       }
@@ -208,8 +220,10 @@ useEffect(() => {
 
     if(longitude ==125.1253695 && latitude == 8.1569808) {
       setShowModal(true);
+      // setShowConfirmationModal(true);
     }
   
+
     // Check if plateNumber exists in the database
     if (longitude !== undefined && latitude !== undefined && plateNumber !== undefined) {
       // Upload extracted data to the database
@@ -322,6 +336,28 @@ useEffect(() => {
     </div>
   
        )}
+     {/* <div>
+      <MDBModal tabIndex='-1' open={showConfirmationModal} setOpen={setShowConfirmationModal}>
+        <MDBModalDialog>
+          <MDBModalContent>
+            <MDBModalHeader>
+              <MDBModalTitle>Confirmation</MDBModalTitle>
+              <button className="btn-close"></button>
+            </MDBModalHeader>
+            <MDBModalBody>
+           <div className="iconNi" style={{ display: 'flex', justifyContent: 'center' }}>
+            <MdDangerous style={{color:"#ff0000", fontSize:"90px"}}/>  </div>
+            <p style={{ textAlign: 'center', padding: '20px' }}>Are you sure you want to delete vehicle with plate number</p>
+            </MDBModalBody>
+            <MDBModalFooter>
+              <button className="btn btn-secondary" onClick={setShowConfirmationModal(false)}>Cancel</button>
+              {/* <button className='btn btn-danger' onClick={handleConfirmDelete}>Delete</button> */}
+              {/* <button className='btn btn-danger' >Delete</button>
+            </MDBModalFooter>
+          </MDBModalContent>
+        </MDBModalDialog>
+      </MDBModal>
+  </div> */} 
     </>
   );
 }
