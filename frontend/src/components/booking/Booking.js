@@ -266,6 +266,8 @@ setNewEvent({ title: "", driver: "", start: null, end: null });
 </div>
 <div className='booking-wrapper'>
   <div className='add_booking_area'>
+  <button className='add_booking_area_btn' onClick={() => setScrollableModal(!scrollableModal)}>
+    + ADD BOOKING</button>
 <hr/>
 
 <div className="reminder-Head">
