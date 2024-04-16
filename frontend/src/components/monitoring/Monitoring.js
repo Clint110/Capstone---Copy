@@ -495,6 +495,7 @@ const handleConfirmEdit = async () => {
     if (response.status === 200) {
       setShowEditModal(false);
       await fetchVehicleStatus();
+      window.location.reload();
     } else {
       console.error('Error editing vehicle details:', response.statusText);
     }
