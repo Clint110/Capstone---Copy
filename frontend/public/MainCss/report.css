@@ -175,4 +175,19 @@ align-items: center;
 justify-content: space-between;
 }
 
+.report_search {
+  position: block;
+  display: flex;
+  margin-top: 100px;
+}
 
+.report_search input[type="text"] {
+ margin-left: 25px;
+  height: 40px;
+  width: 390px;
+margin-right: 5px;
+}
+
+.report_search select{
+  width: 100px;
+}
