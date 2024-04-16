@@ -56,57 +56,21 @@ exports.addvehicle = async (req, res) => {
 //       }
 //   };
 
-
-// exports.vecstatus = async (req, res) => {
-//   try {
-//     // Fetch all distinct plate numbers from the Vehicle model
-//     const plateNumbersInVehicles = await Vehicle.find().distinct('plateNumber');
-
-//     const statusObject = {};
-
-//     // Initialize all vehicle statuses as 'Available' by default
-//     plateNumbersInVehicles.forEach((plateNumber) => {
-//       statusObject[plateNumber] = 'Available';
-//     });
-
-//     // Use Promise.all to handle asynchronous operations
-//     await Promise.all(plateNumbersInVehicles.map(async (plateNumber) => {
-//       // Check if there is any booking for the plate number
-//       const latestBooking = await Booking.findOne({ plateNumber }).sort({ returnDate: -1 });
-
-//       if (latestBooking) {
-//         // If a booking is found, check if the return date has passed
-//         const returnDate = new Date(latestBooking.returnDate);
-//         const currentDate = new Date();
-//         if (currentDate > returnDate) {
-//           // If return date has passed, mark the vehicle as 'Available'
-//           statusObject[plateNumber] = 'Available';
-//         } else {
-//           // If return date has not passed, mark the vehicle as 'Used'
-//           statusObject[plateNumber] = 'Used';
-//         }
-//       }
-//     }));
-
-//     // Send the vehicle status as JSON response
-//     res.json(statusObject);
-//   } catch (error) {
-//     console.error('Error fetching vehicle status:', error);
-//     res.status(500).json({ error: 'Internal server error' });
-//   }
-// };
-
 exports.vecstatus = async (req, res) => {
   try {
+    console.log('Fetching vehicle status...');
     // Fetch all distinct plate numbers from the Vehicle model
     const plateNumbersInVehicles = await Vehicle.find().distinct('plateNumber');
+    console.log('Plate numbers:', plateNumbersInVehicles);
 
     const statusObject = {};
 
     // Use Promise.all to handle asynchronous operations
     await Promise.all(plateNumbersInVehicles.map(async (plateNumber) => {
+      console.log('Checking plate number:', plateNumber);
       // Find the latest booking for the plate number
       const latestBooking = await Booking.findOne({ plateNumber }).sort({ returnDate: -1 });
+      console.log('Latest booking:', latestBooking);
 
       if (latestBooking) {
         // Check if the return date has passed
@@ -125,6 +89,8 @@ exports.vecstatus = async (req, res) => {
         statusObject[plateNumber] = 'Available';
       }
     }));
+
+    console.log('Status object:', statusObject);
 
     // Send the vehicle status as JSON response
     res.json(statusObject);
