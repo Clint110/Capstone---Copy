@@ -180,6 +180,8 @@ function Login() {
         <div className="Logincontainer">
           <nav>
             <a href="#" className="logos">BukSU MoniTour</a>
+            <img src="logoo.png" alt="Logo" className="logo-right" />
+
             {/* <ul> */}
              
               {/* <li><a href="#">Contact Us</a></li>
