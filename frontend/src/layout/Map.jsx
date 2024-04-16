@@ -293,12 +293,20 @@ useEffect(() => {
     </div>
     {/* </div> */}
     {showModal && (
+   
     <div class="container">
       <input type="checkbox" id="check"/>
-      <label class="show_button" for="check">Click Me</label>
+
+
+      <div class="show_button" for="check"> 
+      <header>Departure Confirmation 
+        <p>Plate number [insert plate number] has successfully exited the premise. Thank you!</p></header>
+        <div class="btns">
+          <label for="check" onClick={() => setShowModal(false)}>Proceed</label>
+      </div>
       
-      <div class="background"></div>
-      <div class="alert_box">
+      {/* <div class="background"></div>
+      <div class="alert_box show_button" for="check">
         <div class="iconNi">
         <BsExclamationLg style={{
       color: "#000000" , fontSize:"90px"
@@ -309,8 +317,10 @@ useEffect(() => {
         <div class="btns">
           <label for="check" onClick={() => setShowModal(false)}>Proceed</label>
         </div>
-      </div>
+      </div> */}
     </div>
+    </div>
+  
        )}
     </>
   );
