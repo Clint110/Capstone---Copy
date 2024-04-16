@@ -3,6 +3,7 @@
 .LoginBtn a {
   text-decoration: none;
   color: white;
+  margin-top: -20px;
   
 }
 
@@ -73,7 +74,7 @@ body{
   transform: translateY(-50%); /* Adjust to vertically center the icon */
   pointer-events: none; /* Make the icon non-interactive */
   z-index: 1; /* Ensure the icon appears above the input field */
-  width: 20px; /* Adjust icon width as needed */
+  width: 18px; /* Adjust icon width as needed */
   height: auto; /* Maintain aspect ratio */
 }
 
@@ -92,7 +93,7 @@ body{
   width: 420px;
   height: 45px;
   padding: 6px 12px;
-  font-size: 15px;
+  font-size: 13px;
   font-weight: 400;
   line-height: 1.5;
   color: #302f2f;
@@ -366,8 +367,9 @@ body{
 }
 .logo-right {
   position: absolute;
-  top: 10px; /* Adjust top position as needed */
+  top: 30px; /* Adjust top position as needed */
   right: 10px; /* Adjust right position as needed */
-  width: 100px; /* Adjust width as needed */
+  width: 140px; /* Adjust width as needed */
   height: auto; /* To maintain aspect ratio */
+
 }

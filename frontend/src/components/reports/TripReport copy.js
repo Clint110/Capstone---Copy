@@ -312,7 +312,7 @@ function TripReport() {
             className="rounded-circle usr-image"
             height="150"
             width="150"
-          />
+          /> <div className="logo-text">MoniTour</div>
         </div>
         <section className="routes">
           {routes.map((route, index) => {
@@ -365,9 +365,7 @@ function TripReport() {
             <h4>
               <strong>REPORT</strong>{" "}
             </h4>{" "}
-            <span className="userName">
-              Secretary <FontAwesomeIcon icon={faCircleUser} />
-            </span>
+            <span className="userName"><span className="userName-text">Secretary</span>   <FontAwesomeIcon icon={faCircleUser} className="icon-circle" /></span>
           </div>
         </div>
         {/* <div className='Report-container'>

@@ -32,13 +32,30 @@ body{
   margin-top: 40px;
   margin-left: 20px;
 }
-.userName{
+/* .userName{
   text-align: right;
   margin-top: 25px;
-  size: 8px;
+  size: 20px;
   color: #5c5a5a;
   margin-right: 100px;
+} */
+.userName {
+  display: flex;
+  align-items: center;
+  margin-left: 20px;
+  margin-top: 25px;
 }
+
+.userName span.userName-text {
+  font-size: 15px; /* Adjust font size */
+  color: #5c5a5a; /* Greyish color */
+  margin-right: 5px; /* Add spacing between text and icon */
+}
+.icon-circle {
+  color: #5c5a5a; /* Greyish color */
+}
+
+
 .dashboard-wrapper{
   display: flex;
   flex-grow: 1;

@@ -389,3 +389,10 @@ position: absolute;
 .side-menu-footer{
   display: hidden;
 }
+.logo-text {
+  margin-top: 10px; /* Adjust as needed */
+  font-size: 25px; /* Adjust the font size */
+  color: #ffffff;
+  text-align: center; /* Adjust the text color */
+  font-weight: bold;
+}
