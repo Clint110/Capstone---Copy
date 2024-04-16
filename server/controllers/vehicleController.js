@@ -160,11 +160,11 @@ exports.vecstatus = async (req, res) => {
         return res.status(404).json({ error: 'Vehicle details not found' });
       }
   
-      const bookingDetails = await Booking.findOne({ plateNumber });
+      // const bookingDetails = await Booking.findOne({ plateNumber });
   
-      if (!bookingDetails) {
-        return res.status(404).json({ error: 'Booking details not found' });
-      }
+      // if (!bookingDetails) {
+      //   return res.status(404).json({ error: 'Booking details not found' });
+      // }
   
       const details = {
         vehicle: {
@@ -172,13 +172,6 @@ exports.vecstatus = async (req, res) => {
           vehicleName: vehicleDetails.vehicleName,
           carImage: `http://localhost:3000/imagesforupload/${vehicleDetails.carImage}`,
         },
-        // booking: {
-        //   clientName: bookingDetails.clientName,
-        //   passengerQuantity: bookingDetails.passengerQuantity,
-        //   boundFor: bookingDetails.boundFor,
-        //   timeAndDate: bookingDetails.timeAndDate,
-        //   returnDate: bookingDetails.returnDate,
-        // },
       };
 
       console.log(details);
@@ -190,6 +183,8 @@ exports.vecstatus = async (req, res) => {
     }
   }
 
+
+
   exports.vehicdetails = async (req, res) => {
     try {
       const { plateNumber } = req.params;
@@ -200,7 +195,7 @@ exports.vecstatus = async (req, res) => {
       if (!vehicleDetails) {
         return res.status(404).json({ error: 'Vehicle details not found' });
       } 
-      
+
         const details = {
           vehicle: {
             plateNumber: vehicleDetails.plateNumber,
@@ -311,12 +306,21 @@ exports.markAvailable = async (req, res) => {
 exports.editVehicle = async (req, res) => {
   try {
     const plateNumber = req.params.plateNumber2; // Corrected parameter name
-    const { newPlateNumber, vehicleName } = req.body; // Destructure the updated data
+    const { newPlateNumber, vehicleName, carImage } = req.body; // Destructure the updated data
+    // const carImage = req.file ? req.file.filename : null; // Check if a file is uploaded
 
+    console.log("Plate:" + plateNumber);
+    console.log(newPlateNumber, vehicleName);
+    console.log(carImage);
+    
+    if (!carImage) {
+      // Handle the case when no image is uploaded
+      return res.status(400).json({ success: false, error: 'No image uploaded' });
+  }
     // Find the vehicle by plate number and update both plateNumber and vehicleName
     const updatedVehicle = await Vehicle.findOneAndUpdate(
       { plateNumber },
-      { plateNumber: newPlateNumber, vehicleName },
+      { plateNumber: newPlateNumber, vehicleName, carImage },
       { new: true }
     );
 

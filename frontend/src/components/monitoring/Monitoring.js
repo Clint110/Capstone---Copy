@@ -456,21 +456,22 @@ const handleEditButtonClick = async (plateNumber) => {
 };
 
 
-const handleOrigPlateNumberChange = (e) => {
-  setnotPlateNumber(e.target.value);
+const handleOrigPlateNumberChange = (event) => {
+  setnotPlateNumber(event.target.value);
 };
 
 
-const handleEditPlateNumberChange = (e) => {
-  setEditedPlateNumber(e.target.value);
+const handleEditPlateNumberChange = (event) => {
+  setEditedPlateNumber(event.target.value);
+  // onChange={(e) => setFormData2({ ...formData2, editedPlateNumber: e.target.value })}
 };
 
-const handleEditVehicleChange = (e) => {
-  setEditedVehicle(e.target.value);
+const handleEditVehicleChange = (event) => {
+  setEditedVehicle(event.target.value);
 };
 
-const handleEditCarImageChange = (e) => {
-  setEditedCarImage(e.target.files[0]);
+const handleEditCarImageChange = (event) => {
+  setEditedCarImage(event.target.files[0]);
 };
 
 
@@ -479,11 +480,12 @@ const handleConfirmEdit = async () => {
   try {
     console.log('Edited Plate Number:', editedPlateNumber);
     console.log('Edited Vehicle:', editedVehicle);
-    console.log('Edited Car Image:', editedCarImage);
+    console.log('Edited Car Image:', editedCarImage.name);
 
     const updatedData = {
       newPlateNumber: editedPlateNumber,
       vehicleName: editedVehicle,
+      carImage: editedCarImage.name
       // Remove the carImage property if you don't want to edit the image
     };
 
@@ -501,6 +503,104 @@ const handleConfirmEdit = async () => {
   }
 };
 
+const [formData2, setFormData2] = useState({
+  editedPlateNumber2: editedPlateNumber,
+  editedVehicle2: editedVehicle,
+  editedCarImage2: editedCarImage,
+});
+
+
+console.log(formData2);
+
+// const handleConfirmEdit = async (e) => {
+//   e.preventDefault();
+
+//   // const formDataforedit = new FormData();
+//   // formDataforedit.append('newPlateNumber', formData2.editedPlateNumber2);
+//   // formDataforedit.append('vehicleName', formData2.editedVehicle2);
+//   // formDataforedit.append('carImage', formData2.editedCarImage2);
+
+//   // Create a new FormData object
+//   const formDataForEdit = new FormData();
+//   formDataForEdit.append('newPlateNumber', editedPlateNumber);
+//   formDataForEdit.append('vehicleName', editedVehicle);
+//   formDataForEdit.append('carImage', editedCarImage);
+
+//   console.log('Form Data:', formDataForEdit);
+
+//   try {
+//     console.log('Edited Plate Number:', editedPlateNumber);
+//     console.log('Edited Vehicle:', editedVehicle);
+//     console.log('Edited Car Image:', editedCarImage);
+
+//     const response = await axios.put(`http://localhost:3000/vehicle/edit/${notPlateNumber}`, formData, {
+//       headers: {
+//         'Content-Type': 'multipart/form-data',
+//       },
+//     });
+
+//     if (response.status === 200) {
+
+//       setFormData2({
+//         editedPlateNumber: '',
+//         editedVehicle: '',
+//         editedCarImage: null,
+//       });
+//       setShowEditModal(false);
+//       await fetchVehicleStatus();
+//     } else {
+//       console.error('Error editing vehicle details:', response.statusText);
+//     }
+//   } catch (error) {
+//     console.error('Error editing vehicle details:', error);
+//   }
+// };
+
+//  const handleConfirmEdit = async (e) => {
+//   e.preventDefault();
+
+//   console.log('Edited Plate Number:', editedPlateNumber);
+//     console.log('Edited Vehicle:', editedVehicle);
+//     console.log('Edited Car Image:', editedCarImage);
+
+//   // Create a new FormData object
+//   const formDataForEdit = new FormData();
+//   formDataForEdit.append('newPlateNumber', editedPlateNumber); // Append the edited plate number
+//   formDataForEdit.append('vehicleName', editedVehicle); // Append the edited vehicle name
+
+//   // Check if the editedCarImage is not null before appending
+//   if (editedCarImage) {
+//     // Ensure that the field name matches the server's expectation (e.g., 'carImage')
+//     formDataForEdit.append('carImage', editedCarImage, editedCarImage.name); // Append the edited car image
+//   }
+
+//   console.log(formDataForEdit);
+
+//   try {
+//     // Send the PUT request with the updated data
+//     const response = await axios.put(`http://localhost:3000/vehicle/edit/${notPlateNumber}`, formDataForEdit, {
+//       headers: {
+//         'Content-Type': 'multipart/form-data',
+//       },
+//     });
+
+//     if (response.status === 200) {
+//       // If the request is successful, clear the form data and close the modal
+//       setEditedPlateNumber('');
+//       setEditedVehicle('');
+//       setEditedCarImage(null);
+//       setShowEditModal(false);
+//       // Optionally, you can refresh the vehicle list after editing
+//       await fetchVehicleStatus();
+//     } else {
+//       console.error('Error editing vehicle details:', response.statusText);
+//     }
+//   } catch (error) {
+//     console.error('Error editing vehicle details:', error);
+//   }
+// };
+
+
 
 
 
@@ -511,18 +611,6 @@ const handleCancelEdit = () => {
 };
 
 
-// const handleEditVehicle = async () => {
-//   try {
-//     // Implement the logic to save the edited vehicle details
-//     // This can involve sending a request to update the vehicle details in the database, for example
-//     // After saving, you can close the edit modal
-//     setShowEditModal(false);
-//   } catch (error) {
-//     // Handle any errors that occur during the editing process
-//     console.error('Error editing vehicle details:', error);
-//   }
-// };
-
 const handleEditVehicle = async () => {
   try {
     // Implement the logic to save the edited vehicle details
@@ -531,7 +619,7 @@ const handleEditVehicle = async () => {
       addvehicles: editedVehicle,
       // Note: You need to handle image editing separately, depending on your implementation
       // For now, let's assume you're not editing the image
-      // carImage: editedCarImage,
+      carImage: editedCarImage,
     };
 
     console.log('Editing vehicle with data:', editedVehicleData);
@@ -851,6 +939,7 @@ const handleDeleteButtonClick = async (plateNumber) => {
               <input
                 type="text"
                 className='form-control'
+                // value={formData2.editedPlateNumber2}
                 value={editedPlateNumber}
                 onChange={handleEditPlateNumberChange}
               />
@@ -861,8 +950,10 @@ const handleDeleteButtonClick = async (plateNumber) => {
               <input
                 type="text"
                 className='form-control '
+                // value={formData2.editedVehicle2}
                 value={editedVehicle}
                 onChange={handleEditVehicleChange}
+                // onChange={(e) => setFormData2({ ...formData2, editedVehicle2: e.target.value })}
               />
             </label>
             </div>
@@ -873,6 +964,7 @@ const handleDeleteButtonClick = async (plateNumber) => {
                 name="carImage"
                 className='form-control'
                 onChange={handleEditCarImageChange}
+                // onChange={(e) => setFormData2({ ...formData2, editedCarImage2: e.target.files[0] })}
               />
             </label>
           </form>
