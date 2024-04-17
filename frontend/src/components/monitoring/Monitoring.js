@@ -3,7 +3,6 @@ import car1 from "../car1.png";
 import axios from "axios";
 import { MdDangerous } from "react-icons/md";
 // import Data from "../Data.json"
-
 import "bootstrap/dist/css/bootstrap.css";
 import DataTable from "react-data-table-component";
 import Col from "react-bootstrap/Col";
@@ -399,7 +398,7 @@ function Monitoring() {
           // Note: You need to handle image editing separately, depending on your implementation
           // For now, let's assume you're not editing the image
           setEditedCarImage(data.vehicle.carImage);
-          // Open the edit modal
+
           setShowEditModal(true);
         } else {
           console.error(
@@ -447,12 +446,12 @@ function Monitoring() {
       console.log("Updated data:", updatedData);
 
       const response = await axios.put(
-        `http://localhost:3000/vehicle/edit/${notPlateNumber}, updatedData`
+        `http://localhost:3000/vehicle/edit/${notPlateNumber}`,
+        updatedData
       );
       if (response.status === 200) {
         setShowEditModal(false);
         await fetchVehicleStatus();
-        window.location.reload();
       } else {
         console.error("Error editing vehicle details:", response.statusText);
       }
@@ -619,6 +618,17 @@ function Monitoring() {
     }
   };
 
+  const handleCloseFirstModal = () => {
+    const firstModal = document.querySelector(".firstmodal");
+    if (firstModal) {
+      firstModal.remove(); // Remove the first modal from the DOM
+    }
+    const modalBackdrop = document.querySelector(".modal-backdrop");
+    if (modalBackdrop) {
+      modalBackdrop.remove(); // Remove the modal backdrop from the DOM
+    }
+  };
+
   return (
     <>
       <div className="header-wrapper">
@@ -739,7 +749,10 @@ function Monitoring() {
             </div>
           </div>
 
-          <div>
+          <div
+            className="firstmodal"
+            style={{ display: showEditModal ? "none" : "block" }}
+          >
             <MDBModal
               tabIndex="-1"
               open={selectedPlateNumber !== null || isHistoryVisible}
@@ -788,11 +801,11 @@ function Monitoring() {
                               </p>
                             </div>
                           </div>
-                          {/* Insert the delete button here */}
                           <button
-                            onClick={() =>
-                              handleEditButtonClick(selectedPlateNumber)
-                            }
+                            onClick={() => {
+                              handleEditButtonClick(selectedPlateNumber);
+                              handleCloseFirstModal();
+                            }}
                             className="btn btn-primary"
                           >
                             Edit
@@ -976,7 +989,10 @@ function Monitoring() {
       </div> */}
 
       {/* EDIT MODAL */}
-      <div>
+      <div
+        className="secondmodal"
+        style={{ display: showEditModal ? "block" : "none" }}
+      >
         <MDBModal tabIndex="-1" open={showEditModal} setOpen={setShowEditModal}>
           <MDBModalDialog>
             <MDBModalContent>
