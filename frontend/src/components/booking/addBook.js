@@ -459,7 +459,7 @@ const formatTime = (timeString) => {
     + ADD BOOKING</button>
 <hr/>
 <div className="reminder-Head">
-<h6>SCHEDULE</h6></div>
+<h6>SCHEDULES</h6></div>
 
 
   <div className="reminder-container" style={{height:"390px"}}>
