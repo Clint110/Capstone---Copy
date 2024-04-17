@@ -596,20 +596,49 @@ function Monitoring() {
   //   console.log("Plate:" + plate);
   // };
 
-const handleDeleteButtonClick = async (plateNumber) => {
-  try {
-    console.log("Plate"+ plateNumber);
-    const response = await axios.delete(`http://localhost:3000/vehicle/delete/${plateNumber}`);
-    console.log(response.data);
+  // const handleDeleteButtonClick = async (plateNumber) => {
+  //   try {
 
-    setVehicleDetailsModalOpen(false);
-    // Optionally, you can perform any additional actions after successful deletion
-  } catch (error) {
-    console.error('Error deleting vehicle:', error);
-    // Optionally, handle the error or show a notification to the user
-  }
-};
+  //     console.log("Plate"+ plateNumber);
+  //     const response = await axios.delete(`http://localhost:3000/vehicle/delete/${plateNumber}`);
+  //     console.log(response.data);
 
+  //     setVehicleDetailsModalOpen(false);
+  //     // Optionally, you can perform any additional actions after successful deletion
+  //   } catch (error) {
+  //     console.error('Error deleting vehicle:', error);
+  //     // Optionally, handle the error or show a notification to the user
+  //   }
+  // };
+
+  const handleDeleteButtonClick = async (plateNumber) => {
+    try {
+      // Show confirmation dialog
+      const confirmDelete = window.confirm(
+        "Are you sure you want to delete this vehicle?"
+      );
+
+      // If user confirms deletion
+      if (confirmDelete) {
+        // Send delete request
+        const response = await axios.delete(
+          `http://localhost:3000/vehicle/delete/${plateNumber}`
+        );
+        console.log(response.data);
+
+        // Close the vehicle details modal
+        setVehicleDetailsModalOpen(false);
+
+        // Optionally, you can perform any additional actions after successful deletion
+      } else {
+        // If user cancels deletion
+        console.log("Deletion canceled");
+      }
+    } catch (error) {
+      console.error("Error deleting vehicle:", error);
+      // Optionally, handle the error or show a notification to the user
+    }
+  };
   const handleCloseFirstModal = () => {
     const firstModal = document.querySelector(".firstmodal");
     if (firstModal) {
@@ -804,9 +833,10 @@ const handleDeleteButtonClick = async (plateNumber) => {
                           </button>{" "}
                           &nbsp; &nbsp;
                           <button
-                            onClick={() =>
-                              handleDeleteButtonClick(selectedPlateNumber)
-                            }
+                            onClick={() => {
+                              handleDeleteButtonClick(selectedPlateNumber);
+                              handleCloseFirstModal();
+                            }}
                             className="btn btn-danger"
                           >
                             Delete
