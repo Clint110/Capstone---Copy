@@ -2,8 +2,9 @@
 
 import React , {useState, useEffect} from 'react'
 import loginImage from '../images/login.png'
-import logo from '../images/buksu-logo.png'
-import logooImage from './logoo.png';
+// import logo from '../images/buksu-logo.png'
+import logo from '../images/buksu-new-logo.png';
+import logooImage from '../images/logoo.png';
 import { GoogleLogin,  useGoogleLogin } from '@react-oauth/google';
 import { TfiEmail } from "react-icons/tfi";
 import { RiLockPasswordLine } from "react-icons/ri";
@@ -181,7 +182,7 @@ function Login() {
         <div className="Logincontainer">
           <nav>
             <a href="#" className="logos">BukSU MoniTour</a>
-            <img src="buksu-logo.png" alt="Logo" className="logo-right" />
+            <img src={logo} alt="Logo" className="logo-right" />
 
             {/* <ul> */}
              
