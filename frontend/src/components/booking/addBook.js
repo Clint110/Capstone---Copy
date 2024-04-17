@@ -549,7 +549,7 @@ const formatTime = (timeString) => {
             <input type="text" className='bookingInput' value={formData.clientName} onChange={(e) => setFormData({ ...formData, clientName: e.target.value })} required/>
         </label>
         <label>
-        Passenger Quantity
+        No. of Passenger
             <input type="number" className='bookingInput' value={formData.passengerQuantity} onChange={(e) => setFormData({ ...formData, passengerQuantity: e.target.value })} required/>
         </label>
         <label>

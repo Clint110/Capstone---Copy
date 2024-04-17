@@ -30,6 +30,8 @@ function formatDateTime(dateTimeString) {
 const TripReport = () => {
   const [bookingData, setBookingData] = useState([]);
   const [editableData, setEditableData] = useState({});
+  const [searchQuery, setSearchQuery] = useState("");
+  const [searchField, setSearchField] = useState("plateNumber");
 
   const generatePDF = () => {
     try {
@@ -266,12 +268,47 @@ const TripReport = () => {
     }
   };
 
+  const formatDateTime = (dateTimeString) => {
+    const options = {
+      year: "numeric",
+      month: "long",
+      day: "numeric",
+      hour: "numeric",
+      minute: "numeric",
+      second: "numeric",
+      timeZoneName: "short",
+    };
+    return new Date(dateTimeString).toLocaleDateString("en-US", options);
+  };
+
+  const filteredData = bookingData.filter((booking) =>
+    booking[searchField].toLowerCase().includes(searchQuery.toLowerCase())
+  );
+
   return (
     <>
       <div>
         <button onClick={generatePDF} className="generate-button">
           Generate Report
         </button>
+      </div>
+      <div className="report_search">
+        <input
+          type="text"
+          placeholder="Search..."
+          value={searchQuery}
+          onChange={(e) => setSearchQuery(e.target.value)}
+        />
+        <select
+          value={searchField}
+          onChange={(e) => setSearchField(e.target.value)}
+        >
+          <option value="plateNumber">PLATE NO.</option>
+          <option value="boundFor">DEPARTURE</option>
+          <option value="destination">DESTINATION</option>
+          <option value="timeForBound">DEPARTURE</option>
+          <option value="returnDate">RETURN</option>
+        </select>
       </div>
       <div className="header-wrapper">
         <div className="header-container">
@@ -307,7 +344,8 @@ const TripReport = () => {
                     <td>
                     <button type="button" class="btn btn-warning btn-sm" onClick={() => handleEditBooking(booking.plateNumber)}>Edit</button>&nbsp; 
                       <button type="button" class="btn btn-warning btn-sm">Edit</button>&nbsp;  */}
-            {bookingData.map((booking, index) => (
+            {/* {bookingData.map((booking, index) => ( */}
+            {filteredData.map((booking, index) => (
               <tr key={booking._id}>
                 <td>
                   {editableData._id === booking._id ? (

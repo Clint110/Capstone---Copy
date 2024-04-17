@@ -3,7 +3,6 @@ import car1 from "../car1.png";
 import axios from "axios";
 import { MdDangerous } from "react-icons/md";
 // import Data from "../Data.json"
-
 import "bootstrap/dist/css/bootstrap.css";
 import DataTable from "react-data-table-component";
 import Col from "react-bootstrap/Col";
@@ -34,11 +33,10 @@ function Monitoring() {
   const [searchInput, setSearchInput] = useState("");
   const [filteredVehicleList, setFilteredVehicleList] = useState([]);
   const [role, setUserRole] = useState("");
-
   const [plateNumberStatuses, setPlateNumberStatuses] = useState({});
 
   const [showConfirmationModal, setShowConfirmationModal] = useState(false);
-  const [plateNumberToDelete, setPlateNumberToDelete] = useState("");
+  // const [plateNumberToDelete, setPlateNumberToDelete] = useState("");
   const [showEditModal, setShowEditModal] = useState(false);
   const [editedPlateNumber, setEditedPlateNumber] = useState("");
   const [notPlateNumber, setnotPlateNumber] = useState("");
@@ -353,18 +351,10 @@ function Monitoring() {
     );
   }, [filter, searchInput, vehicleStatus]);
 
-  const handleDeleteConfirmation = async (plateNumber) => {
-    // Logic for confirming deletion
-    console.log("Delete confirmed for plate number:", plateNumber);
-    setShowConfirmationModal(true);
-  };
-
-  const handleCancelDelete = () => {
-    // Logic for canceling deletion
-    console.log("Delete canceled");
-    // Close the modal
-    setShowConfirmationModal(false);
-  };
+  // const handleCancelDelete = () => {
+  //   console.log("Delete canceled");
+  //   setShowConfirmationModal(false);
+  // };
 
   // const handleEditButtonClick = async (plateNumber) => {
   //   try {
@@ -408,7 +398,7 @@ function Monitoring() {
           // Note: You need to handle image editing separately, depending on your implementation
           // For now, let's assume you're not editing the image
           setEditedCarImage(data.vehicle.carImage);
-          // Open the edit modal
+
           setShowEditModal(true);
         } else {
           console.error(
@@ -456,12 +446,12 @@ function Monitoring() {
       console.log("Updated data:", updatedData);
 
       const response = await axios.put(
-        `http://localhost:3000/vehicle/edit/${notPlateNumber}, updatedData`
+        `http://localhost:3000/vehicle/edit/${notPlateNumber}`,
+        updatedData
       );
       if (response.status === 200) {
         setShowEditModal(false);
         await fetchVehicleStatus();
-        window.location.reload();
       } else {
         console.error("Error editing vehicle details:", response.statusText);
       }
@@ -606,19 +596,28 @@ function Monitoring() {
   //   console.log("Plate:" + plate);
   // };
 
-  const handleDeleteButtonClick = async (plateNumber) => {
-    try {
-      console.log("Plate" + plateNumber);
-      const response = await axios.delete(
-        `http://localhost:3000/vehicle/delete/${plateNumber}`
-      );
-      console.log(response.data);
+const handleDeleteButtonClick = async (plateNumber) => {
+  try {
+    console.log("Plate"+ plateNumber);
+    const response = await axios.delete(`http://localhost:3000/vehicle/delete/${plateNumber}`);
+    console.log(response.data);
 
-      setVehicleDetailsModalOpen(false);
-      // Optionally, you can perform any additional actions after successful deletion
-    } catch (error) {
-      console.error("Error deleting vehicle:", error);
-      // Optionally, handle the error or show a notification to the user
+    setVehicleDetailsModalOpen(false);
+    // Optionally, you can perform any additional actions after successful deletion
+  } catch (error) {
+    console.error('Error deleting vehicle:', error);
+    // Optionally, handle the error or show a notification to the user
+  }
+};
+
+  const handleCloseFirstModal = () => {
+    const firstModal = document.querySelector(".firstmodal");
+    if (firstModal) {
+      firstModal.remove(); // Remove the first modal from the DOM
+    }
+    const modalBackdrop = document.querySelector(".modal-backdrop");
+    if (modalBackdrop) {
+      modalBackdrop.remove(); // Remove the modal backdrop from the DOM
     }
   };
 
@@ -629,8 +628,10 @@ function Monitoring() {
           <h4>
             <strong>MONITORING</strong>{" "}
           </h4>{" "}
-          <span className="userName"><span className="userName-text">Administrator</span>   <FontAwesomeIcon icon={faCircleUser} className="icon-circle" /></span>
-
+          <span className="userName">
+            <span className="userName-text">Administrator</span>{" "}
+            <FontAwesomeIcon icon={faCircleUser} className="icon-circle" />
+          </span>
         </div>
       </div>
       <div className="Monitoring-container">
@@ -740,7 +741,10 @@ function Monitoring() {
             </div>
           </div>
 
-          <div>
+          <div
+            className="firstmodal"
+            style={{ display: showEditModal ? "none" : "block" }}
+          >
             <MDBModal
               tabIndex="-1"
               open={selectedPlateNumber !== null || isHistoryVisible}
@@ -789,11 +793,11 @@ function Monitoring() {
                               </p>
                             </div>
                           </div>
-                          {/* Insert the delete button here */}
                           <button
-                            onClick={() =>
-                              handleEditButtonClick(selectedPlateNumber)
-                            }
+                            onClick={() => {
+                              handleEditButtonClick(selectedPlateNumber);
+                              handleCloseFirstModal();
+                            }}
                             className="btn btn-primary"
                           >
                             Edit
@@ -822,7 +826,7 @@ function Monitoring() {
                           </div>
                         </div>
                       )}
-                    Clint Lyod Clint Lyod Morcilla Gallardo
+
                     {/* History */}
                     {isHistoryVisible && (
                       <div className="historyRight">
@@ -934,7 +938,7 @@ function Monitoring() {
       </div>
 
       {/* DELETEEE MODAL */}
-      <div>
+      {/* <div>
         <MDBModal tabIndex="-1" setOpen={setShowConfirmationModal}>
           <MDBModalDialog>
             <MDBModalContent>
@@ -964,7 +968,6 @@ function Monitoring() {
                 >
                   Cancel
                 </button>
-                {/* <button className='btn btn-danger' onClick={handleConfirmDelete}>Delete</button> */}
                 <button
                   className="btn btn-danger"
                   onClick={() => handleDeleteButtonClick(selectedPlateNumber)}
@@ -975,10 +978,13 @@ function Monitoring() {
             </MDBModalContent>
           </MDBModalDialog>
         </MDBModal>
-      </div>
+      </div> */}
 
       {/* EDIT MODAL */}
-      <div>
+      <div
+        className="secondmodal"
+        style={{ display: showEditModal ? "block" : "none" }}
+      >
         <MDBModal tabIndex="-1" open={showEditModal} setOpen={setShowEditModal}>
           <MDBModalDialog>
             <MDBModalContent>
