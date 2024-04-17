@@ -139,6 +139,7 @@ setNewEvent({ title: "", driver: "", start: null, end: null });
           timeForBound: '',
         });
         setScrollableModal(!setScrollableModal);
+        window.location.reload();
       } else {
         // Handle error
         console.error('Error while submitting the form');

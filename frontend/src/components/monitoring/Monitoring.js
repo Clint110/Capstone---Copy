@@ -651,7 +651,7 @@ const handleDeleteButtonClick = async (plateNumber) => {
     const response = await axios.delete(`http://localhost:3000/vehicle/delete/${plateNumber}`);
     console.log(response.data);
 
-    setVehicleDetailsModalOpen(false);
+    setVehicleDetailsModalOpen(!setVehicleDetailsModalOpen);
     // Optionally, you can perform any additional actions after successful deletion
   } catch (error) {
     console.error('Error deleting vehicle:', error);
