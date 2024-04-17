@@ -623,14 +623,14 @@ tbody.vList{
 }
 
 .pictureArea{
-  padding-left: 40px;
+  padding-left: 30px;
  display: flex;  
  line-height: 2px;
  background-color: white;
- height: 200px;
+ height: 150px;
  border-radius: 10px;
- padding: 10px;
- width: 97%;
+ padding: 5px;
+ width: 100%;
 align-content: center;
 align-items: center;
 box-shadow: 0 1px 3px rgba(0,0,0,0.12), 0 1px 2px rgba(0,0,0,0.24);
@@ -645,12 +645,13 @@ margin-bottom: 10px;
 }
 
 .picText {
-  padding: 10px; /* Add padding around the content */
+  padding: 10px;
+  font-size: 15px /* Add padding around the content */
 }
 
 .plate-number {
   color: #333; /* Set color for plate number */
-  font-size: 15px; /* Set font size for plate number */
+  font-size: 20px; /* Set font size for plate number */
   margin-bottom: 5px;
   margin-left: 12px;
   justify-content: center;
@@ -733,9 +734,57 @@ box-shadow: 0 1px 3px rgba(0,0,0,0.12), 0 1px 2px rgba(0,0,0,0.24);}
 
 .custom-delete-button {
   /* Add your custom styles here */
-  background-color: red;
-  border-color: red;
+  background-color: #f93a3a;
+  border-color: #f93a3a;
+  margin-right:200px;
   font-size: 10px; /* Adjust the font size */
-  padding: 8px 10px; /* Adjust the padding */
+  padding: 10px 50px; /* Adjust the padding */
   /* Add any other styles you want */
 }
+.btn btn-primary {
+ font-size: 12px;
+ margin-left: 20px;
+}
+.btn-primary,
+.btn-danger {
+  /* Common button styles */
+  display: inline-block;
+  width: 200px; /* Adjust width as needed */
+  padding: 0.5rem 1rem;
+  border: none;
+  cursor: pointer;
+  border-radius: 4px;
+  font-weight: bold;
+  text-align: center;
+}
+
+.btn-primary {
+  /* Primary button styles */
+  background-color: #007bff; /* Blue color */
+  margin-top: 15px;
+  color: #fff; /* White text */
+  margin-right: 10px; /* Adjust spacing between buttons */
+}
+
+.btn-danger {
+  /* Danger button styles */
+  background-color: #dc3545; /* Red color */
+  color: #fff; /* White text */
+  margin-top: 15px;
+}
+
+/* Hover effect for all buttons */
+.btn-primary:hover,
+.btn-danger:hover {
+  opacity: 0.8;
+}
+
+
+
+
+/* Additional styles for buttons */
+.btn:hover {
+  /* Hover effect for all buttons */
+  opacity: 0.8;
+}
+
