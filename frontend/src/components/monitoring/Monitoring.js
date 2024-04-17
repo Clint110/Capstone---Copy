@@ -641,7 +641,6 @@ function Monitoring() {
     }
   };
 
-
   const handleCloseFirstModal = () => {
     const firstModal = document.querySelector(".firstmodal");
     if (firstModal) {
@@ -816,7 +815,7 @@ function Monitoring() {
                             <div className="picText">
                               <h3 className="plate-number">
                                 {" "}
-                                 {selectedPlateNumber}
+                                {selectedPlateNumber}
                               </h3>{" "}
                               {/* Added class name for plate number */}
                               <p className="vehicle-details">
