@@ -630,6 +630,7 @@ function Monitoring() {
         setVehicleDetailsModalOpen(false);
 
         // Optionally, you can perform any additional actions after successful deletion
+        window.location.reload();
       } else {
         // If user cancels deletion
         console.log("Deletion canceled");
@@ -639,6 +640,8 @@ function Monitoring() {
       // Optionally, handle the error or show a notification to the user
     }
   };
+
+
   const handleCloseFirstModal = () => {
     const firstModal = document.querySelector(".firstmodal");
     if (firstModal) {
@@ -813,7 +816,7 @@ function Monitoring() {
                             <div className="picText">
                               <h3 className="plate-number">
                                 {" "}
-                                Plate Number: {selectedPlateNumber}
+                                 {selectedPlateNumber}
                               </h3>{" "}
                               {/* Added class name for plate number */}
                               <p className="vehicle-details">

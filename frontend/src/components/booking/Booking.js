@@ -308,7 +308,8 @@ function Booking() {
             <strong>BOOKING</strong>{" "}
           </h4>{" "}
           <span className="userName">
-            Administrator <FontAwesomeIcon icon={faCircleUser} />
+            <span className="userName-text">Administrator</span>{" "}
+            <FontAwesomeIcon icon={faCircleUser} className="icon-circle" />
           </span>
         </div>
       </div>
@@ -398,20 +399,27 @@ function Booking() {
    <form id='addbook' onSubmit={handlebookingsub}>
         <label>
             PLATE NUMBER
-            <input type="text" className='bookingInput' 
-             value={formData.plateNumber} onChange={(e) => setFormData({ ...formData, plateNumber: e.target.value })}
-             />
+            <select  className="bookingInput" value={selectedPlateNumber} onChange={handlePlateNumberChange} required>
+                                <option value="" disabled>Select Plate Number</option>
+                                {plateNumbers.map(({ plateNumber }) => (
+                                  <option key={plateNumber} value={plateNumber}>
+                                   {plateNumber}
+                                  </option>
+                                ))}
+                              </select>
+                          
+                              <p>Status: {selectedPlateNumberStatus}</p>
         </label>
         <label>
          DRIVER’s NAME
             <input type="text" className='bookingInput' value={formData.driverName} onChange={(e) => setFormData({ ...formData, driverName: e.target.value })}/>
         </label>
         <label>
-            CLIENT NAME
+            Client Name
             <input type="text" className='bookingInput' value={formData.clientName} onChange={(e) => setFormData({ ...formData, clientName: e.target.value })} />
         </label>
         <label>
-        PASSENGER QUANTITY
+        No. of Passengers
             <input type="number" className='bookingInput' value={formData.passengerQuantity} onChange={(e) => setFormData({ ...formData, passengerQuantity: e.target.value })} />
         </label>
         <label>
