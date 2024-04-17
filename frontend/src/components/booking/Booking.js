@@ -243,15 +243,68 @@ setNewEvent({ title: "", driver: "", start: null, end: null });
   };
 
   const formatTime = (timeString) => {
-     // Check if timeString is null or undefined
-  if (!timeString) {
-    return '';
-  }
+    // Check if timeString is null or undefined
+    if (!timeString) {
+      return '';
+    }
+  
+    // Extract hours and minutes from the timeString
+    const dateObject = new Date(timeString);
+    const hours = dateObject.getHours();
+    const minutes = dateObject.getMinutes();
+  
+    // Format hours and minutes
+    const formattedHours = hours % 12 || 12;
+    const formattedMinutes = minutes < 10 ? `0${minutes}` : minutes;
+    const period = hours >= 12 ? 'PM' : 'AM';
+  
+    // Construct the formatted time string
+    const formattedTime = `${formattedHours}:${formattedMinutes} ${period}`;
+  
+    return formattedTime;
+  };
 
-  // Assuming timeString is in HH:mm format
-  const [hours, minutes] = timeString.split(':');
-  const formattedTime = `${parseInt(hours, 10) % 12 || 12}:${minutes} ${parseInt(hours, 10) >= 12 ? 'PM' : 'AM'}`;
-  return formattedTime;
+  const [plateNumbers, setPlateNumbers] = useState([]);
+  const [selectedPlateNumber, setSelectedPlateNumber] = useState("");
+  const [plateNumberStatuses, setPlateNumberStatuses] = useState({});
+  const [selectedPlateNumberStatus, setSelectedPlateNumberStatus] = useState("");
+
+
+  useEffect(() => {
+    const fetchPlateNumbers = async () => {
+      try {
+        const response = await fetch("http://localhost:3000/vehiclestatus");
+        if (response.ok) {
+          const data = await response.json();
+          console.log(data);
+          // const plateNumbers = data.map(vehicle => vehicle.plateNumber);
+
+          const plateNumberStatuses = data;
+          const plateNumberArray = Object.keys(data).map(plateNumber => ({
+            plateNumber: plateNumber,
+            status: data[plateNumber]
+          }));
+
+          console.log(plateNumberArray);
+          setPlateNumbers(plateNumberArray);
+          setPlateNumberStatuses(plateNumberStatuses);
+        } else {
+          console.error("Failed to fetch plate numbers from the server");
+        }
+      } catch (error) {
+        console.error("Error during fetch:", error);
+      }
+    };
+
+    fetchPlateNumbers();
+  }, []);
+
+  const handlePlateNumberChange = (event) => {
+    // setSelectedPlateNumber(event.target.value);
+    const selectedPlateNumber = event.target.value;
+    setSelectedPlateNumber(selectedPlateNumber);
+    setSelectedPlateNumberStatus(plateNumberStatuses[selectedPlateNumber]);
+    setFormData({ ...formData, plateNumber: selectedPlateNumber });
   };
 
   return (
@@ -326,24 +379,31 @@ setNewEvent({ title: "", driver: "", start: null, end: null });
    <form id='addbook' onSubmit={handlebookingsub}>
         <label>
             PLATE NUMBER
-            <input type="text" className='bookingInput' 
-             value={formData.plateNumber} onChange={(e) => setFormData({ ...formData, plateNumber: e.target.value })}
-             />
+            <select  className="bookingInput" value={selectedPlateNumber} onChange={handlePlateNumberChange} required>
+                                <option value="" disabled>Select Plate Number</option>
+                                {plateNumbers.map(({ plateNumber }) => (
+                                  <option key={plateNumber} value={plateNumber}>
+                                   {plateNumber}
+                                  </option>
+                                ))}
+                              </select>
+                          
+                              <p>Status: {selectedPlateNumberStatus}</p>
         </label>
         <label>
          DRIVER’s NAME
             <input type="text" className='bookingInput' value={formData.driverName} onChange={(e) => setFormData({ ...formData, driverName: e.target.value })}/>
         </label>
         <label>
-            CLIENT NAME
+        Client Name(Office)
             <input type="text" className='bookingInput' value={formData.clientName} onChange={(e) => setFormData({ ...formData, clientName: e.target.value })} />
         </label>
         <label>
-        PASSENGER QUANTITY
+        No. of Passengers
             <input type="number" className='bookingInput' value={formData.passengerQuantity} onChange={(e) => setFormData({ ...formData, passengerQuantity: e.target.value })} />
         </label>
         <label>
-        DESTINATION
+        Destination
         <select className='bookingInput' value={formData.destination} onChange={(e) => setFormData({ ...formData, destination: e.target.value })}>
             <option value='WOS'>Within Official Station </option>
             <option value='BOS'>Beyond Official Station </option>
