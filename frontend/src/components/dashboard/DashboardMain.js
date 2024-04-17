@@ -21,7 +21,8 @@ function DashboardMain() {
     <>
     <div className="header-wrapper">
 <div className='header-container'>   
-<h4><strong>DASHBOARD</strong> 	</h4>    <span className="userName">Administrator <FontAwesomeIcon icon={faCircleUser} /></span>
+<h4><strong>DASHBOARD</strong> 	</h4>   <span className="userName"><span className="userName-text">Administrator</span>   <FontAwesomeIcon icon={faCircleUser} className="icon-circle" /></span>
+
 	
 </div></div>
     <div className='Dashboard-container'>

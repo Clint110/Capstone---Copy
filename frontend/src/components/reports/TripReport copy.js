@@ -31,6 +31,9 @@ function formatDateTime(dateTimeString) {
 function TripReport() {
   const [isOpen, setIsOpen] = useState(false);
   const [editableData, setEditableData] = useState({});
+  const [searchQuery, setSearchQuery] = useState("");
+  const [searchField, setSearchField] = useState("plateNumber");
+
   const toggle = () => {
     setIsOpen(!isOpen);
   };
@@ -297,6 +300,23 @@ function TripReport() {
     }
   };
 
+  const formatDateTime = (dateTimeString) => {
+    const options = {
+      year: "numeric",
+      month: "long",
+      day: "numeric",
+      hour: "numeric",
+      minute: "numeric",
+      second: "numeric",
+      timeZoneName: "short",
+    };
+    return new Date(dateTimeString).toLocaleDateString("en-US", options);
+  };
+
+  const filteredData = bookingData.filter((booking) =>
+    booking[searchField].toLowerCase().includes(searchQuery.toLowerCase())
+  );
+
   return (
     <div className="main-container">
       <motion.div className={`sidebar `}>
@@ -312,7 +332,7 @@ function TripReport() {
             className="rounded-circle usr-image"
             height="150"
             width="150"
-          />
+          /> <div className="logo-text">MoniTour</div>
         </div>
         <section className="routes">
           {routes.map((route, index) => {
@@ -360,14 +380,30 @@ function TripReport() {
             Generate Report
           </button>
         </div>
+        <div className="report_search">
+          <input
+            type="text"
+            placeholder="Search..."
+            value={searchQuery}
+            onChange={(e) => setSearchQuery(e.target.value)}
+          />
+          <select
+            value={searchField}
+            onChange={(e) => setSearchField(e.target.value)}
+          >
+            <option value="plateNumber">PLATE NO.</option>
+            <option value="boundFor">DEPARTURE</option>
+            <option value="destination">DESTINATION</option>
+            <option value="timeForBound">DEPARTURE</option>
+            <option value="returnDate">RETURN</option>
+          </select>
+        </div>
         <div className="header-wrapper">
           <div className="header-container">
             <h4>
               <strong>REPORT</strong>{" "}
             </h4>{" "}
-            <span className="userName">
-              Secretary <FontAwesomeIcon icon={faCircleUser} />
-            </span>
+            <span className="userName"><span className="userName-text">Secretary</span>   <FontAwesomeIcon icon={faCircleUser} className="icon-circle" /></span>
           </div>
         </div>
         {/* <div className='Report-container'>
@@ -386,7 +422,8 @@ function TripReport() {
               </tr>
             </thead>
             <tbody>
-              {bookingData.map((booking, index) => (
+              {/* {bookingData.map((booking, index) => ( */}
+              {filteredData.map((booking, index) => (
                 <tr key={booking._id}>
                   <td>
                     {editableData._id === booking._id ? (

@@ -23,14 +23,28 @@
   margin-top: 20px;
   margin-left: 20px;
 }
-.userName{
+/* .userName{
   text-align: right;
   margin-top: 25px;
   size: 8px;
   color: #5c5a5a;
   margin-right: 100px;
+} */
+.userName {
+  display: flex;
+  align-items: center;
+  justify-content: flex-end;
+  margin-top: 25px;
 }
 
+.userName span.userName-text {
+  font-size: 15px; /* Adjust font size */
+  color: #5c5a5a; /* Greyish color */
+  margin-right: 5px; /* Add spacing between text and icon */
+}
+.icon-circle {
+  color: #5c5a5a; /* Greyish color */
+}
 #searchBar{
   width: 300px;
   float: right;
@@ -332,4 +346,10 @@ overflow-y: auto;
 
 .coco{
 background-attachment: fixed;
+}
+.logo-text {
+  margin-top: 10px; /* Adjust as needed */
+  font-size: 25px; /* Adjust the font size */
+  color: #ffffff;
+  text-align: center; /* Adjust the text color */
 }

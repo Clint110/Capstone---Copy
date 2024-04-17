@@ -3,6 +3,7 @@
 import React , {useState, useEffect} from 'react'
 import loginImage from '../images/login.png'
 import logo from '../images/buksu-logo.png'
+import logooImage from './logoo.png';
 import { GoogleLogin,  useGoogleLogin } from '@react-oauth/google';
 import { TfiEmail } from "react-icons/tfi";
 import { RiLockPasswordLine } from "react-icons/ri";
@@ -145,7 +146,7 @@ function Login() {
                <RiLockPasswordLine className='iIcon' />
                <input type="password" className="PassworD" name='password' placeholder="Password" value={password} onChange={(e) => setPassword(e.target.value)} />
               </div>
-                <div className="input-group ml-5 mb-5 d-flex justify-content-between">
+              <div className="input-group d-flex justify-content-between">
                   <div className="form-check">
                     <input type="checkbox" className="form-check-input" id="formCheck" />
                     <label htmlFor="formCheck" className="form-check-label text-secondary"><small>Remember Me</small></label>
@@ -157,7 +158,7 @@ function Login() {
                 <div className="input-group  mr-5 mb-3">
                  <button type="submit"className="LoginBtn">Login </button>
                 </div>
-                <div className='googleArea'>
+                <div className='googleArea d-flex justify-content-center'>
                 <GoogleLogin
                 className="googleLoginButton"
                 onSuccess={handleGoogleLoginSuccess}
@@ -180,6 +181,8 @@ function Login() {
         <div className="Logincontainer">
           <nav>
             <a href="#" className="logos">BukSU MoniTour</a>
+            <img src="buksu-logo.png" alt="Logo" className="logo-right" />
+
             {/* <ul> */}
              
               {/* <li><a href="#">Contact Us</a></li>

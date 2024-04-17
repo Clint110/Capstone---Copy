@@ -98,7 +98,10 @@ const Sidebar = ({ children, isAddbooker, isAdmin }) => {
               className="rounded-circle usr-image"
               height="150"
               width="150"
-            ></img>
+            ></img>  
+            <div className="logo-text font-weight-bold">MoniTour</div>
+
+
           </div>
           <section className="routes">
             {routes.map((route, index) => {
