@@ -736,55 +736,8 @@ box-shadow: 0 1px 3px rgba(0,0,0,0.12), 0 1px 2px rgba(0,0,0,0.24);}
   /* Add your custom styles here */
   background-color: #f93a3a;
   border-color: #f93a3a;
-  margin-right:200px;
   font-size: 10px; /* Adjust the font size */
-  padding: 10px 50px; /* Adjust the padding */
+  padding: 10px 10px; /* Adjust the padding */
   /* Add any other styles you want */
-}
-.btn btn-primary {
- font-size: 12px;
- margin-left: 20px;
-}
-.btn-primary,
-.btn-danger {
-  /* Common button styles */
-  display: inline-block;
-  width: 200px; /* Adjust width as needed */
-  padding: 0.5rem 1rem;
-  border: none;
-  cursor: pointer;
-  border-radius: 4px;
-  font-weight: bold;
-  text-align: center;
-}
-
-.btn-primary {
-  /* Primary button styles */
-  background-color: #007bff; /* Blue color */
-  margin-top: 15px;
-  color: #fff; /* White text */
-  margin-right: 10px; /* Adjust spacing between buttons */
-}
-
-.btn-danger {
-  /* Danger button styles */
-  background-color: #dc3545; /* Red color */
-  color: #fff; /* White text */
-  margin-top: 15px;
-}
-
-/* Hover effect for all buttons */
-.btn-primary:hover,
-.btn-danger:hover {
-  opacity: 0.8;
-}
-
-
-
-
-/* Additional styles for buttons */
-.btn:hover {
-  /* Hover effect for all buttons */
-  opacity: 0.8;
 }
 
