@@ -3,7 +3,6 @@ import car1 from "../car1.png";
 import axios from "axios";
 import { MdDangerous } from "react-icons/md";
 // import Data from "../Data.json"
-
 import "bootstrap/dist/css/bootstrap.css";
 import DataTable from "react-data-table-component";
 import Col from "react-bootstrap/Col";
@@ -399,7 +398,7 @@ function Monitoring() {
           // Note: You need to handle image editing separately, depending on your implementation
           // For now, let's assume you're not editing the image
           setEditedCarImage(data.vehicle.carImage);
-          // Open the edit modal
+
           setShowEditModal(true);
         } else {
           console.error(
@@ -447,12 +446,12 @@ function Monitoring() {
       console.log("Updated data:", updatedData);
 
       const response = await axios.put(
-        `http://localhost:3000/vehicle/edit/${notPlateNumber}, updatedData`
+        `http://localhost:3000/vehicle/edit/${notPlateNumber}`,
+        updatedData
       );
       if (response.status === 200) {
         setShowEditModal(false);
         await fetchVehicleStatus();
-        window.location.reload();
       } else {
         console.error("Error editing vehicle details:", response.statusText);
       }
@@ -597,19 +596,59 @@ function Monitoring() {
   //   console.log("Plate:" + plate);
   // };
 
-const handleDeleteButtonClick = async (plateNumber) => {
-  try {
-    console.log("Plate"+ plateNumber);
-    const response = await axios.delete(`http://localhost:3000/vehicle/delete/${plateNumber}`);
-    console.log(response.data);
+  // const handleDeleteButtonClick = async (plateNumber) => {
+  //   try {
 
-    setVehicleDetailsModalOpen(false);
-    // Optionally, you can perform any additional actions after successful deletion
-  } catch (error) {
-    console.error('Error deleting vehicle:', error);
-    // Optionally, handle the error or show a notification to the user
-  }
-};
+  //     console.log("Plate"+ plateNumber);
+  //     const response = await axios.delete(`http://localhost:3000/vehicle/delete/${plateNumber}`);
+  //     console.log(response.data);
+
+  //     setVehicleDetailsModalOpen(false);
+  //     // Optionally, you can perform any additional actions after successful deletion
+  //   } catch (error) {
+  //     console.error('Error deleting vehicle:', error);
+  //     // Optionally, handle the error or show a notification to the user
+  //   }
+  // };
+
+  const handleDeleteButtonClick = async (plateNumber) => {
+    try {
+      // Show confirmation dialog
+      const confirmDelete = window.confirm(
+        "Are you sure you want to delete this vehicle?"
+      );
+
+      // If user confirms deletion
+      if (confirmDelete) {
+        // Send delete request
+        const response = await axios.delete(
+          `http://localhost:3000/vehicle/delete/${plateNumber}`
+        );
+        console.log(response.data);
+
+        // Close the vehicle details modal
+        setVehicleDetailsModalOpen(false);
+
+        // Optionally, you can perform any additional actions after successful deletion
+      } else {
+        // If user cancels deletion
+        console.log("Deletion canceled");
+      }
+    } catch (error) {
+      console.error("Error deleting vehicle:", error);
+      // Optionally, handle the error or show a notification to the user
+    }
+  };
+  const handleCloseFirstModal = () => {
+    const firstModal = document.querySelector(".firstmodal");
+    if (firstModal) {
+      firstModal.remove(); // Remove the first modal from the DOM
+    }
+    const modalBackdrop = document.querySelector(".modal-backdrop");
+    if (modalBackdrop) {
+      modalBackdrop.remove(); // Remove the modal backdrop from the DOM
+    }
+  };
 
   return (
     <>
@@ -731,7 +770,10 @@ const handleDeleteButtonClick = async (plateNumber) => {
             </div>
           </div>
 
-          <div>
+          <div
+            className="firstmodal"
+            style={{ display: showEditModal ? "none" : "block" }}
+          >
             <MDBModal
               tabIndex="-1"
               open={selectedPlateNumber !== null || isHistoryVisible}
@@ -780,20 +822,21 @@ const handleDeleteButtonClick = async (plateNumber) => {
                               </p>
                             </div>
                           </div>
-                          {/* Insert the delete button here */}
                           <button
-                            onClick={() =>
-                              handleEditButtonClick(selectedPlateNumber)
-                            }
+                            onClick={() => {
+                              handleEditButtonClick(selectedPlateNumber);
+                              handleCloseFirstModal();
+                            }}
                             className="btn btn-primary"
                           >
                             Edit
                           </button>{" "}
                           &nbsp; &nbsp;
                           <button
-                            onClick={() =>
-                              handleDeleteButtonClick(selectedPlateNumber)
-                            }
+                            onClick={() => {
+                              handleDeleteButtonClick(selectedPlateNumber);
+                              handleCloseFirstModal();
+                            }}
                             className="btn btn-danger"
                           >
                             Delete
@@ -968,7 +1011,10 @@ const handleDeleteButtonClick = async (plateNumber) => {
       </div> */}
 
       {/* EDIT MODAL */}
-      <div>
+      <div
+        className="secondmodal"
+        style={{ display: showEditModal ? "block" : "none" }}
+      >
         <MDBModal tabIndex="-1" open={showEditModal} setOpen={setShowEditModal}>
           <MDBModalDialog>
             <MDBModalContent>

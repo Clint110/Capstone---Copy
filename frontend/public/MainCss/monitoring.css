@@ -365,14 +365,14 @@ outline: none;
 }
 
 .button-all:hover {
-  background-color: #3535f0;
+  background-color: #3a79f9;
   outline: 1px solid transparent;
   color: white;
 }
 
 .button-all:active,
 .button-all.active {
-  background-color: #3535f0; /* Change background color when active */
+  background-color: #3a79f9; /* Change background color when active */
   color: rgb(255, 255, 255); /* Change text color when active */
   outline: 1px solid transparent; /* Maintain outline transparency */
 }
@@ -397,14 +397,14 @@ outline: none;
 }
 
 .button-available:hover {
-  background-color: #1adf1a;
+  background-color: #4af93a;
   outline: 1px solid transparent; 
   color: white;
 }
 
 .button-available:active,
 .button-available.active {
-  background-color: #1adf1a; /* Change background color when active */
+  background-color: #4af93a; /* Change background color when active */
   color: rgb(248, 248, 248); /* Change text color when active */
   outline: 1px solid transparent; /* Maintain outline transparency */
 }
@@ -428,14 +428,14 @@ outline: none;
 }
 
 .button-used:hover {
-  background-color: #f80f0f;
+  background-color: #f93a3a;
   outline: 1px solid transparent;
   color: white;
 }
 
 .button-used:active,
 .button-used.active {
-  background-color: #f80f0f; /* Change background color when active */
+  background-color: #f93a3a; /* Change background color when active */
   color: rgb(248, 248, 248); /* Change text color when active */
   outline: 1px solid transparent; /* Maintain outline transparency */
 }
