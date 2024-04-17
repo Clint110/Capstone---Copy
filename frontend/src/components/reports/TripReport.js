@@ -315,7 +315,10 @@ const TripReport = () => {
           <h4>
             <strong>REPORT</strong>{" "}
           </h4>{" "}
-          <span className="userName"><span className="userName-text">Administrator</span>   <FontAwesomeIcon icon={faCircleUser} className="icon-circle" /></span>
+          <span className="userName">
+            <span className="userName-text">Administrator</span>{" "}
+            <FontAwesomeIcon icon={faCircleUser} className="icon-circle" />
+          </span>
         </div>
       </div>
       {/* <div className='Report-container'>
@@ -325,8 +328,8 @@ const TripReport = () => {
           <thead>
             <tr>
               <th>PLATE NO.</th>
-              <th>DEPARTURE</th>
               <th>DESTINATION</th>
+              <th>BOUND FOR</th>
               <th>DEPARTURE</th>
               <th>RETURN</th>
               <th>ACTION</th>
