@@ -238,17 +238,6 @@ function Booking() {
   const formatTime = (timeString) => {
     // Check if timeString is null or undefined
     if (!timeString) {
-      return "";
-    }
-
-    // Assuming timeString is in HH:mm format
-    const [hours, minutes] = timeString.split(":");
-    const formattedTime = `${parseInt(hours, 10) % 12 || 12}:${minutes} ${
-      parseInt(hours, 10) >= 12 ? "PM" : "AM"
-    }`;
-    return formattedTime;
-    // Check if timeString is null or undefined
-    if (!timeString) {
       return '';
     }
   
