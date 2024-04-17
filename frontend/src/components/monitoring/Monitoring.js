@@ -596,27 +596,19 @@ function Monitoring() {
   //   console.log("Plate:" + plate);
   // };
 
-  //ORIGINAL DELETE
-  const handleDeleteButtonClick = async (plateNumber) => {
-    try {
-      console.log("Plate" + plateNumber);
-      const confirmDelete = window.confirm(
-        "Are you sure you want to delete this vehicle?"
-      );
-      if (confirmDelete) {
-        const response = await axios.delete(
-          `http://localhost:3000/vehicle/delete/${plateNumber}`
-        );
-        console.log(response.data);
-        alert("Vehicle deleted successfully!");
-      } else {
-        console.log("Deletion canceled by user.");
-      }
-    } catch (error) {
-      console.error("Deletion canceled by user.", error);
-      // Optionally, handle the error or show a notification to the user
-    }
-  };
+const handleDeleteButtonClick = async (plateNumber) => {
+  try {
+    console.log("Plate"+ plateNumber);
+    const response = await axios.delete(`http://localhost:3000/vehicle/delete/${plateNumber}`);
+    console.log(response.data);
+
+    setVehicleDetailsModalOpen(false);
+    // Optionally, you can perform any additional actions after successful deletion
+  } catch (error) {
+    console.error('Error deleting vehicle:', error);
+    // Optionally, handle the error or show a notification to the user
+  }
+};
 
   const handleCloseFirstModal = () => {
     const firstModal = document.querySelector(".firstmodal");
