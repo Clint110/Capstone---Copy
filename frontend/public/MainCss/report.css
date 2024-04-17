@@ -190,18 +190,35 @@ justify-content: space-between;
 }
 
 .report_search {
-  position: block;
   display: flex;
   margin-top: 100px;
 }
 
 .report_search input[type="text"] {
- margin-left: 25px;
+  margin-left: 25px;
   height: 40px;
   width: 390px;
-margin-right: 5px;
+  margin-right: 5px;
+  border-radius: 5px;
+  border: 1px solid grey; /* Setting border color to grey */
+  padding: 0 10px;
+  transition: border-color 0.3s; /* Adding transition for smooth effect */
 }
 
-.report_search select{
-  width: 100px;
+/* Style for the input when it's focused */
+.report_search input[type="text"]:focus {
+  border-color: grey; /* Changing border color when focused */
+}
+
+/* Style for the input when it's hovered */
+.report_search input[type="text"]:hover {
+  border-color: grey; /* Changing border color when hovered */
+}
+
+.report_search select {
+  width: 200px;
+  border-radius: 5px;
+  border: 1px solid grey; /* Setting border color to grey */
+  padding: 5px;
+  font-size: 14px;
 }

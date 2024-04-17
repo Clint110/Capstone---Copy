@@ -308,7 +308,8 @@ function Booking() {
             <strong>BOOKING</strong>{" "}
           </h4>{" "}
           <span className="userName">
-            Administrator <FontAwesomeIcon icon={faCircleUser} />
+            <span className="userName-text">Administrator</span>{" "}
+            <FontAwesomeIcon icon={faCircleUser} className="icon-circle" />
           </span>
         </div>
       </div>
