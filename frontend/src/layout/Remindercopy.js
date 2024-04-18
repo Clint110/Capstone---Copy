@@ -35,7 +35,7 @@ function Reminder() {
   return (
     <div>
       <div className='dashboard-Reminder'>
-        <h6>Reminder</h6>
+        <h6>Vehicle Routes</h6>
         <hr />
         <table className="BookingList">
           <tbody className="BookingList">

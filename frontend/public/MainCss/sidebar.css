@@ -306,8 +306,8 @@ main {
 }
 
 
-.usr-image{
-  border: 2px solid white;
+.image{
+  /* border: 2px solid white; */
   margin-left: 18px;
   margin-top: 40px;
   margin-right: 20px;

@@ -160,13 +160,13 @@ function Login() {
                  <button type="submit"className="LoginBtn">Login </button>
                 </div>
                 <div className='googleArea d-flex justify-content-center'>
-                <GoogleLogin
+                {/* <GoogleLogin
                 className="googleLoginButton"
                 onSuccess={handleGoogleLoginSuccess}
                scopes={['profile', 'email']}
               >
                 Sign in with Google clnttjrmrh vfh jkb
-              </GoogleLogin>
+              </GoogleLogin> */}
                   {/* <GoogleLogin  className='googleLoginButton' onClick={() => login()}>Sign in with Google </GoogleLogin> */}
                           </div>
                 {/* <div className="row">
@@ -181,7 +181,7 @@ function Login() {
       </div>
         <div className="Logincontainer">
           <nav>
-            <a href="#" className="logos">BukSU MoniTour</a>
+            <a href="#login" className="logos">BukSU MoniTour</a>
             <img src={logo} alt="Logo" className="logo-right" />
 
             {/* <ul> */}

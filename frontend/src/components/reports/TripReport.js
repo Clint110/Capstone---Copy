@@ -38,21 +38,38 @@ const TripReport = () => {
       const doc = new jsPDF();
 
       doc.addImage(logo, "PNG", 50, 15, 20, 18);
+      doc.addImage(logo, "PNG", 143, 15, 20, 18);
 
       // doc.setFont('helvetica', 'bold'); // Set font to bold
       doc.text("Bukidnon State University", 75, 25);
 
       doc.setFontSize(10); // Adjust font size here
-      doc.text("Malaybalay City, Bukidnon", 86, 32);
+      doc.text("Fortich St. Malaybalay City, Bukidnon", 77, 30);
 
       doc.setFontSize(12); // Adjust font size here
-      doc.text("GSU - Motorpool Section", 83, 50);
+      doc.text("GSU - Motorpool Section", 83, 45);
+      
+      doc.setFontSize(12); // Adjust font size here
+      doc.text("Prepared by:", 15, 120);
 
       doc.setFontSize(14); // Adjust font size here
-      doc.text("NUMBER OF TRIP VEHICLE FOR THE MONTH OF APRIL 2024", 35, 60);
+      doc.text("NUMBER OF TRIP PER VEHICLE", 68, 60);
 
-      doc.setFontSize(13); // Adjust font size here
-      doc.text("Within and Beyond Official Station", 72, 67);
+      doc.setFontSize(12); // Adjust font size here
+      doc.text("Administrative Aide III", 25, 140);
+
+      doc.setFontSize(14); // Adjust font size here
+      doc.setFont(undefined, "bold"); // Set font weight to bold
+      doc.text("Month of April 2024", 85, 67);
+
+      doc.setFontSize(12); // Adjust font size here
+      doc.text("SNIFFY L. TIMONES", 25, 135);
+      const textWidth = doc.getStringUnitWidth("SNIFFY L. TIMONES") * 4.5; // Adjust 12 to the font size used
+      const startX = 25; // Adjust as needed
+      const startY = 135 + 1; // Adjust to position the underline below the text
+      doc.line(startX, startY, startX + textWidth, startY); // Draw a line below the text
+
+ 
 
       const tableData = bookingData.map((booking, index) => [
         booking.plateNumber,
@@ -63,14 +80,12 @@ const TripReport = () => {
       ]);
 
       doc.autoTable({
-        startY: 87,
+        startY: 78,
         head: [
           [
-            "Plate Number",
-            "Bound For",
-            "Destination",
-            "Time For Bound",
-            "Return Date",
+            { content: "Vehicle", styles: { fontStyle: "bold" } },
+            { content: "Plate Number", styles: { fontStyle: "bold" } },
+            { content: "TOTAL NO. OF TRIP", styles: { fontStyle: "bold" } },
           ],
         ],
         body: tableData,
@@ -80,13 +95,13 @@ const TripReport = () => {
           lineColor: [0, 0, 0], // Set header cell border color
           lineWidth: 0.2, // Set header cell border width
           halign: "center", // Center align the header content horizontally
-          fontSize: 11, // Adjust font size of the header
+          fontSize: 12, // Adjust font size of the header
           fontStyle: "arialnarrow", // Set font style to Arial Narrow
         },
         bodyStyles: {
           fillColor: false, // Remove background color for body cells
           // fontStyle: 'bold',
-          // fontSize: 11,
+          fontSize: 11,
           textColor: [0, 0, 0], // Black text color for body
           lineColor: [0, 0, 0], // Set body cell border color
           lineWidth: 0.2, // Set body cell border width
@@ -186,6 +201,14 @@ const TripReport = () => {
         tableLineWidth: 0.2, // Set table border width
         tableLineColor: [0, 0, 0], // Set table border color
         margin: { top: 0 }, // Adjust table margin if needed
+        didDrawPage: function (data) {
+          // Calculate the height of the table
+          const tableHeight = doc.autoTable.previous.finalY;
+  
+          // Add "Prepared by:" text
+          doc.setFontSize(12); // Adjust font size here
+          doc.text("Prepared by:", 15, tableHeight + 20);
+      }
       });
 
       // Save the PDF
