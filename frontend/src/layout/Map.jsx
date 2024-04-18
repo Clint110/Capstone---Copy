@@ -59,6 +59,11 @@ function Map() {
   
     fetchDataFromDatabase();
 
+    ////BRENDYL BRENDYL BRENDYL 
+    // Set up interval to fetch data every 20 seconds
+    const interval = setInterval(fetchDataFromDatabase, 20000);
+     
+ 
   // Establish connection with Flask SocketIO server
   const socket = io('http://192.168.1.243:8766'); // Adjust the URL to match your Flask server's IP and port
 
