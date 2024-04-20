@@ -602,7 +602,6 @@ useEffect(() => {
     }
   };
 
-
   const handleCloseFirstModal = () => {
     const firstModal = document.querySelector(".firstmodal");
     if (firstModal) {
@@ -809,7 +808,7 @@ useEffect(() => {
                             <div className="picText">
                               <h3 className="plate-number">
                                 {" "}
-                                Plate Number: {selectedPlateNumber}
+                                {selectedPlateNumber}
                               </h3>{" "}
                               {/* Added class name for plate number */}
                               <p className="vehicle-details">

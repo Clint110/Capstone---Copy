@@ -512,7 +512,7 @@ outline: none;
 }
 
 .scrollable-container {
-  max-height: 250px; /* Adjust height for better UI */
+  max-height: 300px; /* Adjust height for better UI */
   overflow-y: auto;
   width: 970px;
 }
@@ -524,38 +524,33 @@ outline: none;
   /* Ensure consistent width with the scrollbar */
   width: 50%;
   height: inherit;
-  padding-top: 5px;
+  /* padding-top: 5px; */
   padding-left: 10px;
   margin-top: 0;
   text-align: center; /* Optional: Center-align content */
   font-size: 13px;
+  
 }
 
 
 .ListVehicle {
   font-family: Arial, sans-serif;
   /* margin: 85px auto 0; */
-  max-height: 330px;
+  max-height: 350px;
   width: 1000px;
   margin-left:81px;
   margin-top: 60px;
-  
+
 }
 
 .table th, .table td {
   text-align: center;
   vertical-align: middle;
-  height: 30px;
+  height: 40px;
   margin-top: 0px;
 }
 
-/* .ListVehicle th {
-  
-  top: 10;
-  background-color: #3535f0;
-  text-align: center;  
-  
-} */
+
 
 /* .table th {
   background-color: #3535f0;
@@ -570,10 +565,10 @@ outline: none;
 } */
 .table thead th {
   background-color: #38383bf9; 
-  height: 30px;
+  height: 40px;
   color: white;
   text-align: center;
-
+font-size: 15px;
 }
 .bott{
   margin-bottom: -100px;
@@ -623,14 +618,14 @@ tbody.vList{
 }
 
 .pictureArea{
-  padding-left: 40px;
+  padding-left: 30px;
  display: flex;  
  line-height: 2px;
  background-color: white;
- height: 200px;
+ height: 150px;
  border-radius: 10px;
- padding: 10px;
- width: 97%;
+ padding: 5px;
+ width: 100%;
 align-content: center;
 align-items: center;
 box-shadow: 0 1px 3px rgba(0,0,0,0.12), 0 1px 2px rgba(0,0,0,0.24);
@@ -645,12 +640,13 @@ margin-bottom: 10px;
 }
 
 .picText {
-  padding: 10px; /* Add padding around the content */
+  padding: 10px;
+  font-size: 15px /* Add padding around the content */
 }
 
 .plate-number {
   color: #333; /* Set color for plate number */
-  font-size: 15px; /* Set font size for plate number */
+  font-size: 20px; /* Set font size for plate number */
   margin-bottom: 5px;
   margin-left: 12px;
   justify-content: center;
@@ -733,9 +729,10 @@ box-shadow: 0 1px 3px rgba(0,0,0,0.12), 0 1px 2px rgba(0,0,0,0.24);}
 
 .custom-delete-button {
   /* Add your custom styles here */
-  background-color: red;
-  border-color: red;
+  background-color: #f93a3a;
+  border-color: #f93a3a;
   font-size: 10px; /* Adjust the font size */
-  padding: 8px 10px; /* Adjust the padding */
+  padding: 10px 10px; /* Adjust the padding */
   /* Add any other styles you want */
 }
+

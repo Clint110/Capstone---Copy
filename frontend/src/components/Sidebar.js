@@ -2,7 +2,7 @@ import { NavLink } from "react-router-dom";
 import { FaBars } from "react-icons/fa";
 import { AnimatePresence, motion } from "framer-motion";
 import SidebarMenu from "./SidebarMenu";
-import logo from "../images/buksu-logo.png"
+import logo from "../images/buksu-new-logo.png"
 import { FaRegFileLines } from "react-icons/fa6";
 import { BiLogOut, BiSearch } from "react-icons/bi";
 import { GrMap } from "react-icons/gr";
@@ -95,9 +95,9 @@ const Sidebar = ({ children, isAddbooker, isAdmin }) => {
             <img
               alt="logoSide"
               src={logo}
-              className="rounded-circle usr-image"
-              height="150"
-              width="150"
+              className="image"
+              height="140"
+              width="167"
             ></img>  
             <div className="logo-text font-weight-bold">MoniTour</div>
 

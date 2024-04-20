@@ -2,8 +2,9 @@
 
 import React , {useState, useEffect} from 'react'
 import loginImage from '../images/login.png'
-import logo from '../images/buksu-logo.png'
-import logooImage from './logoo.png';
+// import logo from '../images/buksu-logo.png'
+import logo from '../images/buksu-new-logo.png';
+import logooImage from '../images/logoo.png';
 import { GoogleLogin,  useGoogleLogin } from '@react-oauth/google';
 import { TfiEmail } from "react-icons/tfi";
 import { RiLockPasswordLine } from "react-icons/ri";
@@ -159,13 +160,13 @@ function Login() {
                  <button type="submit"className="LoginBtn">Login </button>
                 </div>
                 <div className='googleArea d-flex justify-content-center'>
-                <GoogleLogin
+                {/* <GoogleLogin
                 className="googleLoginButton"
                 onSuccess={handleGoogleLoginSuccess}
                scopes={['profile', 'email']}
               >
                 Sign in with Google clnttjrmrh vfh jkb
-              </GoogleLogin>
+              </GoogleLogin> */}
                   {/* <GoogleLogin  className='googleLoginButton' onClick={() => login()}>Sign in with Google </GoogleLogin> */}
                           </div>
                 {/* <div className="row">
@@ -180,8 +181,8 @@ function Login() {
       </div>
         <div className="Logincontainer">
           <nav>
-            <a href="#" className="logos">BukSU MoniTour</a>
-            <img src="buksu-logo.png" alt="Logo" className="logo-right" />
+            <a href="#login" className="logos">BukSU MoniTour</a>
+            <img src={logo} alt="Logo" className="logo-right" />
 
             {/* <ul> */}
              
