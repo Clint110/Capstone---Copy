@@ -309,7 +309,6 @@ const TripReport = () => {
           doc.text("Prepared by:", 15, tableHeight + 20);
       }
       });
-
       // Convert the PDF content into a data URL
       const dataUri = doc.output("datauristring");
 
@@ -320,11 +319,11 @@ const TripReport = () => {
 
       // Open the new HTML file in a new tab
       window.open(url, "_blank");
+      doc.save("individual Report.pdf");
     } catch (error) {
       console.error("Error generating PDF:", error);
     }
   };
-
   useEffect(() => {
     // Fetch booking data from the server
     const fetchBookingData = async () => {

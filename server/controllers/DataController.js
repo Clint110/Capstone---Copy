@@ -50,6 +50,26 @@ exports.getData2 = async (req, res) => {
 };
 
 
+exports.getDataByPlateNumber = async (req, res) => {
+  try {
+    const { plateNumber } = req.params;
+
+    // Find the data in the database by plateNumber
+    const data = await Data.findOne({ plateNumber });
+
+    if (!data) {
+      return res.status(404).json({ success: false, error: 'Data not found for the given plate number' });
+    }
+
+    // Respond with the latitude and longitude data
+    res.json({ success: true, latitude: data.latitude, longitude: data.longitude });
+  } catch (error) {
+    console.error('Error fetching data by plate number:', error);
+    res.status(500).json({ success: false, error: 'Internal server error' });
+  }
+};
+
+
 
 // exports.checkPlate = async (req, res) => {
 //   try {
