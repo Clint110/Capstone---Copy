@@ -34,16 +34,18 @@ function Monitoring() {
   const [filteredVehicleList, setFilteredVehicleList] = useState([]);
   const [role, setUserRole] = useState("");
   const [plateNumberStatuses, setPlateNumberStatuses] = useState({});
-
+  const [coordinates, setCoordinates] = useState({ latitude: 0, longitude: 0 });
   const [showConfirmationModal, setShowConfirmationModal] = useState(false);
   // const [plateNumberToDelete, setPlateNumberToDelete] = useState("");
   const [showEditModal, setShowEditModal] = useState(false);
+  const [showVecModal, setShowVecModal] = useState(false);
   const [editedPlateNumber, setEditedPlateNumber] = useState("");
   const [notPlateNumber, setnotPlateNumber] = useState("");
   const [editedVehicle, setEditedVehicle] = useState("");
   const [editedCarImage, setEditedCarImage] = useState("");
   const [vehicles, setVehicles] = useState([]);
   const [plateNumber, setPlateNumber] = useState("");
+  const [mapKey, setMapKey] = useState(0);
 
   const toggleVehicleDetailsModalOpen = () => {
     setVehicleDetailsModalOpen(!vehicleDetailsModalOpen);
@@ -123,28 +125,6 @@ function Monitoring() {
   //   }
   // };
 
-  // const hideVehicleList = () => {
-  //   // You can add logic to hide the vehicleListRight here
-  //   // For example, you might want to set a state to control its visibility
-  // };
-
-  //   const [vehicleStatus, setVehicleStatus] = useState({});
-
-  //  // Define the fetchVehicleStatus function outside of the useEffect hook
-  //  const fetchVehicleStatus = async () => {
-  //   try {
-  //     const response = await axios.get('http://localhost:3000/vehiclestatus');
-  //     const vehicleStatusData = response.data;
-  //     setVehicleStatus(vehicleStatusData);
-  //   } catch (error) {
-  //     console.error('Error fetching vehicle status:', error);
-  //   }
-  // };
-
-  // useEffect(() => {
-  //   // Call the fetchVehicleStatus function inside the useEffect hook
-  //   fetchVehicleStatus();
-  // }, []);
 
   const [vehicleStatus, setVehicleStatus] = useState({});
 
@@ -225,10 +205,25 @@ function Monitoring() {
         );
         const details = detailsResponse.data;
 
-        console.log("Details:", details);
-        //alert(Vehicle with the Plate Number: ${plateNumber} is in use.);
+        console.log("Details:", detailsResponse.data.vehicle.vehicleName);
+        // alert(`Vehicle with the Plate Number: ${plateNumber} is in use.`);
+           // Fetch latitude and longitude based on plate number
+      const locationResponse = await axios.get(
+        `http://localhost:3000/get-data-plate/${plateNumber}`
+      );
+      const locationData = locationResponse.data;
+
+      console.log("Details: is this:", details);
+      console.log("Latitude:", locationData.latitude);
+      console.log("Longitude:", locationData.longitude);
+
+        console.log("Details plate:", details.vehicle.vehicleName);
+
         setSelectedPlateNumber(plateNumber);
         setSelectedVehicleDetails(details);
+
+        console.log("Selected Vehicle Details:", selectedVehicleDetails);
+        setShowVecModal(true);
         // alert(Vehicle with the Plate Number: ${plateNumber} is currently in use.);
         return;
       }
@@ -249,10 +244,25 @@ function Monitoring() {
         );
         const details = detailsResponse.data;
 
-        console.log("Details:", details);
+         // Fetch latitude and longitude based on plate number
+      const locationResponse = await axios.get(
+        `http://localhost:3000/get-data-plate/${plateNumber}`
+      );
+      const locationData = locationResponse.data;
+
+      console.log("Details: is this:", details.vehicleName);
+      console.log("Latitude:", locationData.latitude);
+      console.log("Longitude:", locationData.longitude);
+
+      const vehicleNames = details.vehicleName;
+
+      console.log("name: ", vehicleNames);
+
+        console.log("Details for plate:", details.plateNumber);
         //alert(Vehicle with the Plate Number: ${plateNumber} is in use.);
         setSelectedPlateNumber(plateNumber);
         setSelectedVehicleDetails(details);
+        setShowVecModal(true);
       } else {
         //alert(Vehicle with the Plate Number: ${plateNumber} is available and not in use.);
         const detailsResponse = await axios.get(
@@ -266,6 +276,27 @@ function Monitoring() {
       }
     }
   };
+
+
+  const [locationData, setLocationData] = useState(null);
+
+// Function to fetch location data based on plate number
+const fetchLocationData = async (plateNumber) => {
+  try {
+    const response = await axios.get(`http://localhost:3000/get-data-plate/${plateNumber}`);
+    setLocationData(response.data);
+  } catch (error) {
+    console.error('Error fetching location data:', error);
+  }
+};
+
+// Call fetchLocationData when selectedPlateNumber changes
+useEffect(() => {
+  if (selectedPlateNumber) {
+    fetchLocationData(selectedPlateNumber);
+  }
+}, [selectedPlateNumber]);
+
 
   const [formData, setFormData] = useState({
     plateNumber2: "",
@@ -460,14 +491,6 @@ function Monitoring() {
     }
   };
 
-  const [formData2, setFormData2] = useState({
-    editedPlateNumber2: editedPlateNumber,
-    editedVehicle2: editedVehicle,
-    editedCarImage2: editedCarImage,
-  });
-
-  console.log(formData2);
-
   // const handleConfirmEdit = async (e) => {
   //   e.preventDefault();
 
@@ -512,53 +535,11 @@ function Monitoring() {
   //   }
   // };
 
-  //  const handleConfirmEdit = async (e) => {
-  //   e.preventDefault();
-
-  //   console.log('Edited Plate Number:', editedPlateNumber);
-  //     console.log('Edited Vehicle:', editedVehicle);
-  //     console.log('Edited Car Image:', editedCarImage);
-
-  //   // Create a new FormData object
-  //   const formDataForEdit = new FormData();
-  //   formDataForEdit.append('newPlateNumber', editedPlateNumber); // Append the edited plate number
-  //   formDataForEdit.append('vehicleName', editedVehicle); // Append the edited vehicle name
-
-  //   // Check if the editedCarImage is not null before appending
-  //   if (editedCarImage) {
-  //     // Ensure that the field name matches the server's expectation (e.g., 'carImage')
-  //     formDataForEdit.append('carImage', editedCarImage, editedCarImage.name); // Append the edited car image
-  //   }
-
-  //   console.log(formDataForEdit);
-
-  //   try {
-  //     // Send the PUT request with the updated data
-  //     const response = await axios.put(http://localhost:3000/vehicle/edit/${notPlateNumber}, formDataForEdit, {
-  //       headers: {
-  //         'Content-Type': 'multipart/form-data',
-  //       },
-  //     });
-
-  //     if (response.status === 200) {
-  //       // If the request is successful, clear the form data and close the modal
-  //       setEditedPlateNumber('');
-  //       setEditedVehicle('');
-  //       setEditedCarImage(null);
-  //       setShowEditModal(false);
-  //       // Optionally, you can refresh the vehicle list after editing
-  //       await fetchVehicleStatus();
-  //     } else {
-  //       console.error('Error editing vehicle details:', response.statusText);
-  //     }
-  //   } catch (error) {
-  //     console.error('Error editing vehicle details:', error);
-  //   }
-  // };
 
   // Function to handle canceling the edit operation and close the modal
   const handleCancelEdit = () => {
     setShowEditModal(false); // Close the edit modal
+    setShowVecModal(false);
   };
 
   const handleEditVehicle = async () => {
@@ -590,26 +571,6 @@ function Monitoring() {
       console.error("Error editing vehicle details:", error);
     }
   };
-
-  // const handleDeleteButtonClick = async (plateNumber)  => {
-  //   const plate = plateNumber;
-  //   console.log("Plate:" + plate);
-  // };
-
-  // const handleDeleteButtonClick = async (plateNumber) => {
-  //   try {
-
-  //     console.log("Plate"+ plateNumber);
-  //     const response = await axios.delete(`http://localhost:3000/vehicle/delete/${plateNumber}`);
-  //     console.log(response.data);
-
-  //     setVehicleDetailsModalOpen(false);
-  //     // Optionally, you can perform any additional actions after successful deletion
-  //   } catch (error) {
-  //     console.error('Error deleting vehicle:', error);
-  //     // Optionally, handle the error or show a notification to the user
-  //   }
-  // };
 
   const handleDeleteButtonClick = async (plateNumber) => {
     try {
@@ -652,6 +613,38 @@ function Monitoring() {
       modalBackdrop.remove(); // Remove the modal backdrop from the DOM
     }
   };
+
+
+   // Function to fetch coordinates based on selected plate number
+   useEffect(() => {
+    const fetchCoordinates = async () => {
+      try {
+        const response = await fetch(`http://localhost:3000/get-coordinates?plateNumber=${selectedPlateNumber}`);
+        if (response.ok) {
+          const { latitude, longitude } = await response.json();
+          setCoordinates({ latitude, longitude });
+        } else {
+          console.error('Failed to fetch coordinates');
+        }
+      } catch (error) {
+        console.error('Error fetching coordinates:', error);
+      }
+    };
+
+    if (selectedPlateNumber) {
+      fetchCoordinates();
+    }
+  }, [selectedPlateNumber]);
+
+  // const latitude = coordinates.latitude.toString();
+  // const longitude = coordinates.longitude.toString();
+
+  const latitude = 8.1569808;
+  const longitude = 125.1253695;
+
+  // Google Maps URL
+  const googleMapUrl = `https://maps.google.com/maps?q=${encodeURIComponent(latitude)},${encodeURIComponent(longitude)}&t=&z=17&ie=UTF8&iwloc=B&output=embed`;
+  
 
   return (
     <>
@@ -895,6 +888,8 @@ function Monitoring() {
         </div>
         <div></div>
 
+        
+
         {/* INNSERT VEHICLE FORM */}
         <div>
           <MDBModal tabIndex="-1" open={centredModal} setOpen={setCentredModal}>
@@ -970,48 +965,64 @@ function Monitoring() {
         </div>
       </div>
 
-      {/* DELETEEE MODAL */}
-      {/* <div>
-        <MDBModal tabIndex="-1" setOpen={setShowConfirmationModal}>
-          <MDBModalDialog>
-            <MDBModalContent>
-              <MDBModalHeader>
-                <MDBModalTitle>Confirmation</MDBModalTitle>
-                <button
-                  className="btn-close"
-                  onClick={handleCancelDelete}
-                ></button>
-              </MDBModalHeader>
-              <MDBModalBody>
-                <div
-                  className="iconNi"
-                  style={{ display: "flex", justifyContent: "center" }}
-                >
-                  <MdDangerous style={{ color: "#ff0000", fontSize: "90px" }} />{" "}
+      {/* Vehicle details MODAL */}
+<div
+  className="secondmodal"
+  style={{ display: showVecModal ? "block" : "none" }}
+>
+  <MDBModal tabIndex="-1"  open={showVecModal} setOpen={setShowVecModal}>
+    <MDBModalDialog>
+      <MDBModalContent>
+        <MDBModalHeader>
+          <MDBModalTitle>Vehicle's Wherabouts</MDBModalTitle>
+          <button
+            className="btn-close"
+            onClick={handleCancelEdit}
+          ></button>
+        </MDBModalHeader>
+        <MDBModalBody>
+          {/* Display vehicle name and plate number */}
+          {selectedVehicleDetails && (
+            <div>
+              {/* <h5>Vehicle Name: {selectedVehicleDetails.vehicleName}</h5> */}
+              <h5>Plate Number: {selectedPlateNumber}</h5>
+              {/* Add your map component here */}
+              {/* Below is just a placeholder */}
+              {locationData && (
+                <div style={{ height: '300px', backgroundColor: '#f0f0f0' }}>
+                  {/* Map Component Goes Here */}
+                  <iframe
+                    width="440"
+                    height="390"
+                    frameBorder="0"
+                    scrolling="no"
+                    marginHeight="0"
+                    marginWidth="0"
+                    src={`https://maps.google.com/maps?q=${encodeURIComponent(locationData.latitude)},${encodeURIComponent(locationData.longitude)}&t=&z=17&ie=UTF8&iwloc=B&output=embed`}
+                  >
+                    <a href="https://www.maps.ie/population/">Calculate population in area</a>
+                  </iframe>
                 </div>
-                <p style={{ textAlign: "center", padding: "20px" }}>
-                  Are you sure you want to delete vehicle with plate number{" "}
-                  {selectedPlateNumber}?
-                </p>
-              </MDBModalBody>
-              <MDBModalFooter>
-                <button
-                  className="btn btn-secondary"
-                  onClick={handleCancelDelete}
-                >
-                  Cancel
-                </button>
-                <button
-                  className="btn btn-danger"
-                  onClick={() => handleDeleteButtonClick(selectedPlateNumber)}
-                >
-                  Delete
-                </button>
-              </MDBModalFooter>
-            </MDBModalContent>
-          </MDBModalDialog>
-        </MDBModal>
-      </div> */}
+              )}
+            </div>
+          )}
+        </MDBModalBody>
+        <br />
+        <br />
+        <br />
+        <br />
+        <MDBModalFooter>
+          <button
+            className="btn btn-secondary"
+            onClick={handleCancelEdit}
+          >
+            Back
+          </button>
+        </MDBModalFooter>
+      </MDBModalContent>
+    </MDBModalDialog>
+  </MDBModal>
+</div>
 
       {/* EDIT MODAL */}
       <div

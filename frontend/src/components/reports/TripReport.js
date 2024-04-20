@@ -189,11 +189,13 @@ const TripReport = () => {
       });
 
       // Save the PDF
-      doc.save("individual Report.pdf");
+      doc.save("Individual Report.pdf");
     } catch (error) {
       console.error("Error generating PDF:", error);
     }
   };
+
+
   useEffect(() => {
     // Fetch booking data from the server
     const fetchBookingData = async () => {
