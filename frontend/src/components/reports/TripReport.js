@@ -10,6 +10,7 @@ import { IoDocumentAttachOutline } from "react-icons/io5";
 import { DataTable } from "primereact/datatable";
 import { Column } from "primereact/column";
 import logo from "../logo.png";
+import otherLogo from "../another-logo.png";
 import "primereact/resources/themes/lara-light-indigo/theme.css";
 import "primereact/resources/primereact.min.css";
 import "primeicons/primeicons.css";
@@ -87,21 +88,41 @@ const TripReport = () => {
       doc.text("Fortich St. Malaybalay City, Bukidnon", 77, 30);
 
       doc.addImage(logo, "PNG", 30, 15, 20, 18);
-      doc.addImage(logo, "PNG", 157, 15, 20, 18);
+      doc.addImage(otherLogo, "PNG", 157, 15, 20, 18);
 
     
       let yPos = 140;
       doc.setFontSize(12); // Adjust font size here
       doc.text("Prepared by:", 15, yPos);
       yPos += 10; // Adjust margin as needed
-    
+
+      let yPos1 = 180;
+      const leftMarginVerifiedBy = 10; // Adjust the left margin for "Verified by:" as needed
+      doc.setFontSize(12); // Adjust font size here
+      doc.text("Verified by:", 15 + leftMarginVerifiedBy, yPos1); // Adjusted x-coordinate
+      yPos1 += 10; // Adjust margin as needed
+
+      let yPos2 = 180;
+      const leftMarginNotedBy = 130; // Adjust the left margin for "Verified by:" as needed
+      doc.setFontSize(12); // Adjust font size here
+      doc.text("Noted by:", 15 + leftMarginNotedBy, yPos2); // Adjusted x-coordinate
+      yPos1 += 10; // Adjust margin as needed
+  
   
       doc.setFontSize(14); // Adjust font size here
       doc.text("NUMBER OF TRIP PER VEHICLE", 68, 60);
 
   
-      doc.setFontSize(12); // Adjust font size here
-      doc.text("Administrative Aide III", 25, 159);
+      doc.setFontSize(11); // Adjust font size here
+      doc.text("Administrative Aide III", 25, 158);
+
+      
+      doc.setFontSize(11); // Adjust font size here
+      doc.text("Supervisor,Transportation Service (Motorpool Section)", 22, 200);
+
+      doc.setFontSize(11); // Adjust font size here
+      doc.text("Head, GSU", 160, 200);
+
 
 
 
@@ -117,6 +138,27 @@ const TripReport = () => {
       const startY = 152 + 1; // Adjust to position the underline below the text
       doc.line(startX, startY, startX + textWidth, startY); // Draw a line below the text
 
+      const topMargin = 10; // Adjust the top margin as needed
+      const leftMargin = 25; // Adjust the left margin as needed
+      doc.setFontSize(12); // Adjust font size here
+      const text = "ERIC L. GULTIANO";
+      const textWidth3 = doc.getStringUnitWidth(text) * 4.5; // Adjust 12 to the font size used
+      const startX3 = 24 + leftMargin; // Adjust as needed
+      const startY3 = 185 + topMargin; // Adjust to position the text below the top margin
+      doc.text(text, 25 + leftMargin, 185 + topMargin); // Adjusted y-coordinate for the text
+      doc.line(startX3, startY3, startX3 + textWidth3, startY3); // Adjusted start and end positions for the line
+
+      const topMarginNew = 10; // Adjust the top margin as needed for the new copy
+      const leftMarginNew = 120; // Adjust the left margin as needed for the new copy
+      doc.setFontSize(12); // Adjust font size here for the new copy
+      const textNew = "KRISTINE FIVI O. GEWAN";
+      const textWidthNew = doc.getStringUnitWidth(textNew) * 4.5; // Adjust 12 to the font size used for the new copy
+      const startXNew = 24 + leftMarginNew; // Adjust as needed for the new copy
+      const startYNew = 185 + topMarginNew; // Adjust to position the text below the top margin for the new copy
+      doc.text(textNew, 25 + leftMarginNew, 185 + topMarginNew); // Adjusted y-coordinate for the text for the new copy
+      doc.line(startXNew, startYNew, startXNew + textWidthNew, startYNew); // Adjusted start and end positions for the line for the new copy
+     
+     
       doc.setFontSize(12); // Adjust font size here
       doc.text("GSU - Motorpool Section", 83, 45);
 
