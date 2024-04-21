@@ -150,7 +150,7 @@ color: black;
 position: relative;
 display: inline-block;
 /* margin: 4px 2px; */
-margin-left: 66%;
+margin-left: 73%;
 height: 40px;
 width: 40px;
 vertical-align: bottom;
@@ -184,7 +184,7 @@ pointer-events: none;
 
 .search {
   position: absolute;
-  left: 39px; /* Button width - 1px */
+  left: 120px; /* Button width - 1px */
   outline: none;
   /* font-size: 14px; */
   border: none;
@@ -202,7 +202,7 @@ pointer-events: none;
 }
 
 .search:focus {
-  width: 180px; /* Set width when focused */
+  width: 230px; /* Set width when focused */
   padding: 0 1px 0 0;
   border-radius: 5px;
 }
@@ -326,7 +326,7 @@ outline: none;
 
 .pluscar {
   font-size: 30px;
-  margin-left: 10px;
+  margin-left: 20px;
   cursor: pointer;
 }
 
@@ -646,16 +646,18 @@ margin-bottom: 10px;
 
 .plate-number {
   color: #333; /* Set color for plate number */
-  font-size: 20px; /* Set font size for plate number */
-  margin-bottom: 5px;
+  font-size: 15px; /* Set font size for plate number */
+  margin-top: 60px;
   margin-left: 12px;
   justify-content: center;
-   /* Add some space below the plate number */
 }
 
 .vehicle-details {
-  color: #666; /* Set color for vehicle details */
-  font-size: 16px; /* Set font size for vehicle details */
+  color: #333; /* Set color for vehicle details */
+  font-size: 25px; /* Set font size for vehicle details */
+  margin-bottom: 20px; /* Adjust margin-bottom to create space between vehicle details and plate number */
+  margin-left: 12px;
+  justify-content: center;
 }
 
 

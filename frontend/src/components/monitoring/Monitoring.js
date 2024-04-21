@@ -968,7 +968,7 @@ function Monitoring() {
         style={{ display: showVecModal ? "block" : "none" }}
       >
         <MDBModal tabIndex="-1" open={showVecModal} setOpen={setShowVecModal}>
-          <MDBModalDialog>
+          <MDBModalDialog style={{ maxWidth: "750px" }}>
             <MDBModalContent>
               <MDBModalHeader>
                 <MDBModalTitle>Vehicle's Wherabouts</MDBModalTitle>
@@ -987,12 +987,12 @@ function Monitoring() {
                     {/* Below is just a placeholder */}
                     {locationData && (
                       <div
-                        style={{ height: "300px", backgroundColor: "#f0f0f0" }}
+                        style={{ height: "250px", backgroundColor: "#f0f0f0" }}
                       >
                         {/* Map Component Goes Here */}
                         <iframe
-                          width="440"
-                          height="390"
+                          width="680"
+                          height="360"
                           frameBorder="0"
                           scrolling="no"
                           marginHeight="0"
