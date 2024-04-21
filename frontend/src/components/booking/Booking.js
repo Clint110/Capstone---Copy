@@ -473,7 +473,7 @@ function Booking() {
                           />
                         </label>
                         <label>
-                          Bounf For
+                          Bound For
                           <select
                             className="bookingInput"
                             value={formData.destination}
