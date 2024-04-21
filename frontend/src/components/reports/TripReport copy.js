@@ -14,6 +14,7 @@ import jsPDF from "jspdf";
 import "jspdf-autotable";
 import { faCircleUser } from "@fortawesome/free-solid-svg-icons";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
+import otherLogo from "../another-logo.png";
 
 function formatDateTime(dateTimeString) {
   const options = {
@@ -33,7 +34,7 @@ function TripReport() {
   const [editableData, setEditableData] = useState({});
   const [searchQuery, setSearchQuery] = useState("");
   const [searchField, setSearchField] = useState("plateNumber");
-
+  const [vehicleName, setVehicleName] = useState("");
   const toggle = () => {
     setIsOpen(!isOpen);
   };
@@ -79,60 +80,252 @@ function TripReport() {
   // const TripReport = () => {
   const [bookingData, setBookingData] = useState([]);
 
-  const generatePDF = () => {
+  const generatePDF = async () => {
     try {
       const doc = new jsPDF();
 
-      doc.addImage(logo, "PNG", 50, 15, 20, 18);
+      // Track page number
+      let pageNumber = 1;
 
-      // doc.setFont('helvetica', 'bold'); // Set font to bold
-      doc.text("Bukidnon State University", 75, 25);
+      // Function to add page number
+
+      let issueNumber = 0; // Initialize issue number
+
+      const addPageNumber = () => {
+        // Position at 15 mm from bottom
+        doc.setFontSize(10);
+        const pageNumberText = `Page ${pageNumber} of ${pageNumber}`;
+        const issueDate = new Date().toLocaleDateString(); // Get current date
+        issueNumber++; // Increment issue number
+        const issueNumberText = `Issue No. ${issueNumber}`; // Issue number text
+
+        // Calculate the width of the text
+        const pageNumberWidth =
+          doc.getStringUnitWidth(pageNumberText) * doc.internal.getFontSize();
+        const issueDateWidth =
+          doc.getStringUnitWidth(issueDate) * doc.internal.getFontSize();
+        const issueNumberWidth =
+          doc.getStringUnitWidth(issueNumberText) * doc.internal.getFontSize();
+
+        // Calculate x-positions for each element
+        const pageXPos = doc.internal.pageSize.width - 20 - pageNumberWidth;
+        const issueDateXPos = pageXPos - 15 - issueDateWidth;
+        const issueNumberXPos = issueDateXPos - 10 - issueNumberWidth;
+
+        // Draw the text
+        doc.text(pageNumberText, pageXPos, doc.internal.pageSize.height - 10);
+        doc.text(
+          `Issue Date: ${issueDate}`,
+          issueDateXPos,
+          doc.internal.pageSize.height - 10
+        );
+        doc.text(
+          issueNumberText,
+          issueNumberXPos,
+          doc.internal.pageSize.height - 10
+        );
+      };
+
+      // Function to add a new page with a page number
+      const addPageWithNumber = () => {
+        if (pageNumber > 1) {
+          // Add new page except for the first page
+          doc.addPage();
+        }
+
+        // Add page number
+        addPageNumber();
+      };
+
+      // Add a page with the page number
+      addPageWithNumber();
 
       doc.setFontSize(10); // Adjust font size here
-      doc.text("Malaybalay City, Bukidnon", 86, 32);
+      doc.text("Fortich St. Malaybalay City, Bukidnon", 77, 30);
 
+      doc.addImage(logo, "PNG", 30, 15, 20, 18);
+      doc.addImage(otherLogo, "PNG", 157, 15, 20, 18);
+
+      let yPos = 140;
       doc.setFontSize(12); // Adjust font size here
-      doc.text("GSU - Motorpool Section", 83, 50);
+      doc.text("Prepared by:", 15, yPos);
+      yPos += 10; // Adjust margin as needed
+
+      let yPos1 = 180;
+      const leftMarginVerifiedBy = 10; // Adjust the left margin for "Verified by:" as needed
+      doc.setFontSize(12); // Adjust font size here
+      doc.text("Verified by:", 15 + leftMarginVerifiedBy, yPos1); // Adjusted x-coordinate
+      yPos1 += 10; // Adjust margin as needed
+
+      let yPos2 = 180;
+      const leftMarginNotedBy = 130; // Adjust the left margin for "Verified by:" as needed
+      doc.setFontSize(12); // Adjust font size here
+      doc.text("Noted by:", 15 + leftMarginNotedBy, yPos2); // Adjusted x-coordinate
+      yPos1 += 10; // Adjust margin as needed
 
       doc.setFontSize(14); // Adjust font size here
-      doc.text("NUMBER OF TRIP VEHICLE FOR THE MONTH OF APRIL 2024", 35, 60);
+      doc.text("NUMBER OF TRIP PER VEHICLE", 68, 60);
 
-      doc.setFontSize(13); // Adjust font size here
-      doc.text("Within and Beyond Official Station", 72, 67);
+      doc.setFontSize(11); // Adjust font size here
+      doc.text("Administrative Aide III", 25, 158);
 
-      const tableData = bookingData.map((booking, index) => [
-        booking.plateNumber,
-        booking.boundFor,
-        booking.destination,
-        formatDateTime(booking.timeForBound),
-        formatDateTime(booking.returnDate),
-      ]);
+      doc.setFontSize(11); // Adjust font size here
+      doc.text(
+        "Supervisor,Transportation Service (Motorpool Section)",
+        22,
+        200
+      );
 
+      doc.setFontSize(11); // Adjust font size here
+      doc.text("Head, GSU", 160, 200);
+
+      doc.setFontSize(14); // Adjust font size here
+      doc.setFont(undefined, "bold"); // Set font weight to bold
+      doc.text("Month of April 2024", 85, 67);
+
+      doc.setFontSize(12); // Adjust font size here
+      doc.text("SNIFFY L. TIMONES", 25, 153);
+      const textWidth = doc.getStringUnitWidth("SNIFFY L. TIMONES") * 4.5; // Adjust 12 to the font size used
+      const startX = 24; // Adjust as needed
+      const startY = 152 + 1; // Adjust to position the underline below the text
+      doc.line(startX, startY, startX + textWidth, startY); // Draw a line below the text
+
+      const topMargin = 10; // Adjust the top margin as needed
+      const leftMargin = 25; // Adjust the left margin as needed
+      doc.setFontSize(12); // Adjust font size here
+      const text = "ERIC L. GULTIANO";
+      const textWidth3 = doc.getStringUnitWidth(text) * 4.5; // Adjust 12 to the font size used
+      const startX3 = 24 + leftMargin; // Adjust as needed
+      const startY3 = 185 + topMargin; // Adjust to position the text below the top margin
+      doc.text(text, 25 + leftMargin, 185 + topMargin); // Adjusted y-coordinate for the text
+      doc.line(startX3, startY3, startX3 + textWidth3, startY3); // Adjusted start and end positions for the line
+
+      const topMarginNew = 10; // Adjust the top margin as needed for the new copy
+      const leftMarginNew = 120; // Adjust the left margin as needed for the new copy
+      doc.setFontSize(12); // Adjust font size here for the new copy
+      const textNew = "KRISTINE FIVI O. GEWAN";
+      const textWidthNew = doc.getStringUnitWidth(textNew) * 4.5; // Adjust 12 to the font size used for the new copy
+      const startXNew = 24 + leftMarginNew; // Adjust as needed for the new copy
+      const startYNew = 185 + topMarginNew; // Adjust to position the text below the top margin for the new copy
+      doc.text(textNew, 25 + leftMarginNew, 185 + topMarginNew); // Adjusted y-coordinate for the text for the new copy
+      doc.line(startXNew, startYNew, startXNew + textWidthNew, startYNew); // Adjusted start and end positions for the line for the new copy
+
+      doc.setFontSize(12); // Adjust font size here
+      doc.text("GSU - Motorpool Section", 83, 45);
+
+      doc.setFont("times"); // Set font to Times New Roman
+      doc.setFontSize(17); // doc.setFont('helvetica', 'bold'); // Set font to bold
+      doc.text("BUKIDNON STATE UNIVERSITY", 57, 25);
+
+      // const tableData = bookingData.map((booking, index) => [
+      //   booking.vehicleName,
+      //   booking.plateNumber,
+      //   booking.destination,
+      // ]);
+      //Brendyl Ani
+
+      // Calculate total number of trips per vehicle
+      const tripsPerVehicle = {};
+      bookingData.forEach((booking) => {
+        const plateNumber = booking.plateNumber;
+        if (!tripsPerVehicle[plateNumber]) {
+          tripsPerVehicle[plateNumber] = 0;
+        }
+        tripsPerVehicle[plateNumber]++;
+      });
+
+      // Fetch vehicle names based on plate numbers
+      const getVehicleName = async (plateNumber) => {
+        try {
+          const response = await axios.get(
+            `http://localhost:3000/vehicle/details/${plateNumber}`
+          );
+          return response.data.vehicle.vehicleName || "Unknown";
+        } catch (error) {
+          console.error("Error fetching vehicle name:", error);
+          return "Unknown";
+        }
+      };
+
+      // Prepare data for the table
+      const plateNumbers = bookingData.map((booking) => booking.plateNumber);
+      const uniquePlateNumbers = new Set(plateNumbers);
+      // Initialize total trips
+      let totalTrips = 0;
+      // Inside your tableData mapping function
+
+      const tableData = await Promise.all(
+        Array.from(uniquePlateNumbers).map(async (plateNumber) => {
+          const vehicleName = await getVehicleName(plateNumber);
+          let wosTrips = 0;
+          let bosTrips = 0;
+
+          // Count trips based on service type
+          bookingData.forEach((booking) => {
+            if (booking.plateNumber === plateNumber) {
+              if (booking.destination === "WOS") {
+                wosTrips++;
+              } else if (booking.destination === "BOS") {
+                bosTrips++;
+              }
+            }
+          });
+
+          // Increment total trips
+          totalTrips += wosTrips + bosTrips;
+
+          return [plateNumber, vehicleName, wosTrips, bosTrips];
+        })
+      );
+
+      // Add a row for total trips
+      tableData.push(["TOTAL TRIPS:", totalTrips]);
+      // // Inside your tableData mapping function
+      // const tableData = await Promise.all(
+      //   Array.from(uniquePlateNumbers).map(async (plateNumber) => {
+      //     const vehicleName = await getVehicleName(plateNumber);
+      //     const trips = tripsPerVehicle[plateNumber] || 0;
+      //     return [plateNumber, vehicleName, trips];
+      //   })
+      // );
+
+      // const tableData = Object.keys(tripsPerVehicle).map((plateNumber) => {
+      //   const vehicleName = bookingData.find(
+      //     (booking) => booking.plateNumber === plateNumber
+      //   ).vehicleName;
+      //   return [vehicleName, plateNumber, tripsPerVehicle[plateNumber]];
+      // });
+      // const tableData = Object.keys(tripsPerVehicle).map((plateNumber) => {
+      //   return [plateNumber, tripsPerVehicle[plateNumber]];
+      // });
+
+      ///here taman
       doc.autoTable({
-        startY: 87,
+        startY: 78,
         head: [
           [
-            "Plate Number",
-            "Bound For",
-            "Destination",
-            "Time For Bound",
-            "Return Date",
+            { content: "Plate Number", styles: { fontStyle: "bold" } },
+            { content: "Vehicle", styles: { fontStyle: "bold" } },
+            // { content: "TOTAL NO. OF TRIP", styles: { fontStyle: "bold" } },
+            { content: "WOS", styles: { fontStyle: "bold" } },
+            { content: "BOS", styles: { fontStyle: "bold" } },
           ],
         ],
         body: tableData,
+
         headStyles: {
           fillColor: [255, 255, 255], // White background for header
           textColor: [0, 0, 0], // Black text color for header
           lineColor: [0, 0, 0], // Set header cell border color
           lineWidth: 0.2, // Set header cell border width
           halign: "center", // Center align the header content horizontally
-          fontSize: 11, // Adjust font size of the header
+          fontSize: 12, // Adjust font size of the header
           fontStyle: "arialnarrow", // Set font style to Arial Narrow
         },
         bodyStyles: {
           fillColor: false, // Remove background color for body cells
           // fontStyle: 'bold',
-          // fontSize: 11,
+          fontSize: 11,
           textColor: [0, 0, 0], // Black text color for body
           lineColor: [0, 0, 0], // Set body cell border color
           lineWidth: 0.2, // Set body cell border width
@@ -141,6 +334,7 @@ function TripReport() {
         tableLineColor: [0, 0, 0], // Set table border color
         margin: { top: 0 }, // Adjust table margin if needed
       });
+
       // Convert the PDF content into a data URL
       const dataUri = doc.output("datauristring");
 
@@ -332,7 +526,8 @@ function TripReport() {
             className="rounded-circle usr-image"
             height="150"
             width="150"
-          /> <div className="logo-text">MoniTour</div>
+          />{" "}
+          <div className="logo-text">MoniTour</div>
         </div>
         <section className="routes">
           {routes.map((route, index) => {
@@ -403,7 +598,10 @@ function TripReport() {
             <h4>
               <strong>REPORT</strong>{" "}
             </h4>{" "}
-            <span className="userName"><span className="userName-text">Secretary</span>   <FontAwesomeIcon icon={faCircleUser} className="icon-circle" /></span>
+            <span className="userName">
+              <span className="userName-text">Secretary</span>{" "}
+              <FontAwesomeIcon icon={faCircleUser} className="icon-circle" />
+            </span>
           </div>
         </div>
         {/* <div className='Report-container'>

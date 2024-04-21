@@ -27,13 +27,11 @@ exports.addBooking = async (req, res) => {
     const newBooking = new Booking(req.body);
     const savedBooking = await newBooking.save();
 
-    res
-      .status(200)
-      .json({
-        success: true,
-        message: "Booking added successfully",
-        booking: savedBooking,
-      });
+    res.status(200).json({
+      success: true,
+      message: "Booking added successfully",
+      booking: savedBooking,
+    });
   } catch (error) {
     console.error(error);
     res.status(500).json({ success: false, message: "Internal server error" });
@@ -47,11 +45,9 @@ exports.getBookingDetailsByPlateNumber = async (req, res) => {
     const bookingDetails = await Booking.findOne({ plateNumber });
 
     if (!bookingDetails) {
-      return res
-        .status(404)
-        .json({
-          error: "Booking details not found for the provided plate number",
-        });
+      return res.status(404).json({
+        error: "Booking details not found for the provided plate number",
+      });
     }
 
     res.json(bookingDetails);
@@ -107,5 +103,19 @@ exports.deleteBooking = async (req, res) => {
   } catch (error) {
     console.error("Error deleting booking:", error);
     res.status(500).json({ success: false, message: "Internal Server Error" });
+  }
+};
+
+//BRENDYL ANI
+// New function to get the count of bookings for a specific car
+exports.getBookingCountByPlateNumber = async (req, res) => {
+  try {
+    const plateNumber = req.params.plateNumber;
+    const bookingCount = await Booking.countDocuments({ plateNumber });
+
+    res.json({ plateNumber, bookingCount });
+  } catch (error) {
+    console.error("Error counting bookings:", error);
+    res.status(500).json({ error: "Internal Server Error" });
   }
 };

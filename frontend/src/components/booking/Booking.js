@@ -53,7 +53,6 @@ function Booking() {
     end: null,
   });
 
-
   const [allEvents, setAllEvents] = useState([
     {
       title: "Big Meeting",
@@ -238,30 +237,30 @@ function Booking() {
   const formatTime = (timeString) => {
     // Check if timeString is null or undefined
     if (!timeString) {
-      return '';
+      return "";
     }
-  
+
     // Extract hours and minutes from the timeString
     const dateObject = new Date(timeString);
     const hours = dateObject.getHours();
     const minutes = dateObject.getMinutes();
-  
+
     // Format hours and minutes
     const formattedHours = hours % 12 || 12;
     const formattedMinutes = minutes < 10 ? `0${minutes}` : minutes;
-    const period = hours >= 12 ? 'PM' : 'AM';
-  
+    const period = hours >= 12 ? "PM" : "AM";
+
     // Construct the formatted time string
     const formattedTime = `${formattedHours}:${formattedMinutes} ${period}`;
-  
+
     return formattedTime;
   };
 
   const [plateNumbers, setPlateNumbers] = useState([]);
   const [selectedPlateNumber, setSelectedPlateNumber] = useState("");
   const [plateNumberStatuses, setPlateNumberStatuses] = useState({});
-  const [selectedPlateNumberStatus, setSelectedPlateNumberStatus] = useState("");
-
+  const [selectedPlateNumberStatus, setSelectedPlateNumberStatus] =
+    useState("");
 
   useEffect(() => {
     const fetchPlateNumbers = async () => {
@@ -273,9 +272,9 @@ function Booking() {
           // const plateNumbers = data.map(vehicle => vehicle.plateNumber);
 
           const plateNumberStatuses = data;
-          const plateNumberArray = Object.keys(data).map(plateNumber => ({
+          const plateNumberArray = Object.keys(data).map((plateNumber) => ({
             plateNumber: plateNumber,
-            status: data[plateNumber]
+            status: data[plateNumber],
           }));
 
           console.log(plateNumberArray);
@@ -396,58 +395,90 @@ function Booking() {
         </form>
 
     </div> */}
-   <form id='addbook' onSubmit={handlebookingsub}>
-        <label>
-            PLATE NUMBER
-            <select  className="bookingInput" value={selectedPlateNumber} onChange={handlePlateNumberChange} required>
-                                <option value="" disabled>Select Plate Number</option>
-                                {plateNumbers.map(({ plateNumber }) => (
-                                  <option key={plateNumber} value={plateNumber}>
-                                   {plateNumber}
-                                  </option>
-                                ))}
-                              </select>
-                          
-                              <p>Status: {selectedPlateNumberStatus}</p>
-        </label>
-        <label>
-         DRIVER’s NAME
-            <input type="text" className='bookingInput' value={formData.driverName} onChange={(e) => setFormData({ ...formData, driverName: e.target.value })}/>
-        </label>
-        <label>
-            Client Name
-            <input type="text" className='bookingInput' value={formData.clientName} onChange={(e) => setFormData({ ...formData, clientName: e.target.value })} />
-        </label>
-        <label>
-        No. of Passengers
-            <input type="number" className='bookingInput' value={formData.passengerQuantity} onChange={(e) => setFormData({ ...formData, passengerQuantity: e.target.value })} />
-        </label>
-        <label>
-        DESTINATION
-        <select className='bookingInput' value={formData.destination} onChange={(e) => setFormData({ ...formData, destination: e.target.value })}>
-            <option value='WOS'>Within Official Station </option>
-            <option value='BOS'>Beyond Official Station </option>
-        </select>
-        </label>
-        <label>
-            BOUND FOR
-            <input type="text" className='bookingInput' value={formData.boundFor} onChange={(e) => setFormData({ ...formData, boundFor: e.target.value })}/>
-
-            Time <br></br>
-            <DatePicker
-            className='bookingInput'
-            showTimeSelect
-            showTimeSelectOnly
-            timeIntervals={15}
-            timeCaption="Time"
-            dateFormat="h:mm aa"
-            selected={formData.timeForBound}
-            onChange={(time) => setFormData({ ...formData, timeForBound: time })}
-          />
-        </label>
-
+                      <form id="addbook" onSubmit={handlebookingsub}>
                         <label>
-                          DATE & TIME
+                          Plate Number
+                          <select
+                            className="bookingInput"
+                            value={selectedPlateNumber}
+                            onChange={handlePlateNumberChange}
+                            required
+                          >
+                            <option value="" disabled>
+                              Select Plate Number
+                            </option>
+                            {plateNumbers.map(({ plateNumber }) => (
+                              <option key={plateNumber} value={plateNumber}>
+                                {plateNumber}
+                              </option>
+                            ))}
+                          </select>
+                          <p>Status: {selectedPlateNumberStatus}</p>
+                        </label>
+                        <label>
+                          Client Name(Office)
+                          <input
+                            type="text"
+                            className="bookingInput"
+                            value={formData.clientName}
+                            onChange={(e) =>
+                              setFormData({
+                                ...formData,
+                                clientName: e.target.value,
+                              })
+                            }
+                          />
+                        </label>
+                        <label>
+                          No. of Passengers
+                          <input
+                            type="number"
+                            className="bookingInput"
+                            value={formData.passengerQuantity}
+                            onChange={(e) =>
+                              setFormData({
+                                ...formData,
+                                passengerQuantity: e.target.value,
+                              })
+                            }
+                          />
+                        </label>
+                        <label>
+                          Bounf For
+                          <select
+                            className="bookingInput"
+                            value={formData.destination}
+                            onChange={(e) =>
+                              setFormData({
+                                ...formData,
+                                destination: e.target.value,
+                              })
+                            }
+                          >
+                            <option value="WOS">
+                              Within Official Station{" "}
+                            </option>
+                            <option value="BOS">
+                              Beyond Official Station{" "}
+                            </option>
+                          </select>
+                        </label>
+                        <label>
+                          Destination
+                          <input
+                            type="text"
+                            className="bookingInput"
+                            value={formData.boundFor}
+                            onChange={(e) =>
+                              setFormData({
+                                ...formData,
+                                boundFor: e.target.value,
+                              })
+                            }
+                          />
+                        </label>
+                        <label>
+                          Date
                           <DatePicker
                             className="bookingInput"
                             selected={formData.timeAndDate}
@@ -456,9 +487,21 @@ function Booking() {
                             }
                           />
                         </label>
-
+                        Time <br></br>
+                        <DatePicker
+                          className="bookingInput"
+                          showTimeSelect
+                          showTimeSelectOnly
+                          timeIntervals={15}
+                          timeCaption="Time"
+                          dateFormat="h:mm aa"
+                          selected={formData.timeForBound}
+                          onChange={(time) =>
+                            setFormData({ ...formData, timeForBound: time })
+                          }
+                        />
                         <label>
-                          RETURN DATE
+                          Return Date
                           <DatePicker
                             className="bookingInput"
                             selected={formData.returnDate}
@@ -468,7 +511,7 @@ function Booking() {
                           />
                         </label>
                         <label>
-                          PURPOSE
+                          Purpose
                           <input
                             type="text"
                             className="bookingInput"

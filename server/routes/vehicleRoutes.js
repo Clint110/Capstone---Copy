@@ -25,5 +25,7 @@ router.post('/mark-available/:plateNumber', vehicleController.markAvailable);
 router.put('/vehicle/edit/:plateNumber2', vehicleController.editVehicle);
 router.delete('/vehicle/delete/:plateNumber', vehicleController.deleteVehicle);
 router.get('/vehicle-details/:plateNumber',vehicleController.vehicdetails );
+router.get('/vehicle-details-monit/:plateNumber',vehicleController.vehicdetails2 );
+
 
 module.exports = router;
