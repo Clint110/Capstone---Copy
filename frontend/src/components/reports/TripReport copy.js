@@ -660,7 +660,7 @@ function TripReport() {
                           required
                         />
                       ) : (
-                        booking.timeForBound
+                        booking.timeAndDate
                       )}
                     </td>
                     <td>

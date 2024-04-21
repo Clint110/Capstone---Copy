@@ -106,7 +106,6 @@ const TripReport = () => {
       doc.setFont(undefined, "bold"); // Set font weight to bold
       doc.text("Month of April 2024", 85, 67);
 
-      
       doc.setFontSize(12); // Adjust font size here
       doc.text("GSU - Motorpool Section", 83, 45);
 
@@ -120,10 +119,8 @@ const TripReport = () => {
       doc.text("Prepared by:", 15, yPos + 110);
       yPos += 10; // Adjust margin as needed
 
-
       doc.setFontSize(11); // Adjust font size here
       doc.text("Administrative Aide III", 25, 162);
-
 
       doc.setFontSize(12); // Adjust font size here
       doc.text("SNIFFY L. TIMONES", 25, 157);
@@ -132,12 +129,10 @@ const TripReport = () => {
       const startY = 152 + 1; // Adjust to position the underline below the text
       doc.line(startX, startY, startX + textWidth, startY); // Draw a line below the text
 
-
       let yPos1 = 180;
       const leftMarginVerifiedBy = 10; // Adjust the left margin for "Verified by:" as needed
       doc.setFontSize(12); // Adjust font size here
       doc.text("Verified by:", 15 + leftMarginVerifiedBy, yPos1); // Adjusted x-coordinate
-
 
       yPos1 += 10; // Adjust margin as needed
       doc.setFontSize(11); // Adjust font size here
@@ -146,7 +141,6 @@ const TripReport = () => {
         22,
         200
       );
-
 
       const topMargin = 10; // Adjust the top margin as needed
       const leftMargin = 25; // Adjust the left margin as needed
@@ -158,18 +152,14 @@ const TripReport = () => {
       doc.text(text, 25 + leftMargin, 185 + topMargin); // Adjusted y-coordinate for the text
       doc.line(startX3, startY3, startX3 + textWidth3, startY3); // Adjusted start and end positions for the line
 
-
-     
       let yPos2 = 180;
       const leftMarginNotedBy = 130; // Adjust the left margin for "Verified by:" as needed
       doc.setFontSize(12); // Adjust font size here
       doc.text("Noted by:", 15 + leftMarginNotedBy, yPos2); // Adjusted x-coordinate
       yPos1 += 10; // Adjust margin as needed
 
-
       doc.setFontSize(11); // Adjust font size here
       doc.text("Head, GSU", 160, 200);
-
 
       const topMarginNew = 10; // Adjust the top margin as needed for the new copy
       const leftMarginNew = 120; // Adjust the left margin as needed for the new copy
@@ -181,9 +171,6 @@ const TripReport = () => {
       doc.text(textNew, 25 + leftMarginNew, 185 + topMarginNew); // Adjusted y-coordinate for the text for the new copy
       doc.line(startXNew, startYNew, startXNew + textWidthNew, startYNew); // Adjusted start and end positions for the line for the new copy
 
-
-
-    
       // doc.setFont('times'); // Set font to Times New Roman
       // doc.setFontSize(17); // doc.setFont('helvetica', 'bold'); // Set font to bold
       // doc.text("BUKIDNON STATE UNIVERSITY", 57, 25);
@@ -750,7 +737,7 @@ const TripReport = () => {
                         required
                       />
                     ) : (
-                      booking.timeForBound
+                      booking.timeAndDate
                     )}
                   </td>
                   <td>
