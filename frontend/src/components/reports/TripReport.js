@@ -36,61 +36,77 @@ const TripReport = () => {
   const [searchField, setSearchField] = useState("plateNumber");
   const [vehicleName, setVehicleName] = useState("");
 
-
-  const addCommonContent = (doc) => {
-    // doc.setFontSize(10); // Adjust font size here
-    // doc.text("Fortich St. Malaybalay City, Bukidnon 8700", 77, 30);
-
-    let pageNumber = 1;
-    let issueNumber = 0;
-  
-    const addPageNumber = () => {
-      doc.setFontSize(10);
-      const pageNumberText = `Page ${pageNumber} of ${pageNumber}`;
-      const issueDate = new Date().toLocaleDateString();
-      issueNumber++;
-      const issueNumberText = `Issue No. ${issueNumber}`;
-  
-      const pageNumberWidth = doc.getStringUnitWidth(pageNumberText) * doc.internal.getFontSize();
-      const issueDateWidth = doc.getStringUnitWidth(issueDate) * doc.internal.getFontSize();
-      const issueNumberWidth = doc.getStringUnitWidth(issueNumberText) * doc.internal.getFontSize();
-  
-      const pageXPos = doc.internal.pageSize.width - 20 - pageNumberWidth;
-      const issueDateXPos = pageXPos - 15 - issueDateWidth;
-      const issueNumberXPos = issueDateXPos - 10 - issueNumberWidth;
-  
-      doc.text(pageNumberText, pageXPos, doc.internal.pageSize.height - 10);
-      doc.text(`Issue Date: ${issueDate}`, issueDateXPos, doc.internal.pageSize.height - 10);
-      doc.text(issueNumberText, issueNumberXPos, doc.internal.pageSize.height - 10);
-    };
-  
-    const addPageWithNumber = () => {
-      if (pageNumber > 1) {
-        doc.addPage();
-      }
-      addPageNumber();
-    };
-  
-    addPageWithNumber();
-  
-
-  
-
-  };
-  
-  const generatePDF = async  () => {
+  const generatePDF = async () => {
     try {
       const doc = new jsPDF();
-      addCommonContent(doc);
 
-      
+      // Track page number
+      let pageNumber = 1;
+
+      // Function to add page number
+
+      let issueNumber = 0; // Initialize issue number
+
+      const addPageNumber = () => {
+        // Position at 15 mm from bottom
+        doc.setFontSize(10);
+        const pageNumberText = `Page ${pageNumber} of ${pageNumber}`;
+        const issueDate = new Date().toLocaleDateString(); // Get current date
+        issueNumber++; // Increment issue number
+        const issueNumberText = `Issue No. ${issueNumber}`; // Issue number text
+
+        // Calculate the width of the text
+        const pageNumberWidth =
+          doc.getStringUnitWidth(pageNumberText) * doc.internal.getFontSize();
+        const issueDateWidth =
+          doc.getStringUnitWidth(issueDate) * doc.internal.getFontSize();
+        const issueNumberWidth =
+          doc.getStringUnitWidth(issueNumberText) * doc.internal.getFontSize();
+
+        // Calculate x-positions for each element
+        const pageXPos = doc.internal.pageSize.width - 20 - pageNumberWidth;
+        const issueDateXPos = pageXPos - 15 - issueDateWidth;
+        const issueNumberXPos = issueDateXPos - 10 - issueNumberWidth;
+
+        // Draw the text
+        doc.text(pageNumberText, pageXPos, doc.internal.pageSize.height - 10);
+        doc.text(
+          `Issue Date: ${issueDate}`,
+          issueDateXPos,
+          doc.internal.pageSize.height - 10
+        );
+        doc.text(
+          issueNumberText,
+          issueNumberXPos,
+          doc.internal.pageSize.height - 10
+        );
+      };
+
+      // Function to add a new page with a page number
+      const addPageWithNumber = () => {
+        if (pageNumber > 1) {
+          // Add new page except for the first page
+          doc.addPage();
+        }
+
+        // Add page number
+        addPageNumber();
+      };
+
+      // Add a page with the page number
+      addPageWithNumber();
+
       doc.setFontSize(10); // Adjust font size here
       doc.text("Fortich St. Malaybalay City, Bukidnon 8700", 77, 30);
 
       doc.addImage(logo, "PNG", 30, 15, 20, 18);
       doc.addImage(otherLogo, "PNG", 157, 15, 20, 18);
 
-      let yPos = 140;
+      doc.setFontSize(14); // Adjust font size here
+      doc.setFont(undefined, "bold"); // Set font weight to bold
+      doc.text("Month of April 2024", 85, 67);
+
+      
       doc.setFontSize(12); // Adjust font size here
       doc.text("GSU - Motorpool Section", 83, 45);
 
@@ -122,18 +138,8 @@ const TripReport = () => {
       doc.setFontSize(12); // Adjust font size here
       doc.text("Verified by:", 15 + leftMarginVerifiedBy, yPos1); // Adjusted x-coordinate
 
-      let yPos2 = 180;
-      const leftMarginNotedBy = 130; // Adjust the left margin for "Verified by:" as needed
-      doc.setFontSize(12); // Adjust font size here
-      doc.text("Noted by:", 15 + leftMarginNotedBy, yPos2); // Adjusted x-coordinate
+
       yPos1 += 10; // Adjust margin as needed
-
-      doc.setFontSize(14); // Adjust font size here
-      doc.text("NUMBER OF TRIP PER VEHICLE", 68, 60);
-
-      doc.setFontSize(11); // Adjust font size here
-      doc.text("Administrative Aide III", 25, 158);
-
       doc.setFontSize(11); // Adjust font size here
       doc.text(
         "Supervisor,Transportation Service (Motorpool Section)",
@@ -141,19 +147,6 @@ const TripReport = () => {
         200
       );
 
-      doc.setFontSize(11); // Adjust font size here
-      doc.text("Head, GSU", 160, 200);
-
-      doc.setFontSize(14); // Adjust font size here
-      doc.setFont(undefined, "bold"); // Set font weight to bold
-      doc.text("Month of April 2024", 85, 67);
-
-      doc.setFontSize(12); // Adjust font size here
-      doc.text("SNIFFY L. TIMONES", 25, 153);
-      const textWidth = doc.getStringUnitWidth("SNIFFY L. TIMONES") * 4.5; // Adjust 12 to the font size used
-      const startX = 24; // Adjust as needed
-      const startY = 152 + 1; // Adjust to position the underline below the text
-      doc.line(startX, startY, startX + textWidth, startY); // Draw a line below the text
 
       const topMargin = 10; // Adjust the top margin as needed
       const leftMargin = 25; // Adjust the left margin as needed
@@ -188,19 +181,21 @@ const TripReport = () => {
       doc.text(textNew, 25 + leftMarginNew, 185 + topMarginNew); // Adjusted y-coordinate for the text for the new copy
       doc.line(startXNew, startYNew, startXNew + textWidthNew, startYNew); // Adjusted start and end positions for the line for the new copy
 
-      doc.setFontSize(12); // Adjust font size here
-      doc.text("GSU - Motorpool Section", 83, 45);
 
-      doc.setFont("times"); // Set font to Times New Roman
-      doc.setFontSize(17); // doc.setFont('helvetica', 'bold'); // Set font to bold
-      doc.text("BUKIDNON STATE UNIVERSITY", 58, 25);
 
+    
       // doc.setFont('times'); // Set font to Times New Roman
       // doc.setFontSize(17); // doc.setFont('helvetica', 'bold'); // Set font to bold
       // doc.text("BUKIDNON STATE UNIVERSITY", 57, 25);
 
- 
+      // const tableData = bookingData.map((booking, index) => [
+      //   booking.vehicleName,
+      //   booking.plateNumber,
+      //   booking.destination,
+      // ]);
+      //Brendyl Ani
 
+      // Calculate total number of trips per vehicle
       const tripsPerVehicle = {};
       bookingData.forEach((booking) => {
         const plateNumber = booking.plateNumber;
@@ -253,12 +248,29 @@ const TripReport = () => {
           return [plateNumber, vehicleName, wosTrips, bosTrips];
         })
       );
-      
-      var totalTripsString = "TOTAL NO. OF TRIPS: " + totalTrips;
-      // Add a row for total trips
-      tableData.push(["TOTAL NO. OF TRIPS:", totalTrips]);
-      
 
+      // Add a row for total trips
+      tableData.push(["TOTAL TRIPS:", totalTrips]);
+      // // Inside your tableData mapping function
+      // const tableData = await Promise.all(
+      //   Array.from(uniquePlateNumbers).map(async (plateNumber) => {
+      //     const vehicleName = await getVehicleName(plateNumber);
+      //     const trips = tripsPerVehicle[plateNumber] || 0;
+      //     return [plateNumber, vehicleName, trips];
+      //   })
+      // );
+
+      // const tableData = Object.keys(tripsPerVehicle).map((plateNumber) => {
+      //   const vehicleName = bookingData.find(
+      //     (booking) => booking.plateNumber === plateNumber
+      //   ).vehicleName;
+      //   return [vehicleName, plateNumber, tripsPerVehicle[plateNumber]];
+      // });
+      // const tableData = Object.keys(tripsPerVehicle).map((plateNumber) => {
+      //   return [plateNumber, tripsPerVehicle[plateNumber]];
+      // });
+
+      ///here taman
       doc.autoTable({
         // startY: 78,
         startY: yPos + 10,
@@ -267,8 +279,8 @@ const TripReport = () => {
             { content: "Plate Number", styles: { fontStyle: "bold" } },
             { content: "Vehicle", styles: { fontStyle: "bold" } },
             // { content: "TOTAL NO. OF TRIP", styles: { fontStyle: "bold" } },
-            { content: "Within", styles: { fontStyle: "bold" } },
-            { content: "Beyond", styles: { fontStyle: "bold" } },
+            { content: "WOS", styles: { fontStyle: "bold" } },
+            { content: "BOS", styles: { fontStyle: "bold" } },
           ],
         ],
         body: tableData,
@@ -293,9 +305,15 @@ const TripReport = () => {
         tableLineWidth: 0.2, // Set table border width
         tableLineColor: [0, 0, 0], // Set table border color
         margin: { top: 0 }, // Adjust table margin if needed
-      
+        didDrawPage: function (data) {
+          const tableHeight = doc.autoTable.previous.finalY;
+          const bottomMargin = 20; // Adjust the bottom margin as needed
+          const pageHeight = doc.internal.pageSize.height;
+          if (tableHeight + bottomMargin >= pageHeight) {
+            doc.addPage();
+          }
+        },
       });
-      
       // Convert the PDF content into a data URL
       const dataUri = doc.output("datauristring");
 
@@ -318,50 +336,194 @@ const TripReport = () => {
 
       doc.addImage(logo, "PNG", 30, 12, 20, 18);
       doc.addImage(otherLogo, "PNG", 165, 12, 20, 18);
-  
+
       // Add content to the PDF
       // doc.addImage(logo, 'PNG', 50, 15, 20, 18);
-        
+
       doc.setFontSize(10); // Adjust font size here
       doc.text("Malaybalay City, Bukidnon 8700, Mobile 09178036386", 65, 30);
 
       doc.setFontSize(9); // Adjust font size here
-      doc.text("TeleFax (088) 813-2717 Local 158 www.buksu.edu.ph - eig052775@gmail.com", 52, 36);
-  
-      doc.setFont('times');
+      doc.text(
+        "TeleFax (088) 813-2717 Local 158 www.buksu.edu.ph - eig052775@gmail.com",
+        50,
+        36
+      );
+
+      doc.setFont("times");
       doc.setFontSize(13);
-      doc.text('GENERAL SERVICES UNIT', 80, 48);
+      doc.text("GENERAL SERVICES UNIT", 75, 48);
 
       doc.setFontSize(13);
-      doc.text('TRANSPORTATION SERVICE (Motorpool Section)', 59, 54);
+      doc.text("TRANSPORTATION SERVICE (Motorpool Section)", 52, 54);
 
       doc.setFont(undefined, "bold"); // Set font weight to bold
-       // Set font to Times New Roman
+      // Set font to Times New Roman
       doc.setFontSize(17); // doc.setFont('helvetica', 'bold'); // Set font to bold
       doc.text("BUKIDNON STATE UNIVERSITY", 62, 25);
 
-     
-  
-      const tableData = bookingData.map(booking => [
+      const tableData = bookingData.map((booking) => [
         booking.plateNumber,
         booking.boundFor,
         booking.destination,
         formatDateTime(booking.timeForBound),
-        formatDateTime(booking.returnDate)
+        formatDateTime(booking.returnDate),
       ]);
+      doc.autoTable({
+        startY: 60,
+        head: [
+          [
+            {
+              content: "MOTOR VEHICLE USED REQUEST FORM",
+              colSpan: 2,
+              styles: {
+                fontStyle: "bold",
+                font: "times",
+                fontSize: 12,
+                halign: "center",
+              },
+            },
+          ],
+          [
+            {
+              content: "Office/Department/Unit Name of Organization",
+              styles: {
+                fontStyle: "bold",
+                font: "times",
+                fontSize: 11,
+                halign: "center",
+              },
+            },
+            {
+              content: "Name",
+              styles: {
+                fontStyle: "bold",
+                font: "times",
+                fontSize: 12,
+                halign: "right",
+              },
+            },
+            {
+              content: "AZSDASD",
+              styles: {
+                fontStyle: "bold",
+                font: "times",
+                fontSize: 12,
+                halign: "center",
+              },
+            },
+          ],
+          [
+            {
+              content: "Additional Line 1",
+              styles: {
+                fontStyle: "bold",
+                font: "times",
+                fontSize: 11,
+                halign: "center",
+              },
+            },
+            {
+              content: "Additional Line 2",
+              styles: {
+                fontStyle: "bold",
+                font: "times",
+                fontSize: 12,
+                halign: "right",
+              },
+            },
+          ],
+          [
+            {
+              content: "Header 3",
+              styles: {
+                fontStyle: "bold",
+                font: "times",
+                fontSize: 11,
+                halign: "center",
+              },
+            },
+            {
+              content: "Header 4",
+              styles: {
+                fontStyle: "bold",
+                font: "times",
+                fontSize: 11,
+                halign: "center",
+              },
+            },
+            {}, // Empty cell to align with the next header
+            {}, // Empty cell to align with the next header
+          ],
+        ],
+        body: [
+          [
+            {
+              content: "Content 1",
+              styles: { font: "times", fontSize: 11, halign: "left" },
+            },
+            {
+              content: "Content 2",
+              styles: { font: "times", fontSize: 11, halign: "center" },
+            },
+            {
+              content: "Content 3",
+              styles: { font: "times", fontSize: 11, halign: "right" },
+            },
+            {
+              content: "Content 4",
+              styles: { font: "times", fontSize: 11, halign: "right" },
+            },
+          ],
+          [
+            {
+              content: "Content 5",
+              styles: { font: "times", fontSize: 11, halign: "left" },
+            },
+            {
+              content: "Content 6",
+              styles: { font: "times", fontSize: 11, halign: "center" },
+            },
+            {
+              content: "Content 7",
+              styles: { font: "times", fontSize: 11, halign: "right" },
+            },
+            {
+              content: "Content 8",
+              styles: { font: "times", fontSize: 11, halign: "right" },
+            },
+          ],
+        ],
+        headStyles: {
+          fillColor: [220, 220, 220], // Light gray background color for header
+          textColor: [0, 0, 0], // Black text color for header
+          lineColor: [0, 0, 0], // Set header cell border color
+          lineWidth: 0.2, // Set header cell border width
+          fontStyle: "normal", // Reset font style to normal
+          font: "times", // Set font to Times New Roman
+        },
+        bodyStyles: {
+          fillColor: false, // Remove background color for body cells
+          fontSize: 11,
+          textColor: [0, 0, 0], // Black text color for body
+          lineColor: [0, 0, 0], // Set body cell border color
+          lineWidth: 0.2, // Set body cell border width
+        },
+        tableLineWidth: 0.2, // Set table border width
+        tableLineColor: [0, 0, 0], // Set table border color
+        margin: { top: 0 }, // Adjust table margin if needed
+        didDrawPage: function (data) {
+          // Calculate the height of the table
+          const tableHeight = doc.autoTable.previous.finalY;
 
-      doc.setFontSize(13);
-      doc.text('Plate Number', 45, 90);
-      
-    
-      
-
-
-
-
+          // Add "Prepared by:" text
+          doc.setFontSize(12); // Adjust font size here
+          doc.text("Prepared by:", 15, tableHeight + 20);
+        },
+      });
       // Convert the PDF content into a data URL
       const dataUri = doc.output("datauristring");
-  
+
       // Create a new HTML page with an embedded iframe that displays the PDF
       const htmlContent = `
         <html>
@@ -373,20 +535,20 @@ const TripReport = () => {
           </body>
         </html>
       `;
-  
+
       // Create a Blob from the HTML content
       const blob = new Blob([htmlContent], { type: "text/html" });
-  
+
       // Create a URL for the Blob
       const url = URL.createObjectURL(blob);
-  
+
       // Open the URL in a new tab
       window.open(url, "_blank");
     } catch (error) {
       console.error("Error generating PDF:", error);
     }
   };
-  
+
   useEffect(() => {
     // Fetch booking data from the server
     const fetchBookingData = async () => {
@@ -528,8 +690,8 @@ const TripReport = () => {
             </tr>
           </thead>
           {filteredData.length > 0 ? (
-          <tbody>
-            {/* {bookingData.map((booking) => (
+            <tbody>
+              {/* {bookingData.map((booking) => (
                   <tr key={booking._id}>
                     <td>{booking.plateNumber}</td>
                     <td>{booking.boundFor}</td>
@@ -540,122 +702,123 @@ const TripReport = () => {
                     <td>
                     <button type="button" class="btn btn-warning btn-sm" onClick={() => handleEditBooking(booking.plateNumber)}>Edit</button>&nbsp; 
                       <button type="button" class="btn btn-warning btn-sm">Edit</button>&nbsp;  */}
-            {/* {bookingData.map((booking, index) => ( */}
-            {filteredData.map((booking, index) => (
-              <tr key={booking._id}>
-                <td>
-                  {editableData._id === booking._id ? (
-                    <input
-                      type="text"
-                      value={editableData.plateNumber}
-                      onChange={(e) => handleChange(e, "plateNumber")}
-                      required
-                    />
-                  ) : (
-                    booking.plateNumber
-                  )}
-                </td>
-                <td>
-                  {editableData._id === booking._id ? (
-                    <input
-                      type="text"
-                      value={editableData.boundFor}
-                      onChange={(e) => handleChange(e, "boundFor")}
-                      required
-                    />
-                  ) : (
-                    booking.boundFor
-                  )}
-                </td>
-                <td>
-                  {editableData._id === booking._id ? (
-                    <input
-                      type="text"
-                      value={editableData.destination}
-                      onChange={(e) => handleChange(e, "destination")}
-                      required
-                    />
-                  ) : (
-                    booking.destination
-                  )}
-                </td>
-                <td>
-                  {editableData._id === booking._id ? (
-                    <input
-                      type="text"
-                      value={editableData.timeForBound}
-                      onChange={(e) => handleChange(e, "timeForBound")}
-                      required
-                    />
-                  ) : (
-                    booking.timeForBound
-                  )}
-                </td>
-                <td>
-                  {editableData._id === booking._id ? (
-                    <input
-                      type="text"
-                      value={editableData.returnDate}
-                      onChange={(e) => handleChange(e, "returnDate")}
-                      required
-                    />
-                  ) : (
-                    booking.returnDate
-                  )}
-                </td>
-                <td>
-                  {editableData._id === booking._id ? (
-                    <>
+              {/* {bookingData.map((booking, index) => ( */}
+              {filteredData.map((booking, index) => (
+                <tr key={booking._id}>
+                  <td>
+                    {editableData._id === booking._id ? (
+                      <input
+                        type="text"
+                        value={editableData.plateNumber}
+                        onChange={(e) => handleChange(e, "plateNumber")}
+                        required
+                      />
+                    ) : (
+                      booking.plateNumber
+                    )}
+                  </td>
+                  <td>
+                    {editableData._id === booking._id ? (
+                      <input
+                        type="text"
+                        value={editableData.boundFor}
+                        onChange={(e) => handleChange(e, "boundFor")}
+                        required
+                      />
+                    ) : (
+                      booking.boundFor
+                    )}
+                  </td>
+                  <td>
+                    {editableData._id === booking._id ? (
+                      <input
+                        type="text"
+                        value={editableData.destination}
+                        onChange={(e) => handleChange(e, "destination")}
+                        required
+                      />
+                    ) : (
+                      booking.destination
+                    )}
+                  </td>
+                  <td>
+                    {editableData._id === booking._id ? (
+                      <input
+                        type="text"
+                        value={editableData.timeForBound}
+                        onChange={(e) => handleChange(e, "timeForBound")}
+                        required
+                      />
+                    ) : (
+                      booking.timeForBound
+                    )}
+                  </td>
+                  <td>
+                    {editableData._id === booking._id ? (
+                      <input
+                        type="text"
+                        value={editableData.returnDate}
+                        onChange={(e) => handleChange(e, "returnDate")}
+                        required
+                      />
+                    ) : (
+                      booking.returnDate
+                    )}
+                  </td>
+                  <td>
+                    {editableData._id === booking._id ? (
+                      <>
+                        <button
+                          type="button"
+                          class="btn btn-success btn-sm"
+                          onClick={() => handleSubmit(index)}
+                        >
+                          Submit
+                        </button>
+                        &nbsp;
+                        <button
+                          type="button"
+                          class="btn btn-primary btn-sm"
+                          onClick={() => setEditableData({})}
+                        >
+                          Cancel
+                        </button>
+                      </>
+                    ) : (
                       <button
                         type="button"
-                        class="btn btn-success btn-sm"
-                        onClick={() => handleSubmit(index)}
+                        class="btn btn-warning btn-sm"
+                        onClick={() => handleEdit(index)}
                       >
-                        Submit
+                        Edit
                       </button>
-                      &nbsp;
-                      <button
-                        type="button"
-                        class="btn btn-primary btn-sm"
-                        onClick={() => setEditableData({})}
-                      >
-                        Cancel
-                      </button>
-                    </>
-                  ) : (
+                    )}
+                    {/* &nbsp;<button type="button" class="btn btn-danger btn-sm">Delete</button> */}
+                    &nbsp;{" "}
                     <button
                       type="button"
-                      class="btn btn-warning btn-sm"
-                      onClick={() => handleEdit(index)}
+                      className="btn btn-danger btn-sm"
+                      onClick={() => handleDeleteBooking(booking.plateNumber)}
                     >
-                      Edit
+                      Delete
                     </button>
-                      )}
-                      {/* &nbsp;<button type="button" class="btn btn-danger btn-sm">Delete</button> */}
-                      &nbsp;{" "}
-                      <button
-                        type="button"
-                        className="btn btn-danger btn-sm"
-                        onClick={() => handleDeleteBooking(booking.plateNumber)}
-                      >
-                        Delete
-                      </button>
-                      <button
-                        onClick={handleGenerateReport}
-                        className="actionBtn "
-                      >
-                        {/* <IoDocumentAttachOutline /> */}
-                        <FcDownload />
-                      </button>
-                      </td>
-                      </tr>
-                      ))}
-                      </tbody>
-                      ) : (
-                      <p>No data available</p>
-                      )}
-                      </table>
-                      </div>
+                    <button
+                      onClick={handleGenerateReport}
+                      className="actionBtn "
+                    >
+                      {/* <IoDocumentAttachOutline /> */}
+                      <FcDownload />
+                    </button>
+                  </td>
+                </tr>
+              ))}
+            </tbody>
+          ) : (
+            <p>No data available</p>
+          )}
+        </table>
+      </div>
+
       {/* <DataTable value={bookingData}
             size="large"
             showGridlines
