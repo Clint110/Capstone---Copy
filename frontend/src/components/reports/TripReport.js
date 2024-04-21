@@ -34,58 +34,100 @@ const TripReport = () => {
   const [searchQuery, setSearchQuery] = useState("");
   const [searchField, setSearchField] = useState("plateNumber");
 
+  const addCommonContent = (doc) => {
+    // doc.setFontSize(10); // Adjust font size here
+    // doc.text("Fortich St. Malaybalay City, Bukidnon 8700", 77, 30);
+
+    let pageNumber = 1;
+    let issueNumber = 0;
+  
+    const addPageNumber = () => {
+      doc.setFontSize(10);
+      const pageNumberText = `Page ${pageNumber} of ${pageNumber}`;
+      const issueDate = new Date().toLocaleDateString();
+      issueNumber++;
+      const issueNumberText = `Issue No. ${issueNumber}`;
+  
+      const pageNumberWidth = doc.getStringUnitWidth(pageNumberText) * doc.internal.getFontSize();
+      const issueDateWidth = doc.getStringUnitWidth(issueDate) * doc.internal.getFontSize();
+      const issueNumberWidth = doc.getStringUnitWidth(issueNumberText) * doc.internal.getFontSize();
+  
+      const pageXPos = doc.internal.pageSize.width - 20 - pageNumberWidth;
+      const issueDateXPos = pageXPos - 15 - issueDateWidth;
+      const issueNumberXPos = issueDateXPos - 10 - issueNumberWidth;
+  
+      doc.text(pageNumberText, pageXPos, doc.internal.pageSize.height - 10);
+      doc.text(`Issue Date: ${issueDate}`, issueDateXPos, doc.internal.pageSize.height - 10);
+      doc.text(issueNumberText, issueNumberXPos, doc.internal.pageSize.height - 10);
+    };
+  
+    const addPageWithNumber = () => {
+      if (pageNumber > 1) {
+        doc.addPage();
+      }
+      addPageNumber();
+    };
+  
+    addPageWithNumber();
+  
+
+  
+
+  };
+  
   const generatePDF = () => {
     try {
       const doc = new jsPDF();
+      addCommonContent(doc);
 
    // Track page number
-   let pageNumber = 1;
+  //  let pageNumber = 1;
 
-   // Function to add page number
+  //  // Function to add page number
 
-   let issueNumber = 0; // Initialize issue number
+  //  let issueNumber = 0; // Initialize issue number
 
-   const addPageNumber = () => {
-     // Position at 15 mm from bottom
-     doc.setFontSize(10);
-     const pageNumberText = `Page ${pageNumber} of ${pageNumber}`;
-     const issueDate = new Date().toLocaleDateString(); // Get current date
-     issueNumber++; // Increment issue number
-     const issueNumberText = `Issue No. ${issueNumber}`; // Issue number text
+  //  const addPageNumber = () => {
+  //    // Position at 15 mm from bottom
+  //    doc.setFontSize(10);
+  //    const pageNumberText = `Page ${pageNumber} of ${pageNumber}`;
+  //    const issueDate = new Date().toLocaleDateString(); // Get current date
+  //    issueNumber++; // Increment issue number
+  //    const issueNumberText = `Issue No. ${issueNumber}`; // Issue number text
    
-     // Calculate the width of the text
-     const pageNumberWidth = doc.getStringUnitWidth(pageNumberText) * doc.internal.getFontSize();
-     const issueDateWidth = doc.getStringUnitWidth(issueDate) * doc.internal.getFontSize();
-     const issueNumberWidth = doc.getStringUnitWidth(issueNumberText) * doc.internal.getFontSize();
+  //    // Calculate the width of the text
+  //    const pageNumberWidth = doc.getStringUnitWidth(pageNumberText) * doc.internal.getFontSize();
+  //    const issueDateWidth = doc.getStringUnitWidth(issueDate) * doc.internal.getFontSize();
+  //    const issueNumberWidth = doc.getStringUnitWidth(issueNumberText) * doc.internal.getFontSize();
    
-     // Calculate x-positions for each element
-     const pageXPos = doc.internal.pageSize.width - 20 - pageNumberWidth;
-     const issueDateXPos = pageXPos - 15 - issueDateWidth;
-     const issueNumberXPos = issueDateXPos - 10 - issueNumberWidth;
+  //    // Calculate x-positions for each element
+  //    const pageXPos = doc.internal.pageSize.width - 20 - pageNumberWidth;
+  //    const issueDateXPos = pageXPos - 15 - issueDateWidth;
+  //    const issueNumberXPos = issueDateXPos - 10 - issueNumberWidth;
    
-     // Draw the text
-     doc.text(pageNumberText, pageXPos, doc.internal.pageSize.height - 10);
-     doc.text(`Issue Date: ${issueDate}`, issueDateXPos, doc.internal.pageSize.height - 10);
-     doc.text(issueNumberText, issueNumberXPos, doc.internal.pageSize.height - 10);
-   };
+  //    // Draw the text
+  //    doc.text(pageNumberText, pageXPos, doc.internal.pageSize.height - 10);
+  //    doc.text(`Issue Date: ${issueDate}`, issueDateXPos, doc.internal.pageSize.height - 10);
+  //    doc.text(issueNumberText, issueNumberXPos, doc.internal.pageSize.height - 10);
+  //  };
     
-   // Function to add a new page with a page number
-   const addPageWithNumber = () => {
-     if (pageNumber > 1) {
-       // Add new page except for the first page
-       doc.addPage();
-     }
+  //  // Function to add a new page with a page number
+  //  const addPageWithNumber = () => {
+  //    if (pageNumber > 1) {
+  //      // Add new page except for the first page
+  //      doc.addPage();
+  //    }
 
-     // Add page number
-     addPageNumber();
-   };
+  //    // Add page number
+  //    addPageNumber();
+  //  };
 
-   // Add a page with the page number
-   addPageWithNumber();
+  //  // Add a page with the page number
+  //  addPageWithNumber();
 
       
       doc.setFontSize(10); // Adjust font size here
-      doc.text("Fortich St. Malaybalay City, Bukidnon", 77, 30);
+      doc.text("Fortich St. Malaybalay City, Bukidnon 8700", 77, 30);
 
       doc.addImage(logo, "PNG", 30, 15, 20, 18);
       doc.addImage(otherLogo, "PNG", 157, 15, 20, 18);
@@ -162,12 +204,14 @@ const TripReport = () => {
       doc.setFontSize(12); // Adjust font size here
       doc.text("GSU - Motorpool Section", 83, 45);
 
- 
-
-      
       doc.setFont('times'); // Set font to Times New Roman
       doc.setFontSize(17); // doc.setFont('helvetica', 'bold'); // Set font to bold
-      doc.text("BUKIDNON STATE UNIVERSITY", 57, 25);
+      doc.text("BUKIDNON STATE UNIVERSITY", 58, 25);
+
+      
+      // doc.setFont('times'); // Set font to Times New Roman
+      // doc.setFontSize(17); // doc.setFont('helvetica', 'bold'); // Set font to bold
+      // doc.text("BUKIDNON STATE UNIVERSITY", 57, 25);
 
  
 
@@ -208,7 +252,17 @@ const TripReport = () => {
         tableLineWidth: 0.2, // Set table border width
         tableLineColor: [0, 0, 0], // Set table border color
         margin: { top: 0 }, // Adjust table margin if needed
+        didDrawPage: function(data) {
+          const tableHeight = doc.autoTable.previous.finalY;
+          const bottomMargin = 20; // Adjust the bottom margin as needed
+          const pageHeight = doc.internal.pageSize.height;
+          if (tableHeight + bottomMargin >= pageHeight) {
+            doc.addPage();
+          }
+      
+        }
       });
+      
       // Convert the PDF content into a data URL
       const dataUri = doc.output("datauristring");
 
@@ -227,72 +281,88 @@ const TripReport = () => {
   const handleGenerateReport = () => {
     try {
       const doc = new jsPDF();
+      addCommonContent(doc);
 
-      doc.addImage(logo, "PNG", 50, 15, 20, 18);
-
-      // doc.setFont('helvetica', 'bold'); // Set font to bold
-      doc.text("Bukidnon State University", 75, 25);
-
+      doc.addImage(logo, "PNG", 30, 12, 20, 18);
+      doc.addImage(otherLogo, "PNG", 165, 12, 20, 18);
+  
+      // Add content to the PDF
+      // doc.addImage(logo, 'PNG', 50, 15, 20, 18);
+        
       doc.setFontSize(10); // Adjust font size here
-      doc.text("Malaybalay City, Bukidnon", 86, 32);
+      doc.text("Malaybalay City, Bukidnon 8700, Mobile 09178036386", 65, 30);
 
-      doc.setFontSize(12); // Adjust font size here
-      doc.text("GENERAL SERVICE UNIT", 83, 50);
+      doc.setFontSize(9); // Adjust font size here
+      doc.text("TeleFax (088) 813-2717 Local 158 www.buksu.edu.ph - eig052775@gmail.com", 50, 36);
+  
+      doc.setFont('times');
+      doc.setFontSize(13);
+      doc.text('GENERAL SERVICES UNIT', 75, 48);
 
-      doc.setFontSize(12); // Adjust font size here
-      doc.text("TRANSPORTATION SERVICE (Motorpool Section)", 69, 55);
+      doc.setFontSize(13);
+      doc.text('TRANSPORTATION SERVICE (Motorpool Section)', 52, 54);
 
-      // doc.setFontSize(13); // Adjust font size here
-      // doc.text('Within and Beyond Official Station', 72, 67);
+      doc.setFont(undefined, "bold"); // Set font weight to bold
+       // Set font to Times New Roman
+      doc.setFontSize(17); // doc.setFont('helvetica', 'bold'); // Set font to bold
+      doc.text("BUKIDNON STATE UNIVERSITY", 62, 25);
 
-      // const tableData = bookingData.map((booking, index) => [
-      //   booking.plateNumber,
-      //   booking.boundFor,
-      //   booking.destination,
-      //   formatDateTime(booking.timeForBound),
-      //   formatDateTime(booking.returnDate),
-      // ]);
-      const rowCount = 18;
-      const cellsPerRow = 4;
-      const tableData = [];
-
-      // Initialize the table with empty strings
-      for (let i = 0; i < rowCount; i++) {
-        const row = [];
-        for (let j = 0; j < cellsPerRow; j++) {
-          row.push("");
-        }
-        tableData.push(row);
-      }
-
-      // Now you can put different text inside each cell as needed
-      // For example, to set the text in the first cell of the first row:
-      tableData[0][0] = "Text for row 1, cell 1";
-      tableData[0][1] = "Text for row 1, cell 2";
-      tableData[0][2] = "Text for row 1, cell 2";
-      tableData[0][3] = "Text for row 1, cell 2";
-
-      // To set the text in the third cell of the fifth row:
-      tableData[4][2] = "Text for row 5, cell 3";
-
+     
+  
+      const tableData = bookingData.map(booking => [
+        booking.plateNumber,
+        booking.boundFor,
+        booking.destination,
+        formatDateTime(booking.timeForBound),
+        formatDateTime(booking.returnDate)
+      ]);
       doc.autoTable({
-        startY: 87,
-        head: [["MOTOR VEHICLE USED REQUEST FORM"]],
-        body: tableData,
-
+        startY: 60,
+        head: [
+          [
+            { content: 'MOTOR VEHICLE USED REQUEST FORM', colSpan: 2, styles: { fontStyle: 'bold', font: 'times', fontSize: 12, halign: 'center' } }
+          ],
+          [
+            { content: 'Office/Department/Unit Name of Organization', styles: { fontStyle: 'bold', font: 'times', fontSize: 11, halign: 'center' } },
+            { content: 'Name', styles: { fontStyle: 'bold', font: 'times', fontSize: 12, halign: 'right' } },
+            { content: 'AZSDASD', styles: { fontStyle: 'bold', font: 'times', fontSize: 12, halign: 'center' } }
+          ],
+          [
+            { content: 'Additional Line 1', styles: { fontStyle: 'bold', font: 'times', fontSize: 11, halign: 'center' } },
+            { content: 'Additional Line 2', styles: { fontStyle: 'bold', font: 'times', fontSize: 12, halign: 'right' } }
+          ],
+          [
+            { content: 'Header 3', styles: { fontStyle: 'bold', font: 'times', fontSize: 11, halign: 'center' } },
+            { content: 'Header 4', styles: { fontStyle: 'bold', font: 'times', fontSize: 11, halign: 'center' } },
+            {}, // Empty cell to align with the next header
+            {}  // Empty cell to align with the next header
+          ]
+        ],
+        body: [
+          [
+            { content: 'Content 1', styles: { font: 'times', fontSize: 11, halign: 'left' } },
+            { content: 'Content 2', styles: { font: 'times', fontSize: 11, halign: 'center' } },
+            { content: 'Content 3', styles: { font: 'times', fontSize: 11, halign: 'right' } },
+            { content: 'Content 4', styles: { font: 'times', fontSize: 11, halign: 'right' } }
+          ],
+          [
+            { content: 'Content 5', styles: { font: 'times', fontSize: 11, halign: 'left' } },
+            { content: 'Content 6', styles: { font: 'times', fontSize: 11, halign: 'center' } },
+            { content: 'Content 7', styles: { font: 'times', fontSize: 11, halign: 'right' } },
+            { content: 'Content 8', styles: { font: 'times', fontSize: 11, halign: 'right' } }
+          ]
+        ],
         headStyles: {
-          fillColor: [255, 255, 255], // White background for header
+          fillColor: [220, 220, 220], // Light gray background color for header
           textColor: [0, 0, 0], // Black text color for header
           lineColor: [0, 0, 0], // Set header cell border color
           lineWidth: 0.2, // Set header cell border width
-          halign: "center", // Center align the header content horizontally
-          fontSize: 11, // Adjust font size of the header
-          fontStyle: "arialnarrow", // Set font style to Arial Narrow
+          fontStyle: 'normal', // Reset font style to normal
+          font: 'times', // Set font to Times New Roman
         },
         bodyStyles: {
           fillColor: false, // Remove background color for body cells
-          // fontStyle: 'bold',
-          // fontSize: 11,
+          fontSize: 11,
           textColor: [0, 0, 0], // Black text color for body
           lineColor: [0, 0, 0], // Set body cell border color
           lineWidth: 0.2, // Set body cell border width
@@ -300,30 +370,35 @@ const TripReport = () => {
         tableLineWidth: 0.2, // Set table border width
         tableLineColor: [0, 0, 0], // Set table border color
         margin: { top: 0 }, // Adjust table margin if needed
-        didDrawPage: function (data) {
-          // Calculate the height of the table
-          const tableHeight = doc.autoTable.previous.finalY;
-  
-          // Add "Prepared by:" text
-          doc.setFontSize(12); // Adjust font size here
-          doc.text("Prepared by:", 15, tableHeight + 20);
-      }
       });
       // Convert the PDF content into a data URL
-      const dataUri = doc.output("datauristring");
-
-      // Create a new HTML file with the PDF content
-      const htmlContent = `<html><head><title>Vehicle Trip Report</title></head><body><iframe width="100%" height="100%" src="${dataUri}"></iframe></body></html>`;
-      const blob = new Blob([htmlContent], { type: "text/html" });
+      const dataUri = doc.output('datauristring');
+  
+      // Create a new HTML page with an embedded iframe that displays the PDF
+      const htmlContent = `
+        <html>
+          <head>
+            <title>Vehicle Trip Report</title>
+          </head>
+          <body>
+            <iframe width="100%" height="100%" src="${dataUri}"></iframe>
+          </body>
+        </html>
+      `;
+  
+      // Create a Blob from the HTML content
+      const blob = new Blob([htmlContent], { type: 'text/html' });
+  
+      // Create a URL for the Blob
       const url = URL.createObjectURL(blob);
-
-      // Open the new HTML file in a new tab
-      window.open(url, "_blank");
-      doc.save("individual Report.pdf");
+  
+      // Open the URL in a new tab
+      window.open(url, '_blank');
     } catch (error) {
-      console.error("Error generating PDF:", error);
+      console.error('Error generating PDF:', error);
     }
   };
+  
   useEffect(() => {
     // Fetch booking data from the server
     const fetchBookingData = async () => {
