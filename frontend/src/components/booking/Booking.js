@@ -333,7 +333,8 @@ function Booking() {
                 <tbody className="BookingList">
                   {allEvents
                     .slice(0)
-                    .reverse()
+                    // .reverse()
+                    .sort((a, b) => new Date(a.start) - new Date(b.start)) // Sort events by start date
                     .map((event, index) => (
                       <tr key={event.id}>
                         <td>

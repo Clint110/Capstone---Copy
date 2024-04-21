@@ -16,6 +16,7 @@ import "jspdf-autotable";
 import { faCircleUser } from "@fortawesome/free-solid-svg-icons";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import otherLogo from "../another-logo.png";
+import { FcDownload } from "react-icons/fc";
 
 function formatDateTime(dateTimeString) {
   const options = {
@@ -718,7 +719,8 @@ function TripReport() {
                         onClick={handleGenerateReport}
                         className="actionBtn "
                       >
-                        <IoDocumentAttachOutline />
+                        <FcDownload />
+                        {/* <IoDocumentAttachOutline /> */}
                       </button>
                     </td>
                   </tr>

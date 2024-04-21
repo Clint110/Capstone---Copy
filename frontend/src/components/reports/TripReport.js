@@ -14,6 +14,7 @@ import otherLogo from "../another-logo.png";
 import "primereact/resources/themes/lara-light-indigo/theme.css";
 import "primereact/resources/primereact.min.css";
 import "primeicons/primeicons.css";
+import { FcDownload } from "react-icons/fc";
 
 function formatDateTime(dateTimeString) {
   const options = {
@@ -319,7 +320,7 @@ const TripReport = () => {
   const handleGenerateReport = () => {
     try {
       const doc = new jsPDF();
-      addCommonContent(doc);
+      // addCommonContent(doc);
 
       doc.addImage(logo, "PNG", 30, 12, 20, 18);
       doc.addImage(otherLogo, "PNG", 165, 12, 20, 18);
@@ -793,7 +794,8 @@ const TripReport = () => {
                       onClick={handleGenerateReport}
                       className="actionBtn "
                     >
-                      <IoDocumentAttachOutline />
+                      {/* <IoDocumentAttachOutline /> */}
+                      <FcDownload />
                     </button>
                   </td>
                 </tr>
