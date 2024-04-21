@@ -353,3 +353,42 @@ background-attachment: fixed;
   color: #ffffff;
   text-align: center; /* Adjust the text color */
 }
+
+.rbc-header{
+background-color: #839aed;
+}
+
+/* .rbc-allday-cell{
+  display: none;
+} */
+
+.rbc-time-header-cell .rbc-today{
+background-color: #7da3ee !important;
+}
+
+.rbc-time-slot{
+  background-color: #ce19b0;
+  z-index:1;
+
+}
+
+.rbc-time-slot:not(.rbc-today .rbc-time-slot){
+  background-color: #1aae3c;
+}
+
+.rbc-event, .rbc-background-event{
+  z-index:2;
+  padding:0px !important;
+  background-color: #d00f0f;
+}
+
+.rbc-event-label{
+  display: none !important;
+ 
+}
+
+.rbc-event-content{
+background-color: #ffcd06;
+overflow-x: scroll;
+z-index: 3;
+}

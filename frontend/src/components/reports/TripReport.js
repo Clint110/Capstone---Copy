@@ -290,7 +290,7 @@ const TripReport = () => {
   const handleGenerateReport = () => {
     try {
       const doc = new jsPDF();
-      addCommonContent(doc);
+      // addCommonContent(doc);
 
       doc.addImage(logo, "PNG", 30, 12, 20, 18);
       doc.addImage(otherLogo, "PNG", 165, 12, 20, 18);
@@ -326,39 +326,10 @@ const TripReport = () => {
         formatDateTime(booking.returnDate)
       ]);
 
-    doc.autoTable({
-      startY: 60,
-      head: [
-        [
-          { content: 'MOTOR VEHICLE USED REQUEST FORM', colSpan: 1, styles: { fontStyle: 'bold', font: 'times', fontSize: 12, halign: 'left' } }
-        ]
-      ],
-      body: [],
-      headStyles: {
-        fillColor: [220, 220, 220], // Light gray background color for header
-        textColor: [0, 0, 0], // Black text color for header
-        lineColor: [0, 0, 0], // Set header cell border color
-        lineWidth: 0.2, // Set header cell border width
-        fontStyle: 'normal', // Reset font style to normal
-        font: 'times', // Set font to Times New Roman
-      },
-      bodyStyles: {
-        fillColor: false, // Remove background color for body cells
-        fontSize: 11,
-        textColor: [0, 0, 0], // Black text color for body
-        lineColor: [0, 0, 0], // Set body cell border color
-        lineWidth: 0.2, // Set body cell border width
-      },
-      tableLineWidth: 0.2, // Set table border width
-      tableLineColor: [0, 0, 0], // Set table border color
-      margin: { top: 0 }, // Adjust table margin if needed
-    });
-
-    // Set font and font size outside of autoTable function
-      doc.setFont('times');
       doc.setFontSize(13);
-      doc.text('Plate Number', 25, 80);
-
+      doc.text('Plate Number', 45, 90);
+      
+    
       
 
 
@@ -635,29 +606,32 @@ const TripReport = () => {
                     >
                       Edit
                     </button>
-                  )}
-                  {/* &nbsp;<button type="button" class="btn btn-danger btn-sm">Delete</button> */}
-                  &nbsp;{" "}
-                  <button
-                    type="button"
-                    className="btn btn-danger btn-sm"
-                    onClick={() => handleDeleteBooking(booking.plateNumber)}
-                  >
-                    Delete
-                  </button>
-                  <button onClick={handleGenerateReport} className="actionBtn ">
-                    <IoDocumentAttachOutline />
-                  </button>
-                </td>
-              </tr>
-            ))}
-          </tbody>
-          ) : (
-            <p>No data available</p>
-          )}
-        </table>
-      </div>
-
+                      )}
+                      {/* &nbsp;<button type="button" class="btn btn-danger btn-sm">Delete</button> */}
+                      &nbsp;{" "}
+                      <button
+                        type="button"
+                        className="btn btn-danger btn-sm"
+                        onClick={() => handleDeleteBooking(booking.plateNumber)}
+                      >
+                        Delete
+                      </button>
+                      <button
+                        onClick={handleGenerateReport}
+                        className="actionBtn "
+                      >
+                        {/* <IoDocumentAttachOutline /> */}
+                        <FcDownload />
+                      </button>
+                      </td>
+                      </tr>
+                      ))}
+                      </tbody>
+                      ) : (
+                      <p>No data available</p>
+                      )}
+                      </table>
+                      </div>
       {/* <DataTable value={bookingData}
             size="large"
             showGridlines
