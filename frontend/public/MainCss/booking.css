@@ -367,14 +367,14 @@ background-color: #7da3ee !important;
 }
 
 .rbc-time-slot{
-  background-color: #ce19b0;
+  /* background-color: #ce19b0; */
   z-index:1;
 
 }
 
-.rbc-time-slot:not(.rbc-today .rbc-time-slot){
+/* .rbc-time-slot:not(.rbc-today .rbc-time-slot){
   background-color: #1aae3c;
-}
+} */
 
 .rbc-event, .rbc-background-event{
   z-index:2;
@@ -388,7 +388,7 @@ background-color: #7da3ee !important;
 }
 
 .rbc-event-content{
-background-color: #ffcd06;
+/* background-color: #ffcd06; */
 overflow-x: scroll;
-z-index: 3;
+z-index: 5;
 }

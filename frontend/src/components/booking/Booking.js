@@ -305,12 +305,12 @@ function Booking() {
   };
 
   useEffect(() => {
-    const reminderTimer = setTimeout(() => {
+    const reminderTimer = setInterval(() => {
       checkUpcomingEvents();
-    }, 10 * 60 * 1000); // Check every minute
+    }, 10 * 60 * 1000); // Check every 10 minutes
 
     return () => {
-      clearTimeout(reminderTimer);
+      clearInterval(reminderTimer);
     };
   }, [allEvents]);
 
@@ -318,7 +318,7 @@ function Booking() {
     const now = new Date();
     const upcomingEvents = allEvents.filter((event) => {
       const timeDifference = event.start - now;
-      return timeDifference > 0 && timeDifference <= 30 * 60 * 1000; // Upcoming events within 30 minutes
+      return timeDifference > 0 && timeDifference <= 10 * 60 * 1000; // Upcoming events within 10 minutes
     });
 
     if (upcomingEvents.length > 0) {
