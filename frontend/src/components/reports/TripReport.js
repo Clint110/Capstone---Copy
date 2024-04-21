@@ -733,8 +733,8 @@ const TripReport = () => {
                     {editableData._id === booking._id ? (
                       <input
                         type="text"
-                        value={editableData.timeForBound}
-                        onChange={(e) => handleChange(e, "timeForBound")}
+                        value={editableData.timeAndDate}
+                        onChange={(e) => handleChange(e, "timeAndDate")}
                         required
                       />
                     ) : (
