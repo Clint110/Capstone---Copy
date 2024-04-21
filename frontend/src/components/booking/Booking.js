@@ -411,11 +411,11 @@ function Booking() {
                               <p>Status: {selectedPlateNumberStatus}</p>
         </label>
         <label>
-         DRIVER’s NAME
+         Driver’s Name
             <input type="text" className='bookingInput' value={formData.driverName} onChange={(e) => setFormData({ ...formData, driverName: e.target.value })}/>
         </label>
         <label>
-            Client Name
+            Client Name(Office)
             <input type="text" className='bookingInput' value={formData.clientName} onChange={(e) => setFormData({ ...formData, clientName: e.target.value })} />
         </label>
         <label>
@@ -423,14 +423,14 @@ function Booking() {
             <input type="number" className='bookingInput' value={formData.passengerQuantity} onChange={(e) => setFormData({ ...formData, passengerQuantity: e.target.value })} />
         </label>
         <label>
-        DESTINATION
+        Destination
         <select className='bookingInput' value={formData.destination} onChange={(e) => setFormData({ ...formData, destination: e.target.value })}>
             <option value='WOS'>Within Official Station </option>
             <option value='BOS'>Beyond Official Station </option>
         </select>
         </label>
         <label>
-            BOUND FOR
+            Bound For
             <input type="text" className='bookingInput' value={formData.boundFor} onChange={(e) => setFormData({ ...formData, boundFor: e.target.value })}/>
 
             Time <br></br>
