@@ -180,6 +180,35 @@ exports.vecstatus = async (req, res) => {
     }
   }
 
+  exports.vehicdetails2 = async (req, res) => {
+    try {
+      const { plateNumber } = req.params;
+
+      console.log(plateNumber);
+      const vehicleDetails = await Vehicle.findOne({ plateNumber });
+      
+      if (!vehicleDetails) {
+        return res.status(404).json({ error: 'Vehicle details not found' });
+      } 
+
+        const details = {
+          vehicle: {
+            plateNumber: vehicleDetails.plateNumber,
+            vehicleName: vehicleDetails.vehicleName,
+            // carImage: `http://localhost:3000/imagesforupload/${vehicleDetails.carImage}`,
+          },
+        };
+      
+
+      console.log(details);
+  
+      res.json(details);
+    } catch (error) {
+      console.error('Error fetching vehicle details:', error);
+      res.status(500).json({ error: 'Internal Server Error' });
+    }
+  }
+
   // exports.markAvailable = async (req, res) => {
   //   try {
   //     const { plateNumber } = req.params;

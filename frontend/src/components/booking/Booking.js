@@ -416,7 +416,7 @@ function Booking() {
                           <p>Status: {selectedPlateNumberStatus}</p>
                         </label>
                         <label>
-                          Client Name
+                          Client Name(Office)
                           <input
                             type="text"
                             className="bookingInput"
