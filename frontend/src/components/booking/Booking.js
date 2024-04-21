@@ -558,7 +558,7 @@ function Booking() {
           </div>
         </div>
         <div className="rbc-calendar">
-          <BigCalendar {...props} 
+          <BigCalendar 
             localizer={localizer}
             events={combinedEvents}
             // events={events}
