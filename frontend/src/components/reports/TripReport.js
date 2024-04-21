@@ -35,6 +35,26 @@ const TripReport = () => {
   const [searchQuery, setSearchQuery] = useState("");
   const [searchField, setSearchField] = useState("plateNumber");
   const [vehicleName, setVehicleName] = useState("");
+  const [vehicleDetails, setVehicleDetails] = useState([]);
+  const [formData, setFormData] = useState({});
+  const [selectedPlateNumber, setSelectedPlateNumber] = useState(null);
+
+// Function to handle vehicle click
+const handleVehicleClick = (plateNumber) => {
+    setSelectedPlateNumber(plateNumber);
+    console.log("Selected plate number:", plateNumber); // Add this line for debugging
+
+};
+
+
+
+  const formatTime = (time) => {
+    return new Date(time).toLocaleTimeString([], {
+      hour: "2-digit",
+      minute: "2-digit",
+    });
+  };
+
 
   const generatePDF = async () => {
     try {
@@ -122,11 +142,11 @@ const TripReport = () => {
 
 
       doc.setFontSize(11); // Adjust font size here
-      doc.text("Administrative Aide III", 25, 162);
+      doc.text("Administrative Aide III", 25, 158);
 
 
       doc.setFontSize(12); // Adjust font size here
-      doc.text("SNIFFY L. TIMONES", 25, 157);
+      doc.text("SNIFFY L. TIMONES", 25, 162);
       const textWidth = doc.getStringUnitWidth("SNIFFY L. TIMONES") * 4.5; // Adjust 12 to the font size used
       const startX = 24; // Adjust as needed
       const startY = 152 + 1; // Adjust to position the underline below the text
@@ -329,8 +349,19 @@ const TripReport = () => {
     }
   };
 
-  const handleGenerateReport = () => {
+
+  // const handleGenerateReport = async () => {
+    const handleGenerateReport = (plateNumber) => {
     try {
+      // if (selectedPlateNumber) {
+        if (!plateNumber) {
+        console.log("Generating report for plate number:", selectedPlateNumber);
+        // Add your logic for generating the report
+    } else {
+        console.log("No plate number selected");
+    }
+    const bookingDetails = filteredData.find(booking => booking.plateNumber === plateNumber);
+
       const doc = new jsPDF();
       // addCommonContent(doc);
 
@@ -362,165 +393,218 @@ const TripReport = () => {
       doc.setFontSize(17); // doc.setFont('helvetica', 'bold'); // Set font to bold
       doc.text("BUKIDNON STATE UNIVERSITY", 62, 25);
 
-      const tableData = bookingData.map((booking) => [
-        booking.plateNumber,
-        booking.boundFor,
-        booking.destination,
-        formatDateTime(booking.timeForBound),
-        formatDateTime(booking.returnDate),
-      ]);
-      doc.autoTable({
-        startY: 60,
-        head: [
-          [
-            {
-              content: "MOTOR VEHICLE USED REQUEST FORM",
-              colSpan: 2,
-              styles: {
-                fontStyle: "bold",
-                font: "times",
-                fontSize: 12,
-                halign: "center",
-              },
-            },
-          ],
-          [
-            {
-              content: "Office/Department/Unit Name of Organization",
-              styles: {
-                fontStyle: "bold",
-                font: "times",
-                fontSize: 11,
-                halign: "center",
-              },
-            },
-            {
-              content: "Name",
-              styles: {
-                fontStyle: "bold",
-                font: "times",
-                fontSize: 12,
-                halign: "right",
-              },
-            },
-            {
-              content: "AZSDASD",
-              styles: {
-                fontStyle: "bold",
-                font: "times",
-                fontSize: 12,
-                halign: "center",
-              },
-            },
-          ],
-          [
-            {
-              content: "Additional Line 1",
-              styles: {
-                fontStyle: "bold",
-                font: "times",
-                fontSize: 11,
-                halign: "center",
-              },
-            },
-            {
-              content: "Additional Line 2",
-              styles: {
-                fontStyle: "bold",
-                font: "times",
-                fontSize: 12,
-                halign: "right",
-              },
-            },
-          ],
-          [
-            {
-              content: "Header 3",
-              styles: {
-                fontStyle: "bold",
-                font: "times",
-                fontSize: 11,
-                halign: "center",
-              },
-            },
-            {
-              content: "Header 4",
-              styles: {
-                fontStyle: "bold",
-                font: "times",
-                fontSize: 11,
-                halign: "center",
-              },
-            },
-            {}, // Empty cell to align with the next header
-            {}, // Empty cell to align with the next header
-          ],
-        ],
-        body: [
-          [
-            {
-              content: "Content 1",
-              styles: { font: "times", fontSize: 11, halign: "left" },
-            },
-            {
-              content: "Content 2",
-              styles: { font: "times", fontSize: 11, halign: "center" },
-            },
-            {
-              content: "Content 3",
-              styles: { font: "times", fontSize: 11, halign: "right" },
-            },
-            {
-              content: "Content 4",
-              styles: { font: "times", fontSize: 11, halign: "right" },
-            },
-          ],
-          [
-            {
-              content: "Content 5",
-              styles: { font: "times", fontSize: 11, halign: "left" },
-            },
-            {
-              content: "Content 6",
-              styles: { font: "times", fontSize: 11, halign: "center" },
-            },
-            {
-              content: "Content 7",
-              styles: { font: "times", fontSize: 11, halign: "right" },
-            },
-            {
-              content: "Content 8",
-              styles: { font: "times", fontSize: 11, halign: "right" },
-            },
-          ],
-        ],
-        headStyles: {
-          fillColor: [220, 220, 220], // Light gray background color for header
-          textColor: [0, 0, 0], // Black text color for header
-          lineColor: [0, 0, 0], // Set header cell border color
-          lineWidth: 0.2, // Set header cell border width
-          fontStyle: "normal", // Reset font style to normal
-          font: "times", // Set font to Times New Roman
-        },
-        bodyStyles: {
-          fillColor: false, // Remove background color for body cells
-          fontSize: 11,
-          textColor: [0, 0, 0], // Black text color for body
-          lineColor: [0, 0, 0], // Set body cell border color
-          lineWidth: 0.2, // Set body cell border width
-        },
-        tableLineWidth: 0.2, // Set table border width
-        tableLineColor: [0, 0, 0], // Set table border color
-        margin: { top: 0 }, // Adjust table margin if needed
-        didDrawPage: function (data) {
-          // Calculate the height of the table
-          const tableHeight = doc.autoTable.previous.finalY;
+      doc.setFontSize(16);
+      doc.text("Booking Request Letter", 68, 70);
 
-          // Add "Prepared by:" text
-          doc.setFontSize(12); // Adjust font size here
-          doc.text("Prepared by:", 15, tableHeight + 20);
-        },
-      });
+     
+    doc.setFontSize(12);
+    doc.text(`From: ${formData.clientName}`, 14, 30);
+
+    // Add date
+    const currentDate = new Date().toLocaleDateString();
+    doc.text(`Date: ${currentDate}`, 14, 44);
+
+     // Add body of the letter
+     doc.setFontSize(12);
+     doc.text("Dear Sir/Madam,", 14, 60);
+     doc.text(
+       "We would like to request a booking for the following vehicle:",
+       14,
+       67
+     );
+ 
+     // Add vehicle details
+    //  filteredData.forEach((booking, index) => {
+    //    const startY = 80 + index * 30;
+    //    doc.text(`Plate No.: ${booking.plateNumber}`, 14, startY);
+    //    doc.text(`Destination: ${booking.destination}`, 14, startY + 7);
+    //    doc.text(`Bound For: ${booking.boundFor}`, 14, startY + 14);
+    //    doc.text(`Departure: ${formatTime(booking.timeForBound)}`, 14, startY + 21);
+    //    doc.text(`Return: ${formatTime(booking.returnDate)}`, 14, startY + 28);
+    //  });
+   
+ 
+          // Clear existing content or initialize a new PDF document
+          // Then add booking details
+          doc.text(`Plate No.: ${bookingDetails.plateNumber}`, 14, 80);
+          doc.text(`Destination: ${bookingDetails.destination}`, 14, 87);
+          doc.text(`Bound For: ${bookingDetails.boundFor}`, 14, 94);
+          doc.text(`Departure: ${formatTime(bookingDetails.timeForBound)}`, 14, 101);
+          doc.text(`Return: ${formatTime(bookingDetails.returnDate)}`, 14, 108);
+     
+
+     // Add closing remarks
+    const lastY = 80 + filteredData.length * 30;
+    doc.text("Thank you for your attention to this matter.", 14, lastY + 10);
+    doc.text("Best regards,", 14, lastY + 20);
+    doc.text("Your Name", 14, lastY + 30); // Change "Your Name" to the sender's name
+  
+
+    // Save the PDF
+//     doc.save("booking_request_letter.pdf");
+//   } catch (error) {
+//     console.error("Error generating PDF:", error);
+//   }
+// };
+      // const tableData = bookingData.map((booking) => [
+      //   booking.plateNumber,
+      //   booking.boundFor,
+      //   booking.destination,
+      //   formatDateTime(booking.timeForBound),
+      //   formatDateTime(booking.returnDate),
+      // ]);
+      // doc.autoTable({
+      //   startY: 60,
+      //   head: [
+      //     [
+      //       {
+      //         content: "MOTOR VEHICLE USED REQUEST FORM",
+      //         colSpan: 2,
+      //         styles: {
+      //           fontStyle: "bold",
+      //           font: "times",
+      //           fontSize: 12,
+      //           halign: "center",
+      //         },
+      //       },
+      //     ],
+      //     [
+      //       {
+      //         content: "Office/Department/Unit Name of Organization",
+      //         styles: {
+      //           fontStyle: "bold",
+      //           font: "times",
+      //           fontSize: 11,
+      //           halign: "center",
+      //         },
+      //       },
+      //       {
+      //         content: "Name",
+      //         styles: {
+      //           fontStyle: "bold",
+      //           font: "times",
+      //           fontSize: 12,
+      //           halign: "right",
+      //         },
+      //       },
+      //       {
+      //         content: "AZSDASD",
+      //         styles: {
+      //           fontStyle: "bold",
+      //           font: "times",
+      //           fontSize: 12,
+      //           halign: "center",
+      //         },
+      //       },
+      //     ],
+      //     [
+      //       {
+      //         content: "Additional Line 1",
+      //         styles: {
+      //           fontStyle: "bold",
+      //           font: "times",
+      //           fontSize: 11,
+      //           halign: "center",
+      //         },
+      //       },
+      //       {
+      //         content: "Additional Line 2",
+      //         styles: {
+      //           fontStyle: "bold",
+      //           font: "times",
+      //           fontSize: 12,
+      //           halign: "right",
+      //         },
+      //       },
+      //     ],
+      //     [
+      //       {
+      //         content: "Header 3",
+      //         styles: {
+      //           fontStyle: "bold",
+      //           font: "times",
+      //           fontSize: 11,
+      //           halign: "center",
+      //         },
+      //       },
+      //       {
+      //         content: "Header 4",
+      //         styles: {
+      //           fontStyle: "bold",
+      //           font: "times",
+      //           fontSize: 11,
+      //           halign: "center",
+      //         },
+      //       },
+      //       {}, // Empty cell to align with the next header
+      //       {}, // Empty cell to align with the next header
+      //     ],
+      //   ],
+      //   body: [
+      //     [
+      //       {
+      //         content: "Content 1",
+      //         styles: { font: "times", fontSize: 11, halign: "left" },
+      //       },
+      //       {
+      //         content: "Content 2",
+      //         styles: { font: "times", fontSize: 11, halign: "center" },
+      //       },
+      //       {
+      //         content: "Content 3",
+      //         styles: { font: "times", fontSize: 11, halign: "right" },
+      //       },
+      //       {
+      //         content: "Content 4",
+      //         styles: { font: "times", fontSize: 11, halign: "right" },
+      //       },
+      //     ],
+      //     [
+      //       {
+      //         content: "Content 5",
+      //         styles: { font: "times", fontSize: 11, halign: "left" },
+      //       },
+      //       {
+      //         content: "Content 6",
+      //         styles: { font: "times", fontSize: 11, halign: "center" },
+      //       },
+      //       {
+      //         content: "Content 7",
+      //         styles: { font: "times", fontSize: 11, halign: "right" },
+      //       },
+      //       {
+      //         content: "Content 8",
+      //         styles: { font: "times", fontSize: 11, halign: "right" },
+      //       },
+      //     ],
+      //   ],
+      //   headStyles: {
+      //     fillColor: [220, 220, 220], // Light gray background color for header
+      //     textColor: [0, 0, 0], // Black text color for header
+      //     lineColor: [0, 0, 0], // Set header cell border color
+      //     lineWidth: 0.2, // Set header cell border width
+      //     fontStyle: "normal", // Reset font style to normal
+      //     font: "times", // Set font to Times New Roman
+      //   },
+      //   bodyStyles: {
+      //     fillColor: false, // Remove background color for body cells
+      //     fontSize: 11,
+      //     textColor: [0, 0, 0], // Black text color for body
+      //     lineColor: [0, 0, 0], // Set body cell border color
+      //     lineWidth: 0.2, // Set body cell border width
+      //   },
+      //   tableLineWidth: 0.2, // Set table border width
+      //   tableLineColor: [0, 0, 0], // Set table border color
+      //   margin: { top: 0 }, // Adjust table margin if needed
+      //   didDrawPage: function (data) {
+      //     // Calculate the height of the table
+      //     const tableHeight = doc.autoTable.previous.finalY;
+
+      //     // Add "Prepared by:" text
+      //     doc.setFontSize(12); // Adjust font size here
+      //     doc.text("Prepared by:", 15, tableHeight + 20);
+      //   },
+      // });
       // Convert the PDF content into a data URL
       const dataUri = doc.output("datauristring");
 
@@ -541,9 +625,15 @@ const TripReport = () => {
 
       // Create a URL for the Blob
       const url = URL.createObjectURL(blob);
-
+   
       // Open the URL in a new tab
       window.open(url, "_blank");
+      // } else {
+      //           console.error("Booking details not found");
+      //       }
+      //   } else {
+      //       console.error("No plate number selected");
+     
     } catch (error) {
       console.error("Error generating PDF:", error);
     }
@@ -802,13 +892,13 @@ const TripReport = () => {
                     >
                       Delete
                     </button>
-                    <button
-                      onClick={handleGenerateReport}
+                {/*      <button
+                    onClick={handleGenerateReport}
+
                       className="actionBtn "
                     >
-                      {/* <IoDocumentAttachOutline /> */}
                       <FcDownload />
-                    </button>
+                    </button> */}
                   </td>
                 </tr>
               ))}
