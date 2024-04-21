@@ -125,7 +125,6 @@ function Monitoring() {
   //   }
   // };
 
-
   const [vehicleStatus, setVehicleStatus] = useState({});
 
   // Define the fetchVehicleStatus function outside of the useEffect hook
@@ -207,15 +206,15 @@ function Monitoring() {
 
         console.log("Details:", detailsResponse.data.vehicle.vehicleName);
         // alert(`Vehicle with the Plate Number: ${plateNumber} is in use.`);
-           // Fetch latitude and longitude based on plate number
-      const locationResponse = await axios.get(
-        `http://localhost:3000/get-data-plate/${plateNumber}`
-      );
-      const locationData = locationResponse.data;
+        // Fetch latitude and longitude based on plate number
+        const locationResponse = await axios.get(
+          `http://localhost:3000/get-data-plate/${plateNumber}`
+        );
+        const locationData = locationResponse.data;
 
-      console.log("Details: is this:", details);
-      console.log("Latitude:", locationData.latitude);
-      console.log("Longitude:", locationData.longitude);
+        console.log("Details: is this:", details);
+        console.log("Latitude:", locationData.latitude);
+        console.log("Longitude:", locationData.longitude);
 
         console.log("Details plate:", details.vehicle.vehicleName);
 
@@ -244,19 +243,19 @@ function Monitoring() {
         );
         const details = detailsResponse.data;
 
-         // Fetch latitude and longitude based on plate number
-      const locationResponse = await axios.get(
-        `http://localhost:3000/get-data-plate/${plateNumber}`
-      );
-      const locationData = locationResponse.data;
+        // Fetch latitude and longitude based on plate number
+        const locationResponse = await axios.get(
+          `http://localhost:3000/get-data-plate/${plateNumber}`
+        );
+        const locationData = locationResponse.data;
 
-      console.log("Details: is this:", details.vehicleName);
-      console.log("Latitude:", locationData.latitude);
-      console.log("Longitude:", locationData.longitude);
+        console.log("Details: is this:", details.vehicleName);
+        console.log("Latitude:", locationData.latitude);
+        console.log("Longitude:", locationData.longitude);
 
-      const vehicleNames = details.vehicleName;
+        const vehicleNames = details.vehicleName;
 
-      console.log("name: ", vehicleNames);
+        console.log("name: ", vehicleNames);
 
         console.log("Details for plate:", details.plateNumber);
         //alert(Vehicle with the Plate Number: ${plateNumber} is in use.);
@@ -277,26 +276,26 @@ function Monitoring() {
     }
   };
 
-
   const [locationData, setLocationData] = useState(null);
 
-// Function to fetch location data based on plate number
-const fetchLocationData = async (plateNumber) => {
-  try {
-    const response = await axios.get(`http://localhost:3000/get-data-plate/${plateNumber}`);
-    setLocationData(response.data);
-  } catch (error) {
-    console.error('Error fetching location data:', error);
-  }
-};
+  // Function to fetch location data based on plate number
+  const fetchLocationData = async (plateNumber) => {
+    try {
+      const response = await axios.get(
+        `http://localhost:3000/get-data-plate/${plateNumber}`
+      );
+      setLocationData(response.data);
+    } catch (error) {
+      console.error("Error fetching location data:", error);
+    }
+  };
 
-// Call fetchLocationData when selectedPlateNumber changes
-useEffect(() => {
-  if (selectedPlateNumber) {
-    fetchLocationData(selectedPlateNumber);
-  }
-}, [selectedPlateNumber]);
-
+  // Call fetchLocationData when selectedPlateNumber changes
+  useEffect(() => {
+    if (selectedPlateNumber) {
+      fetchLocationData(selectedPlateNumber);
+    }
+  }, [selectedPlateNumber]);
 
   const [formData, setFormData] = useState({
     plateNumber2: "",
@@ -535,7 +534,6 @@ useEffect(() => {
   //   }
   // };
 
-
   // Function to handle canceling the edit operation and close the modal
   const handleCancelEdit = () => {
     setShowEditModal(false); // Close the edit modal
@@ -613,20 +611,21 @@ useEffect(() => {
     }
   };
 
-
-   // Function to fetch coordinates based on selected plate number
-   useEffect(() => {
+  // Function to fetch coordinates based on selected plate number
+  useEffect(() => {
     const fetchCoordinates = async () => {
       try {
-        const response = await fetch(`http://localhost:3000/get-coordinates?plateNumber=${selectedPlateNumber}`);
+        const response = await fetch(
+          `http://localhost:3000/get-coordinates?plateNumber=${selectedPlateNumber}`
+        );
         if (response.ok) {
           const { latitude, longitude } = await response.json();
           setCoordinates({ latitude, longitude });
         } else {
-          console.error('Failed to fetch coordinates');
+          console.error("Failed to fetch coordinates");
         }
       } catch (error) {
-        console.error('Error fetching coordinates:', error);
+        console.error("Error fetching coordinates:", error);
       }
     };
 
@@ -642,8 +641,9 @@ useEffect(() => {
   const longitude = 125.1253695;
 
   // Google Maps URL
-  const googleMapUrl = `https://maps.google.com/maps?q=${encodeURIComponent(latitude)},${encodeURIComponent(longitude)}&t=&z=17&ie=UTF8&iwloc=B&output=embed`;
-  
+  const googleMapUrl = `https://maps.google.com/maps?q=${encodeURIComponent(
+    latitude
+  )},${encodeURIComponent(longitude)}&t=&z=17&ie=UTF8&iwloc=B&output=embed`;
 
   return (
     <>
@@ -811,10 +811,10 @@ useEffect(() => {
                                 {selectedPlateNumber}
                               </h3>{" "}
                               {/* Added class name for plate number */}
-                              <p className="vehicle-details">
-                                {" "}
-                                {selectedVehicleDetails.addvehicles}
-                              </p>
+                              <h4 className="vehicle-details">
+                                {selectedVehicleDetails.vehicle.vehicleName}{" "}
+                                {/* Display vehicle name */}
+                              </h4>
                             </div>
                           </div>
                           <button
@@ -886,8 +886,6 @@ useEffect(() => {
           </div>
         </div>
         <div></div>
-
-        
 
         {/* INNSERT VEHICLE FORM */}
         <div>
@@ -965,63 +963,71 @@ useEffect(() => {
       </div>
 
       {/* Vehicle details MODAL */}
-<div
-  className="secondmodal"
-  style={{ display: showVecModal ? "block" : "none" }}
->
-  <MDBModal tabIndex="-1"  open={showVecModal} setOpen={setShowVecModal}>
-    <MDBModalDialog>
-      <MDBModalContent>
-        <MDBModalHeader>
-          <MDBModalTitle>Vehicle's Wherabouts</MDBModalTitle>
-          <button
-            className="btn-close"
-            onClick={handleCancelEdit}
-          ></button>
-        </MDBModalHeader>
-        <MDBModalBody>
-          {/* Display vehicle name and plate number */}
-          {selectedVehicleDetails && (
-            <div>
-              <h5>Vehicle Name: {selectedVehicleDetails.vehicle.vehicleName}</h5>
-              <h5>Plate Number: {selectedPlateNumber}</h5>
-              {/* Add your map component here */}
-              {/* Below is just a placeholder */}
-              {locationData && (
-                <div style={{ height: '300px', backgroundColor: '#f0f0f0' }}>
-                  {/* Map Component Goes Here */}
-                  <iframe
-                    width="440"
-                    height="390"
-                    frameBorder="0"
-                    scrolling="no"
-                    marginHeight="0"
-                    marginWidth="0"
-                    src={`https://maps.google.com/maps?q=${encodeURIComponent(locationData.latitude)},${encodeURIComponent(locationData.longitude)}&t=&z=17&ie=UTF8&iwloc=B&output=embed`}
-                  >
-                    <a href="https://www.maps.ie/population/">Calculate population in area</a>
-                  </iframe>
-                </div>
-              )}
-            </div>
-          )}
-        </MDBModalBody>
-        <br />
-        <br />
-        <br />
-        <br />
-        <MDBModalFooter>
-          <button
-            className="btn btn-secondary"
-            onClick={handleCancelEdit}
-          >
-            Back
-          </button>
-        </MDBModalFooter>
-      </MDBModalContent>
-    </MDBModalDialog>
-  </MDBModal>
-</div>
+      <div
+        className="secondmodal"
+        style={{ display: showVecModal ? "block" : "none" }}
+      >
+        <MDBModal tabIndex="-1" open={showVecModal} setOpen={setShowVecModal}>
+          <MDBModalDialog>
+            <MDBModalContent>
+              <MDBModalHeader>
+                <MDBModalTitle>Vehicle's Wherabouts</MDBModalTitle>
+                <button
+                  className="btn-close"
+                  onClick={handleCancelEdit}
+                ></button>
+              </MDBModalHeader>
+              <MDBModalBody>
+                {/* Display vehicle name and plate number */}
+                {selectedVehicleDetails && (
+                  <div>
+                    {/* <h5>Vehicle Name: {selectedVehicleDetails.vehicleName}</h5> */}
+                    <h5>Plate Number: {selectedPlateNumber}</h5>
+                    {/* Add your map component here */}
+                    {/* Below is just a placeholder */}
+                    {locationData && (
+                      <div
+                        style={{ height: "300px", backgroundColor: "#f0f0f0" }}
+                      >
+                        {/* Map Component Goes Here */}
+                        <iframe
+                          width="440"
+                          height="390"
+                          frameBorder="0"
+                          scrolling="no"
+                          marginHeight="0"
+                          marginWidth="0"
+                          src={`https://maps.google.com/maps?q=${encodeURIComponent(
+                            locationData.latitude
+                          )},${encodeURIComponent(
+                            locationData.longitude
+                          )}&t=&z=17&ie=UTF8&iwloc=B&output=embed`}
+                        >
+                          <a href="https://www.maps.ie/population/">
+                            Calculate population in area
+                          </a>
+                        </iframe>
+                      </div>
+                    )}
+                  </div>
+                )}
+              </MDBModalBody>
+              <br />
+              <br />
+              <br />
+              <br />
+              <MDBModalFooter>
+                <button
+                  className="btn btn-secondary"
+                  onClick={handleCancelEdit}
+                >
+                  Back
+                </button>
+              </MDBModalFooter>
+            </MDBModalContent>
+          </MDBModalDialog>
+        </MDBModal>
+      </div>
 
       {/* EDIT MODAL */}
       <div

@@ -6,14 +6,16 @@ import {
   Calendar as BigCalendar,
   dateFnsLocalizer,
   momentLocalizer,
+  globalizeLocalizer,
 } from "react-big-calendar";
+import globalize from "globalize";
 import DatePicker from "react-datepicker";
 import "react-datepicker/dist/react-datepicker.css";
 import { motion } from "framer-motion";
 import { FaBars } from "react-icons/fa";
 import React, { useState, useEffect } from "react";
 import "react-datepicker/dist/react-datepicker.css";
-import logo from "../sidebaraddbooking/images/buksu-logo.png";
+// import logo from "../sidebaraddbooking/images/buksu-logo.png";
 import SidebarMenu from "../SidebarMenu";
 import { NavLink } from "react-router-dom";
 import { BiLogOut, BiSearch } from "react-icons/bi";
@@ -22,6 +24,9 @@ import { FaRegCalendarCheck } from "react-icons/fa";
 import { FaRegFileLines } from "react-icons/fa6";
 import { faCircleUser } from "@fortawesome/free-solid-svg-icons";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
+import logo from "../sidebaraddbooking/images/buksu-new-logo.png";
+import "react-big-calendar/lib/css/react-big-calendar.css";
+import "react-big-calendar/lib/addons/dragAndDrop/styles.css";
 
 // import 'react-big-calendar/lib/sass/styles';
 
@@ -72,6 +77,8 @@ const localizer = dateFnsLocalizer({
 
 function AddBook() {
   const [scrollableModal, setScrollableModal] = useState(false);
+
+  const localizer = globalizeLocalizer(globalize);
 
   const [newEvent, setNewEvent] = useState({
     title: "",
@@ -381,9 +388,9 @@ function AddBook() {
           <img
             alt="logoSide"
             src={logo} // Make sure to import your logo and replace "logo" with the actual variable holding your logo image path
-            className="rounded-circle usr-image"
-            height="150"
-            width="150"
+            className="image"
+            height="140"
+            width="167"
           />{" "}
           <div className="logo-text">MoniTour</div>
         </div>
@@ -459,7 +466,8 @@ function AddBook() {
                   <tbody className="BookingList">
                     {allEvents
                       .slice(0)
-                      .reverse()
+                      // .reverse()
+                      .sort((a, b) => new Date(a.start) - new Date(b.start)) // Sort events by start date
                       .map((event, index) => (
                         <tr key={event.id}>
                           <td>
@@ -713,7 +721,7 @@ function AddBook() {
               </MDBModal>
             </div>
           </div>
-          <div className="rbc-calendar height600">
+          <div className="rbc-calendar ">
             <BigCalendar
               localizer={localizer}
               events={combinedEvents}

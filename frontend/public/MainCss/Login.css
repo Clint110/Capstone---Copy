@@ -373,3 +373,10 @@ body{
   height: auto; /* To maintain aspect ratio */
 
 }
+
+.error-message{
+  color: red;
+  font-size: larger;
+  font-weight: bolder;
+ 
+}
