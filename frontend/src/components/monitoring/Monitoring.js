@@ -721,8 +721,8 @@ function Monitoring() {
                   <table className="table table-bordered">
                     <thead>
                       <tr>
-                        <th scope="col">Plate Number</th>
-                        <th scope="col">Status</th>
+                        <th scope="col">PLATE NUMBER</th>
+                        <th scope="col">STATUS</th>
                       </tr>
                     </thead>
                   </table>
