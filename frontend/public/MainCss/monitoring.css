@@ -647,7 +647,6 @@ margin-bottom: 10px;
 .plate-number {
   color: #333; /* Set color for plate number */
   font-size: 15px; /* Set font size for plate number */
-  margin-top: 60px;
   margin-left: 12px;
   justify-content: center;
 }
@@ -655,7 +654,6 @@ margin-bottom: 10px;
 .vehicle-details {
   color: #333; /* Set color for vehicle details */
   font-size: 25px; /* Set font size for vehicle details */
-  margin-bottom: 20px; /* Adjust margin-bottom to create space between vehicle details and plate number */
   margin-left: 12px;
   justify-content: center;
 }
@@ -736,5 +734,28 @@ box-shadow: 0 1px 3px rgba(0,0,0,0.12), 0 1px 2px rgba(0,0,0,0.24);}
   font-size: 10px; /* Adjust the font size */
   padding: 10px 10px; /* Adjust the padding */
   /* Add any other styles you want */
+}
+
+.wide-button {
+  width: 200px; /* Adjust the width as needed */
+  border-radius: 8px; /* Adjust the border radius as needed */
+}
+
+.button-container {
+  text-align: center; /* Align buttons to the center */
+  margin-top: 28px; /* Adjust the margin as needed to move the buttons down */
+}
+
+/* CSS to make each form input field the same size and widen the form */
+.form-group {
+  margin-bottom: 20px; /* Adjust spacing between form fields */
+}
+
+.form-control {
+  width: 100%; /* Make input fields widen to fill the container */
+}
+
+.form-control-file {
+  width: 100%; /* Make file input field widen to fill the container */
 }
 
