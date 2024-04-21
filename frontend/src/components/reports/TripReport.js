@@ -33,6 +33,7 @@ const TripReport = () => {
   const [editableData, setEditableData] = useState({});
   const [searchQuery, setSearchQuery] = useState("");
   const [searchField, setSearchField] = useState("plateNumber");
+  const [vehicleName, setVehicleName] = useState("");
 
   const generatePDF = async () => {
     try {
@@ -188,12 +189,67 @@ const TripReport = () => {
         tripsPerVehicle[plateNumber]++;
       });
 
-      const tableData = Object.keys(tripsPerVehicle).map((plateNumber) => {
-        const vehicleName = bookingData.find(
-          (booking) => booking.plateNumber === plateNumber
-        ).vehicleName;
-        return [vehicleName, plateNumber, tripsPerVehicle[plateNumber]];
-      });
+      // Fetch vehicle names based on plate numbers
+      const getVehicleName = async (plateNumber) => {
+        try {
+          const response = await axios.get(
+            `http://localhost:3000/vehicle/details/${plateNumber}`
+          );
+          return response.data.vehicle.vehicleName || "Unknown";
+        } catch (error) {
+          console.error("Error fetching vehicle name:", error);
+          return "Unknown";
+        }
+      };
+
+      // Prepare data for the table
+      const plateNumbers = bookingData.map((booking) => booking.plateNumber);
+      const uniquePlateNumbers = new Set(plateNumbers);
+      // Initialize total trips
+      let totalTrips = 0;
+      // Inside your tableData mapping function
+
+      const tableData = await Promise.all(
+        Array.from(uniquePlateNumbers).map(async (plateNumber) => {
+          const vehicleName = await getVehicleName(plateNumber);
+          let wosTrips = 0;
+          let bosTrips = 0;
+
+          // Count trips based on service type
+          bookingData.forEach((booking) => {
+            if (booking.plateNumber === plateNumber) {
+              if (booking.destination === "WOS") {
+                wosTrips++;
+              } else if (booking.destination === "BOS") {
+                bosTrips++;
+              }
+            }
+          });
+
+          // Increment total trips
+          totalTrips += wosTrips + bosTrips;
+
+          return [plateNumber, vehicleName, wosTrips, bosTrips];
+        })
+      );
+
+      // Add a row for total trips
+      tableData.push(["TOTAL TRIPS:", totalTrips]);
+      // // Inside your tableData mapping function
+      // const tableData = await Promise.all(
+      //   Array.from(uniquePlateNumbers).map(async (plateNumber) => {
+      //     const vehicleName = await getVehicleName(plateNumber);
+      //     const trips = tripsPerVehicle[plateNumber] || 0;
+      //     return [plateNumber, vehicleName, trips];
+      //   })
+      // );
+
+      // const tableData = Object.keys(tripsPerVehicle).map((plateNumber) => {
+      //   const vehicleName = bookingData.find(
+      //     (booking) => booking.plateNumber === plateNumber
+      //   ).vehicleName;
+      //   return [vehicleName, plateNumber, tripsPerVehicle[plateNumber]];
+      // });
       // const tableData = Object.keys(tripsPerVehicle).map((plateNumber) => {
       //   return [plateNumber, tripsPerVehicle[plateNumber]];
       // });
@@ -203,12 +259,15 @@ const TripReport = () => {
         startY: 78,
         head: [
           [
-            { content: "Vehicle", styles: { fontStyle: "bold" } },
             { content: "Plate Number", styles: { fontStyle: "bold" } },
-            { content: "TOTAL NO. OF TRIP", styles: { fontStyle: "bold" } },
+            { content: "Vehicle", styles: { fontStyle: "bold" } },
+            // { content: "TOTAL NO. OF TRIP", styles: { fontStyle: "bold" } },
+            { content: "WOS", styles: { fontStyle: "bold" } },
+            { content: "BOS", styles: { fontStyle: "bold" } },
           ],
         ],
         body: tableData,
+
         headStyles: {
           fillColor: [255, 255, 255], // White background for header
           textColor: [0, 0, 0], // Black text color for header
@@ -230,6 +289,7 @@ const TripReport = () => {
         tableLineColor: [0, 0, 0], // Set table border color
         margin: { top: 0 }, // Adjust table margin if needed
       });
+
       // Convert the PDF content into a data URL
       const dataUri = doc.output("datauristring");
 
