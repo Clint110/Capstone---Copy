@@ -590,7 +590,7 @@ function AddBook() {
                             />
                           </label>
                           <label>
-                            Destination
+                            Bound For:
                             <select
                               className="bookingInput"
                               value={formData.destination}
@@ -611,7 +611,7 @@ function AddBook() {
                             </select>
                           </label>
                           <label>
-                            Bound For:
+                            Destination
                             <input
                               type="text"
                               className="bookingInput"
@@ -624,22 +624,7 @@ function AddBook() {
                               }
                               required
                             />
-                            Time <br></br>
-                            <DatePicker
-                              className="bookingInput"
-                              showTimeSelect
-                              showTimeSelectOnly
-                              timeIntervals={15}
-                              timeCaption="Time"
-                              dateFormat="h:mm aa"
-                              selected={formData.timeForBound}
-                              onChange={(time) =>
-                                setFormData({ ...formData, timeForBound: time })
-                              }
-                              required
-                            />
                           </label>
-
                           <label>
                             Date
                             <DatePicker
@@ -658,7 +643,20 @@ function AddBook() {
                               required
                             />
                           </label>
-
+                          Time <br></br>
+                          <DatePicker
+                            className="bookingInput"
+                            showTimeSelect
+                            showTimeSelectOnly
+                            timeIntervals={15}
+                            timeCaption="Time"
+                            dateFormat="h:mm aa"
+                            selected={formData.timeForBound}
+                            onChange={(time) =>
+                              setFormData({ ...formData, timeForBound: time })
+                            }
+                            required
+                          />
                           <label>
                             Return Date
                             <DatePicker
@@ -677,7 +675,6 @@ function AddBook() {
                               required
                             />
                           </label>
-
                           <label>
                             Purpose
                             <input
