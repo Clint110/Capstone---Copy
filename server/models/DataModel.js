@@ -1,13 +1,11 @@
-const mongoose = require('mongoose');
+const mongoose = require("mongoose");
 
 const dataSchema = new mongoose.Schema({
-  // Define your data fields here
-  plateNumber: {type: Number, required:true},
+  plateNumber: { type: Number, required: true },
   latitude: { type: Number, required: true },
   longitude: { type: Number, required: true },
-  // Add more fields as needed
+  time: { type: String, required: true }, // Adding time field
 });
-
-const Data = mongoose.model('Data', dataSchema);
+const Data = mongoose.model("Data", dataSchema);
 
 module.exports = Data;
