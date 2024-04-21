@@ -150,7 +150,7 @@ color: black;
 position: relative;
 display: inline-block;
 /* margin: 4px 2px; */
-margin-left: 66%;
+margin-left: 73%;
 height: 40px;
 width: 40px;
 vertical-align: bottom;
@@ -184,7 +184,7 @@ pointer-events: none;
 
 .search {
   position: absolute;
-  left: 39px; /* Button width - 1px */
+  left: 120px; /* Button width - 1px */
   outline: none;
   /* font-size: 14px; */
   border: none;
@@ -202,7 +202,7 @@ pointer-events: none;
 }
 
 .search:focus {
-  width: 180px; /* Set width when focused */
+  width: 230px; /* Set width when focused */
   padding: 0 1px 0 0;
   border-radius: 5px;
 }
@@ -326,7 +326,7 @@ outline: none;
 
 .pluscar {
   font-size: 30px;
-  margin-left: 10px;
+  margin-left: 20px;
   cursor: pointer;
 }
 
@@ -571,17 +571,18 @@ outline: none;
 font-size: 15px;
 }
 .bott{
-  margin-bottom: -100px;
+  margin-bottom: 0px;
 }
 
 .container {
   padding: 5rem 0rem;
   margin-top: -100px;
+  margin-right: 10px;
 }
 
 
 h4 {
-  margin: 2rem 0rem 1rem;
+  margin: 1rem 0rem;
 }
 
 .table-image {
@@ -592,6 +593,7 @@ h4 {
 .ListVehicle td, th {
   border: 1px solid #e2e2e2;
   text-align: center; 
+  padding: 8px;
   /* padding: 8px; */
   
 }
@@ -646,16 +648,16 @@ margin-bottom: 10px;
 
 .plate-number {
   color: #333; /* Set color for plate number */
-  font-size: 20px; /* Set font size for plate number */
-  margin-bottom: 5px;
+  font-size: 15px; /* Set font size for plate number */
   margin-left: 12px;
   justify-content: center;
-   /* Add some space below the plate number */
 }
 
 .vehicle-details {
-  color: #666; /* Set color for vehicle details */
-  font-size: 16px; /* Set font size for vehicle details */
+  color: #333; /* Set color for vehicle details */
+  font-size: 25px; /* Set font size for vehicle details */
+  margin-left: 12px;
+  justify-content: center;
 }
 
 
@@ -734,5 +736,28 @@ box-shadow: 0 1px 3px rgba(0,0,0,0.12), 0 1px 2px rgba(0,0,0,0.24);}
   font-size: 10px; /* Adjust the font size */
   padding: 10px 10px; /* Adjust the padding */
   /* Add any other styles you want */
+}
+
+.wide-button {
+  width: 200px; /* Adjust the width as needed */
+  border-radius: 8px; /* Adjust the border radius as needed */
+}
+
+.button-container {
+  text-align: center; /* Align buttons to the center */
+  margin-top: 28px; /* Adjust the margin as needed to move the buttons down */
+}
+
+/* CSS to make each form input field the same size and widen the form */
+.form-group {
+  margin-bottom: 20px; /* Adjust spacing between form fields */
+}
+
+.form-control {
+  width: 100%; /* Make input fields widen to fill the container */
+}
+
+.form-control-file {
+  width: 100%; /* Make file input field widen to fill the container */
 }
 

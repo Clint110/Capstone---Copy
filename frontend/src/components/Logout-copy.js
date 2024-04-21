@@ -36,11 +36,11 @@ function Logout() {
         <br></br>
         <div className="container-Logout">
           {/* <span class="close" id="closeModal">&times;</span> */}
-          <h3>
+          <h5>
             <strong>Log Out</strong>
-          </h3>
+          </h5>
           <hr></hr>
-          <p>Are you sure you want to logoutsss?</p>
+          <p>Are you sure you want to log out?</p>
           <hr></hr>
           <button
             id="cancelButton"

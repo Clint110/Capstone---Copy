@@ -341,6 +341,7 @@ main {
 .logout-link {
 position: absolute;
  bottom: 0;
+ width: 200px;
  margin-top: -10px;
   padding-bottom: 30px;
    

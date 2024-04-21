@@ -6,7 +6,7 @@ import {
   Calendar as BigCalendar,
   dateFnsLocalizer,
   momentLocalizer,
-  CalendarProps
+  CalendarProps,
 } from "react-big-calendar";
 import DatePicker from "react-datepicker";
 import "react-datepicker/dist/react-datepicker.css";
@@ -44,12 +44,8 @@ const localizer = dateFnsLocalizer({
   locales,
 });
 
-
-
 function Booking() {
   const [scrollableModal, setScrollableModal] = useState(false);
-
-
 
   const [newEvent, setNewEvent] = useState({
     title: "",
@@ -113,8 +109,7 @@ function Booking() {
     console.log("All Events:", allEvents);
 
     // setNewEvent({ title: "", driver: "", start: null, end: null });
-    setNewEvent({ title: "",  start: null, end: null });
-
+    setNewEvent({ title: "", start: null, end: null });
 
     // Send a POST request to the server
     try {
@@ -237,8 +232,9 @@ function Booking() {
         {/* <span className="timeForBound">{`${
           event.timeForBound ? `Time: ${formatTime(event.timeForBound)} -` : ""
         } ${event.boundFor ? `Bound For: ${event.boundFor}` : ""}`}</span> */}
-          <span className="timeForBound">{`Time: ${formatTime(event.timeForBound)} -`}</span>
-
+        <span className="timeForBound">{`Time: ${formatTime(
+          event.timeForBound
+        )} -`}</span>
       </div>
     );
   };
@@ -308,6 +304,29 @@ function Booking() {
     setFormData({ ...formData, plateNumber: selectedPlateNumber });
   };
 
+  useEffect(() => {
+    const reminderTimer = setTimeout(() => {
+      checkUpcomingEvents();
+    }, 10 * 60 * 1000); // Check every minute
+
+    return () => {
+      clearTimeout(reminderTimer);
+    };
+  }, [allEvents]);
+
+  const checkUpcomingEvents = () => {
+    const now = new Date();
+    const upcomingEvents = allEvents.filter((event) => {
+      const timeDifference = event.start - now;
+      return timeDifference > 0 && timeDifference <= 30 * 60 * 1000; // Upcoming events within 30 minutes
+    });
+
+    if (upcomingEvents.length > 0) {
+      // Trigger alert or notification
+      alert("Upcoming event: " + upcomingEvents[0].title);
+    }
+  };
+
   return (
     <>
       <div className="header-wrapper">
@@ -342,7 +361,7 @@ function Booking() {
                 <tbody className="BookingList">
                   {allEvents
                     .slice(0)
-                    // .reverse()
+                    //.reverse()
                     .sort((a, b) => new Date(a.start) - new Date(b.start)) // Sort events by start date
                     .map((event, index) => (
                       <tr key={event.id}>
@@ -495,6 +514,14 @@ function Booking() {
                             onChange={(date) =>
                               setFormData({ ...formData, timeAndDate: date })
                             }
+                            minDate={
+                              new Date(
+                                new Date().getFullYear(),
+                                new Date().getMonth(),
+                                1
+                              )
+                            } // Set minDate to the first day of the current month
+                            required
                           />
                         </label>
                         Time <br></br>
@@ -558,7 +585,7 @@ function Booking() {
           </div>
         </div>
         <div className="rbc-calendar">
-          <BigCalendar 
+          <BigCalendar
             localizer={localizer}
             events={combinedEvents}
             // events={events}
@@ -570,9 +597,8 @@ function Booking() {
             }}
             style={{ height: 500 }}
             defaultView={"month"}
-          
-            // views={["month", "week", "day" ]}
 
+            // views={["month", "week", "day" ]}
 
             // defaultView={Views.WEEK}
             // view={Views.MONTH}
