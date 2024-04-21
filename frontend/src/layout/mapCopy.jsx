@@ -17,8 +17,8 @@ import {
 import { MdDangerous } from "react-icons/md";
 
 function Map() {
-  // const [coordinates, setCoordinates] = useState({ latitude: 0, longitude: 0 });
-  const [coordinates, setCoordinates] = useState([]);
+  const [coordinates, setCoordinates] = useState({ latitude: 0, longitude: 0 });
+  // const [coordinates, setCoordinates] = useState([]);
   const [isVisible, setIsVisible] = useState(true);
   const [mapKey, setMapKey] = useState(0);
   const [showModal, setShowModal] = useState(false);
@@ -33,44 +33,20 @@ function Map() {
     height: '500px',
   };
 
-  // useEffect(() => {
-  //   const fetchDataFromDatabase = async () => {
-  //     try {
-  //       const response = await fetch('http://localhost:3000/get-data');
-  //       if (response.ok) {
-  //         const responseData = await response.json();
-  //         console.log(responseData);
-  //         // Check if responseData contains 'data' array and it has at least one element
-  //         if (responseData.data && responseData.data.length > 0) {
-  //           const { longitude, latitude } = responseData.data[0];
-  //           console.log(longitude, latitude);
-  //           setCoordinates({ longitude, latitude });
-
-  //           setMapKey(prevKey => prevKey + 1);
-  //         } else {
-  //           console.error('Latitude or longitude data is undefined');
-  //         }
-  //       } else {
-  //         console.error('Failed to fetch data from the server');
-  //       }
-  //     } catch (error) {
-  //       console.error('Error during fetch:', error);
-  //     }
-  //   };
-  
-  //   fetchDataFromDatabase();
-
   useEffect(() => {
     const fetchDataFromDatabase = async () => {
       try {
-        const response = await fetch('http://localhost:3000/get-latest-data');
+        const response = await fetch('http://localhost:3000/get-data');
         if (response.ok) {
           const responseData = await response.json();
           console.log(responseData);
-          if (responseData.data) {
-            const { longitude, latitude } = responseData.data;
+          // Check if responseData contains 'data' array and it has at least one element
+          if (responseData.data && responseData.data.length > 0) {
+            const { longitude, latitude } = responseData.data[0];
             console.log(longitude, latitude);
-            setCoordinates([{ longitude, latitude }]);
+            setCoordinates({ longitude, latitude });
+
+            setMapKey(prevKey => prevKey + 1);
           } else {
             console.error('Latitude or longitude data is undefined');
           }
@@ -83,6 +59,30 @@ function Map() {
     };
   
     fetchDataFromDatabase();
+
+  // useEffect(() => {
+  //   const fetchDataFromDatabase = async () => {
+  //     try {
+  //       const response = await fetch('http://localhost:3000/get-latest-data');
+  //       if (response.ok) {
+  //         const responseData = await response.json();
+  //         console.log(responseData);
+  //         if (responseData.data) {
+  //           const { longitude, latitude } = responseData.data;
+  //           console.log(longitude, latitude);
+  //           setCoordinates([{ longitude, latitude }]); 
+  //         } else {
+  //           console.error('Latitude or longitude data is undefined');
+  //         }
+  //       } else {
+  //         console.error('Failed to fetch data from the server');
+  //       }
+  //     } catch (error) {
+  //       console.error('Error during fetch:', error);
+  //     }
+  //   };
+  
+  //   fetchDataFromDatabase();
 
     ////BRENDYL BRENDYL BRENDYL 
     // Set up interval to fetch data every 20 seconds
@@ -263,24 +263,41 @@ useEffect(() => {
       // setShowConfirmationModal(true);
     }
 
+    // Check if plateNumber exists in the database
+    if (longitude !== undefined && latitude !== undefined && plateNumber !== undefined) {
+      // Upload extracted data to the database
     try {
-      const response = await fetch('http://localhost:3000/store-data', {
-        method: 'POST',
-        headers: {
-          'Content-Type': 'application/json'
-        },
-        body: JSON.stringify({ plateNumber, latitude, longitude, time }) // Include time in the data
-      });
-    
+      const response = await fetch(`http://localhost:3000/check-plate/${plateNumber}`);
       if (response.ok) {
-        console.log('Data uploaded to the database successfully');
+        const data = await response.json();
+        if (data.exists) {
+          // Plate number exists in the database, update latitude and longitude
+          const updateResponse = await fetch(`http://localhost:3000/update-data/${plateNumber}`, {
+            method: 'PUT',
+            headers: {
+              'Content-Type': 'application/json'
+            },
+            body: JSON.stringify({ latitude, longitude })
+          });
+          if (updateResponse.ok) {
+            console.log(`Data for plate number ${plateNumber} updated successfully`);
+            //window.location.reload();
+          } else {
+            console.error(`Failed to update data for plate number ${plateNumber}`);
+          }
+        } else {
+          console.log(`Plate number ${plateNumber} does not exist in the database`);
+        }
       } else {
-        console.error('Failed to upload data to the database');
+        console.error('Failed to check plate number in the database');
       }
     } catch (error) {
       console.error('Error during fetch:', error);
     }
-
+  } else {
+    // Alert if any required field is missing
+    console.log('No data for longitude, latitude, or plateNumber');
+  }
 } else {
   // Handle the case when 'content' is not a string or does not exist
   console.error('Invalid message format:', messageData);
@@ -297,11 +314,8 @@ useEffect(() => {
 
   // const googleMapUrl = `https://www.google.com/maps?q=${coordinates.latitude},${coordinates.longitude}`;
 
-  // const latitude = coordinates.latitude.toString();
-  // const longitude = coordinates.longitude.toString();
-
-  const latitude = coordinates.length > 0 ? coordinates[0].latitude.toString() : "";
-  const longitude = coordinates.length > 0 ? coordinates[0].longitude.toString() : "";
+  const latitude = coordinates.latitude.toString();
+  const longitude = coordinates.longitude.toString();
 
   // Google Maps URL
   const googleMapUrl = `https://maps.google.com/maps?q=${encodeURIComponent(latitude)},${encodeURIComponent(longitude)}&t=&z=17&ie=UTF8&iwloc=B&output=embed`;
