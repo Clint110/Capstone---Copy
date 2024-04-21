@@ -2,7 +2,7 @@ import { NavLink } from "react-router-dom";
 import { FaBars } from "react-icons/fa";
 import { AnimatePresence, motion } from "framer-motion";
 import SidebarMenu from "./SidebarMenu";
-import logo from "../images/buksu-new-logo.png"
+import logo from "../images/buksu-new-logo.png";
 import { FaRegFileLines } from "react-icons/fa6";
 import { BiLogOut, BiSearch } from "react-icons/bi";
 import { GrMap } from "react-icons/gr";
@@ -11,7 +11,10 @@ import { FaRegCalendarCheck } from "react-icons/fa";
 import { LuMonitorDot } from "react-icons/lu";
 
 const Sidebar = ({ children, isAddbooker, isAdmin }) => {
-  console.log("User role:", isAdmin ? "Admin" : (isAddbooker ? "Addbookerni" : "Unknown"));
+  console.log(
+    "User role:",
+    isAdmin ? "Admin" : isAddbooker ? "Addbookerni" : "Unknown"
+  );
 
   const showAnimation = {
     hidden: {
@@ -78,14 +81,12 @@ const Sidebar = ({ children, isAddbooker, isAdmin }) => {
     },
   ];
 
-  const routes = isAddbooker ? addbookerRoutes: adminRoutes;
+  const routes = isAddbooker ? addbookerRoutes : adminRoutes;
 
   return (
     <>
       <div className="main-container">
-        <motion.div
-          className={`sidebar `}
-        >
+        <motion.div className={`sidebar `}>
           {/* <div className="top_section">
             <div className="bars">
               <FaBars />
@@ -98,10 +99,8 @@ const Sidebar = ({ children, isAddbooker, isAdmin }) => {
               className="image"
               height="140"
               width="167"
-            ></img>  
+            ></img>
             <div className="logo-text font-weight-bold">MoniTour</div>
-
-
           </div>
           <section className="routes">
             {routes.map((route, index) => {
@@ -120,7 +119,9 @@ const Sidebar = ({ children, isAddbooker, isAdmin }) => {
                   to={route.path}
                   key={index}
                   activeClassName="active"
-                  className={`link ${route.path === '/logout' ? 'logout-link' : ''}`}
+                  className={`link ${
+                    route.path === "/logout" ? "logout-link" : ""
+                  }`}
                 >
                   <div className="icon">{route.icon}</div>
                   <AnimatePresence>

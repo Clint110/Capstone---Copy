@@ -8,7 +8,8 @@ import { BiLogOut, BiSearch } from "react-icons/bi";
 import { AnimatePresence, motion } from "framer-motion";
 import { FaRegCalendarCheck } from "react-icons/fa";
 import { FaRegFileLines } from "react-icons/fa6";
-import logo from "../sidebaraddbooking/images/buksu-logo.png";
+import logo from "../sidebaraddbooking/images/buksu-new-logo.png";
+// import logo from "../images/buksu-new-logo.png"
 import { FaBars } from "react-icons/fa";
 import jsPDF from "jspdf";
 import "jspdf-autotable";
@@ -124,6 +125,15 @@ function TripReport() {
           issueNumberXPos,
           doc.internal.pageSize.height - 10
         );
+
+        // Adding TOTAL TRIPS row
+        const totalTripsText = "TOTAL TRIPS:";
+        const totalTripsXPos = 15; // Adjust X position as needed
+        const totalTripsYPos = 10; // Adjust Y position as needed
+        doc.setFontSize(12); // Adjust font size
+        doc.setFont(undefined, "bold"); // Set font weight to bold
+        doc.text(totalTripsText, totalTripsXPos, totalTripsYPos);
+        doc.text(totalTrips.toString(), totalTripsXPos + 50, totalTripsYPos); // Adjust X position accordingly
       };
 
       // Function to add a new page with a page number
@@ -280,25 +290,6 @@ function TripReport() {
 
       // Add a row for total trips
       tableData.push(["TOTAL TRIPS:", totalTrips]);
-      // // Inside your tableData mapping function
-      // const tableData = await Promise.all(
-      //   Array.from(uniquePlateNumbers).map(async (plateNumber) => {
-      //     const vehicleName = await getVehicleName(plateNumber);
-      //     const trips = tripsPerVehicle[plateNumber] || 0;
-      //     return [plateNumber, vehicleName, trips];
-      //   })
-      // );
-
-      // const tableData = Object.keys(tripsPerVehicle).map((plateNumber) => {
-      //   const vehicleName = bookingData.find(
-      //     (booking) => booking.plateNumber === plateNumber
-      //   ).vehicleName;
-      //   return [vehicleName, plateNumber, tripsPerVehicle[plateNumber]];
-      // });
-      // const tableData = Object.keys(tripsPerVehicle).map((plateNumber) => {
-      //   return [plateNumber, tripsPerVehicle[plateNumber]];
-      // });
-
       ///here taman
       doc.autoTable({
         startY: 78,
@@ -523,9 +514,9 @@ function TripReport() {
           <img
             alt="logoSide"
             src={logo} // Make sure to import your logo and replace "logo" with the actual variable holding your logo image path
-            className="rounded-circle usr-image"
-            height="150"
-            width="150"
+            className="image"
+            height="140"
+            width="167"
           />{" "}
           <div className="logo-text">MoniTour</div>
         </div>
@@ -587,8 +578,7 @@ function TripReport() {
             onChange={(e) => setSearchField(e.target.value)}
           >
             <option value="plateNumber">PLATE NO.</option>
-            <option value="boundFor">DEPARTURE</option>
-            <option value="destination">DESTINATION</option>
+            <option value="boundFor"> DESTINATION</option>
             <option value="timeForBound">DEPARTURE</option>
             <option value="returnDate">RETURN</option>
           </select>
@@ -619,120 +609,124 @@ function TripReport() {
                 <th>ACTION</th>
               </tr>
             </thead>
-            <tbody>
-              {/* {bookingData.map((booking, index) => ( */}
-              {filteredData.map((booking, index) => (
-                <tr key={booking._id}>
-                  <td>
-                    {editableData._id === booking._id ? (
-                      <input
-                        type="text"
-                        value={editableData.plateNumber}
-                        onChange={(e) => handleChange(e, "plateNumber")}
-                        required
-                      />
-                    ) : (
-                      booking.plateNumber
-                    )}
-                  </td>
-                  <td>
-                    {editableData._id === booking._id ? (
-                      <input
-                        type="text"
-                        value={editableData.boundFor}
-                        onChange={(e) => handleChange(e, "boundFor")}
-                        required
-                      />
-                    ) : (
-                      booking.boundFor
-                    )}
-                  </td>
-                  <td>
-                    {editableData._id === booking._id ? (
-                      <input
-                        type="text"
-                        value={editableData.destination}
-                        onChange={(e) => handleChange(e, "destination")}
-                        required
-                      />
-                    ) : (
-                      booking.destination
-                    )}
-                  </td>
-                  <td>
-                    {editableData._id === booking._id ? (
-                      <input
-                        type="text"
-                        value={editableData.timeForBound}
-                        onChange={(e) => handleChange(e, "timeForBound")}
-                        required
-                      />
-                    ) : (
-                      booking.timeForBound
-                    )}
-                  </td>
-                  <td>
-                    {editableData._id === booking._id ? (
-                      <input
-                        type="text"
-                        value={editableData.returnDate}
-                        onChange={(e) => handleChange(e, "returnDate")}
-                        required
-                      />
-                    ) : (
-                      booking.returnDate
-                    )}
-                  </td>
-                  <td>
-                    {editableData._id === booking._id ? (
-                      <>
+            {filteredData.length > 0 ? (
+              <tbody>
+                {/* {bookingData.map((booking, index) => ( */}
+                {filteredData.map((booking, index) => (
+                  <tr key={booking._id}>
+                    <td>
+                      {editableData._id === booking._id ? (
+                        <input
+                          type="text"
+                          value={editableData.plateNumber}
+                          onChange={(e) => handleChange(e, "plateNumber")}
+                          required
+                        />
+                      ) : (
+                        booking.plateNumber
+                      )}
+                    </td>
+                    <td>
+                      {editableData._id === booking._id ? (
+                        <input
+                          type="text"
+                          value={editableData.boundFor}
+                          onChange={(e) => handleChange(e, "boundFor")}
+                          required
+                        />
+                      ) : (
+                        booking.boundFor
+                      )}
+                    </td>
+                    <td>
+                      {editableData._id === booking._id ? (
+                        <input
+                          type="text"
+                          value={editableData.destination}
+                          onChange={(e) => handleChange(e, "destination")}
+                          required
+                        />
+                      ) : (
+                        booking.destination
+                      )}
+                    </td>
+                    <td>
+                      {editableData._id === booking._id ? (
+                        <input
+                          type="text"
+                          value={editableData.timeForBound}
+                          onChange={(e) => handleChange(e, "timeForBound")}
+                          required
+                        />
+                      ) : (
+                        booking.timeForBound
+                      )}
+                    </td>
+                    <td>
+                      {editableData._id === booking._id ? (
+                        <input
+                          type="text"
+                          value={editableData.returnDate}
+                          onChange={(e) => handleChange(e, "returnDate")}
+                          required
+                        />
+                      ) : (
+                        booking.returnDate
+                      )}
+                    </td>
+                    <td>
+                      {editableData._id === booking._id ? (
+                        <>
+                          <button
+                            type="button"
+                            class="btn btn-success btn-sm"
+                            onClick={() => handleSubmit(index)}
+                          >
+                            Submit
+                          </button>
+                          &nbsp;
+                          <button
+                            type="button"
+                            class="btn btn-primary btn-sm"
+                            onClick={() => setEditableData({})}
+                          >
+                            Cancel
+                          </button>
+                        </>
+                      ) : (
                         <button
                           type="button"
-                          class="btn btn-success btn-sm"
-                          onClick={() => handleSubmit(index)}
+                          class="btn btn-warning btn-sm"
+                          onClick={() => handleEdit(index)}
                         >
-                          Submit
+                          Edit
                         </button>
-                        &nbsp;
-                        <button
-                          type="button"
-                          class="btn btn-primary btn-sm"
-                          onClick={() => setEditableData({})}
-                        >
-                          Cancel
-                        </button>
-                      </>
-                    ) : (
-                      <button
-                        type="button"
-                        class="btn btn-warning btn-sm"
-                        onClick={() => handleEdit(index)}
-                      >
-                        Edit
-                      </button>
-                    )}
-                    {/* &nbsp;
+                      )}
+                      {/* &nbsp;
                     <button type="button" class="btn btn-danger btn-sm">
                       Delete
                     </button> */}
-                    &nbsp;{" "}
-                    <button
-                      type="button"
-                      className="btn btn-danger btn-sm"
-                      onClick={() => handleDeleteBooking(booking.plateNumber)}
-                    >
-                      Delete
-                    </button>
-                    <button
-                      onClick={handleGenerateReport}
-                      className="actionBtn "
-                    >
-                      <IoDocumentAttachOutline />
-                    </button>
-                  </td>
-                </tr>
-              ))}
-            </tbody>
+                      &nbsp;{" "}
+                      <button
+                        type="button"
+                        className="btn btn-danger btn-sm"
+                        onClick={() => handleDeleteBooking(booking.plateNumber)}
+                      >
+                        Delete
+                      </button>
+                      <button
+                        onClick={handleGenerateReport}
+                        className="actionBtn "
+                      >
+                        <IoDocumentAttachOutline />
+                      </button>
+                    </td>
+                  </tr>
+                ))}
+              </tbody>
+            ) : (
+              <p>No data available</p>
+            )}
           </table>
           {/* </div>
 </div> */}
