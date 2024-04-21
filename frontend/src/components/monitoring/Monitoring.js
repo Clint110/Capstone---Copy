@@ -983,7 +983,7 @@ useEffect(() => {
           {/* Display vehicle name and plate number */}
           {selectedVehicleDetails && (
             <div>
-              {/* <h5>Vehicle Name: {selectedVehicleDetails.vehicleName}</h5> */}
+              <h5>Vehicle Name: {selectedVehicleDetails.vehicle.vehicleName}</h5>
               <h5>Plate Number: {selectedPlateNumber}</h5>
               {/* Add your map component here */}
               {/* Below is just a placeholder */}
