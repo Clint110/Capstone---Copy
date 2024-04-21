@@ -571,17 +571,18 @@ outline: none;
 font-size: 15px;
 }
 .bott{
-  margin-bottom: -100px;
+  margin-bottom: 0px;
 }
 
 .container {
   padding: 5rem 0rem;
   margin-top: -100px;
+  margin-right: 10px;
 }
 
 
 h4 {
-  margin: 2rem 0rem 1rem;
+  margin: 1rem 0rem;
 }
 
 .table-image {
@@ -592,6 +593,7 @@ h4 {
 .ListVehicle td, th {
   border: 1px solid #e2e2e2;
   text-align: center; 
+  padding: 8px;
   /* padding: 8px; */
   
 }
