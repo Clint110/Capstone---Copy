@@ -51,6 +51,23 @@ function Reminder() {
     fetchAllData();
   }, []);
 
+  const formatTime = (timeString) => {
+    if (!timeString || typeof timeString !== "string") return "Invalid Time";
+
+    const timeParts = timeString.split("+");
+    if (timeParts.length !== 2) return "Invalid Time";
+
+    const time = timeParts[0];
+    const ampm = parseInt(time.split(":")[0]) >= 12 ? "pm" : "am";
+    const formattedTime =
+      time
+        .split(":")
+        .map((part, index) => (index === 0 ? parseInt(part) % 12 || 12 : part))
+        .join(":") + ampm;
+
+    return formattedTime;
+  };
+
   return (
     <div>
       <div className="dashboard-Reminder">
@@ -63,13 +80,29 @@ function Reminder() {
                 {`PlateNumber: ${plateData.plateNumber} is currently at Longitude: ${plateData.longitude}, Latitude: ${plateData.latitude}`}
               </td>
             </tr> */}
-            {allEvents
+            {/* {allEvents
               .slice(0)
               .reverse()
               .map((event) => (
                 <tr key={event._id}>
                   <td>
                     {`PlateNumber: ${event.plateNumber} is currently at Longitude: ${event.longitude}, Latitude: ${event.latitude}, Time: ${event.time}`}
+                  </td>
+                </tr>
+              ))} */}
+            {allEvents
+              .slice(0)
+              .reverse()
+              .map((event) => (
+                <tr key={event._id}>
+                  <td>
+                    {`PlateNumber: ${
+                      event.plateNumber
+                    } is currently at Longitude: ${
+                      event.longitude
+                    }, Latitude: ${event.latitude}, Time: ${formatTime(
+                      event.time
+                    )}`}
                   </td>
                 </tr>
               ))}
