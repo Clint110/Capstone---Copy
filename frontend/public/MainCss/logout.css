@@ -8,7 +8,7 @@
     border: 1px solid #dadada;
     border-radius: 5px;
     width: 30%;
-    height: 250px;
+    height: 200px;
     text-align: center;
     background-color: #ffffff;
     position: sticky;
@@ -27,7 +27,7 @@
     background-color: rgb(253, 253, 253);
     color: rgb(10, 10, 10);
     padding: 10px 30px;
-    margin: 5px;
+    margin: 10px;
     border: none;
     border-radius: 5px;
     cursor: pointer;
@@ -53,7 +53,7 @@
     color: rgb(231, 228, 228);
   }
 
-  h3{
+  h5{
     text-align: left;
   }
 
