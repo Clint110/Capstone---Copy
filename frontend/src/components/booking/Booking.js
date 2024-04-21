@@ -6,10 +6,11 @@ import {
   Calendar as BigCalendar,
   dateFnsLocalizer,
   momentLocalizer,
+  CalendarProps
 } from "react-big-calendar";
 import DatePicker from "react-datepicker";
 import "react-datepicker/dist/react-datepicker.css";
-
+import moment from "moment";
 import React, { useState, useEffect } from "react";
 import "react-datepicker/dist/react-datepicker.css";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
@@ -43,12 +44,16 @@ const localizer = dateFnsLocalizer({
   locales,
 });
 
+
+
 function Booking() {
   const [scrollableModal, setScrollableModal] = useState(false);
 
+
+
   const [newEvent, setNewEvent] = useState({
     title: "",
-    driver: "",
+    // driver: "",
     start: null,
     end: null,
   });
@@ -107,7 +112,9 @@ function Booking() {
 
     console.log("All Events:", allEvents);
 
-    setNewEvent({ title: "", driver: "", start: null, end: null });
+    // setNewEvent({ title: "", driver: "", start: null, end: null });
+    setNewEvent({ title: "",  start: null, end: null });
+
 
     // Send a POST request to the server
     try {
@@ -227,9 +234,11 @@ function Booking() {
         {`${event.plateNumber}`}
         <br />
 
-        <span className="timeForBound">{`${
+        {/* <span className="timeForBound">{`${
           event.timeForBound ? `Time: ${formatTime(event.timeForBound)} -` : ""
-        } ${event.boundFor ? `Bound For: ${event.boundFor}` : ""}`}</span>
+        } ${event.boundFor ? `Bound For: ${event.boundFor}` : ""}`}</span> */}
+          <span className="timeForBound">{`Time: ${formatTime(event.timeForBound)} -`}</span>
+
       </div>
     );
   };
@@ -548,7 +557,7 @@ function Booking() {
           </div>
         </div>
         <div className="rbc-calendar">
-          <BigCalendar
+          <BigCalendar {...props} 
             localizer={localizer}
             events={combinedEvents}
             // events={events}
@@ -559,6 +568,13 @@ function Booking() {
               event: EventComponent, // Replace EventComponent with your custom event component
             }}
             style={{ height: 500 }}
+            defaultView={"month"}
+          
+            // views={["month", "week", "day" ]}
+
+
+            // defaultView={Views.WEEK}
+            // view={Views.MONTH}
           />
 
           {/* AREA NI IF MAG BUTANG SA CALENDAR DKO KABALO IF NAKA MODAL SYA UNSAON PAG BUTANG */}
