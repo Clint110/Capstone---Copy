@@ -822,11 +822,13 @@ function Monitoring() {
                                 {" "}
                                 {selectedPlateNumber}
                               </h3>{" "}
+                              <div style={{marginLeft:"-85px"}}>
                               {/* Added class name for plate number */}
-                              <h4 className="vehicle-details">
+                              <h4 className="vehicle-details" style={{marginRight:"-20px"}}>
                                 {selectedVehicleDetails.vehicle.vehicleName}{" "}
                                 {/* Display vehicle name */}
                               </h4>
+                              </div>
                             </div>
                           </div>
                           <div className="button-container">

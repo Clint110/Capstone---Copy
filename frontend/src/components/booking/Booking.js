@@ -236,7 +236,7 @@ function Booking() {
         */
 
       if ((d1 <= d2 && d2 <= d3) || (d1 <= d4 && d4 <= d3)) {
-        alert("CLASH");
+        alert("Some bookings on the calendar are clashing.");
         break;
       }
     }

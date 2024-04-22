@@ -655,8 +655,14 @@ margin-bottom: 10px;
 .vehicle-details {
   color: #333; /* Set color for vehicle details */
   font-size: 25px; /* Set font size for vehicle details */
-  margin-left: 12px;
-  justify-content: center;
+  /* margin-left: -12px; */
+  margin-right: 12px;
+  /* justify-content: center; */
+  display: flex;
+}
+.vehicle-details h4 {
+  margin-right: 20px;
+
 }
 
 
