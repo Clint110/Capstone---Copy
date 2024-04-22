@@ -46,6 +46,7 @@ function Monitoring() {
   const [vehicles, setVehicles] = useState([]);
   const [plateNumber, setPlateNumber] = useState("");
   const [mapKey, setMapKey] = useState(0);
+  const [isInputRequired, setIsInputRequired] = useState(true);
 
   const toggleVehicleDetailsModalOpen = () => {
     setVehicleDetailsModalOpen(!vehicleDetailsModalOpen);
@@ -307,6 +308,8 @@ function Monitoring() {
 
   const handlesubmitvec = async (e) => {
     e.preventDefault();
+
+    setIsInputRequired(true);
 
     // Use FormData to handle file uploads
     const formDataForUpload = new FormData();
@@ -645,6 +648,15 @@ function Monitoring() {
     latitude
   )},${encodeURIComponent(longitude)}&t=&z=17&ie=UTF8&iwloc=B&output=embed`;
 
+  const handlecloseFirst = () => {
+    setCentredModal(!centredModal);
+    setIsInputRequired(false);
+  };
+
+  const handleSaveButtonClick = () => {
+    setIsInputRequired(true); // Enable required when submit button is clicked
+  };
+
   return (
     <>
       <div className="header-wrapper">
@@ -818,26 +830,26 @@ function Monitoring() {
                             </div>
                           </div>
                           <div className="button-container">
-  <button
-    onClick={() => {
-      handleEditButtonClick(selectedPlateNumber);
-      handleCloseFirstModal();
-    }}
-    className="btn btn-primary wide-button" // Added wide-button class
-  >
-    Edit
-  </button>{" "}
-  &nbsp; &nbsp;
-  <button
-    onClick={() => {
-      handleDeleteButtonClick(selectedPlateNumber);
-      handleCloseFirstModal();
-    }}
-    className="btn btn-danger wide-button" // Added wide-button class
-  >
-    Delete
-  </button>
-</div>
+                            <button
+                              onClick={() => {
+                                handleEditButtonClick(selectedPlateNumber);
+                                handleCloseFirstModal();
+                              }}
+                              className="btn btn-primary wide-button" // Added wide-button class
+                            >
+                              Edit
+                            </button>{" "}
+                            &nbsp; &nbsp;
+                            <button
+                              onClick={() => {
+                                handleDeleteButtonClick(selectedPlateNumber);
+                                handleCloseFirstModal();
+                              }}
+                              className="btn btn-danger wide-button" // Added wide-button class
+                            >
+                              Delete
+                            </button>
+                          </div>
 
                           {/* <button onClick={() => handleDeleteConfirmation(selectedPlateNumber)} className="btn btn-danger">Delete</button>  */}
                           <div>
@@ -905,7 +917,7 @@ function Monitoring() {
                       <input
                         type="text"
                         className="addVehicle"
-                        required
+                        required={isInputRequired}
                         value={formData.plateNumber2}
                         onChange={(e) =>
                           setFormData({
@@ -920,7 +932,7 @@ function Monitoring() {
                       <input
                         type="text"
                         className="addVehicle"
-                        required
+                        required={isInputRequired}
                         value={formData.addvehicles}
                         onChange={(e) =>
                           setFormData({
@@ -946,11 +958,24 @@ function Monitoring() {
                       />
                     </label>
                     <div className="btnDown">
-                      <button className="closeM mt-2 " onClick={toggleOpen}>
+                      {/* <button className="closeM mt-2 " onClick={toggleOpen}>
+                        {" "}
+                        Cancel
+                      </button> */}
+                      <button
+                        className="closeM mt-2 "
+                        onClick={handlecloseFirst}
+                      >
                         {" "}
                         Cancel
                       </button>
-                      <button className="saveCar"> Save</button>
+                      <button
+                        className="saveCar"
+                        onClick={handleSaveButtonClick}
+                      >
+                        {" "}
+                        Save
+                      </button>
                     </div>
                   </form>
                 </MDBModalBody>
@@ -1033,69 +1058,89 @@ function Monitoring() {
       </div>
 
       {/* EDIT MODAL */}
-      <div className="secondmodal" style={{ display: showEditModal ? "block" : "none" }}>
-  <MDBModal tabIndex="-1" open={showEditModal} setOpen={setShowEditModal}>
-    <MDBModalDialog>
-      <MDBModalContent>
-        <MDBModalHeader>
-          <MDBModalTitle>Edit Vehicle</MDBModalTitle>
-          <button className="btn-close" onClick={handleCancelEdit}></button>
-        </MDBModalHeader>
-        <MDBModalBody>
-          {/* Form for editing vehicle details */}
-          <form onSubmit={handleEditVehicle}>
-            <div className="form-group">
-              <label htmlFor="originalPlateNumber">Original Plate Number</label>
-              <input
-                type="text"
-                id="originalPlateNumber"
-                className="form-control"
-                value={notPlateNumber}
-                onChange={handleOrigPlateNumberChange}
-                disabled
-              />
-            </div>
-            <div className="form-group">
-              <label htmlFor="editedPlateNumber">Edited Plate Number</label>
-              <input
-                type="text"
-                id="editedPlateNumber"
-                className="form-control"
-                value={editedPlateNumber}
-                onChange={handleEditPlateNumberChange}
-              />
-            </div>
-            <div className="form-group">
-              <label htmlFor="editedVehicle">Vehicle</label>
-              <input
-                type="text"
-                id="editedVehicle"
-                className="form-control"
-                value={editedVehicle}
-                onChange={handleEditVehicleChange}
-              />
-            </div>
-            <div className="form-group">
-              <label htmlFor="carImage">Insert Image</label>
-              <input
-                type="file"
-                id="carImage"
-                name="carImage"
-                className="form-control-file"
-                onChange={handleEditCarImageChange}
-              />
-            </div>
-          </form>
-        </MDBModalBody>
-        <MDBModalFooter>
-          <button className="btn btn-secondary" onClick={handleCancelEdit}>Cancel</button>
-          <button type="submit" className="btn btn-primary" onClick={handleConfirmEdit}>Save Changes</button>
-        </MDBModalFooter>
-      </MDBModalContent>
-    </MDBModalDialog>
-  </MDBModal>
-</div>
-
+      <div
+        className="secondmodal"
+        style={{ display: showEditModal ? "block" : "none" }}
+      >
+        <MDBModal tabIndex="-1" open={showEditModal} setOpen={setShowEditModal}>
+          <MDBModalDialog>
+            <MDBModalContent>
+              <MDBModalHeader>
+                <MDBModalTitle>Edit Vehicle</MDBModalTitle>
+                <button
+                  className="btn-close"
+                  onClick={handleCancelEdit}
+                ></button>
+              </MDBModalHeader>
+              <MDBModalBody>
+                {/* Form for editing vehicle details */}
+                <form onSubmit={handleEditVehicle}>
+                  <div className="form-group">
+                    <label htmlFor="originalPlateNumber">
+                      Original Plate Number
+                    </label>
+                    <input
+                      type="text"
+                      id="originalPlateNumber"
+                      className="form-control"
+                      value={notPlateNumber}
+                      onChange={handleOrigPlateNumberChange}
+                      disabled
+                    />
+                  </div>
+                  <div className="form-group">
+                    <label htmlFor="editedPlateNumber">
+                      Edited Plate Number
+                    </label>
+                    <input
+                      type="text"
+                      id="editedPlateNumber"
+                      className="form-control"
+                      value={editedPlateNumber}
+                      onChange={handleEditPlateNumberChange}
+                    />
+                  </div>
+                  <div className="form-group">
+                    <label htmlFor="editedVehicle">Vehicle</label>
+                    <input
+                      type="text"
+                      id="editedVehicle"
+                      className="form-control"
+                      value={editedVehicle}
+                      onChange={handleEditVehicleChange}
+                    />
+                  </div>
+                  <div className="form-group">
+                    <label htmlFor="carImage">Insert Image</label>
+                    <input
+                      type="file"
+                      id="carImage"
+                      name="carImage"
+                      className="form-control-file"
+                      onChange={handleEditCarImageChange}
+                    />
+                  </div>
+                </form>
+              </MDBModalBody>
+              <MDBModalFooter>
+                <button
+                  className="btn btn-secondary"
+                  onClick={handleCancelEdit}
+                >
+                  Cancel
+                </button>
+                <button
+                  type="submit"
+                  className="btn btn-primary"
+                  onClick={handleConfirmEdit}
+                >
+                  Save Changes
+                </button>
+              </MDBModalFooter>
+            </MDBModalContent>
+          </MDBModalDialog>
+        </MDBModal>
+      </div>
     </>
   );
 }
