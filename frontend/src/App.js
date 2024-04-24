@@ -1,4 +1,10 @@
-import { BrowserRouter as Router, Routes, Route, Link, Navigate } from "react-router-dom";
+import {
+  BrowserRouter as Router,
+  Routes,
+  Route,
+  Link,
+  Navigate,
+} from "react-router-dom";
 import { useState } from "react";
 import Login from "./components/Login";
 import "bootstrap/dist/css/bootstrap.min.css";
@@ -14,6 +20,8 @@ import AddBook from "./components/booking/addBook";
 import SideBar2 from "./components/sidebaraddbooking/Sidebaraddname";
 import logoutaddbook from "./components/sidebaraddbooking/Logoutaddbook";
 import TripReport2 from "./components/reports/TripReport copy";
+import Scheduletwo from "./components/schedule/Scheduletwo";
+import Schedule from "./components/schedule/Schedule";
 
 function App() {
   return (
@@ -22,16 +30,18 @@ function App() {
         <Route path="/" element={<Login />} />
         <Route path="/booking-ticket" element={<BookingTicket />} />
         <Route path="/addbook" element={<AddBook />} />
+        <Route path="/scheduletwo" element={<Scheduletwo />} />
         <Route path="/logout" element={<Logout />} />
         <Route path="/logoutsec" element={<LogoutSec />} />
         <Route path="/tripreport" element={<TripReport2 />} />
       </Routes>
       <Sidebar>
         <Routes>
-          <Route path="/dashboard" element={<DashboardMain />} />   
+          <Route path="/dashboard" element={<DashboardMain />} />
           <Route path="/booking" element={<Booking />} />
           <Route path="/monitoring" element={<Monitoring />} />
-          <Route path="/reports" element={<TripReport/>}/>
+          <Route path="/reports" element={<TripReport />} />
+          <Route path="/schedule" element={<Schedule />} />
         </Routes>
       </Sidebar>
     </Router>

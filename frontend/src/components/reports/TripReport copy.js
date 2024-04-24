@@ -9,7 +9,7 @@ import { AnimatePresence, motion } from "framer-motion";
 import { FaRegCalendarCheck } from "react-icons/fa";
 import { FaRegFileLines } from "react-icons/fa6";
 import logo from "../sidebaraddbooking/images/buksu-new-logo.png";
-// import logo from "../images/buksu-new-logo.png"
+import { AiFillSchedule } from "react-icons/ai";
 import { FaBars } from "react-icons/fa";
 import jsPDF from "jspdf";
 import "jspdf-autotable";
@@ -65,6 +65,11 @@ function TripReport() {
       path: "/addbook",
       name: "Booking",
       icon: <FaRegCalendarCheck className="iconSidebar" />,
+    },
+    {
+      path: "/scheduletwo",
+      name: "Schedule",
+      icon: <AiFillSchedule className="iconSidebar" />,
     },
     {
       path: "/tripreport",
