@@ -6,9 +6,14 @@ import logo from "../images/buksu-new-logo.png";
 import { FaRegFileLines } from "react-icons/fa6";
 import { BiLogOut, BiSearch } from "react-icons/bi";
 import { GrMap } from "react-icons/gr";
-import { TbLayoutDashboard } from "react-icons/tb";
 import { FaRegCalendarCheck } from "react-icons/fa";
 import { LuMonitorDot } from "react-icons/lu";
+import { FaHouse } from "react-icons/fa6";
+import { FaBook } from "react-icons/fa6";
+import { AiFillSchedule } from "react-icons/ai";
+import { MdMonitor } from "react-icons/md";
+import { TbReport } from "react-icons/tb";
+import { TbReportAnalytics } from "react-icons/tb";
 
 const Sidebar = ({ children, isAddbooker, isAdmin }) => {
   console.log(
@@ -39,22 +44,32 @@ const Sidebar = ({ children, isAddbooker, isAdmin }) => {
     {
       path: "/dashboard",
       name: "Dashboard",
-      icon: <TbLayoutDashboard className="iconSidebar" />,
+      // icon: <TbLayoutDashboard className="iconSidebar" />,
+      icon: <FaHouse className="iconSidebar" />,
     },
     {
       path: "/booking",
       name: "Booking",
-      icon: <FaRegCalendarCheck className="iconSidebar" />,
+      // icon: <FaRegCalendarCheck className="iconSidebar" />,
+      icon: <FaBook className="iconSidebar" />,
+    },
+    {
+      path: "/schedule",
+      name: "Schedule",
+      icon: <AiFillSchedule className="iconSidebar" />,
+      // icon: <RiCalendarScheduleFill className="iconSidebar" />,
     },
     {
       path: "/monitoring",
       name: "Monitoring",
-      icon: <LuMonitorDot className="iconSidebar" />,
+      // icon: <LuMonitorDot className="iconSidebar" />,
+      icon: <MdMonitor className="iconSidebar" />,
     },
     {
       path: "/reports",
       name: "Report",
-      icon: <FaRegFileLines className="iconOut " />,
+      icon: <TbReportAnalytics className="iconOut " />,
+      // icon: <FaRegFileLines className="iconOut " />,
     },
     {
       path: "/logout",
