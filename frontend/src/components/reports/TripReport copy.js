@@ -715,13 +715,13 @@ function TripReport() {
                       >
                         Delete
                       </button>
-                      <button
+                      {/* <button
                         onClick={handleGenerateReport}
                         className="actionBtn "
                       >
-                        <FcDownload />
-                        {/* <IoDocumentAttachOutline /> */}
-                      </button>
+                        <FcDownload /> */}
+                      {/* <IoDocumentAttachOutline /> */}
+                      {/* </button> */}
                     </td>
                   </tr>
                 ))}
