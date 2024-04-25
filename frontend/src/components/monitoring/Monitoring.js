@@ -730,50 +730,64 @@ function Monitoring() {
 
             <div className="ListVehicle">
               <div class="container">
-                {/* <div class="row"> */}
-                <div className="container">
-                  <table className="table table-bordered">
-                    <thead>
-                      <tr>
-                        <th scope="col">PLATE NUMBER</th>
-                        <th scope="col">STATUS</th>
-                      </tr>
-                    </thead>
-                  </table>
-                  <div className="scrollable-container">
-                    <table className="table table-bordered">
-                      <tbody className="scrollable-tbody">
-                        {filteredVehicleList.map((plateNumber) => (
-                          <tr
-                            key={plateNumber}
-                            onClick={() => handlePlateNumberClick(plateNumber)}
-                            style={{ cursor: "pointer" }}
+                <table className="tableListHead">
+                  {/* <table className="table"> */}
+                  <thead>
+                    <tr>
+                      <th
+                        style={{
+                          borderTopLeftRadius: "10px",
+                          borderBottomLeftRadius: "10px",
+                        }}
+                        scope="col"
+                      >
+                        PLATE NUMBER
+                      </th>
+                      <th
+                        style={{
+                          borderTopRightRadius: "10px",
+                          borderBottomRightRadius: "10px",
+                        }}
+                        scope="col"
+                      >
+                        STATUS
+                      </th>
+                    </tr>
+                  </thead>
+                </table>
+                <div className="scrollable-container">
+                  <table className="tableListHead table-bordered">
+                    <tbody className="scrollable-tbody">
+                      {filteredVehicleList.map((plateNumber) => (
+                        <tr
+                          key={plateNumber}
+                          onClick={() => handlePlateNumberClick(plateNumber)}
+                          style={{ cursor: "pointer" }}
+                        >
+                          <td>
+                            <strong>{plateNumber}</strong>
+                          </td>
+                          <td
+                            style={{
+                              textDecoration:
+                                vehicleStatus[plateNumber] === "Used"
+                                  ? "underline"
+                                  : "none",
+                              cursor: "pointer",
+                              color:
+                                vehicleStatus[plateNumber] === "Used"
+                                  ? "#f80f0f"
+                                  : "#1adf1a",
+                            }}
                           >
-                            <td>
-                              <strong>{plateNumber}</strong>
-                            </td>
-                            <td
-                              style={{
-                                textDecoration:
-                                  vehicleStatus[plateNumber] === "Used"
-                                    ? "underline"
-                                    : "none",
-                                cursor: "pointer",
-                                color:
-                                  vehicleStatus[plateNumber] === "Used"
-                                    ? "#f80f0f"
-                                    : "#1adf1a",
-                              }}
-                            >
-                              {vehicleStatus[plateNumber] === "Used"
-                                ? "Used"
-                                : "Available"}
-                            </td>
-                          </tr>
-                        ))}
-                      </tbody>
-                    </table>
-                  </div>
+                            {vehicleStatus[plateNumber] === "Used"
+                              ? "Used"
+                              : "Available"}
+                          </td>
+                        </tr>
+                      ))}
+                    </tbody>
+                  </table>
                 </div>
               </div>
             </div>
@@ -833,6 +847,14 @@ function Monitoring() {
                                   {selectedVehicleDetails.vehicle.vehicleName}{" "}
                                   {/* Display vehicle name */}
                                 </h4>
+                                <p className="vehicle-details">
+                                  Seats:{" "}
+                                  {
+                                    selectedVehicleDetails.vehicle
+                                      .availableSeats
+                                  }
+                                </p>{" "}
+                                {/* Display availableSeats */}
                               </div>
                             </div>
                           </div>

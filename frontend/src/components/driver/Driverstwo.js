@@ -11,7 +11,7 @@ import { FaRegFileLines } from "react-icons/fa6";
 import logo from "../sidebaraddbooking/images/buksu-new-logo.png";
 import { AiFillSchedule } from "react-icons/ai";
 
-function Scheduletwo() {
+function Driverstwo() {
   const showAnimation = {
     hidden: {
       width: 0,
@@ -71,4 +71,4 @@ function Scheduletwo() {
   );
 }
 
-export default Scheduletwo;
+export default Driverstwo;

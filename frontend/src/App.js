@@ -20,8 +20,8 @@ import AddBook from "./components/booking/addBook";
 import SideBar2 from "./components/sidebaraddbooking/Sidebaraddname";
 import logoutaddbook from "./components/sidebaraddbooking/Logoutaddbook";
 import TripReport2 from "./components/reports/TripReport copy";
-import Scheduletwo from "./components/schedule/Scheduletwo";
-import Schedule from "./components/schedule/Schedule";
+import Driverstwo from "./components/driver/Driverstwo";
+import Drivers from "./components/driver/Drivers";
 
 function App() {
   return (
@@ -30,7 +30,7 @@ function App() {
         <Route path="/" element={<Login />} />
         <Route path="/booking-ticket" element={<BookingTicket />} />
         <Route path="/addbook" element={<AddBook />} />
-        <Route path="/scheduletwo" element={<Scheduletwo />} />
+        <Route path="/driverstwo" element={<Driverstwo />} />
         <Route path="/logout" element={<Logout />} />
         <Route path="/logoutsec" element={<LogoutSec />} />
         <Route path="/tripreport" element={<TripReport2 />} />
@@ -41,7 +41,7 @@ function App() {
           <Route path="/booking" element={<Booking />} />
           <Route path="/monitoring" element={<Monitoring />} />
           <Route path="/reports" element={<TripReport />} />
-          <Route path="/schedule" element={<Schedule />} />
+          <Route path="/drivers" element={<Drivers />} />
         </Routes>
       </Sidebar>
     </Router>

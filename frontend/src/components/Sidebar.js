@@ -54,8 +54,8 @@ const Sidebar = ({ children, isAddbooker, isAdmin }) => {
       icon: <FaBook className="iconSidebar" />,
     },
     {
-      path: "/schedule",
-      name: "Schedule",
+      path: "/drivers",
+      name: "Drivers",
       icon: <AiFillSchedule className="iconSidebar" />,
       // icon: <RiCalendarScheduleFill className="iconSidebar" />,
     },
