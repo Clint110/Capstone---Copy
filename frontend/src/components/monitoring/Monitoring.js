@@ -302,6 +302,7 @@ function Monitoring() {
     plateNumber2: "",
     addvehicles: "",
     carImage: null,
+    availableSeats: "",
   });
 
   console.log(formData);
@@ -316,7 +317,7 @@ function Monitoring() {
     formDataForUpload.append("plateNumber2", formData.plateNumber2);
     formDataForUpload.append("addvehicles", formData.addvehicles);
     formDataForUpload.append("carImage", formData.carImage); // Use formData.carImage here
-
+    formDataForUpload.append("availableSeats", formData.availableSeats);
     try {
       const response = await axios.post(
         "http://localhost:3000/addvehicle",
@@ -328,6 +329,7 @@ function Monitoring() {
         setFormData({
           plateNumber2: "",
           addvehicles: "",
+          availableSeats: "",
           carImage: null,
         });
         setCentredModal(!setCentredModal);
@@ -822,12 +824,15 @@ function Monitoring() {
                                 {" "}
                                 {selectedPlateNumber}
                               </h3>{" "}
-                              <div style={{marginLeft:"-85px"}}>
-                              {/* Added class name for plate number */}
-                              <h4 className="vehicle-details" style={{marginRight:"-20px"}}>
-                                {selectedVehicleDetails.vehicle.vehicleName}{" "}
-                                {/* Display vehicle name */}
-                              </h4>
+                              <div style={{ marginLeft: "-85px" }}>
+                                {/* Added class name for plate number */}
+                                <h4
+                                  className="vehicle-details"
+                                  style={{ marginRight: "-20px" }}
+                                >
+                                  {selectedVehicleDetails.vehicle.vehicleName}{" "}
+                                  {/* Display vehicle name */}
+                                </h4>
                               </div>
                             </div>
                           </div>
@@ -940,6 +945,20 @@ function Monitoring() {
                           setFormData({
                             ...formData,
                             addvehicles: e.target.value,
+                          })
+                        }
+                      />
+                    </label>
+                    <label>
+                      Available Seats
+                      <input
+                        type="number"
+                        className="addVehicle"
+                        value={formData.availableSeats}
+                        onChange={(e) =>
+                          setFormData({
+                            ...formData,
+                            availableSeats: e.target.value,
                           })
                         }
                       />
