@@ -46,7 +46,9 @@ function Monitoring() {
   const [vehicles, setVehicles] = useState([]);
   const [plateNumber, setPlateNumber] = useState("");
   const [mapKey, setMapKey] = useState(0);
-  const [isInputRequired, setIsInputRequired] = useState(true);
+  // const [isInputRequired, setIsInputRequired] = useState(true);
+  const [isInputRequired, setIsInputRequired] = useState(false);
+  const [plateNumberError, setPlateNumberError] = useState("");
 
   const toggleVehicleDetailsModalOpen = () => {
     setVehicleDetailsModalOpen(!vehicleDetailsModalOpen);
@@ -312,6 +314,14 @@ function Monitoring() {
 
     setIsInputRequired(true);
 
+    if (!validatePlateNumber(formData.plateNumber2)) {
+      setPlateNumberError(
+        "Plate number must have 5-9 characters with letters and numbers."
+      );
+
+      return;
+    }
+
     // Use FormData to handle file uploads
     const formDataForUpload = new FormData();
     formDataForUpload.append("plateNumber2", formData.plateNumber2);
@@ -342,6 +352,11 @@ function Monitoring() {
       // Handle network error
       console.error("Network error:", error);
     }
+  };
+
+  const validatePlateNumber = (plateNumber) => {
+    const plateRegex = /^(?=.*[0-9])(?=.*[a-zA-Z])[a-zA-Z0-9]{5,9}$/;
+    return plateRegex.test(plateNumber);
   };
 
   const formatDate = (date) => {
@@ -943,6 +958,18 @@ function Monitoring() {
                   <form id="addvec" onSubmit={handlesubmitvec}>
                     <label>
                       Plate Number
+                      {isInputRequired &&
+                        !validatePlateNumber(formData.plateNumber2) && (
+                          <div
+                            style={{
+                              color: "red",
+                              fontSize: "13px",
+                              marginTop: "5px",
+                            }}
+                          >
+                            {plateNumberError}
+                          </div>
+                        )}
                       <input
                         type="text"
                         className="addVehicle"
@@ -956,6 +983,7 @@ function Monitoring() {
                         }
                       />
                     </label>
+
                     <label>
                       Vehicle
                       <input
