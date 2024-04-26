@@ -217,60 +217,42 @@ function Booking() {
   }, []);
 
   // Combine reminders and events
-  const combinedEvents = [...allEvents, ...allReminders];
+  const combinedEvents = [...allEvents];
 
   // function handleAddEvent() {
   //   setAllEvents([...allEvents, newEvent]);
   // }
   function handleAddEvent() {
+    let clash = false;
+    // Loop through all existing events to check for clashes
     for (let i = 0; i < allEvents.length; i++) {
       const d1 = new Date(allEvents[i].start);
       const d2 = new Date(newEvent.start);
       const d3 = new Date(allEvents[i].end);
       const d4 = new Date(newEvent.end);
-      /*
-      console.log(d1 <= d2);
-      console.log(d2 <= d3);
-      console.log(d1 <= d4);
-      console.log(d4 <= d3);
-        */
 
-      if ((d1 <= d2 && d2 <= d3) || (d1 <= d4 && d4 <= d3)) {
-        alert("Some bookings on the calendar are clashing.");
+      // Check if there is an overlap
+      if ((d1 < d4 && d2 < d3) || (d2 < d3 && d4 < d3)) {
+        clash = true;
         break;
       }
     }
 
     setAllEvents([...allEvents, newEvent]);
   }
-
-  const localizer = momentLocalizer(moment);
-
-  const EventComponent = ({ event, height }) => {
-    if (!Array.isArray(event)) {
-      // If event is not an array, treat it as a single booking
-      return (
-        <div className="EventComponent" style={{ height }}>
-          {`${event.plateNumber}`}
-          <br />
-          <span className="timeForBound">{`Time: ${formatTime(event.timeForBound)} -`}</span>
-        </div>
-      );
-    }
-  
-    // If event is an array, check if there are multiple bookings
-    const shouldScroll = event.length > 1;
-  
+  const EventComponent = ({ event }) => {
     return (
-      <div className="EventComponent" style={{ height: shouldScroll ? height : 'auto', overflowY: shouldScroll ? 'auto' : 'visible' }}>
-        {/* Map through the events array */}
-        {event.map((booking, index) => (
-          <div key={index}>
-            {`${booking.plateNumber}`}
-            <br />
-            <span className="timeForBound">{`Time: ${formatTime(booking.timeForBound)} -`}</span>
-          </div>
-        ))}
+      <div className="EventComponent">
+        {/* <strong>{event.title}</strong> */}
+        {`${event.plateNumber}`}
+        <br />
+
+        {/* <span className="timeForBound">{`${
+          event.timeForBound ? `Time: ${formatTime(event.timeForBound)} -` : ""
+        } ${event.boundFor ? `Bound For: ${event.boundFor}` : ""}`}</span> */}
+        <span className="timeForBound">{`Time: ${formatTime(
+          event.timeForBound
+        )} -`}</span>
       </div>
     );
   };
