@@ -238,35 +238,8 @@ function Booking() {
       }
     }
 
-    // If there is no clash, add the new event
-    if (!clash) {
-      setAllEvents([...allEvents, newEvent]);
-    } else {
-      // If there is a clash, show an alert
-      alert("Some bookings on the calendar are clashing.");
-    }
+    setAllEvents([...allEvents, newEvent]);
   }
-  //   for (let i = 0; i < allEvents.length; i++) {
-  //     const d1 = new Date(allEvents[i].start);
-  //     const d2 = new Date(newEvent.start);
-  //     const d3 = new Date(allEvents[i].end);
-  //     const d4 = new Date(newEvent.end);
-  //     /*
-  //     console.log(d1 <= d2);
-  //     console.log(d2 <= d3);
-  //     console.log(d1 <= d4);
-  //     console.log(d4 <= d3);
-  //       */
-
-  //     if ((d1 <= d2 && d2 <= d3) || (d1 <= d4 && d4 <= d3)) {
-  //       alert("Some bookings on the calendar are clashing.");
-  //       break;
-  //     }
-  //   }
-
-  //   setAllEvents([...allEvents, newEvent]);
-  // }
-
   const EventComponent = ({ event }) => {
     return (
       <div className="EventComponent">
@@ -283,6 +256,8 @@ function Booking() {
       </div>
     );
   };
+  
+
 
   const formatTime = (timeString) => {
     // Check if timeString is null or undefined
@@ -638,9 +613,13 @@ function Booking() {
             startAccessor="start"
             endAccessor="end"
             components={{
-              event: EventComponent, // Replace EventComponent with your custom event component
+              event: props => <EventComponent {...props} height={20} />, // Set the height here
             }}
-            style={{ height: 500 }}
+            style={{
+              height: '77.5vh', // 95% of the viewport height
+              width: '63vw',  // 70% of the viewport width
+              
+            }}
             defaultView={"month"}
 
             // views={["month", "week", "day" ]}
