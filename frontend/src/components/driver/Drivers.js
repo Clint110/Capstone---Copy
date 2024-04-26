@@ -9,31 +9,37 @@ import Col from "react-bootstrap/Col";
 import Row from "react-bootstrap/Row";
 import { CiSquarePlus } from "react-icons/ci";
 import { TfiSearch } from "react-icons/tfi";
-import {
-  MDBBtn,
-  MDBModal,
-  MDBModalDialog,
-  MDBModalContent,
-  MDBModalHeader,
-  MDBModalTitle,
-  MDBModalBody,
-  MDBModalFooter,
-} from "mdb-react-ui-kit";
 import { IoCarSportOutline } from "react-icons/io5";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faCircleUser } from "@fortawesome/free-solid-svg-icons";
+import { Button, Modal } from "react-bootstrap";
 
 function Drivers() {
-  const [filter, setFilter] = useState("all"); // Default filter is 'all'
+  const [filter, setFilter] = useState("all");
+  const [show, setShow] = useState(false);
+  const handleClose = () => setShow(false);
+  const handleShow = () => setShow(true);
+  const [driverName, setDriverName] = useState("");
 
   // Handler function for filter buttons
   const handleFilter = (selectedFilter) => {
     setFilter(selectedFilter);
   };
 
-  // Function to determine if a button should be active based on the current filter
   const isActive = (selectedFilter) => {
     return selectedFilter === filter ? "active" : "";
+  };
+
+  const handleSubmit = async (event) => {
+    event.preventDefault();
+    try {
+      const response = await axios.post("/drivers", { name: driverName });
+      console.log("Driver added:", response.data);
+      handleClose();
+    } catch (error) {
+      console.error("Error adding driver:", error);
+      // setError("Error adding driver");
+    }
   };
 
   return (
@@ -72,10 +78,7 @@ function Drivers() {
                   </label>
                 </form>
               </div>
-              <CiSquarePlus
-                className="plusdriver"
-                //  onClick={toggleOpen}
-              />
+              <CiSquarePlus className="plusdriver" onClick={handleShow} />
             </h4>
             <div>
               {" "}
@@ -115,15 +118,31 @@ function Drivers() {
                 <table className="tableDriverList">
                   <thead>
                     <tr>
-                      <th scope="col">DRIVER</th>
+                      <th
+                        style={{
+                          borderTopLeftRadius: "10px",
+                          borderBottomLeftRadius: "10px",
+                        }}
+                        scope="col"
+                      >
+                        DRIVER
+                      </th>
                       <th scope="col">STATUS</th>
-                      <th scope="col">ACTION</th>
+                      <th
+                        style={{
+                          borderTopRightRadius: "10px",
+                          borderBottomRightRadius: "10px",
+                        }}
+                        scope="col"
+                      >
+                        ACTION
+                      </th>
                     </tr>
                   </thead>
                 </table>
-                <div className="scrollable-container">
+                <div className="driver-container">
                   <table className="tableDriver">
-                    <tbody className="scrollable-tbody">
+                    <tbody className="driver-tbody">
                       {/* {filteredVehicleList.map((plateNumber) => ( */}
                       <tr
                       // key={plateNumber}
@@ -161,6 +180,35 @@ function Drivers() {
           </div>
         </div>
       </div>
+
+      {/* INNSERT DRIVER FORM */}
+      <Modal show={show} onHide={handleClose}>
+        <Modal.Header closeButton>
+          <Modal.Title>DRIVERS</Modal.Title>
+        </Modal.Header>
+        <Modal.Body>
+          <form onSubmit={handleSubmit}>
+            <label>
+              Drivers Name
+              <input
+                type="text"
+                className="addVehicle"
+                value={driverName}
+                onChange={(e) => setDriverName(e.target.value)}
+              />
+            </label>
+            <Button variant="primary" type="submit">
+              Submit
+            </Button>
+          </form>
+        </Modal.Body>
+        <Modal.Footer>
+          <Button variant="secondary" onClick={handleClose}>
+            Close
+          </Button>
+          <Button variant="primary">Save changes</Button>
+        </Modal.Footer>
+      </Modal>
     </>
   );
 }
