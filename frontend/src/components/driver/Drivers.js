@@ -17,9 +17,13 @@ import { Button, Modal } from "react-bootstrap";
 function Drivers() {
   const [filter, setFilter] = useState("all");
   const [show, setShow] = useState(false);
-  const handleClose = () => setShow(false);
+  // const handleClose = () => setShow(false);
   const handleShow = () => setShow(true);
   const [driverName, setDriverName] = useState("");
+  const [showEditModal, setShowEditModal] = useState(false);
+  const [showDeleteModal, setShowDeleteModal] = useState(false);
+  const [selectedDriver, setSelectedDriver] = useState(null);
+  const [editedDriverName, setEditedDriverName] = useState("");
 
   // Handler function for filter buttons
   const handleFilter = (selectedFilter) => {
@@ -30,15 +34,58 @@ function Drivers() {
     return selectedFilter === filter ? "active" : "";
   };
 
+  const [formData, setFormData] = useState({
+    name: "",
+  });
+
+  console.log(formData);
+
   const handleSubmit = async (event) => {
     event.preventDefault();
     try {
-      const response = await axios.post("/drivers", { name: driverName });
+      const response = await axios.post("/drivers", { name: formData.name });
       console.log("Driver added:", response.data);
       handleClose();
     } catch (error) {
       console.error("Error adding driver:", error);
       // setError("Error adding driver");
+    }
+  };
+
+  const handleClose = () => {
+    setShow(false);
+    setShowEditModal(false);
+    setShowDeleteModal(false);
+  };
+
+  const handleChange = (event) => {
+    const { name, value } = event.target;
+    setFormData({ ...formData, [name]: value });
+  };
+
+  const handleShowEditModal = (driver) => {
+    setSelectedDriver(driver);
+    setShowEditModal(true);
+  };
+
+  const handleShowDeleteModal = (driver) => {
+    setSelectedDriver(driver);
+    setShowDeleteModal(true);
+  };
+
+  const handleEdit = async () => {
+    // Edit functionality here
+    console.log("Edit driver:", selectedDriver);
+    handleClose();
+  };
+
+  const handleDelete = async () => {
+    try {
+      // Delete functionality here
+      console.log("Delete driver:", selectedDriver);
+      handleClose();
+    } catch (error) {
+      console.error("Error deleting driver:", error);
     }
   };
 
@@ -143,35 +190,35 @@ function Drivers() {
                 <div className="driver-container">
                   <table className="tableDriver">
                     <tbody className="driver-tbody">
-                      {/* {filteredVehicleList.map((plateNumber) => ( */}
-                      <tr
-                      // key={plateNumber}
-                      // onClick={() => handlePlateNumberClick(plateNumber)}
-                      // style={{ cursor: "pointer" }}
-                      >
+                      <tr>
                         <td>
-                          <strong>{/* {plateNumber} */}</strong>
+                          <strong>Dr.Jose Rizal</strong>
                         </td>
-                        <td
-                        // style={{
-                        //   textDecoration:
-                        //     vehicleStatus[plateNumber] === "Used"
-                        //       ? "underline"
-                        //       : "none",
-                        //   cursor: "pointer",
-                        //   color:
-                        //     vehicleStatus[plateNumber] === "Used"
-                        //       ? "#f80f0f"
-                        //       : "#1adf1a",
-                        // }}
-                        >
+                        <td>
                           {/* {vehicleStatus[plateNumber] === "Used"
                                 ? "Used"
                                 : "Available"} */}
                         </td>
-                        <td></td>
+                        <td>
+                          {/* Edit and Delete Buttons */}
+                          <Button
+                            variant="primary"
+                            onClick={() =>
+                              handleShowEditModal({ name: "Dr. Jose Rizal" })
+                            }
+                          >
+                            Edit
+                          </Button>{" "}
+                          <Button
+                            variant="danger"
+                            onClick={() =>
+                              handleShowDeleteModal({ name: "Dr. Jose Rizal" })
+                            }
+                          >
+                            Delete
+                          </Button>
+                        </td>
                       </tr>
-                      {/* ))} */}
                     </tbody>
                   </table>
                 </div>
@@ -193,8 +240,9 @@ function Drivers() {
               <input
                 type="text"
                 className="addVehicle"
-                value={driverName}
-                onChange={(e) => setDriverName(e.target.value)}
+                name="name"
+                value={formData.name}
+                onChange={handleChange}
               />
             </label>
             <Button variant="primary" type="submit">
@@ -207,6 +255,48 @@ function Drivers() {
             Close
           </Button>
           <Button variant="primary">Save changes</Button>
+        </Modal.Footer>
+      </Modal>
+
+      {/* Edit Driver Modal */}
+      <Modal show={showEditModal} onHide={handleClose}>
+        <Modal.Body>
+          <form onSubmit={handleSubmit}>
+            <label>
+              Driver's Name
+              <input
+                type="text"
+                className="addVehicle"
+                value={editedDriverName}
+                onChange={(e) => setEditedDriverName(e.target.value)}
+              />
+            </label>
+            <Button variant="primary" type="submit">
+              Save Changes
+            </Button>
+            <Button variant="secondary" onClick={handleClose}>
+              Close
+            </Button>
+          </form>
+        </Modal.Body>
+      </Modal>
+
+      {/* Delete Driver Modal */}
+      <Modal show={showDeleteModal} onHide={handleClose}>
+        <Modal.Header closeButton>
+          <Modal.Title>Delete Driver</Modal.Title>
+        </Modal.Header>
+        <Modal.Body>
+          Are you sure you want to delete the driver{" "}
+          <strong>{selectedDriver && selectedDriver.name}</strong>?
+        </Modal.Body>
+        <Modal.Footer>
+          <Button variant="secondary" onClick={handleClose}>
+            Cancel
+          </Button>
+          <Button variant="danger" onClick={handleDelete}>
+            Delete
+          </Button>
         </Modal.Footer>
       </Modal>
     </>
