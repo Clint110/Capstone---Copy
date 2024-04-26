@@ -80,7 +80,7 @@
     text-align: center;
   font-size: 15px;
   margin-bottom: 10px;
-
+  
   }
   .tableDriverList  {
   width: 100%;
@@ -94,3 +94,11 @@
     text-align: center; 
     font-size: 13px;
   }
+
+ .driver-tbody{
+  max-height: 300px; /* Adjust height for better UI */
+  overflow-y: auto;
+  width: 970px;
+  border-radius: 10px; 
+  box-shadow: rgb(0 0 0 / 12%) 0px 1px 3px, rgb(0 0 0 / 24%) 0px 1px 2px;
+ }

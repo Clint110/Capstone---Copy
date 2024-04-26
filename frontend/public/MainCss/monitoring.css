@@ -417,10 +417,8 @@ display: block;
 
 .tableListHead thead th,
 .scrollable-tbody td {
-  /* Ensure consistent width with the scrollbar */
   width: 50%;
   height: inherit;
-  /* padding-top: 5px; */
   padding-left: 10px;
   text-align: center; 
   font-size: 13px;
