@@ -1,8 +1,11 @@
 import React, { useEffect, useState } from "react";
+import axios from "axios";
 
 function Reminder() {
   const [allEvents, setAllEvents] = useState([]);
   const [plateData, setPlateData] = useState({});
+  const [selectedEvent, setSelectedEvent] = useState(null);
+  const [vehicleStatus, setVehicleStatus] = useState([]);
 
   // Fetch reminders from the server
   // useEffect(() => {
@@ -31,25 +34,63 @@ function Reminder() {
 
   //   fetchPlateData();
   // }, []);
-
   useEffect(() => {
-    const fetchAllData = async () => {
+    const fetchVehicleStatus = async () => {
       try {
-        const response = await fetch("http://localhost:3000/get-data-plate");
-        if (response.ok) {
-          const responseData = await response.json();
-          console.log(responseData);
-          setAllEvents(responseData.data);
-        } else {
-          console.error("Failed to fetch data from the server");
-        }
+        const response = await axios.get("http://localhost:3000/vehiclestatus");
+        const vehicleStatusData = response.data;
+        // setVehicleStatus(vehicleStatusData);
+        setVehicleStatus(
+          Array.isArray(vehicleStatusData) ? vehicleStatusData : []
+        );
       } catch (error) {
-        console.error("Error during fetch:", error);
+        console.error("Error fetching vehicle status:", error);
       }
     };
-
-    fetchAllData();
+    fetchVehicleStatus();
   }, []);
+
+  const handleFilter = async (selectedFilter) => {
+    try {
+      const response = await axios.get(
+        `http://localhost:3000/vehiclestatus?status=${selectedFilter}`
+      );
+      const vehicleStatusData = response.data;
+      setVehicleStatus(
+        Array.isArray(vehicleStatusData) ? vehicleStatusData : []
+      );
+      fetchAllData(selectedFilter);
+    } catch (error) {
+      console.error("Error fetching vehicle status:", error);
+    }
+  };
+
+  useEffect(() => {
+    fetchAllData("Used"); // Fetch data for initial "Used" status
+  }, []);
+
+  // useEffect(() => {
+  // const fetchAllData = async (statusFilter) => {
+  const fetchAllData = async (statusFilter) => {
+    // const fetchAllData = async () => {
+    try {
+      const response = await fetch(
+        `http://localhost:3000/get-data-plate?status=${statusFilter}`
+      );
+      if (response.ok) {
+        const responseData = await response.json();
+        // console.log(responseData);
+        setAllEvents(responseData.data);
+      } else {
+        console.error("Failed to fetch data from the server");
+      }
+    } catch (error) {
+      console.error("Error during fetch:", error);
+    }
+  };
+
+  // fetchAllData();
+  // }, []);
 
   const formatTime = (timeString) => {
     if (!timeString || typeof timeString !== "string") return "Invalid Time";
@@ -68,6 +109,30 @@ function Reminder() {
     return formattedTime;
   };
 
+  // const handleClick = (event) => {
+  //   if (selectedEvent === event) {
+  //     // Deselect the event if it's already selected
+  //     setSelectedEvent(null);
+  //   } else {
+  //     setSelectedEvent(event);
+  //   }
+  // };
+  const handleClick = (event) => {
+    setSelectedEvent(selectedEvent === event ? null : event);
+  };
+
+  const filteredEvents = allEvents
+    .slice(0)
+    .reverse()
+    .filter((event) =>
+      vehicleStatus.find(
+        (status) =>
+          status.plateNumber === event.plateNumber && status.status === "Used"
+      )
+    );
+  console.log("Vehicle Status:", vehicleStatus);
+  console.log("Filtered Events:", filteredEvents);
+
   return (
     <div>
       <div className="dashboard-Reminder">
@@ -75,6 +140,7 @@ function Reminder() {
         <hr />
         <table className="BookingList">
           <tbody className="BookingList">
+            <td>HAHAH</td>
             {/* <tr>
               <td>
                 {`PlateNumber: ${plateData.plateNumber} is currently at Longitude: ${plateData.longitude}, Latitude: ${plateData.latitude}`}
@@ -90,7 +156,7 @@ function Reminder() {
                   </td>
                 </tr>
               ))} */}
-            {allEvents
+            {/* {allEvents
               .slice(0)
               .reverse()
               .map((event) => (
@@ -105,7 +171,48 @@ function Reminder() {
                     )}`}
                   </td>
                 </tr>
-              ))}
+              ))} */}
+            {/* {allEvents
+              .slice(0)
+              .reverse()
+              .filter((event) =>
+                vehicleStatus.find(
+                  (status) =>
+                    status.plateNumber === event.plateNumber &&
+                    status.status === "Used"
+                )
+              )
+              .map((event) => ( */}
+            {allEvents.length === 0 ? (
+              <tr>
+                <td>No vehicle routes available</td>
+              </tr>
+            ) : (
+              allEvents.map((event) => (
+                <tr key={event._id}>
+                  <td>
+                    <span
+                      onClick={() => handleClick(event)}
+                      style={{ cursor: "pointer" }}
+                    >
+                      {" "}
+                      Plate Number {event.plateNumber}
+                    </span>
+                    {selectedEvent === event && (
+                      <div>
+                        {`PlateNumber: ${
+                          event.plateNumber
+                        } is currently at Longitude: ${
+                          event.longitude
+                        }, Latitude: ${event.latitude}, Time: ${formatTime(
+                          event.time
+                        )}`}
+                      </div>
+                    )}
+                  </td>
+                </tr>
+              ))
+            )}
           </tbody>
         </table>
       </div>
