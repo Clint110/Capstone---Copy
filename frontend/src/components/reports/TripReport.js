@@ -794,9 +794,9 @@ const TripReport = () => {
             <tr>
               <th>PLATE NO.</th>
               <th>DESTINATION</th>
-              <th>BOUND FOR</th>
+              <th>OFFICE</th>
               <th>DEPARTURE</th>
-              <th>RETURN</th>
+              <th>STATUS</th>
               <th>ACTION</th>
             </tr>
           </thead>
@@ -844,12 +844,12 @@ const TripReport = () => {
                     {editableData._id === booking._id ? (
                       <input
                         type="text"
-                        value={editableData.destination}
-                        onChange={(e) => handleChange(e, "destination")}
+                        value={editableData.clientName} // Change here
+                        onChange={(e) => handleChange(e, "clientName")} // Change here
                         required
                       />
                     ) : (
-                      booking.destination
+                      booking.clientName // Change here
                     )}
                   </td>
                   <td>

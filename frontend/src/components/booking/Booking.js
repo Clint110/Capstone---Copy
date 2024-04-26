@@ -217,32 +217,56 @@ function Booking() {
   }, []);
 
   // Combine reminders and events
-  const combinedEvents = [...allEvents, ...allReminders];
+  const combinedEvents = [...allEvents];
 
   // function handleAddEvent() {
   //   setAllEvents([...allEvents, newEvent]);
   // }
   function handleAddEvent() {
+    let clash = false;
+    // Loop through all existing events to check for clashes
     for (let i = 0; i < allEvents.length; i++) {
       const d1 = new Date(allEvents[i].start);
       const d2 = new Date(newEvent.start);
       const d3 = new Date(allEvents[i].end);
       const d4 = new Date(newEvent.end);
-      /*
-      console.log(d1 <= d2);
-      console.log(d2 <= d3);
-      console.log(d1 <= d4);
-      console.log(d4 <= d3);
-        */
 
-      if ((d1 <= d2 && d2 <= d3) || (d1 <= d4 && d4 <= d3)) {
-        alert("Some bookings on the calendar are clashing.");
+      // Check if there is an overlap
+      if ((d1 < d4 && d2 < d3) || (d2 < d3 && d4 < d3)) {
+        clash = true;
         break;
       }
     }
 
-    setAllEvents([...allEvents, newEvent]);
+    // If there is no clash, add the new event
+    if (!clash) {
+      setAllEvents([...allEvents, newEvent]);
+    } else {
+      // If there is a clash, show an alert
+      alert("Some bookings on the calendar are clashing.");
+    }
   }
+  //   for (let i = 0; i < allEvents.length; i++) {
+  //     const d1 = new Date(allEvents[i].start);
+  //     const d2 = new Date(newEvent.start);
+  //     const d3 = new Date(allEvents[i].end);
+  //     const d4 = new Date(newEvent.end);
+  //     /*
+  //     console.log(d1 <= d2);
+  //     console.log(d2 <= d3);
+  //     console.log(d1 <= d4);
+  //     console.log(d4 <= d3);
+  //       */
+
+  //     if ((d1 <= d2 && d2 <= d3) || (d1 <= d4 && d4 <= d3)) {
+  //       alert("Some bookings on the calendar are clashing.");
+  //       break;
+  //     }
+  //   }
+
+  //   setAllEvents([...allEvents, newEvent]);
+  // }
+
   const EventComponent = ({ event }) => {
     return (
       <div className="EventComponent">
