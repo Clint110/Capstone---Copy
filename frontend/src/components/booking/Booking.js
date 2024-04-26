@@ -243,22 +243,39 @@ function Booking() {
 
     setAllEvents([...allEvents, newEvent]);
   }
-  const EventComponent = ({ event }) => {
-    return (
-      <div className="EventComponent">
-        {/* <strong>{event.title}</strong> */}
-        {`${event.plateNumber}`}
-        <br />
 
-        {/* <span className="timeForBound">{`${
-          event.timeForBound ? `Time: ${formatTime(event.timeForBound)} -` : ""
-        } ${event.boundFor ? `Bound For: ${event.boundFor}` : ""}`}</span> */}
-        <span className="timeForBound">{`Time: ${formatTime(
-          event.timeForBound
-        )} -`}</span>
+  const localizer = momentLocalizer(moment);
+
+  const EventComponent = ({ event, height }) => {
+    if (!Array.isArray(event)) {
+      // If event is not an array, treat it as a single booking
+      return (
+        <div className="EventComponent" style={{ height }}>
+          {`${event.plateNumber}`}
+          <br />
+          <span className="timeForBound">{`Time: ${formatTime(event.timeForBound)} -`}</span>
+        </div>
+      );
+    }
+  
+    // If event is an array, check if there are multiple bookings
+    const shouldScroll = event.length > 1;
+  
+    return (
+      <div className="EventComponent" style={{ height: shouldScroll ? height : 'auto', overflowY: shouldScroll ? 'auto' : 'visible' }}>
+        {/* Map through the events array */}
+        {event.map((booking, index) => (
+          <div key={index}>
+            {`${booking.plateNumber}`}
+            <br />
+            <span className="timeForBound">{`Time: ${formatTime(booking.timeForBound)} -`}</span>
+          </div>
+        ))}
       </div>
     );
   };
+  
+
 
   const formatTime = (timeString) => {
     // Check if timeString is null or undefined
@@ -614,9 +631,13 @@ function Booking() {
             startAccessor="start"
             endAccessor="end"
             components={{
-              event: EventComponent, // Replace EventComponent with your custom event component
+              event: props => <EventComponent {...props} height={20} />, // Set the height here
             }}
-            style={{ height: 500 }}
+            style={{
+              height: '77.5vh', // 95% of the viewport height
+              width: '63vw',  // 70% of the viewport width
+              
+            }}
             defaultView={"month"}
 
             // views={["month", "week", "day" ]}
