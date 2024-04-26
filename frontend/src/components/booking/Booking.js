@@ -240,24 +240,28 @@ function Booking() {
 
     setAllEvents([...allEvents, newEvent]);
   }
-  const EventComponent = ({ event }) => {
-    return (
-      <div className="EventComponent">
-        {/* <strong>{event.title}</strong> */}
-        {`${event.plateNumber}`}
-        <br />
 
-        {/* <span className="timeForBound">{`${
-          event.timeForBound ? `Time: ${formatTime(event.timeForBound)} -` : ""
-        } ${event.boundFor ? `Bound For: ${event.boundFor}` : ""}`}</span> */}
-        <span className="timeForBound">{`Time: ${formatTime(
-          event.timeForBound
-        )} -`}</span>
+  const EventComponent = ({ event, height, view }) => {
+    const isMonthView = view === 'month';
+  
+    return (
+      <div className="EventComponent" style={{ height }}>
+        {isMonthView ? (
+          // Display only the plate number in month view
+          <div>{`${event.plateNumber}`}</div>
+        ) : (
+          // Display both plate number and driver in other views
+          <>
+            <div>{`Plate Number: ${event.plateNumber}`}</div>
+            {/* <div>{`Driver: ${event.driver}`}</div> */}
+          </>
+        )}
       </div>
     );
   };
   
-
+  
+  
 
   const formatTime = (timeString) => {
     // Check if timeString is null or undefined
@@ -615,6 +619,7 @@ function Booking() {
             components={{
               event: props => <EventComponent {...props} height={20} />, // Set the height here
             }}
+
             style={{
               height: '77.5vh', // 95% of the viewport height
               width: '63vw',  // 70% of the viewport width
@@ -622,7 +627,7 @@ function Booking() {
             }}
             defaultView={"month"}
 
-            // views={["month", "week", "day" ]}
+            views={["month", "week", "day" ]}
 
             // defaultView={Views.WEEK}
             // view={Views.MONTH}
