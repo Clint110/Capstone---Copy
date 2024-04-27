@@ -95,7 +95,8 @@ function Booking() {
     console.log("End Date:", new Date(formData.returnDate));
 
     const newBookingEvent = {
-      title: formData.plateNumber,
+      // title: formData.plateNumber,
+      title: "Untitled",
       driver: formData.driverName,
       start: new Date(formData.timeAndDate), // Convert to Date object
       end: new Date(formData.returnDate), // Convert to Date object
@@ -242,6 +243,9 @@ function Booking() {
   }
 
   const EventComponent = ({ event, height }) => {
+  const EventComponent = ({ event, height, view }) => {
+    const isMonthView = view === "month";
+
     return (
       <div className="EventComponent" style={{ height }}>
         {/* Display only the plate number */}
@@ -361,7 +365,7 @@ function Booking() {
               className="add_booking_area_btn"
               onClick={() => setScrollableModal(!scrollableModal)}
             >
-              + ADD PRE-BOOKING
+              + PRE BOOKING
             </button>
             <hr />
 
@@ -408,7 +412,7 @@ function Booking() {
                 >
                   <MDBModalContent>
                     <MDBModalHeader>
-                      <MDBModalTitle>Add Booking</MDBModalTitle>
+                      <MDBModalTitle>PRE BOOKING</MDBModalTitle>
                       <button
                         className="btn-close"
                         color="none"
@@ -438,7 +442,7 @@ function Booking() {
 
     </div> */}
                       <form id="addbook" onSubmit={handlebookingsub}>
-                        <label>
+                        {/* <label>
                           Plate Number
                           <select
                             className="bookingInput"
@@ -456,7 +460,7 @@ function Booking() {
                             ))}
                           </select>
                           <p>Status: {selectedPlateNumberStatus}</p>
-                        </label>
+                        </label> */}
                         <label>
                           Client Name(Office)
                           <input
@@ -472,10 +476,11 @@ function Booking() {
                           />
                         </label>
                         <label>
-                          No. of Passengers
+                          Name of Passengers
                           <input
-                            type="number"
+                            type="text"
                             className="bookingInput"
+                            style={{ height: "100px", verticalAlign: "top" }}
                             value={formData.passengerQuantity}
                             onChange={(e) =>
                               setFormData({
@@ -565,7 +570,7 @@ function Booking() {
                           <input
                             type="text"
                             className="bookingInput"
-                            style={{ height: "250px" }}
+                            style={{ height: "100px" }}
                             value={formData.purpose}
                             onChange={(e) =>
                               setFormData({
@@ -606,17 +611,14 @@ function Booking() {
             startAccessor="start"
             endAccessor="end"
             components={{
-              event: props => <EventComponent {...props} height={20} />, // Set the height here
+              event: (props) => <EventComponent {...props} height={20} />, // Set the height here
             }}
-
             style={{
-              height: '77.5vh', // 95% of the viewport height
-              width: '63vw',  // 70% of the viewport width
-              
+              height: "77.5vh", // 95% of the viewport height
+              width: "63vw", // 70% of the viewport width
             }}
             defaultView={"month"}
-
-            views={["month", "week", "day" ]}
+            views={["month", "week", "day"]}
 
             // defaultView={Views.WEEK}
             // view={Views.MONTH}
