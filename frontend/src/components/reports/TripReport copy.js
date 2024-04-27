@@ -721,7 +721,6 @@ function TripReport() {
                         Delete
                       </button>
                       {/* <button
-                      {/* <button
                         onClick={handleGenerateReport}
                         className="actionBtn "
                       >
