@@ -16,6 +16,7 @@ import "primereact/resources/primereact.min.css";
 import "primeicons/primeicons.css";
 import { FcDownload } from "react-icons/fc";
 import HeaderReport from "../reports/HeaderReport";
+import { Modal, Button } from "react-bootstrap";
 
 function formatDateTime(dateTimeString) {
   const options = {
@@ -39,6 +40,25 @@ const TripReport = () => {
   const [vehicleDetails, setVehicleDetails] = useState([]);
   const [formData, setFormData] = useState({});
   const [selectedPlateNumber, setSelectedPlateNumber] = useState(null);
+  // const [filteredData, setFilteredData] = useState([]);
+  const [modalOpen, setModalOpen] = useState(false);
+  const [showModal, setShowModal] = useState(false);
+  const [selectedBooking, setSelectedBooking] = useState(null);
+
+  const handleOpenModal = (booking) => {
+    setSelectedBooking(booking);
+    setShowModal(true);
+  };
+
+  const handleCloseModal = () => {
+    setShowModal(false);
+    setSelectedBooking(null);
+  };
+  const handleCompleteBooking = () => {
+    // Logic for completing the booking goes here
+    console.log("Booking completed:", selectedBooking);
+    handleCloseModal();
+  };
 
   // Function to handle vehicle click
   const handleVehicleClick = (plateNumber) => {
@@ -750,6 +770,17 @@ const TripReport = () => {
       console.error(`Error ${action}ing booking:`, error);
     }
   };
+  const isBookingDatePassed = (bookingDate) => {
+    const now = new Date();
+    return new Date(bookingDate) < now;
+  };
+
+  const handleToggleStatus = (index) => {
+    const updatedData = [...filteredData];
+    updatedData[index].status =
+      updatedData[index].status === "Pending" ? "Used" : "Pending";
+    setBookingData(updatedData);
+  };
 
   return (
     <>
@@ -865,15 +896,22 @@ const TripReport = () => {
                     )}
                   </td>
                   <td>
-                    {editableData._id === booking._id ? (
-                      <input
-                        type="text"
-                        value={editableData.returnDate}
-                        onChange={(e) => handleChange(e, "returnDate")}
-                        required
-                      />
+                    {isBookingDatePassed(booking.timeAndDate) ? (
+                      <button
+                        type="button"
+                        className="btn btn-success btn-sm"
+                        onClick={() => handleCompleteBooking(booking)}
+                      >
+                        Complete
+                      </button>
                     ) : (
-                      booking.returnDate
+                      <button
+                        type="button"
+                        className="btn btn-warning btn-sm"
+                        onClick={() => handleOpenModal(booking)}
+                      >
+                        Pending
+                      </button>
                     )}
                   </td>
                   <td>
@@ -958,6 +996,59 @@ const TripReport = () => {
           </DataTable> */}
       {/* </div>
       </div> */}
+      {/* Modal for completing booking */}
+      <Modal show={showModal} onHide={handleCloseModal}>
+        <Modal.Header closeButton>
+          <Modal.Title>Complete Booking</Modal.Title>
+        </Modal.Header>
+        <Modal.Body>
+          <p>Complete the booking for /NAME SA CLIENT DAPAT/</p>
+          <form>
+            <label>
+              Plate Number
+              <select className="bookingInput" required>
+                <option value="" disabled>
+                  Select Plate Number
+                </option>
+                {/* {plateNumbers.map(({ plateNumber }) => (
+                  <option key={plateNumber} value={plateNumber}>
+                    {plateNumber}
+                  </option>
+                ))} */}
+              </select>
+              <p>
+                Status:
+                {/* {selectedPlateNumberStatus} */}
+              </p>
+              <p>Seats: </p>
+            </label>
+
+            <label>
+              Drivers
+              <select className="bookingInput" required>
+                <option value="" disabled>
+                  Select Available Driver
+                </option>
+                {/* {plateNumbers.map(({ plateNumber }) => (
+                  <option key={plateNumber} value={plateNumber}>
+                    {plateNumber}
+                  </option>
+                ))} */}
+              </select>
+              <p>
+                Status:
+                {/* {selectedPlateNumberStatus} */}
+              </p>
+            </label>
+          </form>
+          <Button variant="secondary" onClick={handleCloseModal}>
+            Cancel
+          </Button>{" "}
+          <Button variant="success" onClick={handleCompleteBooking}>
+            Complete Booking
+          </Button>
+        </Modal.Body>
+      </Modal>
     </>
   );
 };
