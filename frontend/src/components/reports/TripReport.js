@@ -56,7 +56,7 @@ const TripReport = () => {
   const generatePDF = async () => {
     try {
       const doc = new jsPDF();
-
+      //FOOTER
       // Track page number
       let pageNumber = 1;
 
@@ -113,19 +113,43 @@ const TripReport = () => {
       // Add a page with the page number
       addPageWithNumber();
 
-      doc.setFontSize(10); // Adjust font size here
+      // Header content
+      doc.setFontSize(10);
       doc.text("Fortich St. Malaybalay City, Bukidnon 8700", 74, 30);
-
       doc.addImage(logo, "PNG", 30, 15, 20, 18);
       doc.addImage(otherLogo, "PNG", 157, 15, 20, 18);
 
-      doc.setFontSize(14); // Adjust font size here
+      const currentDate = new Date();
+      const currentMonth = currentDate.toLocaleString('default', { month: 'long' });
+      const currentYear = currentDate.getFullYear();
+      doc.setFontSize(13);
       doc.text(
-        "NUMBER OF TRIP PER VEHICLE FOR THE MONTH OF APRIL 2024",
-        33,
-        55
+        `NUMBER OF TRIP PER VEHICLE FOR THE MONTH OF ${currentMonth.toUpperCase()} ${currentYear}`,
+          34,
+          55
       );
 
+      doc.setFontSize(13);
+      doc.text(
+        `Within and Beyond Official Station`,
+          73,
+          62
+      );
+      
+      doc.setFont(undefined, "bold");
+      doc.setFontSize(12);
+      doc.text("GSU - Motorpool Section", 80, 45);
+
+      doc.setFont("times");
+      doc.setFontSize(17);
+      doc.text("BUKIDNON STATE UNIVERSITY", 58, 25);
+      // doc.setFontSize(10); // Adjust font size here
+      // doc.text("Fortich St. Malaybalay City, Bukidnon 8700", 74, 30);
+
+      // doc.addImage(logo, "PNG", 30, 15, 20, 18);
+      // doc.addImage(otherLogo, "PNG", 157, 15, 20, 18);
+
+      //BELOW THE TABLE
       let yPos = 45;
       // doc.text("Prepared by:", 15, textYPos);
       doc.setFontSize(12); // Adjust font size here
@@ -156,9 +180,9 @@ const TripReport = () => {
       doc.setFontSize(11); // Adjust font size here
       doc.text("Head, GSU", 160, 200);
 
-      doc.setFontSize(12); // Adjust font size here
-      doc.setFont(undefined, "bold"); // Set font weight to bold
-      doc.text("GSU - Motorpool Section", 83, 45);
+      // doc.setFontSize(12); // Adjust font size here
+      // doc.setFont(undefined, "bold"); // Set font weight to bold
+      // doc.text("GSU - Motorpool Section", 83, 45);
 
       doc.setFontSize(12); // Adjust font size here
       doc.text("SNIFFY L. TIMONES", 25, 162);
@@ -186,10 +210,13 @@ const TripReport = () => {
       const startYNew = 186 + topMarginNew; // Adjust to position the text below the top margin for the new copy
       doc.text(textNew, 25 + leftMarginNew, 185 + topMarginNew); // Adjusted y-coordinate for the text for the new copy
       doc.line(startXNew, startYNew, startXNew + textWidthNew, startYNew); // Adjusted start and end positions for the line for the new copy
+      
 
-      doc.setFont("times"); // Set font to Times New Roman
-      doc.setFontSize(17); // doc.setFont('helvetica', 'bold'); // Set font to bold
-      doc.text("BUKIDNON STATE UNIVERSITY", 58, 25);
+     
+
+      // doc.setFont("times"); // Set font to Times New Roman
+      // doc.setFontSize(17); // doc.setFont('helvetica', 'bold'); // Set font to bold
+      // doc.text("BUKIDNON STATE UNIVERSITY", 58, 25);
 
       // doc.setFont('times'); // Set font to Times New Roman
       // doc.setFontSize(17); // doc.setFont('helvetica', 'bold'); // Set font to bold
@@ -201,7 +228,7 @@ const TripReport = () => {
       //   booking.destination,
       // ]);
       //Brendyl Ani
-
+      //TABLE
       // Calculate total number of trips per vehicle
       const tripsPerVehicle = {};
       bookingData.forEach((booking) => {
@@ -327,6 +354,8 @@ const TripReport = () => {
           }
         },
       });
+
+      
       // Convert the PDF content into a data URL
       const dataUri = doc.output("datauristring");
 

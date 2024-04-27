@@ -241,25 +241,14 @@ function Booking() {
     setAllEvents([...allEvents, newEvent]);
   }
 
-  const EventComponent = ({ event, height, view }) => {
-    const isMonthView = view === 'month';
-  
+  const EventComponent = ({ event, height }) => {
     return (
       <div className="EventComponent" style={{ height }}>
-        {isMonthView ? (
-          // Display only the plate number in month view
-          <div>{`${event.plateNumber}`}</div>
-        ) : (
-          // Display both plate number and driver in other views
-          <>
-            <div>{`Plate Number: ${event.plateNumber}`}</div>
-            {/* <div>{`Driver: ${event.driver}`}</div> */}
-          </>
-        )}
+        {/* Display only the plate number */}
+        <div>{`Plate Number: ${event.plateNumber}`}</div>
       </div>
     );
   };
-  
   
   
 
@@ -372,7 +361,7 @@ function Booking() {
               className="add_booking_area_btn"
               onClick={() => setScrollableModal(!scrollableModal)}
             >
-              + ADD BOOKING
+              + ADD PRE-BOOKING
             </button>
             <hr />
 

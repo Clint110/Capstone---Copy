@@ -137,7 +137,7 @@ function Reminder() {
     <div>
       <div className="dashboard-Reminder">
         <h6>Vehicle Routes</h6>
-        <hr />
+    
         <table className="BookingList">
           <tbody className="BookingList">
             <td>HAHAH</td>
