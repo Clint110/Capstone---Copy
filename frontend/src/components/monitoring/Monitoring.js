@@ -46,7 +46,9 @@ function Monitoring() {
   const [vehicles, setVehicles] = useState([]);
   const [plateNumber, setPlateNumber] = useState("");
   const [mapKey, setMapKey] = useState(0);
-  const [isInputRequired, setIsInputRequired] = useState(true);
+  // const [isInputRequired, setIsInputRequired] = useState(true);
+  const [isInputRequired, setIsInputRequired] = useState(false);
+  const [plateNumberError, setPlateNumberError] = useState("");
 
   const toggleVehicleDetailsModalOpen = () => {
     setVehicleDetailsModalOpen(!vehicleDetailsModalOpen);
@@ -302,6 +304,7 @@ function Monitoring() {
     plateNumber2: "",
     addvehicles: "",
     carImage: null,
+    availableSeats: "",
   });
 
   console.log(formData);
@@ -311,12 +314,20 @@ function Monitoring() {
 
     setIsInputRequired(true);
 
+    if (!validatePlateNumber(formData.plateNumber2)) {
+      setPlateNumberError(
+        "Plate number must have 5-9 characters with letters and numbers."
+      );
+
+      return;
+    }
+
     // Use FormData to handle file uploads
     const formDataForUpload = new FormData();
     formDataForUpload.append("plateNumber2", formData.plateNumber2);
     formDataForUpload.append("addvehicles", formData.addvehicles);
     formDataForUpload.append("carImage", formData.carImage); // Use formData.carImage here
-
+    formDataForUpload.append("availableSeats", formData.availableSeats);
     try {
       const response = await axios.post(
         "http://localhost:3000/addvehicle",
@@ -328,6 +339,7 @@ function Monitoring() {
         setFormData({
           plateNumber2: "",
           addvehicles: "",
+          availableSeats: "",
           carImage: null,
         });
         setCentredModal(!setCentredModal);
@@ -340,6 +352,11 @@ function Monitoring() {
       // Handle network error
       console.error("Network error:", error);
     }
+  };
+
+  const validatePlateNumber = (plateNumber) => {
+    const plateRegex = /^(?=.*[0-9])(?=.*[a-zA-Z])[a-zA-Z0-9]{5,9}$/;
+    return plateRegex.test(plateNumber);
   };
 
   const formatDate = (date) => {
@@ -728,50 +745,64 @@ function Monitoring() {
 
             <div className="ListVehicle">
               <div class="container">
-                {/* <div class="row"> */}
-                <div className="container">
-                  <table className="table table-bordered">
-                    <thead>
-                      <tr>
-                        <th scope="col">PLATE NUMBER</th>
-                        <th scope="col">STATUS</th>
-                      </tr>
-                    </thead>
-                  </table>
-                  <div className="scrollable-container">
-                    <table className="table table-bordered">
-                      <tbody className="scrollable-tbody">
-                        {filteredVehicleList.map((plateNumber) => (
-                          <tr
-                            key={plateNumber}
-                            onClick={() => handlePlateNumberClick(plateNumber)}
-                            style={{ cursor: "pointer" }}
+                <table className="tableListHead">
+                  {/* <table className="table"> */}
+                  <thead>
+                    <tr>
+                      <th
+                        style={{
+                          borderTopLeftRadius: "10px",
+                          borderBottomLeftRadius: "10px",
+                        }}
+                        scope="col"
+                      >
+                        PLATE NUMBER
+                      </th>
+                      <th
+                        style={{
+                          borderTopRightRadius: "10px",
+                          borderBottomRightRadius: "10px",
+                        }}
+                        scope="col"
+                      >
+                        STATUS
+                      </th>
+                    </tr>
+                  </thead>
+                </table>
+                <div className="scrollable-container">
+                  <table className="tableListHead table-bordered">
+                    <tbody className="scrollable-tbody">
+                      {filteredVehicleList.map((plateNumber) => (
+                        <tr
+                          key={plateNumber}
+                          onClick={() => handlePlateNumberClick(plateNumber)}
+                          style={{ cursor: "pointer" }}
+                        >
+                          <td>
+                            <strong>{plateNumber}</strong>
+                          </td>
+                          <td
+                            style={{
+                              textDecoration:
+                                vehicleStatus[plateNumber] === "Used"
+                                  ? "underline"
+                                  : "none",
+                              cursor: "pointer",
+                              color:
+                                vehicleStatus[plateNumber] === "Used"
+                                  ? "#f80f0f"
+                                  : "#1adf1a",
+                            }}
                           >
-                            <td>
-                              <strong>{plateNumber}</strong>
-                            </td>
-                            <td
-                              style={{
-                                textDecoration:
-                                  vehicleStatus[plateNumber] === "Used"
-                                    ? "underline"
-                                    : "none",
-                                cursor: "pointer",
-                                color:
-                                  vehicleStatus[plateNumber] === "Used"
-                                    ? "#f80f0f"
-                                    : "#1adf1a",
-                              }}
-                            >
-                              {vehicleStatus[plateNumber] === "Used"
-                                ? "Used"
-                                : "Available"}
-                            </td>
-                          </tr>
-                        ))}
-                      </tbody>
-                    </table>
-                  </div>
+                            {vehicleStatus[plateNumber] === "Used"
+                              ? "Used"
+                              : "Available"}
+                          </td>
+                        </tr>
+                      ))}
+                    </tbody>
+                  </table>
                 </div>
               </div>
             </div>
@@ -822,12 +853,23 @@ function Monitoring() {
                                 {" "}
                                 {selectedPlateNumber}
                               </h3>{" "}
-                              <div style={{marginLeft:"-85px"}}>
-                              {/* Added class name for plate number */}
-                              <h4 className="vehicle-details" style={{marginRight:"-20px"}}>
-                                {selectedVehicleDetails.vehicle.vehicleName}{" "}
-                                {/* Display vehicle name */}
-                              </h4>
+                              <div style={{ marginLeft: "-85px" }}>
+                                {/* Added class name for plate number */}
+                                <h4
+                                  className="vehicle-details"
+                                  style={{ marginRight: "-20px" }}
+                                >
+                                  {selectedVehicleDetails.vehicle.vehicleName}{" "}
+                                  {/* Display vehicle name */}
+                                </h4>
+                                <p className="vehicle-details">
+                                  Seats:{" "}
+                                  {
+                                    selectedVehicleDetails.vehicle
+                                      .availableSeats
+                                  }
+                                </p>{" "}
+                                {/* Display availableSeats */}
                               </div>
                             </div>
                           </div>
@@ -916,6 +958,18 @@ function Monitoring() {
                   <form id="addvec" onSubmit={handlesubmitvec}>
                     <label>
                       Plate Number
+                      {isInputRequired &&
+                        !validatePlateNumber(formData.plateNumber2) && (
+                          <div
+                            style={{
+                              color: "red",
+                              fontSize: "13px",
+                              marginTop: "5px",
+                            }}
+                          >
+                            {plateNumberError}
+                          </div>
+                        )}
                       <input
                         type="text"
                         className="addVehicle"
@@ -929,6 +983,7 @@ function Monitoring() {
                         }
                       />
                     </label>
+
                     <label>
                       Vehicle
                       <input
@@ -940,6 +995,20 @@ function Monitoring() {
                           setFormData({
                             ...formData,
                             addvehicles: e.target.value,
+                          })
+                        }
+                      />
+                    </label>
+                    <label>
+                      Available Seats
+                      <input
+                        type="number"
+                        className="addVehicle"
+                        value={formData.availableSeats}
+                        onChange={(e) =>
+                          setFormData({
+                            ...formData,
+                            availableSeats: e.target.value,
                           })
                         }
                       />

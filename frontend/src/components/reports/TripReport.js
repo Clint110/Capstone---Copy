@@ -15,6 +15,7 @@ import "primereact/resources/themes/lara-light-indigo/theme.css";
 import "primereact/resources/primereact.min.css";
 import "primeicons/primeicons.css";
 import { FcDownload } from "react-icons/fc";
+import HeaderReport from "../reports/HeaderReport";
 
 function formatDateTime(dateTimeString) {
   const options = {
@@ -39,14 +40,11 @@ const TripReport = () => {
   const [formData, setFormData] = useState({});
   const [selectedPlateNumber, setSelectedPlateNumber] = useState(null);
 
-// Function to handle vehicle click
-const handleVehicleClick = (plateNumber) => {
+  // Function to handle vehicle click
+  const handleVehicleClick = (plateNumber) => {
     setSelectedPlateNumber(plateNumber);
     console.log("Selected plate number:", plateNumber); // Add this line for debugging
-
-};
-
-
+  };
 
   const formatTime = (time) => {
     return new Date(time).toLocaleTimeString([], {
@@ -54,7 +52,6 @@ const handleVehicleClick = (plateNumber) => {
       minute: "2-digit",
     });
   };
-
 
   const generatePDF = async () => {
     try {
@@ -117,38 +114,26 @@ const handleVehicleClick = (plateNumber) => {
       addPageWithNumber();
 
       doc.setFontSize(10); // Adjust font size here
-      doc.text("Fortich St. Malaybalay City, Bukidnon 8700", 77, 30);
+      doc.text("Fortich St. Malaybalay City, Bukidnon 8700", 74, 30);
 
       doc.addImage(logo, "PNG", 30, 15, 20, 18);
       doc.addImage(otherLogo, "PNG", 157, 15, 20, 18);
 
       doc.setFontSize(14); // Adjust font size here
-      doc.setFont(undefined, "bold"); // Set font weight to bold
-      doc.text("Month of April 2024", 85, 67);
+      doc.text(
+        "NUMBER OF TRIP PER VEHICLE FOR THE MONTH OF APRIL 2024",
+        33,
+        55
+      );
 
-      doc.setFontSize(12); // Adjust font size here
-      doc.text("GSU - Motorpool Section", 83, 45);
-
-      doc.setFont("times"); // Set font to Times New Roman
-      doc.setFontSize(17); // doc.setFont('helvetica', 'bold'); // Set font to bold
-      doc.text("BUKIDNON STATE UNIVERSITY", 58, 25);
-
-      let yPos = 40;
+      let yPos = 45;
       // doc.text("Prepared by:", 15, textYPos);
       doc.setFontSize(12); // Adjust font size here
       doc.text("Prepared by:", 15, yPos + 110);
-      yPos += 10; // Adjust margin as needed
+      yPos += 15; // Adjust margin as needed
 
       doc.setFontSize(11); // Adjust font size here
       doc.text("Administrative Aide III", 25, 167);
-
-      doc.setFontSize(12); // Adjust font size here
-      doc.text("SNIFFY L. TIMONES", 25, 162);
-      const textWidth = doc.getStringUnitWidth("SNIFFY L. TIMONES") * 4.5; // Adjust 12 to the font size used
-      const startX = 24; // Adjust as needed
-      const startY = 162 + 1; // Adjust to position the underline below the text
-      doc.line(startX, startY, startX + textWidth, startY); // Draw a line below the text
-
       let yPos1 = 180;
       const leftMarginVerifiedBy = 10; // Adjust the left margin for "Verified by:" as needed
       doc.setFontSize(12); // Adjust font size here
@@ -162,6 +147,26 @@ const handleVehicleClick = (plateNumber) => {
         200
       );
 
+      let yPos2 = 180;
+      const leftMarginNotedBy = 130; // Adjust the left margin for "Verified by:" as needed
+      doc.setFontSize(12); // Adjust font size here
+      doc.text("Noted by:", 15 + leftMarginNotedBy, yPos2); // Adjusted x-coordinate
+      yPos1 += 10; // Adjust margin as needed
+
+      doc.setFontSize(11); // Adjust font size here
+      doc.text("Head, GSU", 160, 200);
+
+      doc.setFontSize(12); // Adjust font size here
+      doc.setFont(undefined, "bold"); // Set font weight to bold
+      doc.text("GSU - Motorpool Section", 83, 45);
+
+      doc.setFontSize(12); // Adjust font size here
+      doc.text("SNIFFY L. TIMONES", 25, 162);
+      const textWidth = doc.getStringUnitWidth("SNIFFY L. TIMONES") * 4.5; // Adjust 12 to the font size used
+      const startX = 24; // Adjust as needed
+      const startY = 162 + 1; // Adjust to position the underline below the text
+      doc.line(startX, startY, startX + textWidth, startY); // Draw a line below the text
+
       const topMargin = 10; // Adjust the top margin as needed
       const leftMargin = 25; // Adjust the left margin as needed
       doc.setFontSize(12); // Adjust font size here
@@ -172,15 +177,6 @@ const handleVehicleClick = (plateNumber) => {
       doc.text(text, 25 + leftMargin, 185 + topMargin); // Adjusted y-coordinate for the text
       doc.line(startX3, startY3, startX3 + textWidth3, startY3); // Adjusted start and end positions for the line
 
-      let yPos2 = 180;
-      const leftMarginNotedBy = 130; // Adjust the left margin for "Verified by:" as needed
-      doc.setFontSize(12); // Adjust font size here
-      doc.text("Noted by:", 15 + leftMarginNotedBy, yPos2); // Adjusted x-coordinate
-      yPos1 += 10; // Adjust margin as needed
-
-      doc.setFontSize(11); // Adjust font size here
-      doc.text("Head, GSU", 160, 200);
-
       const topMarginNew = 10; // Adjust the top margin as needed for the new copy
       const leftMarginNew = 120; // Adjust the left margin as needed for the new copy
       doc.setFontSize(12); // Adjust font size here for the new copy
@@ -190,6 +186,10 @@ const handleVehicleClick = (plateNumber) => {
       const startYNew = 186 + topMarginNew; // Adjust to position the text below the top margin for the new copy
       doc.text(textNew, 25 + leftMarginNew, 185 + topMarginNew); // Adjusted y-coordinate for the text for the new copy
       doc.line(startXNew, startYNew, startXNew + textWidthNew, startYNew); // Adjusted start and end positions for the line for the new copy
+
+      doc.setFont("times"); // Set font to Times New Roman
+      doc.setFontSize(17); // doc.setFont('helvetica', 'bold'); // Set font to bold
+      doc.text("BUKIDNON STATE UNIVERSITY", 58, 25);
 
       // doc.setFont('times'); // Set font to Times New Roman
       // doc.setFontSize(17); // doc.setFont('helvetica', 'bold'); // Set font to bold
@@ -286,8 +286,14 @@ const handleVehicleClick = (plateNumber) => {
             { content: "Plate Number", styles: { fontStyle: "bold" } },
             { content: "Vehicle", styles: { fontStyle: "bold" } },
             // { content: "TOTAL NO. OF TRIP", styles: { fontStyle: "bold" } },
-            { content: "WOS", styles: { fontStyle: "bold" } },
-            { content: "BOS", styles: { fontStyle: "bold" } },
+            {
+              content: "Within Official Station",
+              styles: { fontStyle: "bold" },
+            },
+            {
+              content: "Beyond Official Station",
+              styles: { fontStyle: "bold" },
+            },
           ],
         ],
         body: tableData,
@@ -336,18 +342,19 @@ const handleVehicleClick = (plateNumber) => {
     }
   };
 
-
   // const handleGenerateReport = async () => {
-    const handleGenerateReport = (plateNumber) => {
+  const handleGenerateReport = (plateNumber) => {
     try {
       // if (selectedPlateNumber) {
-        if (!plateNumber) {
+      if (!plateNumber) {
         console.log("Generating report for plate number:", selectedPlateNumber);
         // Add your logic for generating the report
-    } else {
+      } else {
         console.log("No plate number selected");
-    }
-    const bookingDetails = filteredData.find(booking => booking.plateNumber === plateNumber);
+      }
+      const bookingDetails = filteredData.find(
+        (booking) => booking.plateNumber === plateNumber
+      );
 
       const doc = new jsPDF();
       // addCommonContent(doc);
@@ -383,56 +390,56 @@ const handleVehicleClick = (plateNumber) => {
       doc.setFontSize(16);
       doc.text("Booking Request Letter", 68, 70);
 
-     
-    doc.setFontSize(12);
-    doc.text(`From: ${formData.clientName}`, 14, 30);
+      doc.setFontSize(12);
+      doc.text(`From: ${formData.clientName}`, 14, 30);
 
-    // Add date
-    const currentDate = new Date().toLocaleDateString();
-    doc.text(`Date: ${currentDate}`, 14, 44);
+      // Add date
+      const currentDate = new Date().toLocaleDateString();
+      doc.text(`Date: ${currentDate}`, 14, 44);
 
-     // Add body of the letter
-     doc.setFontSize(12);
-     doc.text("Dear Sir/Madam,", 14, 60);
-     doc.text(
-       "We would like to request a booking for the following vehicle:",
-       14,
-       67
-     );
- 
-     // Add vehicle details
-    //  filteredData.forEach((booking, index) => {
-    //    const startY = 80 + index * 30;
-    //    doc.text(`Plate No.: ${booking.plateNumber}`, 14, startY);
-    //    doc.text(`Destination: ${booking.destination}`, 14, startY + 7);
-    //    doc.text(`Bound For: ${booking.boundFor}`, 14, startY + 14);
-    //    doc.text(`Departure: ${formatTime(booking.timeForBound)}`, 14, startY + 21);
-    //    doc.text(`Return: ${formatTime(booking.returnDate)}`, 14, startY + 28);
-    //  });
-   
- 
-          // Clear existing content or initialize a new PDF document
-          // Then add booking details
-          doc.text(`Plate No.: ${bookingDetails.plateNumber}`, 14, 80);
-          doc.text(`Destination: ${bookingDetails.destination}`, 14, 87);
-          doc.text(`Bound For: ${bookingDetails.boundFor}`, 14, 94);
-          doc.text(`Departure: ${formatTime(bookingDetails.timeForBound)}`, 14, 101);
-          doc.text(`Return: ${formatTime(bookingDetails.returnDate)}`, 14, 108);
-     
+      // Add body of the letter
+      doc.setFontSize(12);
+      doc.text("Dear Sir/Madam,", 14, 60);
+      doc.text(
+        "We would like to request a booking for the following vehicle:",
+        14,
+        67
+      );
 
-     // Add closing remarks
-    const lastY = 80 + filteredData.length * 30;
-    doc.text("Thank you for your attention to this matter.", 14, lastY + 10);
-    doc.text("Best regards,", 14, lastY + 20);
-    doc.text("Your Name", 14, lastY + 30); // Change "Your Name" to the sender's name
-  
+      // Add vehicle details
+      //  filteredData.forEach((booking, index) => {
+      //    const startY = 80 + index * 30;
+      //    doc.text(`Plate No.: ${booking.plateNumber}`, 14, startY);
+      //    doc.text(`Destination: ${booking.destination}`, 14, startY + 7);
+      //    doc.text(`Bound For: ${booking.boundFor}`, 14, startY + 14);
+      //    doc.text(`Departure: ${formatTime(booking.timeForBound)}`, 14, startY + 21);
+      //    doc.text(`Return: ${formatTime(booking.returnDate)}`, 14, startY + 28);
+      //  });
 
-    // Save the PDF
-//     doc.save("booking_request_letter.pdf");
-//   } catch (error) {
-//     console.error("Error generating PDF:", error);
-//   }
-// };
+      // Clear existing content or initialize a new PDF document
+      // Then add booking details
+      doc.text(`Plate No.: ${bookingDetails.plateNumber}`, 14, 80);
+      doc.text(`Destination: ${bookingDetails.destination}`, 14, 87);
+      doc.text(`Bound For: ${bookingDetails.boundFor}`, 14, 94);
+      doc.text(
+        `Departure: ${formatTime(bookingDetails.timeForBound)}`,
+        14,
+        101
+      );
+      doc.text(`Return: ${formatTime(bookingDetails.returnDate)}`, 14, 108);
+
+      // Add closing remarks
+      const lastY = 80 + filteredData.length * 30;
+      doc.text("Thank you for your attention to this matter.", 14, lastY + 10);
+      doc.text("Best regards,", 14, lastY + 20);
+      doc.text("Your Name", 14, lastY + 30); // Change "Your Name" to the sender's name
+
+      // Save the PDF
+      //     doc.save("booking_request_letter.pdf");
+      //   } catch (error) {
+      //     console.error("Error generating PDF:", error);
+      //   }
+      // };
       // const tableData = bookingData.map((booking) => [
       //   booking.plateNumber,
       //   booking.boundFor,
@@ -612,7 +619,7 @@ const handleVehicleClick = (plateNumber) => {
 
       // Create a URL for the Blob
       const url = URL.createObjectURL(blob);
-   
+
       // Open the URL in a new tab
       window.open(url, "_blank");
       // } else {
@@ -620,7 +627,6 @@ const handleVehicleClick = (plateNumber) => {
       //       }
       //   } else {
       //       console.error("No plate number selected");
-     
     } catch (error) {
       console.error("Error generating PDF:", error);
     }
@@ -717,6 +723,34 @@ const handleVehicleClick = (plateNumber) => {
     booking[searchField].toLowerCase().includes(searchQuery.toLowerCase())
   );
 
+  const handleToggleBooking = async (booking) => {
+    const action = booking.isActive ? "archive" : "activate";
+    const confirmAction = window.confirm(
+      `Are you sure you want to ${action} this booking?`
+    );
+    if (!confirmAction) {
+      return;
+    }
+
+    try {
+      const response = await axios.put(
+        `http://localhost:3000/${action}book/${booking.plateNumber}`
+      );
+      if (response.data.success) {
+        setBookingData((prevData) =>
+          prevData.map((prevBooking) => {
+            if (prevBooking.plateNumber === booking.plateNumber) {
+              return { ...prevBooking, isActive: !booking.isActive };
+            }
+            return prevBooking;
+          })
+        );
+      }
+    } catch (error) {
+      console.error(`Error ${action}ing booking:`, error);
+    }
+  };
+
   return (
     <>
       <div>
@@ -760,9 +794,9 @@ const handleVehicleClick = (plateNumber) => {
             <tr>
               <th>PLATE NO.</th>
               <th>DESTINATION</th>
-              <th>BOUND FOR</th>
+              <th>OFFICE</th>
               <th>DEPARTURE</th>
-              <th>RETURN</th>
+              <th>STATUS</th>
               <th>ACTION</th>
             </tr>
           </thead>
@@ -810,12 +844,12 @@ const handleVehicleClick = (plateNumber) => {
                     {editableData._id === booking._id ? (
                       <input
                         type="text"
-                        value={editableData.destination}
-                        onChange={(e) => handleChange(e, "destination")}
+                        value={editableData.clientName} // Change here
+                        onChange={(e) => handleChange(e, "clientName")} // Change here
                         required
                       />
                     ) : (
-                      booking.destination
+                      booking.clientName // Change here
                     )}
                   </td>
                   <td>
@@ -875,11 +909,18 @@ const handleVehicleClick = (plateNumber) => {
                     <button
                       type="button"
                       className="btn btn-danger btn-sm"
+                      onClick={() => handleToggleBooking(booking)}
+                    >
+                      {booking.isActive ? "Activate" : "Archive"}
+                    </button>
+                    {/* <button
+                      type="button"
+                      className="btn btn-danger btn-sm"
                       onClick={() => handleDeleteBooking(booking.plateNumber)}
                     >
                       Delete
-                    </button>
-                {/*      <button
+                    </button> */}
+                    {/*      <button
                     onClick={handleGenerateReport}
 
                       className="actionBtn "

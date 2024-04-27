@@ -4,7 +4,7 @@
   left: 0;
   top: 0;
   height: 100vh;
-  background-color: #161d3fb0;
+  background-color: #011D39;
   border-radius: 5px;
   padding-left: 3px;
   z-index:1;
@@ -222,7 +222,7 @@ main {
 /* Sidebar */
 .sidebar {
   /* background: rgb(0, 7, 61); */
-  background: #215cad;
+  background: #011D39;
   color: white;
   height: 100vh;
   overflow-y: auto;
@@ -350,13 +350,15 @@ position: absolute;
 
 .link:hover {
   border-right: 2px solid white;
-  background: rgba(188, 195, 243, 0.501);
+  background: rgba(47, 62, 165, 0.501);
   color: white;
   transition: 0.2s cubic-bezier(0.6, -0.28, 0.735, 0.045);
+  
 }
 .active {
   border-right: 2px solid white;
-  background: #9aa4ff;
+  background: #4e4f8d;
+  margin: 3px;
 }
 
 .link_text {

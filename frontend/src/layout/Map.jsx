@@ -23,7 +23,8 @@ function Map() {
   const [mapKey, setMapKey] = useState(0);
   const [showModal, setShowModal] = useState(false);
   const [showConfirmationModal, setShowConfirmationModal] = useState(false);
-
+  const [locationName, setLocationName] = useState("");
+  
   const toggleVisibility = () => {
     setIsVisible((prevVisible) => !prevVisible);
   };

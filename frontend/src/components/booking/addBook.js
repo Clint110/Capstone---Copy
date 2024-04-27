@@ -27,6 +27,7 @@ import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import logo from "../sidebaraddbooking/images/buksu-new-logo.png";
 import "react-big-calendar/lib/css/react-big-calendar.css";
 import "react-big-calendar/lib/addons/dragAndDrop/styles.css";
+import { AiFillSchedule } from "react-icons/ai";
 
 // import 'react-big-calendar/lib/sass/styles';
 
@@ -311,6 +312,11 @@ function AddBook() {
       path: "/addbook",
       name: "Booking",
       icon: <FaRegCalendarCheck className="iconSidebar" />,
+    },
+    {
+      path: "/scheduletwo",
+      name: "Schedule",
+      icon: <AiFillSchedule className="iconSidebar" />,
     },
     {
       path: "/tripreport",
