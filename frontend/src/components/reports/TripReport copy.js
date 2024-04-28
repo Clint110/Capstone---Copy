@@ -66,11 +66,11 @@ function TripReport() {
       name: "Booking",
       icon: <FaRegCalendarCheck className="iconSidebar" />,
     },
-    {
-      path: "/scheduletwo",
-      name: "Schedule",
-      icon: <AiFillSchedule className="iconSidebar" />,
-    },
+    // {
+    //   path: "/scheduletwo",
+    //   name: "Schedule",
+    //   icon: <AiFillSchedule className="iconSidebar" />,
+    // },
     {
       path: "/tripreport",
       name: "Report",

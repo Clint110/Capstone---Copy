@@ -20,7 +20,6 @@ import AddBook from "./components/booking/addBook";
 import SideBar2 from "./components/sidebaraddbooking/Sidebaraddname";
 import logoutaddbook from "./components/sidebaraddbooking/Logoutaddbook";
 import TripReport2 from "./components/reports/TripReport copy";
-import Driverstwo from "./components/driver/Driverstwo";
 import Drivers from "./components/driver/Drivers";
 
 function App() {
@@ -30,7 +29,6 @@ function App() {
         <Route path="/" element={<Login />} />
         <Route path="/booking-ticket" element={<BookingTicket />} />
         <Route path="/addbook" element={<AddBook />} />
-        <Route path="/driverstwo" element={<Driverstwo />} />
         <Route path="/logout" element={<Logout />} />
         <Route path="/logoutsec" element={<LogoutSec />} />
         <Route path="/tripreport" element={<TripReport2 />} />

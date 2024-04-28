@@ -313,11 +313,11 @@ function AddBook() {
       name: "Booking",
       icon: <FaRegCalendarCheck className="iconSidebar" />,
     },
-    {
-      path: "/scheduletwo",
-      name: "Schedule",
-      icon: <AiFillSchedule className="iconSidebar" />,
-    },
+    // {
+    //   path: "/scheduletwo",
+    //   name: "Schedule",
+    //   icon: <AiFillSchedule className="iconSidebar" />,
+    // },
     {
       path: "/tripreport",
       name: "Report",
@@ -460,7 +460,7 @@ function AddBook() {
                 className="add_booking_area_btn"
                 onClick={() => setScrollableModal(!scrollableModal)}
               >
-                + ADD BOOKING
+                + PRE BOOKING
               </button>
               <hr />
               <div className="reminder-Head">
@@ -506,7 +506,7 @@ function AddBook() {
                   >
                     <MDBModalContent>
                       <MDBModalHeader>
-                        <MDBModalTitle>Add Booking</MDBModalTitle>
+                        <MDBModalTitle>Pre Booking</MDBModalTitle>
                         <button
                           className="btn-close"
                           color="none"
@@ -538,20 +538,9 @@ function AddBook() {
 
     </div> */}
                         <form id="addbook" onSubmit={handlebookingsub}>
-                          <label>
+                          {/* <label>
                             Plate Number
-                            {/* <select
-                             
-                              value={formData.plateNumber}
-                              onChange={(e) => setFormData({ ...formData, plateNumber: e.target.value })}
-                            >
-                              <option value="">Select Plate Number</option>
-                              {plateNumbers.map((plateNumber) => (
-                                <option key={plateNumber} value={plateNumber}>
-                                  {plateNumber}
-                                </option>
-                              ))}
-                            </select> */}
+                            
                             <select
                               className="bookingInput"
                               value={selectedPlateNumber}
@@ -568,7 +557,7 @@ function AddBook() {
                               ))}
                             </select>
                             <p>Status: {selectedPlateNumberStatus}</p>
-                          </label>
+                          </label> */}
                           {/* <label>
          DRIVER’s NAME
             <input type="text" className='bookingInput' value={formData.driverName} onChange={(e) => setFormData({ ...formData, driverName: e.target.value })}/>
@@ -589,10 +578,11 @@ function AddBook() {
                             />
                           </label>
                           <label>
-                            No. of Passenger
+                            Name of Passenger
                             <input
-                              type="number"
+                              type="text"
                               className="bookingInput"
+                              style={{ height: "100px" }}
                               value={formData.passengerQuantity}
                               onChange={(e) =>
                                 setFormData({
@@ -694,7 +684,7 @@ function AddBook() {
                             <input
                               type="text"
                               className="bookingInput"
-                              style={{ height: "250px" }}
+                              style={{ height: "100px" }}
                               value={formData.purpose}
                               onChange={(e) =>
                                 setFormData({
