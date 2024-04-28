@@ -17,6 +17,7 @@ import "primeicons/primeicons.css";
 import { FcDownload } from "react-icons/fc";
 import HeaderReport from "../reports/HeaderReport";
 import { Modal, Button } from "react-bootstrap";
+import { TfiSearch } from "react-icons/tfi";
 
 function formatDateTime(dateTimeString) {
   const options = {
@@ -44,6 +45,16 @@ const TripReport = () => {
   const [modalOpen, setModalOpen] = useState(false);
   const [showModal, setShowModal] = useState(false);
   const [selectedBooking, setSelectedBooking] = useState(null);
+  const [showEditModal, setShowEditModal] = useState(false);
+
+  const handleEditOpen = (index) => {
+    // Logic for handling edit action goes here
+    setShowEditModal(true);
+  };
+
+  const handleEditCloseModal = () => {
+    setShowEditModal(false);
+  };
 
   const handleOpenModal = (booking) => {
     setSelectedBooking(booking);
@@ -825,6 +836,8 @@ const TripReport = () => {
           value={searchQuery}
           onChange={(e) => setSearchQuery(e.target.value)}
         />
+        
+  
         <select
           value={searchField}
           onChange={(e) => setSearchField(e.target.value)}
@@ -944,11 +957,13 @@ const TripReport = () => {
                     )}
                   </td>
                   <td>
+                  {/* <div className="btn-group"> */}
+                    {/* Edit button */}
                     {editableData._id === booking._id ? (
                       <>
                         <button
                           type="button"
-                          class="btn btn-success btn-sm"
+                          className="btn btn-success btn-sm"
                           onClick={() => handleSubmit(index)}
                         >
                           Submit
@@ -956,7 +971,7 @@ const TripReport = () => {
                         &nbsp;
                         <button
                           type="button"
-                          class="btn btn-primary btn-sm"
+                          className="btn btn-primary btn-sm"
                           onClick={() => setEditableData({})}
                         >
                           Cancel
@@ -965,14 +980,14 @@ const TripReport = () => {
                     ) : (
                       <button
                         type="button"
-                        class="btn btn-warning btn-sm"
-                        onClick={() => handleEdit(index)}
+                        className="btn btn-warning btn-sm"
+                        onClick={() => handleEditOpen(index)}
                       >
                         Edit
                       </button>
                     )}
-                    {/* &nbsp;<button type="button" class="btn btn-danger btn-sm">Delete</button> */}
-                    &nbsp;{" "}
+                    &nbsp;{"  "}
+                    {/* Archive button */}
                     <button
                       type="button"
                       className="btn btn-danger btn-sm"
@@ -980,6 +995,8 @@ const TripReport = () => {
                     >
                       {booking.isActive ? "Activate" : "Archive"}
                     </button>
+                  {/* </div> */}
+                </td>
                     {/* <button
                       type="button"
                       className="btn btn-danger btn-sm"
@@ -994,7 +1011,7 @@ const TripReport = () => {
                     >
                       <FcDownload />
                     </button> */}
-                  </td>
+                 
                 </tr>
               ))}
             </tbody>
@@ -1025,6 +1042,42 @@ const TripReport = () => {
           </DataTable> */}
       {/* </div>
       </div> */}
+        {/* Edit Booking Modal */}
+      <Modal show={showEditModal} onHide={handleEditCloseModal}>
+        <Modal.Header closeButton>
+          <Modal.Title>Edit Report</Modal.Title>
+        </Modal.Header>
+        <Modal.Body>
+        <form>
+          <div className="form-group">
+            <label htmlFor="plateNumber">Plate Number</label>
+            <select className="form-control" id="plateNumber">
+              {/* Populate options for plate numbers here */}
+              <option value="plateNumber1">Plate Number 1</option>
+              <option value="plateNumber2">Plate Number 2</option>
+              <option value="plateNumber3">Plate Number 3</option>
+            </select>
+          </div>
+          <div className="form-group">
+            <label htmlFor="destination">Destination</label>
+            <input type="text" className="form-control" id="destination" />
+          </div>
+          <div className="form-group">
+            <label htmlFor="office">Office</label>
+            <input type="text" className="form-control" id="office" />
+          </div>
+        </form>
+        </Modal.Body>
+        <Modal.Footer>
+          <Button variant="secondary" onClick={handleEditCloseModal}>
+            Cancel
+          </Button>
+          <Button variant="primary" onClick={handleEditCloseModal}>
+            Save Changes
+          </Button>
+        </Modal.Footer>
+      </Modal>
+
       {/* Modal for completing booking */}
       <Modal show={showModal} onHide={handleCloseModal}>
         <Modal.Header closeButton>

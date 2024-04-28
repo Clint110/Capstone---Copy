@@ -243,9 +243,6 @@ function Booking() {
   }
 
   const EventComponent = ({ event, height }) => {
-  const EventComponent = ({ event, height, view }) => {
-    const isMonthView = view === "month";
-
     return (
       <div className="EventComponent" style={{ height }}>
         {/* Display only the plate number */}
