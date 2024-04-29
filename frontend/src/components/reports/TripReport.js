@@ -938,23 +938,27 @@ const TripReport = () => {
                     )}
                   </td>
                   <td>
-                    {isBookingDatePassed(booking.timeAndDate) ? (
-                      <button
-                        type="button"
-                        className="btn btn-success btn-sm"
-                        onClick={() => handleCompleteBooking(booking)}
-                      >
-                        Complete
-                      </button>
-                    ) : (
-                      <button
-                        type="button"
-                        className="btn btn-warning btn-sm"
-                        onClick={() => handleOpenModal(booking)}
-                      >
-                        Pending
-                      </button>
-                    )}
+                  {isBookingDatePassed(booking.timeAndDate) ? (
+  <button
+    type="button"
+    className="btn btn-success btn-sm"
+    style={{ width: "100px" }} // Adjust width as needed
+    onClick={() => handleCompleteBooking(booking)}
+  >
+    Completed
+  </button>
+) : (
+  <button
+    type="button"
+    className="btn btn-warning btn-sm"
+    style={{ width: "100px" }} // Adjust width as needed
+    onClick={() => handleOpenModal(booking)}
+  >
+    Pending
+  </button>
+)}
+
+                    
                   </td>
                   <td>
                   {/* <div className="btn-group"> */}
