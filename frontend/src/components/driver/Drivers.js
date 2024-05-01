@@ -116,7 +116,7 @@ function Drivers() {
                     id="searchright"
                     type="search"
                     name="q"
-                    placeholder="Search. . ."
+                    placeholder="Search Driver's Name"
                     // value={searchInput}
                     // onChange={(e) => setSearchInput(e.target.value)}
                   />
@@ -136,25 +136,23 @@ function Drivers() {
               </p>
             </div>
 
+           
             <div>
               <button
-                className="button-all"
-                // className={`button-all ${isActive("all")}`}
-                // onClick={() => handleFilter("all")}
+                className={`button-all ${isActive("all")}`}
+                onClick={() => handleFilter("all")}
               >
                 All
               </button>
               <button
-                className="button-all"
-                // className={`button-available ${isActive("available")}`}
-                // onClick={() => handleFilter("available")}
+                className={`button-available ${isActive("available")}`}
+                onClick={() => handleFilter("available")}
               >
                 Available
               </button>
               <button
-                className="button-all"
-                // className={`button-used ${isActive("used")}`}
-                // onClick={() => handleFilter("used")}
+                className={`button-used ${isActive("used")}`}
+                onClick={() => handleFilter("used")}
               >
                 On Travel
               </button>
@@ -245,16 +243,26 @@ function Drivers() {
                 onChange={handleChange}
               />
             </label>
-            <Button variant="primary" type="submit">
+            {/* <Button variant="primary" type="submit">
               Submit
-            </Button>
+            </Button> */}
           </form>
         </Modal.Body>
         <Modal.Footer>
-          <Button variant="secondary" onClick={handleClose}>
-            Close
-          </Button>
-          <Button variant="primary">Save changes</Button>
+        <Button
+        style={{
+          backgroundColor: '#6c757d',
+          color: '#fff',
+          border: 'none',
+          padding: '8px 16px',
+          cursor: 'pointer',
+          
+        }}
+        onClick={handleClose}
+      >
+        Cancel
+      </Button>
+          <Button variant="primary">Save</Button>
         </Modal.Footer>
       </Modal>
 

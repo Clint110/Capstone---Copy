@@ -109,13 +109,18 @@ body{
     }
   }  */
 
- .dashboard-Reminder h6 {
+  .dashboard-Reminder h6 {
     position: sticky;
     text-align: center;
-    /* top: 11px;  */
-
+    z-index: 1; 
+    padding: 15px; /* Add padding to the top and bottom */
+    top: -10px; /* Move the header up to cover the data */
+    background-color: #f0f0f0; /* Gray background color */
+    border-top-left-radius: 10px; /* Add border radius to the top left corner */
+    border-top-right-radius: 10px; /* Add border radius to the top right corner */
+    /* border-bottom-left-radius: 10px;
+    border-bottom-right-radius: 10px; */
   }
-
 
 .dashboard-Reminder {
   padding-right: 0px; 

@@ -134,7 +134,7 @@ height: 40px;
 .reportTable tbody td:last-child {
  padding-left: 10px;
  padding-top: 5px;
- width: 130px;
+ width: 200px;
  padding: 5px;
 }
 
@@ -143,7 +143,7 @@ height: 40px;
  
  }
  .reportTable tbody td:nth-child(5) {
-  width: 300px;
+  width: 200px;
   }
 
   .reportTable tbody td:nth-child(4) {
@@ -154,10 +154,10 @@ height: 40px;
       width: 190px;
       }
       .reportTable tbody td:nth-child(2) {
-        width: 190px;
+        width: 250px;
         }
 .reportTable tbody td:first-child {
-          width: 130px;
+          width: 160px;
           padding: 5px;
           }
 .reportTable thead th:first-child {
@@ -167,6 +167,8 @@ padding-left: 5px;
 .DataTable th {
   border: 2px solid #8f0a0a; /* Border color */
 }
+
+
 
 
 .actionBtn{

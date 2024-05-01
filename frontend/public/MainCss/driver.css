@@ -29,6 +29,18 @@
     margin-left: 95px;
   }
 
+  .secondary-button {
+    background-color: #6c757d;
+    color: #fff;
+    border: none;
+    padding: 8px 16px;
+    cursor: pointer;
+  }
+  
+  .secondary-button:hover {
+    background-color: #495057;
+  }
+  
   .plusdriver {
     font-size: 30px;
     margin-left: 20px;

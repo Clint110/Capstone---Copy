@@ -16,6 +16,8 @@ import "primereact/resources/primereact.min.css";
 import "primeicons/primeicons.css";
 import { FcDownload } from "react-icons/fc";
 import HeaderReport from "../reports/HeaderReport";
+import { Modal, Button } from "react-bootstrap";
+import { TfiSearch } from "react-icons/tfi";
 
 function formatDateTime(dateTimeString) {
   const options = {
@@ -40,6 +42,35 @@ const TripReport = () => {
   const [formData, setFormData] = useState({});
   const [selectedPlateNumber, setSelectedPlateNumber] = useState(null);
   const [showArchived, setShowArchived] = useState(false);
+  // const [filteredData, setFilteredData] = useState([]);
+  const [modalOpen, setModalOpen] = useState(false);
+  const [showModal, setShowModal] = useState(false);
+  const [selectedBooking, setSelectedBooking] = useState(null);
+  const [showEditModal, setShowEditModal] = useState(false);
+
+  const handleEditOpen = (index) => {
+    // Logic for handling edit action goes here
+    setShowEditModal(true);
+  };
+
+  const handleEditCloseModal = () => {
+    setShowEditModal(false);
+  };
+
+  const handleOpenModal = (booking) => {
+    setSelectedBooking(booking);
+    setShowModal(true);
+  };
+
+  const handleCloseModal = () => {
+    setShowModal(false);
+    setSelectedBooking(null);
+  };
+  const handleCompleteBooking = () => {
+    // Logic for completing the booking goes here
+    console.log("Booking completed:", selectedBooking);
+    handleCloseModal();
+  };
 
   // Function to handle vehicle click
   const handleVehicleClick = (plateNumber) => {
@@ -57,7 +88,7 @@ const TripReport = () => {
   const generatePDF = async () => {
     try {
       const doc = new jsPDF();
-
+      //FOOTER
       // Track page number
       let pageNumber = 1;
 
@@ -114,19 +145,43 @@ const TripReport = () => {
       // Add a page with the page number
       addPageWithNumber();
 
-      doc.setFontSize(10); // Adjust font size here
+      // Header content
+      doc.setFontSize(10);
       doc.text("Fortich St. Malaybalay City, Bukidnon 8700", 74, 30);
-
       doc.addImage(logo, "PNG", 30, 15, 20, 18);
       doc.addImage(otherLogo, "PNG", 157, 15, 20, 18);
 
-      doc.setFontSize(14); // Adjust font size here
+      const currentDate = new Date();
+      const currentMonth = currentDate.toLocaleString('default', { month: 'long' });
+      const currentYear = currentDate.getFullYear();
+      doc.setFontSize(13);
       doc.text(
-        "NUMBER OF TRIP PER VEHICLE FOR THE MONTH OF APRIL 2024",
-        33,
-        55
+        `NUMBER OF TRIP PER VEHICLE FOR THE MONTH OF ${currentMonth.toUpperCase()} ${currentYear}`,
+          34,
+          55
       );
 
+      doc.setFontSize(13);
+      doc.text(
+        `Within and Beyond Official Station`,
+          73,
+          62
+      );
+      
+      doc.setFont(undefined, "bold");
+      doc.setFontSize(12);
+      doc.text("GSU - Motorpool Section", 80, 45);
+
+      doc.setFont("times");
+      doc.setFontSize(17);
+      doc.text("BUKIDNON STATE UNIVERSITY", 58, 25);
+      // doc.setFontSize(10); // Adjust font size here
+      // doc.text("Fortich St. Malaybalay City, Bukidnon 8700", 74, 30);
+
+      // doc.addImage(logo, "PNG", 30, 15, 20, 18);
+      // doc.addImage(otherLogo, "PNG", 157, 15, 20, 18);
+
+      //BELOW THE TABLE
       let yPos = 45;
       // doc.text("Prepared by:", 15, textYPos);
       doc.setFontSize(12); // Adjust font size here
@@ -157,9 +212,9 @@ const TripReport = () => {
       doc.setFontSize(11); // Adjust font size here
       doc.text("Head, GSU", 160, 200);
 
-      doc.setFontSize(12); // Adjust font size here
-      doc.setFont(undefined, "bold"); // Set font weight to bold
-      doc.text("GSU - Motorpool Section", 83, 45);
+      // doc.setFontSize(12); // Adjust font size here
+      // doc.setFont(undefined, "bold"); // Set font weight to bold
+      // doc.text("GSU - Motorpool Section", 83, 45);
 
       doc.setFontSize(12); // Adjust font size here
       doc.text("SNIFFY L. TIMONES", 25, 162);
@@ -187,10 +242,13 @@ const TripReport = () => {
       const startYNew = 186 + topMarginNew; // Adjust to position the text below the top margin for the new copy
       doc.text(textNew, 25 + leftMarginNew, 185 + topMarginNew); // Adjusted y-coordinate for the text for the new copy
       doc.line(startXNew, startYNew, startXNew + textWidthNew, startYNew); // Adjusted start and end positions for the line for the new copy
+      
 
-      doc.setFont("times"); // Set font to Times New Roman
-      doc.setFontSize(17); // doc.setFont('helvetica', 'bold'); // Set font to bold
-      doc.text("BUKIDNON STATE UNIVERSITY", 58, 25);
+     
+
+      // doc.setFont("times"); // Set font to Times New Roman
+      // doc.setFontSize(17); // doc.setFont('helvetica', 'bold'); // Set font to bold
+      // doc.text("BUKIDNON STATE UNIVERSITY", 58, 25);
 
       // doc.setFont('times'); // Set font to Times New Roman
       // doc.setFontSize(17); // doc.setFont('helvetica', 'bold'); // Set font to bold
@@ -202,7 +260,7 @@ const TripReport = () => {
       //   booking.destination,
       // ]);
       //Brendyl Ani
-
+      //TABLE
       // Calculate total number of trips per vehicle
       const tripsPerVehicle = {};
       bookingData.forEach((booking) => {
@@ -311,6 +369,8 @@ const TripReport = () => {
           }
         },
       });
+
+      
       // Convert the PDF content into a data URL
       const dataUri = doc.output("datauristring");
 
@@ -637,6 +697,17 @@ const TripReport = () => {
       console.error(`Error ${action}ing booking:`, error);
     }
   };
+  const isBookingDatePassed = (bookingDate) => {
+    const now = new Date();
+    return new Date(bookingDate) < now;
+  };
+
+  const handleToggleStatus = (index) => {
+    const updatedData = [...filteredData];
+    updatedData[index].status =
+      updatedData[index].status === "Pending" ? "Used" : "Pending";
+    setBookingData(updatedData);
+  };
 
   return (
     <>
@@ -652,6 +723,8 @@ const TripReport = () => {
           value={searchQuery}
           onChange={(e) => setSearchQuery(e.target.value)}
         />
+        
+  
         <select
           value={searchField}
           onChange={(e) => setSearchField(e.target.value)}
@@ -744,23 +817,36 @@ const TripReport = () => {
                     )}
                   </td>
                   <td>
-                    {editableData._id === booking._id ? (
-                      <input
-                        type="text"
-                        value={editableData.returnDate}
-                        onChange={(e) => handleChange(e, "returnDate")}
-                        required
-                      />
-                    ) : (
-                      booking.returnDate
-                    )}
+                  {isBookingDatePassed(booking.timeAndDate) ? (
+  <button
+    type="button"
+    className="btn btn-success btn-sm"
+    style={{ width: "100px" }} // Adjust width as needed
+    onClick={() => handleCompleteBooking(booking)}
+  >
+    Completed
+  </button>
+) : (
+  <button
+    type="button"
+    className="btn btn-warning btn-sm"
+    style={{ width: "100px" }} // Adjust width as needed
+    onClick={() => handleOpenModal(booking)}
+  >
+    Pending
+  </button>
+)}
+
+                    
                   </td>
                   <td>
+                  {/* <div className="btn-group"> */}
+                    {/* Edit button */}
                     {editableData._id === booking._id ? (
                       <>
                         <button
                           type="button"
-                          class="btn btn-success btn-sm"
+                          className="btn btn-success btn-sm"
                           onClick={() => handleSubmit(index)}
                         >
                           Submit
@@ -768,7 +854,7 @@ const TripReport = () => {
                         &nbsp;
                         <button
                           type="button"
-                          class="btn btn-primary btn-sm"
+                          className="btn btn-primary btn-sm"
                           onClick={() => setEditableData({})}
                         >
                           Cancel
@@ -777,38 +863,21 @@ const TripReport = () => {
                     ) : (
                       <button
                         type="button"
-                        class="btn btn-warning btn-sm"
-                        onClick={() => handleEdit(index)}
+                        className="btn btn-warning btn-sm"
+                        onClick={() => handleEditOpen(index)}
                       >
                         Edit
                       </button>
                     )}
                     {/* &nbsp;<button type="button" class="btn btn-danger btn-sm">Delete</button> */}
                     &nbsp;{" "}
-                    {!showArchived && (
-                              <button
-                                type="button"
-                                className="btn btn-danger btn-sm"
-                                onClick={() => handleArchiveBooking(booking.plateNumber)}
-                              >
-                                Archive
-                              </button>
-                            )}
-                    {showArchived && (
                     <button
-                      className="action-btn activate-btn" // Added activate-btn class
-                      onClick={() => handleActivateBooking(booking.plateNumber)}
-                    >
-                      Activate
-                    </button>
-                     )}
-                    {/* <button
                       type="button"
-                      className="btn btn-primary btn-sm"
+                      className="btn btn-danger btn-sm"
                       onClick={() => handleToggleBooking(booking)}
                     >
                       {booking.isActive ? "Activate" : "Archive"}
-                    </button> */}
+                    </button>
                     {/* <button
                       type="button"
                       className="btn btn-danger btn-sm"
@@ -823,7 +892,7 @@ const TripReport = () => {
                     >
                       <FcDownload />
                     </button> */}
-                  </td>
+                 
                 </tr>
               ))}
             </tbody>
@@ -854,6 +923,95 @@ const TripReport = () => {
           </DataTable> */}
       {/* </div>
       </div> */}
+        {/* Edit Booking Modal */}
+      <Modal show={showEditModal} onHide={handleEditCloseModal}>
+        <Modal.Header closeButton>
+          <Modal.Title>Edit Report</Modal.Title>
+        </Modal.Header>
+        <Modal.Body>
+        <form>
+          <div className="form-group">
+            <label htmlFor="plateNumber">Plate Number</label>
+            <select className="form-control" id="plateNumber">
+              {/* Populate options for plate numbers here */}
+              <option value="plateNumber1">Plate Number 1</option>
+              <option value="plateNumber2">Plate Number 2</option>
+              <option value="plateNumber3">Plate Number 3</option>
+            </select>
+          </div>
+          <div className="form-group">
+            <label htmlFor="destination">Destination</label>
+            <input type="text" className="form-control" id="destination" />
+          </div>
+          <div className="form-group">
+            <label htmlFor="office">Office</label>
+            <input type="text" className="form-control" id="office" />
+          </div>
+        </form>
+        </Modal.Body>
+        <Modal.Footer>
+          <Button variant="secondary" onClick={handleEditCloseModal}>
+            Cancel
+          </Button>
+          <Button variant="primary" onClick={handleEditCloseModal}>
+            Save Changes
+          </Button>
+        </Modal.Footer>
+      </Modal>
+
+      {/* Modal for completing booking */}
+      <Modal show={showModal} onHide={handleCloseModal}>
+        <Modal.Header closeButton>
+          <Modal.Title>Complete Booking</Modal.Title>
+        </Modal.Header>
+        <Modal.Body>
+          <p>Complete the booking for /NAME SA CLIENT DAPAT/</p>
+          <form>
+            <label>
+              Plate Number
+              <select className="bookingInput" required>
+                <option value="" disabled>
+                  Select Plate Number
+                </option>
+                {/* {plateNumbers.map(({ plateNumber }) => (
+                  <option key={plateNumber} value={plateNumber}>
+                    {plateNumber}
+                  </option>
+                ))} */}
+              </select>
+              <p>
+                Status:
+                {/* {selectedPlateNumberStatus} */}
+              </p>
+              <p>Seats: </p>
+            </label>
+
+            <label>
+              Drivers
+              <select className="bookingInput" required>
+                <option value="" disabled>
+                  Select Available Driver
+                </option>
+                {/* {plateNumbers.map(({ plateNumber }) => (
+                  <option key={plateNumber} value={plateNumber}>
+                    {plateNumber}
+                  </option>
+                ))} */}
+              </select>
+              <p>
+                Status:
+                {/* {selectedPlateNumberStatus} */}
+              </p>
+            </label>
+          </form>
+          <Button variant="secondary" onClick={handleCloseModal}>
+            Cancel
+          </Button>{" "}
+          <Button variant="success" onClick={handleCompleteBooking}>
+            Complete Booking
+          </Button>
+        </Modal.Body>
+      </Modal>
     </>
   );
 };

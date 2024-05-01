@@ -137,41 +137,9 @@ function Reminder() {
     <div>
       <div className="dashboard-Reminder">
         <h6>Vehicle Routes</h6>
-        <hr />
+    
         <table className="BookingList">
           <tbody className="BookingList">
-            <td>HAHAH</td>
-            {/* <tr>
-              <td>
-                {`PlateNumber: ${plateData.plateNumber} is currently at Longitude: ${plateData.longitude}, Latitude: ${plateData.latitude}`}
-              </td>
-            </tr> */}
-            {/* {allEvents
-              .slice(0)
-              .reverse()
-              .map((event) => (
-                <tr key={event._id}>
-                  <td>
-                    {`PlateNumber: ${event.plateNumber} is currently at Longitude: ${event.longitude}, Latitude: ${event.latitude}, Time: ${event.time}`}
-                  </td>
-                </tr>
-              ))} */}
-            {/* {allEvents
-              .slice(0)
-              .reverse()
-              .map((event) => (
-                <tr key={event._id}>
-                  <td>
-                    {`PlateNumber: ${
-                      event.plateNumber
-                    } is currently at Longitude: ${
-                      event.longitude
-                    }, Latitude: ${event.latitude}, Time: ${formatTime(
-                      event.time
-                    )}`}
-                  </td>
-                </tr>
-              ))} */}
             {/* {allEvents
               .slice(0)
               .reverse()
