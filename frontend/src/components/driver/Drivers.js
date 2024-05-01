@@ -13,9 +13,11 @@ import { IoCarSportOutline } from "react-icons/io5";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faCircleUser } from "@fortawesome/free-solid-svg-icons";
 import { Button, Modal } from "react-bootstrap";
+import {  DropdownButton, Dropdown } from "react-bootstrap";
 
 function Drivers() {
-  const [filter, setFilter] = useState("all");
+  const [drivers, setDrivers] = useState([]);
+  const [filter, setFilter] = useState("active"); 
   const [show, setShow] = useState(false);
   // const handleClose = () => setShow(false);
   const handleShow = () => setShow(true);
@@ -24,11 +26,13 @@ function Drivers() {
   const [showDeleteModal, setShowDeleteModal] = useState(false);
   const [selectedDriver, setSelectedDriver] = useState(null);
   const [editedDriverName, setEditedDriverName] = useState("");
+  const [searchInput, setSearchInput] = useState("");
 
   // Handler function for filter buttons
   const handleFilter = (selectedFilter) => {
     setFilter(selectedFilter);
   };
+  
 
   const isActive = (selectedFilter) => {
     return selectedFilter === filter ? "active" : "";
@@ -40,17 +44,76 @@ function Drivers() {
 
   console.log(formData);
 
+  // const handleSubmit = async (event) => {
+  //   event.preventDefault();
+  //   try {
+  //     const response = await axios.post("/drivers", { name: formData.name });
+  //     console.log("Driver added:", response.data);
+  //     handleClose();
+  //   } catch (error) {
+  //     console.error("Error adding driver:", error);
+  //     // setError("Error adding driver");
+  //   }
+  // };
+
+  // const handleSubmit = async (event) => {
+  //   event.preventDefault();
+  //   try {
+  //     const response = await axios.post("http://localhost:3000/add", formData);
+  //     console.log("Driver added:", response.data);
+  //     // Reset the form after successful submission
+  //     setFormData({ name: "" });
+  //   } catch (error) {
+  //     console.error("Error adding driver:", error);
+  //   }
+  // };
+
   const handleSubmit = async (event) => {
     event.preventDefault();
     try {
-      const response = await axios.post("/drivers", { name: formData.name });
+      const response = await axios.post("http://localhost:3000/add", formData);
       console.log("Driver added:", response.data);
-      handleClose();
+      setFormData({ name: "" });
+      setShow(false);
+      fetchDrivers(); // Refresh the driver list
     } catch (error) {
       console.error("Error adding driver:", error);
-      // setError("Error adding driver");
     }
   };
+
+  // useEffect(() => {
+  //   fetchDrivers();
+  // }, []);
+
+  // const fetchDrivers = async () => {
+  //   try {
+  //     const response = await axios.get("http://localhost:3000/drivers");
+  //     setDrivers(response.data);
+  //   } catch (error) {
+  //     console.error("Error fetching drivers:", error);
+  //   }
+  // };
+
+
+  const fetchDrivers = async () => {
+    try {
+      let response;
+      if (filter === "active") {
+        response = await axios.get("http://localhost:3000/drivers/active");
+      } else if (filter === "archived") {
+        response = await axios.get("http://localhost:3000/drivers/archived");
+      } else {
+        response = await axios.get("http://localhost:3000/drivers");
+      }
+      setDrivers(response.data);
+    } catch (error) {
+      console.error("Error fetching drivers:", error);
+    }
+  };
+
+  useEffect(() => {
+    fetchDrivers();
+  }, [filter]);
 
   const handleClose = () => {
     setShow(false);
@@ -65,6 +128,7 @@ function Drivers() {
 
   const handleShowEditModal = (driver) => {
     setSelectedDriver(driver);
+  setEditedDriverName(driver.name); 
     setShowEditModal(true);
   };
 
@@ -74,9 +138,45 @@ function Drivers() {
   };
 
   const handleEdit = async () => {
-    // Edit functionality here
-    console.log("Edit driver:", selectedDriver);
-    handleClose();
+    try {
+      const response = await axios.put(`http://localhost:3000/drivers/${selectedDriver._id}`, { name: editedDriverName });
+      console.log("Edit driver:", response.data);
+      fetchDrivers();
+      setShowEditModal(false); // Close the edit modal after editing
+    } catch (error) {
+      console.error("Error editing driver:", error);
+    }
+  };
+
+  const handleArchive = async (driver) => {
+    console.log("Selected Driver for Archiving:", driver);
+    try {
+      if (driver) { // Check if selectedDriver is not null
+        const response = await axios.put(`http://localhost:3000/drivers/${driver._id}/archive`);
+        console.log("Archive driver:", response.data);
+        fetchDrivers();
+        handleClose();
+      }
+    } catch (error) {
+      console.error("Error archiving driver:", error);
+    }
+  };
+
+  const handleActivate = async (driver) => {
+    try {
+      if (driver && driver._id) { // Check if the driver object and its _id property are not null
+        const response = await axios.put(
+          `http://localhost:3000/drivers/${driver._id}/activate`
+        );
+        console.log("Activate driver:", response.data);
+        fetchDrivers();
+        handleClose();
+      } else {
+        console.error("Driver or its ID is null");
+      }
+    } catch (error) {
+      console.error("Error activating driver:", error);
+    }
   };
 
   const handleDelete = async () => {
@@ -88,6 +188,14 @@ function Drivers() {
       console.error("Error deleting driver:", error);
     }
   };
+
+  const handleChanges = (event) => {
+    setSearchInput(event.target.value);
+  };
+
+  const filteredDrivers = drivers.filter((driver) =>
+    driver.name.toLowerCase().includes(searchInput.toLowerCase())
+  );
 
   return (
     <>
@@ -117,8 +225,8 @@ function Drivers() {
                     type="search"
                     name="q"
                     placeholder="Search Driver's Name"
-                    // value={searchInput}
-                    // onChange={(e) => setSearchInput(e.target.value)}
+                    value={searchInput}
+                    onChange={handleChanges}
                   />
                   <label className="button searchbutton" htmlFor="searchright">
                     <TfiSearch className="searchcon" />
@@ -132,7 +240,7 @@ function Drivers() {
               <p className="noDriver">
                 <IoCarSportOutline />
                 {/* {filteredVehicleList.length} */}
-                Total of Drivers{" "}
+                Total of Drivers {filteredDrivers.length}
               </p>
             </div>
 
@@ -156,6 +264,14 @@ function Drivers() {
               >
                 On Travel
               </button>
+
+              <div className="filter-dropdown">
+          <DropdownButton id="dropdown-basic-button" title="Filter">
+            {/* <Dropdown.Item onClick={() => handleFilter("all")}>Show All</Dropdown.Item> */}
+            <Dropdown.Item onClick={() => handleFilter("active")}>Show Active Drivers</Dropdown.Item>
+            <Dropdown.Item onClick={() => handleFilter("archived")}>Show Archived Drivers</Dropdown.Item>
+          </DropdownButton>
+        </div>
             </div>
 
             <div className="ListDriver">
@@ -188,35 +304,41 @@ function Drivers() {
                 <div className="driver-container">
                   <table className="tableDriver">
                     <tbody className="driver-tbody">
+                    {filteredDrivers.map((driver) => (
                       <tr>
                         <td>
-                          <strong>Dr.Jose Rizal</strong>
+                          <strong>{driver.name}</strong>
                         </td>
                         <td>
-                          {/* {vehicleStatus[plateNumber] === "Used"
-                                ? "Used"
-                                : "Available"} */}
+                        {driver.isActive ? "Active" : "Inactive"}
                         </td>
                         <td>
                           {/* Edit and Delete Buttons */}
                           <Button
                             variant="primary"
-                            onClick={() =>
-                              handleShowEditModal({ name: "Dr. Jose Rizal" })
-                            }
+                            onClick={() => handleShowEditModal(driver)}
                           >
                             Edit
                           </Button>{" "}
-                          <Button
+                          {/* <Button
                             variant="danger"
                             onClick={() =>
                               handleShowDeleteModal({ name: "Dr. Jose Rizal" })
                             }
                           >
                             Delete
+                          </Button> */}
+                          { filter === "active" && (
+                                  <Button variant="warning" onClick={() => handleArchive(driver)}>Archive</Button>
+                              )}
+                          {filter === "archived" && (
+                          <Button variant="success" onClick={ () => handleActivate(driver)}>
+                            Activate
                           </Button>
+                        )}
                         </td>
                       </tr>
+                       ))}
                     </tbody>
                   </table>
                 </div>
@@ -262,21 +384,26 @@ function Drivers() {
       >
         Cancel
       </Button>
-          <Button variant="primary">Save</Button>
+      <Button variant="primary" onClick={handleSubmit}>
+      Save
+    </Button>
         </Modal.Footer>
       </Modal>
 
       {/* Edit Driver Modal */}
       <Modal show={showEditModal} onHide={handleClose}>
         <Modal.Body>
-          <form onSubmit={handleSubmit}>
+          {/* <form
+          //</Modal.Body> onSubmit={handleSubmit}
+          > */}
+           <form onSubmit={handleEdit}> {/* Update onSubmit to handleEdit */}
             <label>
               Driver's Name
               <input
                 type="text"
                 className="addVehicle"
                 value={editedDriverName}
-                onChange={(e) => setEditedDriverName(e.target.value)}
+          onChange={(e) => setEditedDriverName(e.target.value)}
               />
             </label>
             <Button variant="primary" type="submit">
