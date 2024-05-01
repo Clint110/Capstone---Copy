@@ -870,13 +870,31 @@ const TripReport = () => {
                     )}
                     {/* &nbsp;<button type="button" class="btn btn-danger btn-sm">Delete</button> */}
                     &nbsp;{" "}
-                    <button
+                    {showArchived && (
+                          // Render only the "Activate" button when showing archived data
+                          <button
+                            className="action-btn activate-btn"
+                            onClick={() => handleActivateBooking(booking.plateNumber)}
+                          >
+                            Activate
+                          </button>
+                    )}
+                    {!showArchived && (
+                        <button
+                          type="button"
+                          className="btn btn-danger btn-sm"
+                          onClick={() => handleArchiveBooking(booking.plateNumber)}
+                        >
+                          Archive
+                        </button>
+                      )}
+                    {/* <button
                       type="button"
                       className="btn btn-danger btn-sm"
                       onClick={() => handleToggleBooking(booking)}
                     >
                       {booking.isActive ? "Activate" : "Archive"}
-                    </button>
+                    </button> */}
                     {/* <button
                       type="button"
                       className="btn btn-danger btn-sm"
