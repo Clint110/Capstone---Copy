@@ -892,7 +892,7 @@ const TripReport = () => {
                     >
                       <FcDownload />
                     </button> */}
-                 
+                 </td>
                 </tr>
               ))}
             </tbody>
