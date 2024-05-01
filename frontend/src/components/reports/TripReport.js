@@ -402,7 +402,6 @@ const TripReport = () => {
 
       const doc = new jsPDF();
       // addCommonContent(doc);
-//hello
       doc.addImage(logo, "PNG", 30, 12, 20, 18);
       doc.addImage(otherLogo, "PNG", 165, 12, 20, 18);
 
