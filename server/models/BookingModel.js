@@ -10,6 +10,7 @@ const bookingSchema = new mongoose.Schema({
   returnDate: { type: Date, required: true },
   purpose: { type: String, required: true },
   timeForBound: { type: String, required: true },
+  status: { type: String, enum: ["active", "archived"], default: "active" } // New field for status
 });
 
 //Brendyl Ani

@@ -1,8 +1,25 @@
 const Booking = require("../models/BookingModel");
 
+// exports.getAllBookings = async (req, res) => {
+//   try {
+//     const allBookings = await Booking.find();
+//     res.json(allBookings);
+//   } catch (error) {
+//     console.error("Error fetching bookings:", error);
+//     res.status(500).json({ error: "Internal Server Error" });
+//   }
+// };
+
 exports.getAllBookings = async (req, res) => {
   try {
-    const allBookings = await Booking.find();
+    let allBookings;
+    if (req.query.showArchived && req.query.showArchived === "true") {
+      // If showArchived is true, fetch all bookings
+      allBookings = await Booking.find();
+    } else {
+      // If showArchived is false or not provided, fetch only active bookings
+      allBookings = await Booking.find({ status: "active" });
+    }
     res.json(allBookings);
   } catch (error) {
     console.error("Error fetching bookings:", error);
@@ -103,6 +120,98 @@ exports.deleteBooking = async (req, res) => {
   } catch (error) {
     console.error("Error deleting booking:", error);
     res.status(500).json({ success: false, message: "Internal Server Error" });
+  }
+};
+
+
+// exports.archiveBooking = async (req, res) => {
+//   try {
+//     const plateNumber = req.params.plateNumber;
+
+//     // Find the booking by plate number and update its status to "archived"
+//     const archivedBooking = await Booking.findOneAndUpdate(
+//       { plateNumber, status: "active" }, // Find active booking with plate number
+//       { $set: { status: "archived" } }, // Set status to "archived"
+//       { new: true } // Return the updated document
+//     );
+
+//     if (!archivedBooking) {
+//       return res.status(404).json({ error: "Active booking not found" });
+//     }
+
+//     res.json({
+//       success: true,
+//       message: "Booking archived successfully",
+//       booking: archivedBooking,
+//     });
+//   } catch (error) {
+//     console.error("Error archiving booking:", error);
+//     res.status(500).json({ success: false, message: "Internal Server Error" });
+//   }
+// };
+
+
+exports.archiveBooking = async (req, res) => {
+  try {
+    const plateNumber = req.params.plateNumber;
+
+    // Find the booking by plate number and update its status to "archived"
+    const archivedBooking = await Booking.findOneAndUpdate(
+      { plateNumber, status: "active" }, // Find active booking with plate number
+      { $set: { status: "archived" } }, // Set status to "archived"
+      { new: true } // Return the updated document
+    );
+
+    if (!archivedBooking) {
+      return res.status(404).json({ error: "Active booking not found" });
+    }
+
+    res.json({
+      success: true,
+      message: "Booking archived successfully",
+      booking: archivedBooking,
+    });
+  } catch (error) {
+    console.error("Error archiving booking:", error);
+    res.status(500).json({ success: false, message: "Internal Server Error" });
+  }
+};
+
+exports.activateBooking = async (req, res) => {
+  try {
+    const plateNumber = req.params.plateNumber;
+
+    // Find the booking by plate number and update its status to "active"
+    const activatedBooking = await Booking.findOneAndUpdate(
+      { plateNumber, status: "archived" }, // Find archived booking with plate number
+      { $set: { status: "active" } }, // Set status to "active"
+      { new: true } // Return the updated document
+    );
+
+    if (!activatedBooking) {
+      return res.status(404).json({ error: "Archived booking not found" });
+    }
+
+    res.json({
+      success: true,
+      message: "Booking activated successfully",
+      booking: activatedBooking,
+    });
+  } catch (error) {
+    console.error("Error activating booking:", error);
+    res.status(500).json({ success: false, message: "Internal Server Error" });
+  }
+};
+
+exports.getArchivedBookings = async (req, res) => {
+  try {
+    // Find all archived bookings
+    const archivedBookings = await Booking.find({ status: "archived" });
+
+    res.json(archivedBookings);
+  } catch (error) {
+    console.error("Error fetching archived bookings:", error);
+    res.status(500).json({ error: "Internal Server Error" });
   }
 };
 

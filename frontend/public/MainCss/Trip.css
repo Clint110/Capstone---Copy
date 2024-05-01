@@ -291,3 +291,16 @@
   line-height: 15px;
   color: #000000ff;
 }
+
+.activate-btn {
+  background-color: green;
+  color: white;
+  border: none;
+  padding: 5px 10px;
+  border-radius: 5px;
+  cursor: pointer;
+}
+
+.activate-btn:hover {
+  background-color: darkgreen;
+}
