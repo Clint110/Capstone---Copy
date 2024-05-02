@@ -5,19 +5,12 @@ import axios from "axios";
 import { Document, Page, Text, View, StyleSheet } from "@react-pdf/renderer";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faCircleUser } from "@fortawesome/free-solid-svg-icons";
-import { FaHistory } from "react-icons/fa";
-import { IoDocumentAttachOutline } from "react-icons/io5";
-import { DataTable } from "primereact/datatable";
-import { Column } from "primereact/column";
 import logo from "../logo.png";
 import otherLogo from "../another-logo.png";
 import "primereact/resources/themes/lara-light-indigo/theme.css";
 import "primereact/resources/primereact.min.css";
 import "primeicons/primeicons.css";
-import { FcDownload } from "react-icons/fc";
-import HeaderReport from "../reports/HeaderReport";
 import { Modal, Button } from "react-bootstrap";
-import { TfiSearch } from "react-icons/tfi";
 
 function formatDateTime(dateTimeString) {
   const options = {
@@ -674,16 +667,6 @@ const TripReport = () => {
       setAvailablePlateNumbers(availableNumbers);
     }
   }, [plateNumbers]);
-
-  // useEffect(() => {
-  //   // Filter available plate numbers only if plateNumbers is not empty
-  //   if (plateNumbers.length > 0) {
-  //     const availableNumbers = plateNumbers.filter(({ status }) => status.includes("Available"));
-  //     const availablePlateNumbers = availableNumbers.map(({ plateNumber }) => plateNumber);
-  //     console.log("Avail:", availablePlateNumbers);
-  //     setAvailablePlateNumbers(availablePlateNumbers);
-  //   }
-  // }, [plateNumbers]);
 
   useEffect(() => {
     const fetchDriverStatus = async () => {
