@@ -39,6 +39,22 @@ exports.getAllBookings = async (req, res) => {
 //   }
 // };
 
+// exports.addBooking = async (req, res) => {
+//   try {
+//     const newBooking = new Booking(req.body);
+//     const savedBooking = await newBooking.save();
+
+//     res.status(200).json({
+//       success: true,
+//       message: "Booking added successfully",
+//       booking: savedBooking,
+//     });
+//   } catch (error) {
+//     console.error(error);
+//     res.status(500).json({ success: false, message: "Internal server error" });
+//   }
+// };
+
 exports.addBooking = async (req, res) => {
   try {
     const newBooking = new Booking(req.body);

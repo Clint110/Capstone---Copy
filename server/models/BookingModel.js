@@ -1,9 +1,10 @@
 const mongoose = require("mongoose");
 
 const bookingSchema = new mongoose.Schema({
-  plateNumber: { type: String, required: true },
+  // plateNumber: { type: String, required: true },
   clientName: { type: String, required: true },
-  passengerQuantity: { type: Number, required: true },
+  // passengerQuantity: { type: Number, required: true },
+  passengerNames: [{ type: String }],
   destination: { type: String, enum: ["WOS", "BOS"], required: true },
   boundFor: { type: String, required: true },
   timeAndDate: { type: Date, required: true },

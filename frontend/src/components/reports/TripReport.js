@@ -37,12 +37,9 @@ const TripReport = () => {
   const [editableData, setEditableData] = useState({});
   const [searchQuery, setSearchQuery] = useState("");
   const [searchField, setSearchField] = useState("plateNumber");
-  const [vehicleName, setVehicleName] = useState("");
-  const [vehicleDetails, setVehicleDetails] = useState([]);
   const [formData, setFormData] = useState({});
   const [selectedPlateNumber, setSelectedPlateNumber] = useState(null);
   const [showArchived, setShowArchived] = useState(false);
-  // const [filteredData, setFilteredData] = useState([]);
   const [modalOpen, setModalOpen] = useState(false);
   const [showModal, setShowModal] = useState(false);
   const [selectedBooking, setSelectedBooking] = useState(null);
@@ -175,11 +172,6 @@ const TripReport = () => {
       doc.setFont("times");
       doc.setFontSize(17);
       doc.text("BUKIDNON STATE UNIVERSITY", 58, 25);
-      // doc.setFontSize(10); // Adjust font size here
-      // doc.text("Fortich St. Malaybalay City, Bukidnon 8700", 74, 30);
-
-      // doc.addImage(logo, "PNG", 30, 15, 20, 18);
-      // doc.addImage(otherLogo, "PNG", 157, 15, 20, 18);
 
       //BELOW THE TABLE
       let yPos = 45;
@@ -212,10 +204,6 @@ const TripReport = () => {
       doc.setFontSize(11); // Adjust font size here
       doc.text("Head, GSU", 160, 200);
 
-      // doc.setFontSize(12); // Adjust font size here
-      // doc.setFont(undefined, "bold"); // Set font weight to bold
-      // doc.text("GSU - Motorpool Section", 83, 45);
-
       doc.setFontSize(12); // Adjust font size here
       doc.text("SNIFFY L. TIMONES", 25, 162);
       const textWidth = doc.getStringUnitWidth("SNIFFY L. TIMONES") * 4.5; // Adjust 12 to the font size used
@@ -243,22 +231,6 @@ const TripReport = () => {
       doc.text(textNew, 25 + leftMarginNew, 185 + topMarginNew); // Adjusted y-coordinate for the text for the new copy
       doc.line(startXNew, startYNew, startXNew + textWidthNew, startYNew); // Adjusted start and end positions for the line for the new copy
       
-
-     
-
-      // doc.setFont("times"); // Set font to Times New Roman
-      // doc.setFontSize(17); // doc.setFont('helvetica', 'bold'); // Set font to bold
-      // doc.text("BUKIDNON STATE UNIVERSITY", 58, 25);
-
-      // doc.setFont('times'); // Set font to Times New Roman
-      // doc.setFontSize(17); // doc.setFont('helvetica', 'bold'); // Set font to bold
-      // doc.text("BUKIDNON STATE UNIVERSITY", 57, 25);
-
-      // const tableData = bookingData.map((booking, index) => [
-      //   booking.vehicleName,
-      //   booking.plateNumber,
-      //   booking.destination,
-      // ]);
       //Brendyl Ani
       //TABLE
       // Calculate total number of trips per vehicle
@@ -307,7 +279,6 @@ const TripReport = () => {
               }
             }
           });
-
           // Increment total trips
           totalTrips += wosTrips + bosTrips;
 
@@ -318,7 +289,6 @@ const TripReport = () => {
       // Add a row for total trips
       tableData.push(["TOTAL TRIPS:", totalTrips]);
     
-
       ///here taman
       doc.autoTable({
         // startY: 78,
@@ -404,13 +374,8 @@ const TripReport = () => {
       // addCommonContent(doc);
       doc.addImage(logo, "PNG", 30, 12, 20, 18);
       doc.addImage(otherLogo, "PNG", 165, 12, 20, 18);
-
-      // Add content to the PDF
-      // doc.addImage(logo, 'PNG', 50, 15, 20, 18);
-
       doc.setFontSize(10); // Adjust font size here
       doc.text("Malaybalay City, Bukidnon 8700, Mobile 09178036386", 65, 30);
-
       doc.setFontSize(9); // Adjust font size here
       doc.text(
         "TeleFax (088) 813-2717 Local 158 www.buksu.edu.ph - eig052775@gmail.com",
@@ -492,33 +457,10 @@ const TripReport = () => {
 
       // Open the URL in a new tab
       window.open(url, "_blank");
-      // } else {
-      //           console.error("Booking details not found");
-      //       }
-      //   } else {
-      //       console.error("No plate number selected");
     } catch (error) {
       console.error("Error generating PDF:", error);
     }
   };
-
-  // useEffect(() => {
-  //   // Fetch booking data from the server
-  //   const fetchBookingData = async () => {
-  //     try {
-  //       const response = await axios.get("http://localhost:3000/allbook"); // Replace with your actual API endpoint
-  //       const data = response.data;
-
-  //       // Update the state with the fetched data
-  //       setBookingData(data);
-  //     } catch (error) {
-  //       console.error("Error fetching booking data:", error);
-  //     }
-  //   };
-
-  //   // Call the fetch function
-  //   fetchBookingData();
-  // }, []);
 
   useEffect(() => {
     // Fetch booking data from the server
@@ -659,14 +601,18 @@ const TripReport = () => {
     return new Date(dateTimeString).toLocaleDateString("en-US", options);
   };
 
-  // const filteredData = bookingData.filter((booking) =>
+
+  // const filteredData = bookingData
+  // .filter((booking) =>
   //   booking[searchField].toLowerCase().includes(searchQuery.toLowerCase())
-  // );
+  // )
+  // .filter((booking) => (showArchived ? true : !booking.isArchived));
 
   const filteredData = bookingData
-  .filter((booking) =>
-    booking[searchField].toLowerCase().includes(searchQuery.toLowerCase())
-  )
+  .filter((booking) => {
+    const fieldValue = booking[searchField];
+    return fieldValue && fieldValue.toLowerCase().includes(searchQuery.toLowerCase());
+  })
   .filter((booking) => (showArchived ? true : !booking.isArchived));
 
   const handleToggleBooking = async (booking) => {
@@ -728,7 +674,7 @@ const TripReport = () => {
           value={searchField}
           onChange={(e) => setSearchField(e.target.value)}
         >
-          <option value="plateNumber">PLATE NO.</option>
+          <option value="plateNumber">PASSENGER NAMES</option>
           <option value="boundFor"> DESTINATION</option>
           <option value="timeForBound">DEPARTURE</option>
           <option value="returnDate">RETURN</option>
@@ -755,7 +701,7 @@ const TripReport = () => {
         <table className="reportTable">
           <thead>
             <tr>
-              <th>PLATE NO.</th>
+            <th>PASSENGER NAMES</th>
               <th>DESTINATION</th>
               <th>OFFICE</th>
               <th>DEPARTURE</th>
@@ -771,12 +717,12 @@ const TripReport = () => {
                     {editableData._id === booking._id ? (
                       <input
                         type="text"
-                        value={editableData.plateNumber}
+                        value={editableData.passengerNames}
                         onChange={(e) => handleChange(e, "plateNumber")}
                         required
                       />
                     ) : (
-                      booking.plateNumber
+                      booking.passengerNames
                     )}
                   </td>
                   <td>

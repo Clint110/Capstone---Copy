@@ -47,7 +47,7 @@ const localizer = dateFnsLocalizer({
 
 function Booking() {
   const [scrollableModal, setScrollableModal] = useState(false);
-
+  const [passengerNames, setPassengerNames] = useState([]);
   const [newEvent, setNewEvent] = useState({
     title: "",
     // driver: "",
@@ -65,11 +65,17 @@ function Booking() {
     },
   ]);
 
+  const handlePassengerNameChange = (e) => {
+    // Split the input value by commas and trim each resulting name
+    const names = e.target.value.split(",").map((name) => name.trim());
+    setPassengerNames(names);
+  };
+
   const [formData, setFormData] = useState({
-    plateNumber: "",
-    driverName: "",
+    // plateNumber: "",
+    // driverName: "",
     clientName: "",
-    passengerQuantity: "",
+    passengerNames: "",
     destination: "WOS",
     boundFor: "",
     timeAndDate: "",
@@ -89,6 +95,7 @@ function Booking() {
       timeAndDate: formData.timeAndDate.toISOString(),
       returnDate: formData.returnDate.toISOString(),
       timeForBound: formData.timeForBound,
+      passengerNames: passengerNames.join(", "),
     };
 
     console.log("Start Date:", new Date(formData.timeAndDate));
@@ -97,7 +104,7 @@ function Booking() {
     const newBookingEvent = {
       // title: formData.plateNumber,
       title: "Untitled",
-      driver: formData.driverName,
+      // driver: formData.driverName,
       start: new Date(formData.timeAndDate), // Convert to Date object
       end: new Date(formData.returnDate), // Convert to Date object
       timeForBound: formData.timeForBound,
@@ -126,10 +133,10 @@ function Booking() {
       if (response.ok) {
         // Handle success, e.g., clear the form or close the modal
         setFormData({
-          plateNumber: "",
-          driverName: "",
+          // plateNumber: "",
+          // driverName: "",
           clientName: "",
-          passengerQuantity: "",
+          passengerNames: "",
           destination: "WOS",
           boundFor: "",
           timeAndDate: "",
@@ -473,7 +480,7 @@ function Booking() {
                           />
                         </label>
                         <label>
-                          Name of Passengers
+                          {/* Name of Passengers
                           <input
                             type="text"
                             className="bookingInput"
@@ -485,7 +492,17 @@ function Booking() {
                                 passengerQuantity: e.target.value,
                               })
                             }
-                          />
+                          /> */}
+                           Name of Passengers
+                           <input
+                                  type="text"
+                                  className="bookingInput"
+                                  style={{ height: "100px", verticalAlign: "top" }}
+                                  value={passengerNames.join(", ")} // Display the names as a comma-separated string
+                                  onChange={(e) =>
+                                      setPassengerNames(e.target.value.split(",").map(name => name.trim()))
+                                  } // Split the input by commas and trim each resulting name
+                              />
                         </label>
                         <label>
                           Bound For
