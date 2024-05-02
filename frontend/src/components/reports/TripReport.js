@@ -38,7 +38,6 @@ const TripReport = () => {
   const [searchQuery, setSearchQuery] = useState("");
   const [searchField, setSearchField] = useState("plateNumber");
   const [formData, setFormData] = useState({});
-  const [selectedPlateNumber, setSelectedPlateNumber] = useState(null);
   const [showArchived, setShowArchived] = useState(false);
   const [modalOpen, setModalOpen] = useState(false);
   const [showModal, setShowModal] = useState(false);
@@ -517,30 +516,6 @@ const TripReport = () => {
     }
   };
 
-  const handleDeleteBooking = async (plateNumber) => {
-    // Ask for confirmation before deleting
-    const confirmDelete = window.confirm(
-      "Are you sure you want to delete this booking?"
-    );
-    if (!confirmDelete) {
-      return; // If user cancels, exit the function
-    }
-
-    try {
-      const response = await axios.delete(
-        `http://localhost:3000/deletebook/${plateNumber}`
-      );
-      if (response.data.success) {
-        // Remove the deleted booking from the state
-        setBookingData((prevData) =>
-          prevData.filter((booking) => booking.plateNumber !== plateNumber)
-        );
-      }
-    } catch (error) {
-      console.error("Error deleting booking:", error);
-    }
-  };
-
 
   const handleArchiveBooking = async (plateNumber) => {
     try {
@@ -576,16 +551,6 @@ const TripReport = () => {
     setShowArchived(!showArchived);
   };
 
-  const handleShowArchivedData = async () => {
-    try {
-      const response = await axios.get("http://localhost:3000/archivedbook");
-      const archivedData = response.data;
-      // Set state with archived booking data
-      setBookingData(archivedData);
-    } catch (error) {
-      console.error("Error fetching archived data:", error);
-    }
-  };
 
 
   const formatDateTime = (dateTimeString) => {
@@ -600,13 +565,6 @@ const TripReport = () => {
     };
     return new Date(dateTimeString).toLocaleDateString("en-US", options);
   };
-
-
-  // const filteredData = bookingData
-  // .filter((booking) =>
-  //   booking[searchField].toLowerCase().includes(searchQuery.toLowerCase())
-  // )
-  // .filter((booking) => (showArchived ? true : !booking.isArchived));
 
   const filteredData = bookingData
   .filter((booking) => {
@@ -652,6 +610,111 @@ const TripReport = () => {
     updatedData[index].status =
       updatedData[index].status === "Pending" ? "Used" : "Pending";
     setBookingData(updatedData);
+  };
+
+  const [plateNumbers, setPlateNumbers] = useState([]);
+  const [plateNumberStatuses, setPlateNumberStatuses] = useState({});
+  const [selectedPlateNumberStatus, setSelectedPlateNumberStatus] = useState("");
+  const [selectedPlateNumber, setSelectedPlateNumber] = useState(null);
+  const [availablePlateNumbers, setAvailablePlateNumbers] = useState([]);
+  const [selectedDriver, setSelectedDriver] = useState(null);
+  const [selectedDriverStatus, setSelectedDriverStatus] = useState("");
+  const [availableDrivers, setAvailableDrivers] = useState([]);
+  const [selectedPlateNumberSeats, setSelectedPlateNumberSeats] = useState(null);
+
+  useEffect(() => {
+    const fetchPlateNumbers = async () => {
+      try {
+        const response = await fetch("http://localhost:3000/vehiclestatus");
+        if (response.ok) {
+          const data = await response.json();
+          console.log(data);
+          // const plateNumbers = data.map(vehicle => vehicle.plateNumber);
+
+          const plateNumberStatuses = data;
+          const plateNumberArray = Object.keys(data).map((plateNumber) => ({
+            plateNumber: plateNumber,
+            status: data[plateNumber],
+            availableSeats: data[plateNumber].availableSeats
+          }));
+
+          console.log("Hello", plateNumberArray);
+          setPlateNumbers(plateNumberArray);
+          setPlateNumberStatuses(plateNumberStatuses);
+        } else {
+          console.error("Failed to fetch plate numbers from the server");
+        }
+      } catch (error) {
+        console.error("Error during fetch:", error);
+      }
+    };
+
+    fetchPlateNumbers();
+  }, []);
+
+  const handlePlateNumberChange = (event) => {
+    const selectedPlateNumber = event.target.value;
+    console.log("selected:", selectedPlateNumber);
+    const selectedPlate = plateNumbers.find((plate) => plate.plateNumber === selectedPlateNumber);
+    
+    if (selectedPlate) {
+      console.log("Selected Plate:", selectedPlate);
+      setSelectedPlateNumber(selectedPlateNumber);
+      setSelectedPlateNumberStatus(selectedPlate.status);
+      setSelectedPlateNumberSeats(selectedPlate.availableSeats); // Set the selected plate number's available seats
+      setFormData({ ...formData, plateNumber: selectedPlateNumber });
+    }
+  };
+
+  useEffect(() => {
+    // Filter available plate numbers only if plateNumbers is not empty
+    if (plateNumbers.length > 0) {
+      const availableNumbers = plateNumbers.filter(({ status }) => status.includes("Available"));
+      console.log("Avail:", availableNumbers);
+      setAvailablePlateNumbers(availableNumbers);
+    }
+  }, [plateNumbers]);
+
+  // useEffect(() => {
+  //   // Filter available plate numbers only if plateNumbers is not empty
+  //   if (plateNumbers.length > 0) {
+  //     const availableNumbers = plateNumbers.filter(({ status }) => status.includes("Available"));
+  //     const availablePlateNumbers = availableNumbers.map(({ plateNumber }) => plateNumber);
+  //     console.log("Avail:", availablePlateNumbers);
+  //     setAvailablePlateNumbers(availablePlateNumbers);
+  //   }
+  // }, [plateNumbers]);
+
+  useEffect(() => {
+    const fetchDriverStatus = async () => {
+      try {
+        const response = await fetch("http://localhost:3000/driverstatus");
+        if (response.ok) {
+          const data = await response.json();
+          console.log("Received driver data:", data);
+          const availableDrivers = Object.values(data)
+            .filter(driver => driver.status === "Available")
+            .map(driver => ({ name: driver.name }));
+          setAvailableDrivers(availableDrivers);
+        } else {
+          console.error("Failed to fetch driver status from the server");
+        }
+      } catch (error) {
+        console.error("Error during fetch:", error);
+      }
+    };
+  
+    fetchDriverStatus();
+  }, []);
+
+  const handleDriverChange = (event) => {
+    const selectedDriverId = event.target.value;
+    console.log("selected driver: ", selectedDriverId);
+    setSelectedDriver(selectedDriverId);
+    setSelectedDriverStatus(""); // Reset the driver status when a new driver is selected
+    // Retrieve and set the status of the selected driver
+    const status = availableDrivers.find(({ name }) => name === selectedDriverId) ? "Available" : "Unavailable";
+    setSelectedDriverStatus(status);
   };
 
   return (
@@ -763,24 +826,24 @@ const TripReport = () => {
                   </td>
                   <td>
                   {isBookingDatePassed(booking.timeAndDate) ? (
-  <button
-    type="button"
-    className="btn btn-success btn-sm"
-    style={{ width: "100px" }} // Adjust width as needed
-    onClick={() => handleCompleteBooking(booking)}
-  >
-    Completed
-  </button>
-) : (
-  <button
-    type="button"
-    className="btn btn-warning btn-sm"
-    style={{ width: "100px" }} // Adjust width as needed
-    onClick={() => handleOpenModal(booking)}
-  >
-    Pending
-  </button>
-)}
+                      <button
+                        type="button"
+                        className="btn btn-success btn-sm"
+                        style={{ width: "100px" }} // Adjust width as needed
+                        onClick={() => handleCompleteBooking(booking)}
+                      >
+                        Completed
+                      </button>
+                    ) : (
+                      <button
+                        type="button"
+                        className="btn btn-warning btn-sm"
+                        style={{ width: "100px" }} // Adjust width as needed
+                        onClick={() => handleOpenModal(booking)}
+                      >
+                        Pending
+                      </button>
+                    )}
 
                     
                   </td>
@@ -834,27 +897,6 @@ const TripReport = () => {
                           Archive
                         </button>
                       )}
-                    {/* <button
-                      type="button"
-                      className="btn btn-danger btn-sm"
-                      onClick={() => handleToggleBooking(booking)}
-                    >
-                      {booking.isActive ? "Activate" : "Archive"}
-                    </button> */}
-                    {/* <button
-                      type="button"
-                      className="btn btn-danger btn-sm"
-                      onClick={() => handleDeleteBooking(booking.plateNumber)}
-                    >
-                      Delete
-                    </button> */}
-                    {/*      <button
-                    onClick={handleGenerateReport}
-
-                      className="actionBtn "
-                    >
-                      <FcDownload />
-                    </button> */}
                  </td>
                 </tr>
               ))}
@@ -864,28 +906,6 @@ const TripReport = () => {
           )}
         </table>
       </div>
-
-      {/* <DataTable value={bookingData}
-            size="large"
-            showGridlines
-            removableSort
-            paginator rows={9}>
-            <Column field="plateNumber" header="Plate No." />
-            <Column field="boundFor" header="Departure" />
-            <Column field="destination" header="Destination" />
-            <Column field="timeForBound" header="Departure" body={(rowData) => formatDateTime(rowData.timeForBound)} sortable />
-            <Column field="returnDate" header="Return" body={(rowData) => formatDateTime(rowData.returnDate)} sortable />
-            <Column header="Action" body={() => (
-              <React.Fragment>
-                <FaHistory className='actionBtn' />
-               <button onClick={handleGenerateReport} className='actionBtn btn-primary'>
-                  <IoDocumentAttachOutline />
-                  </button>
-              </React.Fragment>
-            )} />
-          </DataTable> */}
-      {/* </div>
-      </div> */}
         {/* Edit Booking Modal */}
       <Modal show={showEditModal} onHide={handleEditCloseModal}>
         <Modal.Header closeButton>
@@ -932,38 +952,37 @@ const TripReport = () => {
           <form>
             <label>
               Plate Number
-              <select className="bookingInput" required>
+              <select className="bookingInput"  value={selectedPlateNumber} onChange={handlePlateNumberChange} required>
                 <option value="" disabled>
                   Select Plate Number
                 </option>
-                {/* {plateNumbers.map(({ plateNumber }) => (
+                {availablePlateNumbers.map(({ plateNumber}) => (
                   <option key={plateNumber} value={plateNumber}>
                     {plateNumber}
                   </option>
-                ))} */}
+                ))}
               </select>
               <p>
-                Status:
-                {/* {selectedPlateNumberStatus} */}
+                Status: {selectedPlateNumberStatus}
               </p>
-              <p>Seats: </p>
+              {/* <p>Seats: {selectedPlateNumberSeats} </p> */}
             </label>
 
             <label>
               Drivers
-              <select className="bookingInput" required>
+              <select className="bookingInput" onChange={handleDriverChange} required>
                 <option value="" disabled>
-                  Select Available Driver
+                  Select Driver
                 </option>
-                {/* {plateNumbers.map(({ plateNumber }) => (
-                  <option key={plateNumber} value={plateNumber}>
-                    {plateNumber}
+                {availableDrivers.map(({ name }) => (
+                  <option key={name} value={name}>
+                    {name}
                   </option>
-                ))} */}
+                ))}
               </select>
               <p>
                 Status:
-                {/* {selectedPlateNumberStatus} */}
+                {selectedDriverStatus}
               </p>
             </label>
           </form>

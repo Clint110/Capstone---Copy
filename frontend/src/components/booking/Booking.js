@@ -285,8 +285,7 @@ function Booking() {
   const [plateNumbers, setPlateNumbers] = useState([]);
   const [selectedPlateNumber, setSelectedPlateNumber] = useState("");
   const [plateNumberStatuses, setPlateNumberStatuses] = useState({});
-  const [selectedPlateNumberStatus, setSelectedPlateNumberStatus] =
-    useState("");
+  const [selectedPlateNumberStatus, setSelectedPlateNumberStatus] = useState("");
 
   useEffect(() => {
     const fetchPlateNumbers = async () => {

@@ -90,3 +90,37 @@ exports.activateDriver = async (req, res) => {
     res.status(500).json({ success: false, message: "Internal server error" });
   }
 };
+
+exports.driverStatus = async (req, res) => {
+  try {
+    console.log("Fetching driver status...");
+    // Fetch all drivers from the Driver model
+    const drivers = await Driver.find();
+
+    const statusObject = {};
+
+    // Iterate over each driver
+    drivers.forEach((driver) => {
+      // Check if the driver is active and not assigned to any trip
+      if (driver.status === "active") {
+        statusObject[driver._id] = {
+          name: driver.name,
+          status: "Available"
+        };
+      } else {
+        statusObject[driver._id] = {
+          name: driver.name,
+          status: "Unavailable"
+        };
+      }
+    });
+
+    console.log("Driver status object:", statusObject);
+
+    // Send the driver status as JSON response
+    res.json(statusObject);
+  } catch (error) {
+    console.error("Error fetching driver status:", error);
+    res.status(500).json({ error: "Internal server error" });
+  }
+};

@@ -9,5 +9,6 @@ router.get("/drivers/active", driverController.getActiveDrivers);
 router.put("/drivers/:id", driverController.updateDriver);
 router.put("/drivers/:id/archive", driverController.archiveDriver);
 router.put("/drivers/:id/activate", driverController.activateDriver);
+router.get('/driverstatus', driverController.driverStatus);
 
 module.exports = router;
