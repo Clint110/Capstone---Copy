@@ -718,17 +718,23 @@ function AddBook() {
             </div>
           </div>
           <div className="rbc-calendar ">
-            <BigCalendar
-              localizer={localizer}
-              events={combinedEvents}
-              // events={events}
-              driverAccessor="driver"
-              startAccessor="start"
-              endAccessor="end"
-              components={{
-                event: EventComponent, // Replace EventComponent with your custom event component
-              }}
-              style={{ height: 500 }}
+          <BigCalendar
+            localizer={localizer}
+            events={combinedEvents}
+            // events={events}
+            driverAccessor="driver"
+            startAccessor="start"
+            endAccessor="end"
+            components={{
+              event: (props) => <EventComponent {...props} height={20} />, // Set the height here
+            }}
+            style={{
+              height: "77.5vh", // 95% of the viewport height
+              width: "63vw", // 70% of the viewport width
+            }}
+            defaultView={"month"}
+            views={["month", "week", "day"]}
+
             />
           </div>
           {/* Add your content here */}
