@@ -168,6 +168,8 @@ app.use("/", require("./routes/dataRoutes"));
 
 app.use("/", require("./routes/driverRoutes"));
 
+app.use("/", require("./routes/completedBookingRoutes"));
+
 const path = require("path");
 
 app.use(
