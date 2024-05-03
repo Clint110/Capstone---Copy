@@ -749,9 +749,9 @@ const handleCompleteBooking = async (booking) => {
           <option value="returnDate">RETURN</option>
         </select>
 
-          <button onClick={handleToggleArchive} className="archived-button">
-          {showArchived ? "Show Active Data" : "Show Archived Data"}
-        </button>
+        <button onClick={handleToggleArchive} className={`archived-button ${showArchived ? 'active' : ''}`}>
+  {showArchived ? "Show Active Data" : "Show Archived Data"}
+</button>
       </div>
       <div className="header-wrapper">
         <div className="header-container">
