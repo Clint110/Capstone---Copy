@@ -94,6 +94,12 @@ exports.vecstatus = async (req, res) => {
           // If no booking found, mark the vehicle as 'Available'
           statusObject[plateNumber] = "Available";
         }
+
+        // Fetch vehicle details if the vehicle is available
+        if (statusObject[plateNumber] === "Available") {
+          const vehicle = await Vehicle.findOne({ plateNumber });
+          statusObject[plateNumber] = `Available. Seats: ${vehicle.availableSeats}`;
+        }
       })
     );
 
@@ -106,6 +112,7 @@ exports.vecstatus = async (req, res) => {
     res.status(500).json({ error: "Internal server error" });
   }
 };
+
 
 exports.getPlateNumbers = async (req, res) => {
   try {

@@ -5,19 +5,12 @@ import axios from "axios";
 import { Document, Page, Text, View, StyleSheet } from "@react-pdf/renderer";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faCircleUser } from "@fortawesome/free-solid-svg-icons";
-import { FaHistory } from "react-icons/fa";
-import { IoDocumentAttachOutline } from "react-icons/io5";
-import { DataTable } from "primereact/datatable";
-import { Column } from "primereact/column";
 import logo from "../logo.png";
 import otherLogo from "../another-logo.png";
 import "primereact/resources/themes/lara-light-indigo/theme.css";
 import "primereact/resources/primereact.min.css";
 import "primeicons/primeicons.css";
-import { FcDownload } from "react-icons/fc";
-import HeaderReport from "../reports/HeaderReport";
 import { Modal, Button } from "react-bootstrap";
-import { TfiSearch } from "react-icons/tfi";
 
 function formatDateTime(dateTimeString) {
   const options = {
@@ -37,11 +30,8 @@ const TripReport = () => {
   const [editableData, setEditableData] = useState({});
   const [searchQuery, setSearchQuery] = useState("");
   const [searchField, setSearchField] = useState("plateNumber");
-  const [vehicleName, setVehicleName] = useState("");
-  const [vehicleDetails, setVehicleDetails] = useState([]);
   const [formData, setFormData] = useState({});
-  const [selectedPlateNumber, setSelectedPlateNumber] = useState(null);
-  // const [filteredData, setFilteredData] = useState([]);
+  const [showArchived, setShowArchived] = useState(false);
   const [modalOpen, setModalOpen] = useState(false);
   const [showModal, setShowModal] = useState(false);
   const [selectedBooking, setSelectedBooking] = useState(null);
@@ -65,11 +55,27 @@ const TripReport = () => {
     setShowModal(false);
     setSelectedBooking(null);
   };
-  const handleCompleteBooking = () => {
-    // Logic for completing the booking goes here
-    console.log("Booking completed:", selectedBooking);
+
+const handleCompleteBooking = async (booking) => {
+  try {
+    // Perform the logic to complete the booking, such as updating the status in the database
+    console.log("Completing booking:", booking);
+    // For example, you can make an API call to update the booking status
+    // await axios.put(`http://localhost:3000/completeBooking/${booking._id}`);
+    
+    // Update the state of the booking to indicate it has been completed
+    // This will automatically render the "Completed" button
+    const updatedBookingData = bookingData.map((item) =>
+      item._id === booking._id ? { ...item, status: "Completed" } : item
+    );
+    setBookingData(updatedBookingData);
+
+    // Close the modal after completing the booking
     handleCloseModal();
-  };
+  } catch (error) {
+    console.error("Error completing booking:", error);
+  }
+};
 
   // Function to handle vehicle click
   const handleVehicleClick = (plateNumber) => {
@@ -174,11 +180,6 @@ const TripReport = () => {
       doc.setFont("times");
       doc.setFontSize(17);
       doc.text("BUKIDNON STATE UNIVERSITY", 58, 25);
-      // doc.setFontSize(10); // Adjust font size here
-      // doc.text("Fortich St. Malaybalay City, Bukidnon 8700", 74, 30);
-
-      // doc.addImage(logo, "PNG", 30, 15, 20, 18);
-      // doc.addImage(otherLogo, "PNG", 157, 15, 20, 18);
 
       //BELOW THE TABLE
       let yPos = 45;
@@ -211,10 +212,6 @@ const TripReport = () => {
       doc.setFontSize(11); // Adjust font size here
       doc.text("Head, GSU", 160, 200);
 
-      // doc.setFontSize(12); // Adjust font size here
-      // doc.setFont(undefined, "bold"); // Set font weight to bold
-      // doc.text("GSU - Motorpool Section", 83, 45);
-
       doc.setFontSize(12); // Adjust font size here
       doc.text("SNIFFY L. TIMONES", 25, 162);
       const textWidth = doc.getStringUnitWidth("SNIFFY L. TIMONES") * 4.5; // Adjust 12 to the font size used
@@ -242,22 +239,6 @@ const TripReport = () => {
       doc.text(textNew, 25 + leftMarginNew, 185 + topMarginNew); // Adjusted y-coordinate for the text for the new copy
       doc.line(startXNew, startYNew, startXNew + textWidthNew, startYNew); // Adjusted start and end positions for the line for the new copy
       
-
-     
-
-      // doc.setFont("times"); // Set font to Times New Roman
-      // doc.setFontSize(17); // doc.setFont('helvetica', 'bold'); // Set font to bold
-      // doc.text("BUKIDNON STATE UNIVERSITY", 58, 25);
-
-      // doc.setFont('times'); // Set font to Times New Roman
-      // doc.setFontSize(17); // doc.setFont('helvetica', 'bold'); // Set font to bold
-      // doc.text("BUKIDNON STATE UNIVERSITY", 57, 25);
-
-      // const tableData = bookingData.map((booking, index) => [
-      //   booking.vehicleName,
-      //   booking.plateNumber,
-      //   booking.destination,
-      // ]);
       //Brendyl Ani
       //TABLE
       // Calculate total number of trips per vehicle
@@ -306,7 +287,6 @@ const TripReport = () => {
               }
             }
           });
-
           // Increment total trips
           totalTrips += wosTrips + bosTrips;
 
@@ -316,25 +296,7 @@ const TripReport = () => {
 
       // Add a row for total trips
       tableData.push(["TOTAL TRIPS:", totalTrips]);
-      // // Inside your tableData mapping function
-      // const tableData = await Promise.all(
-      //   Array.from(uniquePlateNumbers).map(async (plateNumber) => {
-      //     const vehicleName = await getVehicleName(plateNumber);
-      //     const trips = tripsPerVehicle[plateNumber] || 0;
-      //     return [plateNumber, vehicleName, trips];
-      //   })
-      // );
-
-      // const tableData = Object.keys(tripsPerVehicle).map((plateNumber) => {
-      //   const vehicleName = bookingData.find(
-      //     (booking) => booking.plateNumber === plateNumber
-      //   ).vehicleName;
-      //   return [vehicleName, plateNumber, tripsPerVehicle[plateNumber]];
-      // });
-      // const tableData = Object.keys(tripsPerVehicle).map((plateNumber) => {
-      //   return [plateNumber, tripsPerVehicle[plateNumber]];
-      // });
-
+    
       ///here taman
       doc.autoTable({
         // startY: 78,
@@ -418,16 +380,10 @@ const TripReport = () => {
 
       const doc = new jsPDF();
       // addCommonContent(doc);
-
       doc.addImage(logo, "PNG", 30, 12, 20, 18);
       doc.addImage(otherLogo, "PNG", 165, 12, 20, 18);
-
-      // Add content to the PDF
-      // doc.addImage(logo, 'PNG', 50, 15, 20, 18);
-
       doc.setFontSize(10); // Adjust font size here
       doc.text("Malaybalay City, Bukidnon 8700, Mobile 09178036386", 65, 30);
-
       doc.setFontSize(9); // Adjust font size here
       doc.text(
         "TeleFax (088) 813-2717 Local 158 www.buksu.edu.ph - eig052775@gmail.com",
@@ -466,15 +422,6 @@ const TripReport = () => {
         67
       );
 
-      // Add vehicle details
-      //  filteredData.forEach((booking, index) => {
-      //    const startY = 80 + index * 30;
-      //    doc.text(`Plate No.: ${booking.plateNumber}`, 14, startY);
-      //    doc.text(`Destination: ${booking.destination}`, 14, startY + 7);
-      //    doc.text(`Bound For: ${booking.boundFor}`, 14, startY + 14);
-      //    doc.text(`Departure: ${formatTime(booking.timeForBound)}`, 14, startY + 21);
-      //    doc.text(`Return: ${formatTime(booking.returnDate)}`, 14, startY + 28);
-      //  });
 
       // Clear existing content or initialize a new PDF document
       // Then add booking details
@@ -494,171 +441,7 @@ const TripReport = () => {
       doc.text("Best regards,", 14, lastY + 20);
       doc.text("Your Name", 14, lastY + 30); // Change "Your Name" to the sender's name
 
-      // Save the PDF
-      //     doc.save("booking_request_letter.pdf");
-      //   } catch (error) {
-      //     console.error("Error generating PDF:", error);
-      //   }
-      // };
-      // const tableData = bookingData.map((booking) => [
-      //   booking.plateNumber,
-      //   booking.boundFor,
-      //   booking.destination,
-      //   formatDateTime(booking.timeForBound),
-      //   formatDateTime(booking.returnDate),
-      // ]);
-      // doc.autoTable({
-      //   startY: 60,
-      //   head: [
-      //     [
-      //       {
-      //         content: "MOTOR VEHICLE USED REQUEST FORM",
-      //         colSpan: 2,
-      //         styles: {
-      //           fontStyle: "bold",
-      //           font: "times",
-      //           fontSize: 12,
-      //           halign: "center",
-      //         },
-      //       },
-      //     ],
-      //     [
-      //       {
-      //         content: "Office/Department/Unit Name of Organization",
-      //         styles: {
-      //           fontStyle: "bold",
-      //           font: "times",
-      //           fontSize: 11,
-      //           halign: "center",
-      //         },
-      //       },
-      //       {
-      //         content: "Name",
-      //         styles: {
-      //           fontStyle: "bold",
-      //           font: "times",
-      //           fontSize: 12,
-      //           halign: "right",
-      //         },
-      //       },
-      //       {
-      //         content: "AZSDASD",
-      //         styles: {
-      //           fontStyle: "bold",
-      //           font: "times",
-      //           fontSize: 12,
-      //           halign: "center",
-      //         },
-      //       },
-      //     ],
-      //     [
-      //       {
-      //         content: "Additional Line 1",
-      //         styles: {
-      //           fontStyle: "bold",
-      //           font: "times",
-      //           fontSize: 11,
-      //           halign: "center",
-      //         },
-      //       },
-      //       {
-      //         content: "Additional Line 2",
-      //         styles: {
-      //           fontStyle: "bold",
-      //           font: "times",
-      //           fontSize: 12,
-      //           halign: "right",
-      //         },
-      //       },
-      //     ],
-      //     [
-      //       {
-      //         content: "Header 3",
-      //         styles: {
-      //           fontStyle: "bold",
-      //           font: "times",
-      //           fontSize: 11,
-      //           halign: "center",
-      //         },
-      //       },
-      //       {
-      //         content: "Header 4",
-      //         styles: {
-      //           fontStyle: "bold",
-      //           font: "times",
-      //           fontSize: 11,
-      //           halign: "center",
-      //         },
-      //       },
-      //       {}, // Empty cell to align with the next header
-      //       {}, // Empty cell to align with the next header
-      //     ],
-      //   ],
-      //   body: [
-      //     [
-      //       {
-      //         content: "Content 1",
-      //         styles: { font: "times", fontSize: 11, halign: "left" },
-      //       },
-      //       {
-      //         content: "Content 2",
-      //         styles: { font: "times", fontSize: 11, halign: "center" },
-      //       },
-      //       {
-      //         content: "Content 3",
-      //         styles: { font: "times", fontSize: 11, halign: "right" },
-      //       },
-      //       {
-      //         content: "Content 4",
-      //         styles: { font: "times", fontSize: 11, halign: "right" },
-      //       },
-      //     ],
-      //     [
-      //       {
-      //         content: "Content 5",
-      //         styles: { font: "times", fontSize: 11, halign: "left" },
-      //       },
-      //       {
-      //         content: "Content 6",
-      //         styles: { font: "times", fontSize: 11, halign: "center" },
-      //       },
-      //       {
-      //         content: "Content 7",
-      //         styles: { font: "times", fontSize: 11, halign: "right" },
-      //       },
-      //       {
-      //         content: "Content 8",
-      //         styles: { font: "times", fontSize: 11, halign: "right" },
-      //       },
-      //     ],
-      //   ],
-      //   headStyles: {
-      //     fillColor: [220, 220, 220], // Light gray background color for header
-      //     textColor: [0, 0, 0], // Black text color for header
-      //     lineColor: [0, 0, 0], // Set header cell border color
-      //     lineWidth: 0.2, // Set header cell border width
-      //     fontStyle: "normal", // Reset font style to normal
-      //     font: "times", // Set font to Times New Roman
-      //   },
-      //   bodyStyles: {
-      //     fillColor: false, // Remove background color for body cells
-      //     fontSize: 11,
-      //     textColor: [0, 0, 0], // Black text color for body
-      //     lineColor: [0, 0, 0], // Set body cell border color
-      //     lineWidth: 0.2, // Set body cell border width
-      //   },
-      //   tableLineWidth: 0.2, // Set table border width
-      //   tableLineColor: [0, 0, 0], // Set table border color
-      //   margin: { top: 0 }, // Adjust table margin if needed
-      //   didDrawPage: function (data) {
-      //     // Calculate the height of the table
-      //     const tableHeight = doc.autoTable.previous.finalY;
-
-      //     // Add "Prepared by:" text
-      //     doc.setFontSize(12); // Adjust font size here
-      //     doc.text("Prepared by:", 15, tableHeight + 20);
-      //   },
-      // });
+    
       // Convert the PDF content into a data URL
       const dataUri = doc.output("datauristring");
 
@@ -682,11 +465,6 @@ const TripReport = () => {
 
       // Open the URL in a new tab
       window.open(url, "_blank");
-      // } else {
-      //           console.error("Booking details not found");
-      //       }
-      //   } else {
-      //       console.error("No plate number selected");
     } catch (error) {
       console.error("Error generating PDF:", error);
     }
@@ -696,19 +474,24 @@ const TripReport = () => {
     // Fetch booking data from the server
     const fetchBookingData = async () => {
       try {
-        const response = await axios.get("http://localhost:3000/allbook"); // Replace with your actual API endpoint
+        let endpoint;
+        if (showArchived) {
+          endpoint = "http://localhost:3000/archivedbook";
+        } else {
+          endpoint = "http://localhost:3000/allbook";
+        }
+        const response = await axios.get(endpoint);
         const data = response.data;
-
         // Update the state with the fetched data
         setBookingData(data);
       } catch (error) {
         console.error("Error fetching booking data:", error);
       }
     };
-
+  
     // Call the fetch function
     fetchBookingData();
-  }, []);
+  }, [showArchived]);
 
   const handleEdit = (index) => {
     setEditableData({ ...bookingData[index] });
@@ -742,29 +525,42 @@ const TripReport = () => {
     }
   };
 
-  const handleDeleteBooking = async (plateNumber) => {
-    // Ask for confirmation before deleting
-    const confirmDelete = window.confirm(
-      "Are you sure you want to delete this booking?"
-    );
-    if (!confirmDelete) {
-      return; // If user cancels, exit the function
-    }
 
+  const handleArchiveBooking = async (plateNumber) => {
     try {
-      const response = await axios.delete(
-        `http://localhost:3000/deletebook/${plateNumber}`
-      );
+      const response = await axios.post(`http://localhost:3000/archive/${plateNumber}`);
       if (response.data.success) {
-        // Remove the deleted booking from the state
+        // Remove the archived booking from the state
         setBookingData((prevData) =>
           prevData.filter((booking) => booking.plateNumber !== plateNumber)
         );
       }
     } catch (error) {
-      console.error("Error deleting booking:", error);
+      console.error("Error archiving booking:", error);
     }
   };
+
+  const handleActivateBooking = async (plateNumber) => {
+    try {
+      const response = await axios.put(
+        `http://localhost:3000/activatebook/${plateNumber}`
+      );
+      if (response.data.success) {
+        // Remove the activated booking from the state
+        setBookingData((prevData) =>
+          prevData.filter((booking) => booking.plateNumber !== plateNumber)
+        );
+      }
+    } catch (error) {
+      console.error("Error activating booking:", error);
+    }
+  };
+
+  const handleToggleArchive = () => {
+    setShowArchived(!showArchived);
+  };
+
+
 
   const formatDateTime = (dateTimeString) => {
     const options = {
@@ -779,9 +575,18 @@ const TripReport = () => {
     return new Date(dateTimeString).toLocaleDateString("en-US", options);
   };
 
-  const filteredData = bookingData.filter((booking) =>
-    booking[searchField].toLowerCase().includes(searchQuery.toLowerCase())
-  );
+  const filteredData = bookingData
+  .filter((booking) => {
+    const fieldValue = booking[searchField];
+    // Modify the filtering logic to check the passengerNames field
+    return (
+      fieldValue &&
+      (searchField !== "passengerNames"
+        ? fieldValue.toLowerCase().includes(searchQuery.toLowerCase())
+        : fieldValue.join(" ").toLowerCase().includes(searchQuery.toLowerCase()))
+    );
+  })
+  .filter((booking) => (showArchived ? true : !booking.isArchived));
 
   const handleToggleBooking = async (booking) => {
     const action = booking.isActive ? "archive" : "activate";
@@ -822,6 +627,102 @@ const TripReport = () => {
     setBookingData(updatedData);
   };
 
+  const [plateNumbers, setPlateNumbers] = useState([]);
+  const [plateNumberStatuses, setPlateNumberStatuses] = useState({});
+  const [selectedPlateNumberStatus, setSelectedPlateNumberStatus] = useState("");
+  const [selectedPlateNumber, setSelectedPlateNumber] = useState(null);
+  const [availablePlateNumbers, setAvailablePlateNumbers] = useState([]);
+  const [selectedDriver, setSelectedDriver] = useState(null);
+  const [selectedDriverStatus, setSelectedDriverStatus] = useState("");
+  const [availableDrivers, setAvailableDrivers] = useState([]);
+  const [selectedPlateNumberSeats, setSelectedPlateNumberSeats] = useState(null);
+  
+
+  useEffect(() => {
+    const fetchPlateNumbers = async () => {
+      try {
+        const response = await fetch("http://localhost:3000/vehiclestatus");
+        if (response.ok) {
+          const data = await response.json();
+          console.log(data);
+          // const plateNumbers = data.map(vehicle => vehicle.plateNumber);
+
+          const plateNumberStatuses = data;
+          const plateNumberArray = Object.keys(data).map((plateNumber) => ({
+            plateNumber: plateNumber,
+            status: data[plateNumber],
+            availableSeats: data[plateNumber].availableSeats
+          }));
+
+          console.log("Hello", plateNumberArray);
+          setPlateNumbers(plateNumberArray);
+          setPlateNumberStatuses(plateNumberStatuses);
+        } else {
+          console.error("Failed to fetch plate numbers from the server");
+        }
+      } catch (error) {
+        console.error("Error during fetch:", error);
+      }
+    };
+
+    fetchPlateNumbers();
+  }, []);
+
+  const handlePlateNumberChange = (event) => {
+    const selectedPlateNumber = event.target.value;
+    console.log("selected:", selectedPlateNumber);
+    const selectedPlate = plateNumbers.find((plate) => plate.plateNumber === selectedPlateNumber);
+    
+    if (selectedPlate) {
+      console.log("Selected Plate:", selectedPlate);
+      setSelectedPlateNumber(selectedPlateNumber);
+      setSelectedPlateNumberStatus(selectedPlate.status);
+      setSelectedPlateNumberSeats(selectedPlate.availableSeats); // Set the selected plate number's available seats
+      setFormData({ ...formData, plateNumber: selectedPlateNumber });
+    }
+  };
+
+  useEffect(() => {
+    // Filter available plate numbers only if plateNumbers is not empty
+    if (plateNumbers.length > 0) {
+      const availableNumbers = plateNumbers.filter(({ status }) => status.includes("Available"));
+      console.log("Avail:", availableNumbers);
+      setAvailablePlateNumbers(availableNumbers);
+    }
+  }, [plateNumbers]);
+
+  useEffect(() => {
+    const fetchDriverStatus = async () => {
+      try {
+        const response = await fetch("http://localhost:3000/driverstatus");
+        if (response.ok) {
+          const data = await response.json();
+          console.log("Received driver data:", data);
+          const availableDrivers = Object.values(data)
+            .filter(driver => driver.status === "Available")
+            .map(driver => ({ name: driver.name }));
+          setAvailableDrivers(availableDrivers);
+        } else {
+          console.error("Failed to fetch driver status from the server");
+        }
+      } catch (error) {
+        console.error("Error during fetch:", error);
+      }
+    };
+  
+    fetchDriverStatus();
+  }, []);
+
+  const handleDriverChange = (event) => {
+    const selectedDriverId = event.target.value;
+    console.log("selected driver: ", selectedDriverId);
+    setSelectedDriver(selectedDriverId);
+    setSelectedDriverStatus(""); // Reset the driver status when a new driver is selected
+    // Retrieve and set the status of the selected driver
+    const status = availableDrivers.find(({ name }) => name === selectedDriverId) ? "Available" : "Unavailable";
+    setSelectedDriverStatus(status);
+  };
+
   return (
     <>
       <div>
@@ -842,11 +743,15 @@ const TripReport = () => {
           value={searchField}
           onChange={(e) => setSearchField(e.target.value)}
         >
-          <option value="plateNumber">PLATE NO.</option>
+          <option value="passengerNames">PASSENGER NAMES</option>
           <option value="boundFor"> DESTINATION</option>
           <option value="timeForBound">DEPARTURE</option>
           <option value="returnDate">RETURN</option>
         </select>
+
+          <button onClick={handleToggleArchive} className="archived-button">
+          {showArchived ? "Show Active Data" : "Show Archived Data"}
+        </button>
       </div>
       <div className="header-wrapper">
         <div className="header-container">
@@ -865,7 +770,7 @@ const TripReport = () => {
         <table className="reportTable">
           <thead>
             <tr>
-              <th>PLATE NO.</th>
+            <th>PASSENGER NAMES</th>
               <th>DESTINATION</th>
               <th>OFFICE</th>
               <th>DEPARTURE</th>
@@ -875,30 +780,18 @@ const TripReport = () => {
           </thead>
           {filteredData.length > 0 ? (
             <tbody>
-              {/* {bookingData.map((booking) => (
-                  <tr key={booking._id}>
-                    <td>{booking.plateNumber}</td>
-                    <td>{booking.boundFor}</td>
-                    <td>{booking.destination}</td>
-                    <td>{formatDateTime(booking.timeForBound)}</td>
-                    <td>{formatDateTime(booking.returnDate)}</td>
-                
-                    <td>
-                    <button type="button" class="btn btn-warning btn-sm" onClick={() => handleEditBooking(booking.plateNumber)}>Edit</button>&nbsp; 
-                      <button type="button" class="btn btn-warning btn-sm">Edit</button>&nbsp;  */}
-              {/* {bookingData.map((booking, index) => ( */}
               {filteredData.map((booking, index) => (
                 <tr key={booking._id}>
                   <td>
                     {editableData._id === booking._id ? (
                       <input
                         type="text"
-                        value={editableData.plateNumber}
-                        onChange={(e) => handleChange(e, "plateNumber")}
+                        value={editableData.passengerNames}
+                        onChange={(e) => handleChange(e, "passengerNames")}
                         required
                       />
                     ) : (
-                      booking.plateNumber
+                      booking.passengerNames
                     )}
                   </td>
                   <td>
@@ -938,27 +831,14 @@ const TripReport = () => {
                     )}
                   </td>
                   <td>
-                  {isBookingDatePassed(booking.timeAndDate) ? (
-  <button
-    type="button"
-    className="btn btn-success btn-sm"
-    style={{ width: "100px" }} // Adjust width as needed
-    onClick={() => handleCompleteBooking(booking)}
-  >
-    Completed
-  </button>
-) : (
-  <button
-    type="button"
-    className="btn btn-warning btn-sm"
-    style={{ width: "100px" }} // Adjust width as needed
-    onClick={() => handleOpenModal(booking)}
-  >
-    Pending
-  </button>
-)}
-
-                    
+                  <button
+                      type="button"
+                      className="btn btn-warning btn-sm"
+                      style={{ width: "100px" }} // Adjust width as needed
+                      onClick={() => handleOpenModal(booking)}
+                    >
+                      Pending
+                    </button>
                   </td>
                   <td>
                   {/* <div className="btn-group"> */}
@@ -990,32 +870,27 @@ const TripReport = () => {
                         Edit
                       </button>
                     )}
-                    &nbsp;{"  "}
-                    {/* Archive button */}
-                    <button
-                      type="button"
-                      className="btn btn-danger btn-sm"
-                      onClick={() => handleToggleBooking(booking)}
-                    >
-                      {booking.isActive ? "Activate" : "Archive"}
-                    </button>
-                  {/* </div> */}
-                </td>
-                    {/* <button
-                      type="button"
-                      className="btn btn-danger btn-sm"
-                      onClick={() => handleDeleteBooking(booking.plateNumber)}
-                    >
-                      Delete
-                    </button> */}
-                    {/*      <button
-                    onClick={handleGenerateReport}
-
-                      className="actionBtn "
-                    >
-                      <FcDownload />
-                    </button> */}
-                 
+                    {/* &nbsp;<button type="button" class="btn btn-danger btn-sm">Delete</button> */}
+                    &nbsp;{" "}
+                    {showArchived && (
+                          // Render only the "Activate" button when showing archived data
+                          <button
+                            className="action-btn activate-btn"
+                            onClick={() => handleActivateBooking(booking.plateNumber)}
+                          >
+                            Activate
+                          </button>
+                    )}
+                    {!showArchived && (
+                        <button
+                          type="button"
+                          className="btn btn-danger btn-sm"
+                          onClick={() => handleArchiveBooking(booking.plateNumber)}
+                        >
+                          Archive
+                        </button>
+                      )}
+                 </td>
                 </tr>
               ))}
             </tbody>
@@ -1024,28 +899,6 @@ const TripReport = () => {
           )}
         </table>
       </div>
-
-      {/* <DataTable value={bookingData}
-            size="large"
-            showGridlines
-            removableSort
-            paginator rows={9}>
-            <Column field="plateNumber" header="Plate No." />
-            <Column field="boundFor" header="Departure" />
-            <Column field="destination" header="Destination" />
-            <Column field="timeForBound" header="Departure" body={(rowData) => formatDateTime(rowData.timeForBound)} sortable />
-            <Column field="returnDate" header="Return" body={(rowData) => formatDateTime(rowData.returnDate)} sortable />
-            <Column header="Action" body={() => (
-              <React.Fragment>
-                <FaHistory className='actionBtn' />
-               <button onClick={handleGenerateReport} className='actionBtn btn-primary'>
-                  <IoDocumentAttachOutline />
-                  </button>
-              </React.Fragment>
-            )} />
-          </DataTable> */}
-      {/* </div>
-      </div> */}
         {/* Edit Booking Modal */}
       <Modal show={showEditModal} onHide={handleEditCloseModal}>
         <Modal.Header closeButton>
@@ -1092,38 +945,37 @@ const TripReport = () => {
           <form>
             <label>
               Plate Number
-              <select className="bookingInput" required>
+              <select className="bookingInput"  value={selectedPlateNumber} onChange={handlePlateNumberChange} required>
                 <option value="" disabled>
                   Select Plate Number
                 </option>
-                {/* {plateNumbers.map(({ plateNumber }) => (
+                {availablePlateNumbers.map(({ plateNumber}) => (
                   <option key={plateNumber} value={plateNumber}>
                     {plateNumber}
                   </option>
-                ))} */}
+                ))}
               </select>
               <p>
-                Status:
-                {/* {selectedPlateNumberStatus} */}
+                Status: {selectedPlateNumberStatus}
               </p>
-              <p>Seats: </p>
+              {/* <p>Seats: {selectedPlateNumberSeats} </p> */}
             </label>
 
             <label>
               Drivers
-              <select className="bookingInput" required>
+              <select className="bookingInput" onChange={handleDriverChange} required>
                 <option value="" disabled>
-                  Select Available Driver
+                  Select Driver
                 </option>
-                {/* {plateNumbers.map(({ plateNumber }) => (
-                  <option key={plateNumber} value={plateNumber}>
-                    {plateNumber}
+                {availableDrivers.map(({ name }) => (
+                  <option key={name} value={name}>
+                    {name}
                   </option>
-                ))} */}
+                ))}
               </select>
               <p>
                 Status:
-                {/* {selectedPlateNumberStatus} */}
+                {selectedDriverStatus}
               </p>
             </label>
           </form>

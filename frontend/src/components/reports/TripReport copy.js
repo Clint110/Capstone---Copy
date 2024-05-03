@@ -37,6 +37,7 @@ function TripReport() {
   const [searchQuery, setSearchQuery] = useState("");
   const [searchField, setSearchField] = useState("plateNumber");
   const [vehicleName, setVehicleName] = useState("");
+  const [showArchived, setShowArchived] = useState(false);
   const toggle = () => {
     setIsOpen(!isOpen);
   };
@@ -417,23 +418,46 @@ function TripReport() {
     }
   };
 
+  // useEffect(() => {
+  //   // Fetch booking data from the server
+  //   const fetchBookingData = async () => {
+  //     try {
+  //       const response = await axios.get("http://localhost:3000/allbook"); // Replace with your actual API endpoint
+  //       const data = response.data;
+
+  //       // Update the state with the fetched data
+  //       setBookingData(data);
+  //     } catch (error) {
+  //       console.error("Error fetching booking data:", error);
+  //     }
+  //   };
+
+  //   // Call the fetch function
+  //   fetchBookingData();
+  // }, []);
+
   useEffect(() => {
     // Fetch booking data from the server
     const fetchBookingData = async () => {
       try {
-        const response = await axios.get("http://localhost:3000/allbook"); // Replace with your actual API endpoint
+        let endpoint;
+        if (showArchived) {
+          endpoint = "http://localhost:3000/archivedbook";
+        } else {
+          endpoint = "http://localhost:3000/allbook";
+        }
+        const response = await axios.get(endpoint);
         const data = response.data;
-
         // Update the state with the fetched data
         setBookingData(data);
       } catch (error) {
         console.error("Error fetching booking data:", error);
       }
     };
-
+  
     // Call the fetch function
     fetchBookingData();
-  }, []);
+  }, [showArchived]);
 
   const handleEdit = (index) => {
     setEditableData({ ...bookingData[index] });
@@ -504,9 +528,82 @@ function TripReport() {
     return new Date(dateTimeString).toLocaleDateString("en-US", options);
   };
 
-  const filteredData = bookingData.filter((booking) =>
+  // const filteredData = bookingData.filter((booking) =>
+  //   booking[searchField].toLowerCase().includes(searchQuery.toLowerCase())
+  // );
+
+  const handleArchiveBooking = async (plateNumber) => {
+    try {
+      const response = await axios.post(`http://localhost:3000/archive/${plateNumber}`);
+      if (response.data.success) {
+        // Remove the archived booking from the state
+        setBookingData((prevData) =>
+          prevData.filter((booking) => booking.plateNumber !== plateNumber)
+        );
+      }
+    } catch (error) {
+      console.error("Error archiving booking:", error);
+    }
+  };
+
+  const handleActivateBooking = async (plateNumber) => {
+    try {
+      const response = await axios.put(
+        `http://localhost:3000/activatebook/${plateNumber}`
+      );
+      if (response.data.success) {
+        // Remove the activated booking from the state
+        setBookingData((prevData) =>
+          prevData.filter((booking) => booking.plateNumber !== plateNumber)
+        );
+      }
+    } catch (error) {
+      console.error("Error activating booking:", error);
+    }
+  };
+
+  const filteredData = bookingData
+  .filter((booking) =>
     booking[searchField].toLowerCase().includes(searchQuery.toLowerCase())
-  );
+  )
+  .filter((booking) => (showArchived ? true : !booking.isArchived));
+  
+
+  const handleToggleArchive = () => {
+    setShowArchived(!showArchived);
+  };
+
+  const handleToggleBooking = async (booking) => {
+    const action = booking.isActive ? "archive" : "activate";
+    const confirmAction = window.confirm(
+      `Are you sure you want to ${action} this booking?`
+    );
+    if (!confirmAction) {
+      return;
+    }
+
+    try {
+      const response = await axios.put(
+        `http://localhost:3000/${action}book/${booking.plateNumber}`
+      );
+      if (response.data.success) {
+        setBookingData((prevData) =>
+          prevData.map((prevBooking) => {
+            if (prevBooking.plateNumber === booking.plateNumber) {
+              return { ...prevBooking, isActive: !booking.isActive };
+            }
+            return prevBooking;
+          })
+        );
+      }
+    } catch (error) {
+      console.error(`Error ${action}ing booking:`, error);
+    }
+  };
+  const isBookingDatePassed = (bookingDate) => {
+    const now = new Date();
+    return new Date(bookingDate) < now;
+  };
 
   return (
     <div className="main-container">
@@ -588,6 +685,9 @@ function TripReport() {
             <option value="timeForBound">DEPARTURE</option>
             <option value="returnDate">RETURN</option>
           </select>
+          <button onClick={handleToggleArchive} className="archived-button">
+          {showArchived ? "Show Active Data" : "Show Archived Data"}
+        </button>
         </div>
         <div className="header-wrapper">
           <div className="header-container">
@@ -713,13 +813,38 @@ function TripReport() {
                       Delete
                     </button> */}
                       &nbsp;{" "}
-                      <button
+                      {showArchived && (
+                          // Render only the "Activate" button when showing archived data
+                          <button
+                            className="action-btn activate-btn"
+                            onClick={() => handleActivateBooking(booking.plateNumber)}
+                          >
+                            Activate
+                          </button>
+                    )}
+                    {!showArchived && (
+                        <button
+                          type="button"
+                          className="btn btn-danger btn-sm"
+                          onClick={() => handleArchiveBooking(booking.plateNumber)}
+                        >
+                          Archive
+                        </button>
+                      )}
+                      {/* <button
+                      type="button"
+                      className="btn btn-danger btn-sm"
+                      onClick={() => handleToggleBooking(booking)}
+                    >
+                      {booking.isActive ? "Activate" : "Archive"}
+                    </button> */}
+                      {/* <button
                         type="button"
                         className="btn btn-danger btn-sm"
                         onClick={() => handleDeleteBooking(booking.plateNumber)}
                       >
                         Delete
-                      </button>
+                      </button> */}
                       {/* <button
                         onClick={handleGenerateReport}
                         className="actionBtn "
