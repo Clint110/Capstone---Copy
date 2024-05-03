@@ -55,11 +55,27 @@ const TripReport = () => {
     setShowModal(false);
     setSelectedBooking(null);
   };
-  const handleCompleteBooking = () => {
-    // Logic for completing the booking goes here
-    console.log("Booking completed:", selectedBooking);
+
+const handleCompleteBooking = async (booking) => {
+  try {
+    // Perform the logic to complete the booking, such as updating the status in the database
+    console.log("Completing booking:", booking);
+    // For example, you can make an API call to update the booking status
+    // await axios.put(`http://localhost:3000/completeBooking/${booking._id}`);
+    
+    // Update the state of the booking to indicate it has been completed
+    // This will automatically render the "Completed" button
+    const updatedBookingData = bookingData.map((item) =>
+      item._id === booking._id ? { ...item, status: "Completed" } : item
+    );
+    setBookingData(updatedBookingData);
+
+    // Close the modal after completing the booking
     handleCloseModal();
-  };
+  } catch (error) {
+    console.error("Error completing booking:", error);
+  }
+};
 
   // Function to handle vehicle click
   const handleVehicleClick = (plateNumber) => {
@@ -562,7 +578,13 @@ const TripReport = () => {
   const filteredData = bookingData
   .filter((booking) => {
     const fieldValue = booking[searchField];
-    return fieldValue && fieldValue.toLowerCase().includes(searchQuery.toLowerCase());
+    // Modify the filtering logic to check the passengerNames field
+    return (
+      fieldValue &&
+      (searchField !== "passengerNames"
+        ? fieldValue.toLowerCase().includes(searchQuery.toLowerCase())
+        : fieldValue.join(" ").toLowerCase().includes(searchQuery.toLowerCase()))
+    );
   })
   .filter((booking) => (showArchived ? true : !booking.isArchived));
 
@@ -614,6 +636,7 @@ const TripReport = () => {
   const [selectedDriverStatus, setSelectedDriverStatus] = useState("");
   const [availableDrivers, setAvailableDrivers] = useState([]);
   const [selectedPlateNumberSeats, setSelectedPlateNumberSeats] = useState(null);
+  
 
   useEffect(() => {
     const fetchPlateNumbers = async () => {
@@ -720,7 +743,7 @@ const TripReport = () => {
           value={searchField}
           onChange={(e) => setSearchField(e.target.value)}
         >
-          <option value="plateNumber">PASSENGER NAMES</option>
+          <option value="passengerNames">PASSENGER NAMES</option>
           <option value="boundFor"> DESTINATION</option>
           <option value="timeForBound">DEPARTURE</option>
           <option value="returnDate">RETURN</option>
@@ -764,7 +787,7 @@ const TripReport = () => {
                       <input
                         type="text"
                         value={editableData.passengerNames}
-                        onChange={(e) => handleChange(e, "plateNumber")}
+                        onChange={(e) => handleChange(e, "passengerNames")}
                         required
                       />
                     ) : (
@@ -808,27 +831,14 @@ const TripReport = () => {
                     )}
                   </td>
                   <td>
-                  {isBookingDatePassed(booking.timeAndDate) ? (
-                      <button
-                        type="button"
-                        className="btn btn-success btn-sm"
-                        style={{ width: "100px" }} // Adjust width as needed
-                        onClick={() => handleCompleteBooking(booking)}
-                      >
-                        Completed
-                      </button>
-                    ) : (
-                      <button
-                        type="button"
-                        className="btn btn-warning btn-sm"
-                        style={{ width: "100px" }} // Adjust width as needed
-                        onClick={() => handleOpenModal(booking)}
-                      >
-                        Pending
-                      </button>
-                    )}
-
-                    
+                  <button
+                      type="button"
+                      className="btn btn-warning btn-sm"
+                      style={{ width: "100px" }} // Adjust width as needed
+                      onClick={() => handleOpenModal(booking)}
+                    >
+                      Pending
+                    </button>
                   </td>
                   <td>
                   {/* <div className="btn-group"> */}
