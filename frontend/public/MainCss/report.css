@@ -168,7 +168,30 @@ padding-left: 5px;
   border: 2px solid #8f0a0a; /* Border color */
 }
 
+.archived-button {
+  display: inline-block;
+  outline: 0;
+  color: #ffffff;
+  background: #00ff37;
+  border-radius: 4px;
+  font-weight: 500;
+  font-size: 14px;
+  box-shadow: rgba(0, 0, 0, 0.05) 0px 1px 0px 0px;
+  padding: 7px 16px;
+  border: 1px solid #babfc3;
+  cursor: pointer;
+  width: 170px;
+  margin-left: 10px;
+  height: 35px; /* Set a fixed height */
+  text-align: center;
+  margin-top: 2px;
+  
+}
 
+.archived-button.active {
+  background-color: red; /* Change background color when active */
+  color: rgb(255, 255, 255); /* Change text color when active */
+}
 
 
 .actionBtn{
