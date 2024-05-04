@@ -27,6 +27,7 @@ function Drivers() {
   const [selectedDriver, setSelectedDriver] = useState(null);
   const [editedDriverName, setEditedDriverName] = useState("");
   const [searchInput, setSearchInput] = useState("");
+ 
 
   // Handler function for filter buttons
   const handleFilter = (selectedFilter) => {
@@ -281,34 +282,55 @@ function Drivers() {
             </div>
 
            
-            <div>
-              <button
-                className={`button-all ${isActive("all")}`}
-                onClick={() => handleFilter("all")}
-              >
-                All
-              </button>
-              <button
-                className={`button-available ${isActive("available")}`}
-                onClick={() => handleFilter("available")}
-              >
-                Available
-              </button>
-              <button
-                className={`button-used ${isActive("used")}`}
-                onClick={() => handleFilter("used")}
-              >
-                On Travel
-              </button>
+            <div style={{ display: 'flex', alignItems: 'center' }}>
+                <button
+                  className={`button-all ${isActive("all")}`}
+                  onClick={() => handleFilter("all")}
+                >
+                  All
+                </button>
+                <button
+                  className={`button-available ${isActive("available")}`}
+                  onClick={() => handleFilter("available")}
+                >
+                  Available
+                </button>
+                <button
+                  className={`button-used ${isActive("used")}`}
+                  onClick={() => handleFilter("used")}
+                >
+                  On Travel
+                </button>
+                <DropdownButton
+                    id="dropdown-basic-button"
+                    title="Driver Status"
+                    style={{
+                      marginLeft: "20px" // Adjust margin left as needed
+                    }}
+                  >
+                  <Dropdown.Item
+                    onClick={() => handleFilter("active")}
+                    style={{
+                      backgroundColor: filter === "active" ? "grey" : "transparent",
+                      color: filter === "active" ? "white" : "inherit",
+                      padding: "10px 10px" // Adjust padding as needed
+                    }}
+                  >
+                    Show Active Drivers
+                  </Dropdown.Item>
+                  <Dropdown.Item
+                    onClick={() => handleFilter("archived")}
+                    style={{
+                      backgroundColor: filter === "archived" ? "grey" : "transparent",
+                      color: filter === "archived" ? "white" : "inherit",
+                      padding: "10px 10px" // Adjust padding as needed
+                    }}
+                  >
+                    Show Archived Drivers
+                  </Dropdown.Item>
+                  </DropdownButton>
 
-              <div className="filter-dropdown">
-          <DropdownButton id="dropdown-basic-button" title="Filter">
-            {/* <Dropdown.Item onClick={() => handleFilter("all")}>Show All</Dropdown.Item> */}
-            <Dropdown.Item onClick={() => handleFilter("active")}>Show Active Drivers</Dropdown.Item>
-            <Dropdown.Item onClick={() => handleFilter("archived")}>Show Archived Drivers</Dropdown.Item>
-          </DropdownButton>
-        </div>
-            </div>
+              </div>
 
             <div className="ListDriver">
               <div class="container">
@@ -337,7 +359,7 @@ function Drivers() {
                     </tr>
                   </thead>
                 </table>
-                <div className="driver-container">
+                <div className="scrollable-container">
                   <table className="tableDriver">
                     <tbody className="driver-tbody">
                     {filteredDrivers.map((driver) => (
@@ -353,9 +375,10 @@ function Drivers() {
                           <Button
                             variant="primary"
                             onClick={() => handleShowEditModal(driver)}
+                            style={{ padding: "5px 10px", fontSize: "14px", backgroundColor: "#1D5D9B", borderColor: "#1D5D9B" }}
                           >
                             Edit
-                          </Button>{" "}
+                          </Button>
                           {/* <Button
                             variant="danger"
                             onClick={() =>
@@ -365,12 +388,29 @@ function Drivers() {
                             Delete
                           </Button> */}
                           { filter === "active" && (
-                                  <Button variant="warning" onClick={() => handleArchive(driver)}>Archive</Button>
+                                 <Button
+                                 variant="warning"
+                                 onClick={() => handleArchive(driver)}
+                                 style={{ padding: "5px 10px", fontSize: "14px", backgroundColor: "#b90000", borderColor: "#b90000", color: "white", marginLeft: "5px" }}
+                               >
+                                 Archive
+                               </Button>
                               )}
                           {filter === "archived" && (
-                          <Button variant="success" onClick={ () => handleActivate(driver)}>
-                            Activate
-                          </Button>
+                       <Button
+                       variant="success"
+                       onClick={() => handleActivate(driver)}
+                       style={{
+                         padding: "5px 10px",
+                         fontSize: "14px",
+                         backgroundColor: "#015c14e1",
+                         borderColor: "#015c14e1",
+                         color: "white",
+                         marginLeft: "5px" // Adjust margin-left as needed
+                       }}
+                     >
+                       Activate
+                     </Button>
                         )}
                         </td>
                       </tr>
@@ -387,12 +427,12 @@ function Drivers() {
       {/* INNSERT DRIVER FORM */}
       <Modal show={show} onHide={handleClose}>
         <Modal.Header closeButton>
-          <Modal.Title>DRIVERS</Modal.Title>
+        <Modal.Title style={{ fontSize: '20px' }}>ADD DRIVER</Modal.Title>
         </Modal.Header>
         <Modal.Body>
           <form onSubmit={handleSubmit}>
             <label>
-              Drivers Name
+              Driver's Name
               <input
                 type="text"
                 className="addVehicle"
@@ -408,21 +448,32 @@ function Drivers() {
         </Modal.Body>
         <Modal.Footer>
         <Button
-        style={{
-          backgroundColor: '#6c757d',
-          color: '#fff',
-          border: 'none',
-          padding: '8px 16px',
-          cursor: 'pointer',
-          
-        }}
-        onClick={handleClose}
-      >
-        Cancel
-      </Button>
-      <Button variant="primary" onClick={handleSubmit}>
-      Save
-    </Button>
+            style={{
+              backgroundColor: '#6c757d',
+              color: '#fff',
+              border: 'none',
+              borderRadius: '20px', // Adjust border radius as needed
+              padding: '7px 35px',
+              cursor: 'pointer',
+              fontSize: '13px',
+              
+            }}
+            onClick={handleClose}
+          >
+            CANCEL
+          </Button>
+
+          <Button
+            variant="primary"
+            onClick={handleSubmit}
+            style={{
+              borderRadius: '20px', // Adjust border radius as needed
+              padding: '7px 30px',
+              fontSize: '13px',
+            }}
+          >
+            SAVE
+          </Button>
         </Modal.Footer>
       </Modal>
 
@@ -445,7 +496,13 @@ function Drivers() {
             <Button variant="primary" type="submit">
               Save Changes
             </Button>
-            <Button variant="secondary" onClick={handleClose}>
+            <Button
+              variant="secondary"
+              onClick={handleClose}
+              style={{
+                marginLeft: "7px" // Adjust margin-left as needed
+              }}
+            >
               Close
             </Button>
           </form>

@@ -172,7 +172,7 @@ padding-left: 5px;
   display: inline-block;
   outline: 0;
   color: #ffffff;
-  background: #00ff37;
+  background: #015c14e1;
   border-radius: 4px;
   font-weight: 500;
   font-size: 14px;
@@ -189,8 +189,13 @@ padding-left: 5px;
 }
 
 .archived-button.active {
-  background-color: red; /* Change background color when active */
+  background-color: #b90000; /* Change background color when active */
   color: rgb(255, 255, 255); /* Change text color when active */
+}
+
+.activate-btn {
+  background-color: #015c14e1;
+  color: white;
 }
 
 

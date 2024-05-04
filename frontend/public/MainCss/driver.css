@@ -93,9 +93,11 @@
   font-size: 15px;
   margin-bottom: 10px;
   
+  
   }
   .tableDriverList  {
   width: 100%;
+  text-align: center; 
   }
 
   .tableDriver{
@@ -114,3 +116,20 @@
   border-radius: 10px; 
   box-shadow: rgb(0 0 0 / 12%) 0px 1px 3px, rgb(0 0 0 / 24%) 0px 1px 2px;
  }
+ .dropdown-item{
+  padding: 5px;
+ }
+ .dropdown-item:hover,
+ .dropdown-item.active {
+   background-color: lightgray; /* Set background color for hover and active states */
+   color: black; /* Set text color for hover and active states */
+ }
+
+ .scrollable-container {
+  max-height: 300px; /* Adjust height for better UI */
+  overflow-y: auto;
+  width: 970px;
+  border-radius: 10px; 
+  box-shadow: rgb(0 0 0 / 12%) 0px 1px 3px, rgb(0 0 0 / 24%) 0px 1px 2px;
+ 
+}
