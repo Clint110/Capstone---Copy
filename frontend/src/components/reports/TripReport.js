@@ -38,11 +38,30 @@ const TripReport = () => {
   const [completedBookings, setCompletedBookings] = useState([]);
 
 
-  const handleEditOpen = (index) => {
+  const [formEditData, setFormEditData] = useState({});
+
+  console.log("Complete Edit booking: ", formEditData)
+
+  
+  const handleEditOpen = (booking) => {
+    const { clientName,  destination } = booking;
+
+    setFormEditData({
+      clientName: clientName,
+      destination: destination,
+  });
+
     // Logic for handling edit action goes here
+    setSelectedBooking(booking);
+    console.log("Booking Details:", booking);
     setShowEditModal(true);
   };
 
+
+  const handleCompleteEditedBooking = (booking, formEditData) => {
+    console.log("Booking details:", booking);
+    console.log("Form data:", formEditData);
+  };
   const handleEditCloseModal = () => {
     setShowEditModal(false);
   };
@@ -571,27 +590,35 @@ const TripReport = () => {
 
   const handleChange = (e, key) => {
     const { value } = e.target;
-    setEditableData((prevState) => ({
-      ...prevState,
-      [key]: value,
-    }));
+    setEditableData((prevState) => {
+      const updatedData = {
+        ...prevState,
+        [key]: value,
+      };
+      console.log("Updated editable data:", updatedData);
+      return updatedData;
+    });
   };
 
-  const handleSubmit = async (index) => {
+
+  const handleSubmit = async () => {
     try {
       // Update data in the database
       await axios.put(
-        `http://localhost:3000/editbook/${editableData._id}`,
+        `http://localhost:3000/editbook/${selectedBooking._id}`, // Include the ID in the URL
         editableData
       );
-
+  
       // Update data in the UI
       const updatedBookingData = [...bookingData];
-      updatedBookingData[index] = editableData;
+      //const index = updatedBookingData.findIndex(item => item._id === selectedBooking._id);
+      //updatedBookingData[index] = editableData;
       setBookingData(updatedBookingData);
-
+  
       // Clear editable data
       setEditableData({});
+      setShowEditModal(false); // Close the modal
+      window.location.reload();
     } catch (error) {
       console.error("Error updating booking data:", error);
     }
@@ -960,7 +987,7 @@ const TripReport = () => {
                       <button
                         type="button"
                         className="btn btn-warning btn-sm"
-                        onClick={() => handleEditOpen(index)}
+                        onClick={() => handleEditOpen(booking)}
                       >
                         Edit
                       </button>
@@ -1000,33 +1027,41 @@ const TripReport = () => {
           <Modal.Title>Edit Report</Modal.Title>
         </Modal.Header>
         <Modal.Body>
-        <form>
-          <div className="form-group">
-            <label htmlFor="plateNumber">Plate Number</label>
-            <select className="form-control" id="plateNumber">
-              {/* Populate options for plate numbers here */}
-              <option value="plateNumber1">Plate Number 1</option>
-              <option value="plateNumber2">Plate Number 2</option>
-              <option value="plateNumber3">Plate Number 3</option>
-            </select>
+        <form >
+        <div className="form-group">
+        <label>
+            Booking ID:
+            <input type="text"  className="bookingInput" value={selectedBooking ? selectedBooking._id : ''} readOnly />
+          </label>
           </div>
           <div className="form-group">
-            <label htmlFor="destination">Destination</label>
-            <input type="text" className="form-control" id="destination" />
+          <label>
+            Destination:
+          
+            <input type="text" className="bookingInput" value={editableData.boundFor !== undefined ? editableData.boundFor : (selectedBooking ? selectedBooking.boundFor : '')} onChange={(e) => handleChange(e, 'boundFor')} />
+          </label>
+            
           </div>
           <div className="form-group">
-            <label htmlFor="office">Office</label>
-            <input type="text" className="form-control" id="office" />
+          <label>
+            Office:
+            <input type="text" className="bookingInput" value={editableData.clientName !== undefined ? editableData.clientName : (selectedBooking ? selectedBooking.clientName : '')} onChange={(e) => handleChange(e, 'clientName')} />
+          </label>
           </div>
-        </form>
-        </Modal.Body>
-        <Modal.Footer>
+          {/* <div className="form-group">
+            {/* //<label htmlFor="office">Office</label> */}
+            {/* <input type="text" className="form-control" id="office" /> */}
+          {/* </div> */} 
           <Button variant="secondary" onClick={handleEditCloseModal}>
             Cancel
           </Button>
-          <Button variant="primary" onClick={handleEditCloseModal}>
+        &nbsp;
+          <Button variant="primary"  onClick={handleSubmit}>
             Save Changes
           </Button>
+        </form>
+        </Modal.Body>
+        <Modal.Footer>
         </Modal.Footer>
       </Modal>
 
