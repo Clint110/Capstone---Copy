@@ -36,7 +36,7 @@ const TripReport = () => {
   const [selectedBooking, setSelectedBooking] = useState(null);
   const [showEditModal, setShowEditModal] = useState(false);
   const [completedBookings, setCompletedBookings] = useState([]);
-
+  const [completedBooking, setCompletedBooking] = useState([]);
 
   const [formEditData, setFormEditData] = useState({});
 
@@ -823,6 +823,26 @@ const TripReport = () => {
     setSelectedDriverStatus(status);
   };
 
+  useEffect(() => {
+    const fetchCompletedBookings = async () => {
+      try {
+        const response = await fetch("http://localhost:3000/get-all-completedbookings");
+        if (response.ok) {
+          const data = await response.json();
+          console.log("Completed bookings data:", data);
+          setCompletedBooking(data);
+        } else {
+          console.error("Failed to fetch completed bookings from the server");
+        }
+      } catch (error) {
+        console.error("Error during fetch:", error);
+      }
+    };
+
+    fetchCompletedBookings();
+  }, []);
+
+
   return (
     <>
       <div>
@@ -1019,6 +1039,34 @@ const TripReport = () => {
           ) : (
             <p>No data available</p>
           )}
+        </table>
+      </div>
+      <div className="TableReportContainer">
+        <h3>Completed Bookings</h3>
+        <table className="reportTable">
+          <thead>
+            <tr>
+              <th>Booking ID</th>
+              <th>Passenger Names</th>
+              <th>Client Name</th>
+              <th>Destination</th>
+              <th>Time and Date</th>
+              <th>Return Date</th>
+            </tr>
+          </thead>
+          <tbody>
+            {completedBooking.map((booking) => (
+              <tr key={booking._id}>
+                <td>{booking._id}</td>
+                <td>{booking.passengerNames}</td>
+                <td>{booking.clientName}</td>
+                <td>{booking.destination}</td>
+                {/* <td>{booking.boundFor}</td> */}
+                <td>{booking.timeAndDate}</td>
+                <td>{booking.returnDate}</td>
+              </tr>
+            ))}
+          </tbody>
         </table>
       </div>
         {/* Edit Booking Modal */}
