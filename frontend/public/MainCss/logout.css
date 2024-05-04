@@ -2,18 +2,19 @@
 /* :root{
     background: var(--primary);
 } */
-.container-Logout{
-    margin: 15% auto;
-    padding: 20px;
-    border: 1px solid #dadada;
-    border-radius: 5px;
-    width: 30%;
-    height: 220px;
-    text-align: center;
-    background-color: #ffffff;
-    position: sticky;
+.container-Logout {
+  margin: 15% auto; /* Top and bottom margin of 15% and horizontal margin auto */
+  padding: 20px;
+  border: 1px solid #dadada;
+  border-radius: 5px;
+  width: 30%;
+  max-width: 400px; /* Adjust the maximum width as needed */
+  height: 220px;
+  text-align: center;
+  background-color: #ffffff;
+  position: sticky;
+  top: 0; /* Adjust the top position as needed */
 }
-
 
 .logouts{
     background-color: #596fac ;
@@ -35,7 +36,7 @@
   }
   
   .red-button {
-    background-color: rgb(252, 63, 63);
+    background-color: rgb(196, 8, 8);
     color: white;
     padding: 10px 20px;
     margin: 5px;

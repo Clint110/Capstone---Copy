@@ -367,8 +367,8 @@ function Drivers() {
                         <td>
                           <strong>{driver.name}</strong>
                         </td>
-                        <td>
-                        {driver.status === "Currently Driving" ? "On Travel" : "Available"}
+                        <td style={{ color: driver.status === "Currently Driving" ? "#f80f0f" : "#1adf1a" }}>
+                          {driver.status === "Currently Driving" ? "On Travel" : "Available"}
                         </td>
                         <td>
                           {/* Edit and Delete Buttons */}

@@ -845,11 +845,21 @@ const TripReport = () => {
 
   return (
     <>
-      <div>
-        <button onClick={generatePDF} className="generate-button">
-          Generate Report
-        </button>
+  
+      <div className="header-wrapper">
+        <div className="header-container">
+          <h4>
+            <strong>REPORT</strong>{" "}
+          </h4>{" "}
+          <span className="userName">
+            <span className="userName-text">Administrator</span>{" "}
+            <FontAwesomeIcon icon={faCircleUser} className="icon-circle" />
+          </span>
+        </div>
       </div>
+      <div className="report-container">
+      <div className="report-wrapper">
+     
       <div className="report_search">
         <input
           type="text"
@@ -872,20 +882,13 @@ const TripReport = () => {
         <button onClick={handleToggleArchive} className={`archived-button ${showArchived ? 'active' : ''}`}>
           {showArchived ? "Show Active Data" : "Show Archived Data"}
         </button>
-      </div>
-      <div className="header-wrapper">
-        <div className="header-container">
-          <h4>
-            <strong>REPORT</strong>{" "}
-          </h4>{" "}
-          <span className="userName">
-            <span className="userName-text">Administrator</span>{" "}
-            <FontAwesomeIcon icon={faCircleUser} className="icon-circle" />
-          </span>
+      
+        <button onClick={generatePDF} className="generate-button">
+          Generate Report
+        </button>
+       
         </div>
-      </div>
-      {/* <div className='Report-container'>
-        <div className='report-wrapper'> */}
+     
       <div className="TableReportContainer">
         <table className="reportTable">
           <thead>
@@ -1212,6 +1215,8 @@ const TripReport = () => {
           </form>
         </Modal.Body>
       </Modal>
+      </div>
+      </div>
     </>
   );
 };

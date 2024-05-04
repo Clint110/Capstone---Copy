@@ -1,33 +1,12 @@
-.Report-container{
-    
-  margin-top: 80px;
-  display: inline-block;
-  vertical-align: top;
-  width: 50px;
-  margin-left: 10px;
- 
-}
-
-
-.report-wrapper{
+.report-container {
+  max-height: 80vh; /* Adjust the maximum height as needed */
+  overflow: auto; /* Enable vertical scrolling if content exceeds the container's height */
+  top: 80px;
   display: flex;
-  flex-grow: 1;
-  padding: 5px;
-  font-size: 12px;
-  line-height: 20px;
-  width: 1000px;
-  align-items: stretch;
-  height: 400px;
-  margin-left: 150%;
-  margin-top:30px;
-  margin-right: 150%;
-  
-  /* background-color: #e7e7e7; */
-  /* border-color: azure; */
-  /* border-radius: 0px; */
-  /* border: 10px solid #f5cc8b; */
-  
+  position: fixed;
 }
+
+
 
 .generate-button:hover {
   /* Add your hover styles here */
@@ -59,15 +38,11 @@
 .generate-button {
   background-color: #2a51dd;
   color: white;
-  padding: 10px;
+  padding: 7px;
   border-radius: 5px;
   border: none;
   cursor: pointer;
-  margin-top: 90px;
-  margin-bottom: 20px;
-  margin-right: 20px;
-  /* margin-left: 900px; */
-  float: right;
+  margin-left: 180px;
 }
 
 .TableReportContainer{
@@ -80,13 +55,14 @@ margin: 20px;
 width: 1100px;
 
 
+
 }
 
 table.reportTable {
   /* border-radius: 10px; 
 overflow: hidden; */
 border-collapse: collapse;
-width: 1100px;
+width: 100%;
 }
 
  th.reportTable {
@@ -221,7 +197,7 @@ justify-content: space-between;
 
 .report_search {
   display: flex;
-  margin-top: 100px;
+  margin-top: 30px;
 }
 
 .report_search input[type="text"] {
