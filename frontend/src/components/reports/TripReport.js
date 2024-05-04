@@ -37,7 +37,7 @@ const TripReport = () => {
   const [showEditModal, setShowEditModal] = useState(false);
   const [completedBookings, setCompletedBookings] = useState([]);
   const [completedBooking, setCompletedBooking] = useState([]);
-
+  const [selectedPlateNumberStatus, setSelectedPlateNumberStatus] = useState("");
   const [formEditData, setFormEditData] = useState({});
 
   console.log("Complete Edit booking: ", formEditData)
@@ -114,7 +114,9 @@ const TripReport = () => {
   const handleCloseModal = () => {
     setShowModal(false);
     setSelectedBooking(null);
+    
   };
+
 
   const [formData, setFormData] = useState({
     plateNumber: "",
@@ -125,47 +127,126 @@ const TripReport = () => {
   console.log("Complete booking: ", formData)
 
 
-  const handleCompleteBooking = async (booking, formData) => {
-    // Here you can access both booking and formData
-    console.log("Booking details:", booking);
-    console.log("Form data:", formData);
+//   const handleCompleteBooking = async (booking, formData) => {
+//     // Here you can access both booking and formData
+//     console.log("Booking details:", booking);
+//     console.log("Form data:", formData);
 
-    try {
-      const response = await fetch("http://localhost:3000/completed-bookings", {
-        method: "POST",
-        headers: {
-          "Content-Type": "application/json",
-        },
-        body: JSON.stringify(formData),
-      });
+//     try {
+//       const response = await fetch("http://localhost:3000/completed-bookings", {
+//         method: "POST",
+//         headers: {
+//           "Content-Type": "application/json",
+//         },
+//         body: JSON.stringify(formData),
+//       });
 
-      if (response.ok) {
-        // Handle success, e.g., clear the form or close the modal
-        setFormData({
-          bookingID: "",
-          plateNumber: "",
-          name: "",
-          clientName: "",
-          passengerNames: "",
-          destination: "WOS",
-          boundFor: "",
-          timeAndDate: "",
-        });
+//       if (response.ok) {
+//         // Handle success, e.g., clear the form or close the modal
+//         setFormData({
+//           bookingID: "",
+//           plateNumber: "",
+//           name: "",
+//           clientName: "",
+//           passengerNames: "",
+//           destination: "WOS",
+//           boundFor: "",
+//           timeAndDate: "",
+//         });
 
-        setCompletedBookings([...completedBookings, booking._id]); // Update completedBookings state
-        console.log("Updated completed bookings:", [...completedBookings, booking._id]);
-        alert("Completed");
-        window.location.reload();
-      } else {
-        // Handle error
-        console.error("Error while submitting the form");
-      }
-    } catch (error) {
-      // Handle network error
-      console.error("Network error:", error);
+//         setCompletedBookings([...completedBookings, booking._id]); // Update completedBookings state
+//         console.log("Updated completed bookings:", [...completedBookings, booking._id]);
+//         alert("Completed");
+//         window.location.reload();
+//       } else {
+//         // Handle error
+//         console.error("Error while submitting the form");
+//       }
+//     } catch (error) {
+//       // Handle network error
+//       console.error("Network error:", error);
+//     }
+
+// };
+
+const handleCompleteBooking = async (booking, formData, selectedPlateNumberStatus, passengerNames) => {
+  // Here you can access both booking and formData
+  console.log("Booking details:", booking);
+  console.log("Form data:", formData);
+  console.log("Passenger names:", passengerNames);
+  // Function to validate booking based on available seats
+  const validateBooking = (selectedPlateNumberStatus, passengerNames) => {
+    // Check if selectedPlateNumberStatus is defined
+    if (!selectedPlateNumberStatus) {
+        console.error("Error: selectedPlateNumberStatus is undefined.");
+        return false;
     }
 
+    // Extract availability status and available seats from selectedPlateNumberStatus
+    const [status, availableSeatsString] = selectedPlateNumberStatus.split(". Seats: ");
+    const availableSeats = parseInt(availableSeatsString.trim());
+
+    // Extract passenger names from the array
+    const passengerNamesString = passengerNames[0];
+
+    // Split the string of passenger names into an array
+    const passengerNamesArray = passengerNamesString.split(", ");
+
+    console.log("Availability status:", status);
+    console.log("Available seats:", availableSeats);
+    console.log("Passengers:", passengerNamesArray.length);
+
+    // Check if the number of passengers exceeds available seats
+    if (passengerNamesArray.length > availableSeats) {
+        // If so, return false to indicate that booking is not valid
+        return false;
+    }
+
+    // Otherwise, return true to indicate that booking is valid
+    return true;
 };
+
+try {
+
+      // Proceed with booking submission
+      const isValidBooking = validateBooking(selectedPlateNumberStatus, passengerNames);
+
+      if (isValidBooking) {
+
+        const response = await fetch("http://localhost:3000/completed-bookings", {
+          method: "POST",
+          headers: {
+              "Content-Type": "application/json",
+          },
+          body: JSON.stringify(formData),
+      });
+    
+          // Handle success, e.g., clear the form or close the modal
+          setFormData({
+              bookingID: "",
+              plateNumber: "",
+              name: "",
+              clientName: "",
+              passengerNames: "",
+              destination: "WOS",
+              boundFor: "",
+              timeAndDate: "",
+          });
+
+          setCompletedBookings([...completedBookings, booking._id]); // Update completedBookings state
+          console.log("Updated completed bookings:", [...completedBookings, booking._id]);
+          alert("Completed");
+          window.location.reload();
+          } else {
+              // Display error message to the user indicating that the booking exceeds available seats
+              alert('The number of passengers exceeds the available seats. Please select a different vehicle or reduce the number of passengers.');
+          }
+  } catch (error) {
+      // Handle network error
+      console.error("Network error:", error);
+  }
+};
+
 
   // Function to handle vehicle click
   const handleVehicleClick = (plateNumber) => {
@@ -728,7 +809,7 @@ const TripReport = () => {
 
   const [plateNumbers, setPlateNumbers] = useState([]);
   const [plateNumberStatuses, setPlateNumberStatuses] = useState({});
-  const [selectedPlateNumberStatus, setSelectedPlateNumberStatus] = useState("");
+
   const [selectedPlateNumber, setSelectedPlateNumber] = useState(null);
   const [availablePlateNumbers, setAvailablePlateNumbers] = useState([]);
   const [selectedDriver, setSelectedDriver] = useState(null);
@@ -841,7 +922,6 @@ const TripReport = () => {
 
     fetchCompletedBookings();
   }, []);
-
 
   return (
     <>
@@ -1052,6 +1132,8 @@ const TripReport = () => {
           <thead>
             <tr>
               <th>Booking ID</th>
+              <th>Plate Number</th>
+              <th>Driver</th>
               <th>Passenger Names</th>
               <th>Client Name</th>
               <th>Destination</th>
@@ -1063,6 +1145,8 @@ const TripReport = () => {
             {completedBooking.map((booking) => (
               <tr key={booking._id}>
                 <td>{booking._id}</td>
+                <td>{booking.plateNumber}</td>
+                <td>{booking.name}</td>
                 <td>{booking.passengerNames}</td>
                 <td>{booking.clientName}</td>
                 <td>{booking.destination}</td>
@@ -1086,6 +1170,12 @@ const TripReport = () => {
             Booking ID:
             <input type="text"  className="bookingInput" value={selectedBooking ? selectedBooking._id : ''} readOnly />
           </label>
+          </div>
+          <div className="form-group">
+            <label>
+              Passenger Names:
+              <input type="text" className="bookingInput" value={editableData.passengerNames !== undefined ? editableData.passengerNames : (selectedBooking ? selectedBooking.passengerNames : '')} onChange={(e) => handleChange(e, 'passengerNames')} />
+            </label>
           </div>
           <div className="form-group">
           <label>
@@ -1207,7 +1297,7 @@ const TripReport = () => {
           <Button variant="secondary" onClick={handleCloseModal}>
             Cancel
           </Button>{" "}
-          <Button variant="success" onClick={() => handleCompleteBooking(selectedBooking, formData)}>
+          <Button variant="success" onClick={() => handleCompleteBooking(selectedBooking, formData,  selectedPlateNumberStatus, selectedBooking.passengerNames)}>
               Complete Booking
           </Button>
 
