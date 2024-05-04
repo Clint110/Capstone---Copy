@@ -1099,23 +1099,32 @@ try {
                     {/* &nbsp;<button type="button" class="btn btn-danger btn-sm">Delete</button> */}
                     &nbsp;{" "}
                     {showArchived && (
-                          // Render only the "Activate" button when showing archived data
-                          <button
+                        // Render only the "Activate" button when showing archived data
+                        <button
                             className="action-btn activate-btn"
-                            onClick={() => handleActivateBooking(booking.plateNumber)}
-                          >
+                            onClick={() => {
+                                const confirmed = window.confirm("Are you sure you want to activate this data?");
+                                if (confirmed) {
+                                    handleActivateBooking(booking.plateNumber);
+                                }
+                            }}
+                        >
                             Activate
-                          </button>
+                        </button>
                     )}
                     {!showArchived && (
-                        <button
-                        type="button"
-                        className="btn btn-sm"
-                        onClick={() => handleArchiveBooking(booking.plateNumber)}
-                        style={{ backgroundColor: '#b90000', color: 'white' }}
-                      >
-                        Archive
-                      </button>
+                          <button
+                              type="button"
+                              className="btn btn-sm"
+                              onClick={() => {
+                                  if (window.confirm("Are you sure you want to archive this data?")) {
+                                      handleArchiveBooking(booking.plateNumber);
+                                  }
+                              }}
+                              style={{ backgroundColor: '#b90000', color: 'white' }}
+                          >
+                              Archive
+                          </button>
                       )}
                  </td>
                 </tr>
@@ -1161,7 +1170,7 @@ try {
         {/* Edit Booking Modal */}
       <Modal show={showEditModal} onHide={handleEditCloseModal}>
         <Modal.Header closeButton>
-          <Modal.Title>Edit Report</Modal.Title>
+          <Modal.Title style={{ fontSize: "20px" }}>Edit Report</Modal.Title>
         </Modal.Header>
         <Modal.Body>
         <form >
@@ -1180,10 +1189,8 @@ try {
           <div className="form-group">
           <label>
             Destination:
-          
             <input type="text" className="bookingInput" value={editableData.boundFor !== undefined ? editableData.boundFor : (selectedBooking ? selectedBooking.boundFor : '')} onChange={(e) => handleChange(e, 'boundFor')} />
           </label>
-            
           </div>
           <div className="form-group">
           <label>
@@ -1199,7 +1206,10 @@ try {
             Cancel
           </Button>
         &nbsp;
-          <Button variant="primary"  onClick={handleSubmit}>
+          <Button variant="primary"  onClick={handleSubmit}
+          style={{
+            marginLeft: "7px" // Adjust margin-left as needed
+          }}>
             Save Changes
           </Button>
         </form>
