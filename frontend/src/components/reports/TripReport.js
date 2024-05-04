@@ -750,8 +750,8 @@ const handleCompleteBooking = async (booking) => {
         </select>
 
         <button onClick={handleToggleArchive} className={`archived-button ${showArchived ? 'active' : ''}`}>
-  {showArchived ? "Show Active Data" : "Show Archived Data"}
-</button>
+          {showArchived ? "Show Active Data" : "Show Archived Data"}
+        </button>
       </div>
       <div className="header-wrapper">
         <div className="header-container">
@@ -863,12 +863,13 @@ const handleCompleteBooking = async (booking) => {
                       </>
                     ) : (
                       <button
-                        type="button"
-                        className="btn btn-warning btn-sm"
-                        onClick={() => handleEditOpen(index)}
-                      >
-                        Edit
-                      </button>
+                      type="button"
+                      className="btn btn-sm"
+                      onClick={() => handleEditOpen(index)}
+                      style={{ backgroundColor: "#1D5D9B", color: "white" }} // Change background color to blue
+                    >
+                      Edit
+                    </button>
                     )}
                     {/* &nbsp;<button type="button" class="btn btn-danger btn-sm">Delete</button> */}
                     &nbsp;{" "}
@@ -883,12 +884,13 @@ const handleCompleteBooking = async (booking) => {
                     )}
                     {!showArchived && (
                         <button
-                          type="button"
-                          className="btn btn-danger btn-sm"
-                          onClick={() => handleArchiveBooking(booking.plateNumber)}
-                        >
-                          Archive
-                        </button>
+                        type="button"
+                        className="btn btn-sm"
+                        onClick={() => handleArchiveBooking(booking.plateNumber)}
+                        style={{ backgroundColor: '#b90000', color: 'white' }}
+                      >
+                        Archive
+                      </button>
                       )}
                  </td>
                 </tr>

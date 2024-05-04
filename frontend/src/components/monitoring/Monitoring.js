@@ -952,7 +952,7 @@ function Monitoring() {
             <MDBModalDialog>
               <MDBModalContent>
                 <MDBModalHeader>
-                  <MDBModalTitle>Add Vehicle</MDBModalTitle>
+                  <MDBModalTitle>ADD VEHICLE</MDBModalTitle>
                 </MDBModalHeader>
                 <MDBModalBody>
                   <form id="addvec" onSubmit={handlesubmitvec}>
