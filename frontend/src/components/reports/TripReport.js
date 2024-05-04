@@ -30,24 +30,84 @@ const TripReport = () => {
   const [editableData, setEditableData] = useState({});
   const [searchQuery, setSearchQuery] = useState("");
   const [searchField, setSearchField] = useState("plateNumber");
-  const [formData, setFormData] = useState({});
   const [showArchived, setShowArchived] = useState(false);
   const [modalOpen, setModalOpen] = useState(false);
   const [showModal, setShowModal] = useState(false);
   const [selectedBooking, setSelectedBooking] = useState(null);
   const [showEditModal, setShowEditModal] = useState(false);
+  const [completedBookings, setCompletedBookings] = useState([]);
+  const [completedBooking, setCompletedBooking] = useState([]);
 
-  const handleEditOpen = (index) => {
+  const [formEditData, setFormEditData] = useState({});
+
+  console.log("Complete Edit booking: ", formEditData)
+
+  
+  const handleEditOpen = (booking) => {
+    const { clientName,  destination } = booking;
+
+    setFormEditData({
+      clientName: clientName,
+      destination: destination,
+  });
+
     // Logic for handling edit action goes here
+    setSelectedBooking(booking);
+    console.log("Booking Details:", booking);
     setShowEditModal(true);
   };
 
+
+  const handleCompleteEditedBooking = (booking, formEditData) => {
+    console.log("Booking details:", booking);
+    console.log("Form data:", formEditData);
+  };
   const handleEditCloseModal = () => {
     setShowEditModal(false);
   };
 
+  useEffect(() => {
+    fetchCompletedBookings();
+    // Add any other necessary initialization logic here
+  }, []);
+
+  const fetchCompletedBookings = async () => {
+    try {
+      const response = await fetch("http://localhost:3000/check-completed-bookings");
+      if (response.ok) {
+        const data = await response.json();
+        setCompletedBookings(data.completedBookings);
+        console.log("completed bookings: ", data.completedBookings);
+      } else {
+        console.error("Failed to fetch completed bookings");
+      }
+    } catch (error) {
+      console.error("Error fetching completed bookings:", error);
+    }
+  };
+
   const handleOpenModal = (booking) => {
+    const {_id, clientName, passengerNames, destination, boundFor, timeAndDate, timeForBound, returnDate } = booking;
+     // Combine date and timeForBound
+  const combinedDate = new Date(timeAndDate);
+  combinedDate.setHours(new Date(timeForBound).getHours());
+  combinedDate.setMinutes(new Date(timeForBound).getMinutes());
+
+  const bookingID = _id;
+
+  setFormData({
+    bookingID: bookingID,
+    plateNumber: booking.plateNumber, // Include plateNumber
+    name: booking.name,
+    clientName: clientName,
+    passengerNames: passengerNames.join(", "), // Convert array to string
+    destination: destination,
+    timeAndDate: combinedDate.toISOString(), // Use the combined date
+    returnDate: returnDate
+});
+
     setSelectedBooking(booking);
+    console.log("Booking Details:", booking);
     setShowModal(true);
   };
 
@@ -56,25 +116,55 @@ const TripReport = () => {
     setSelectedBooking(null);
   };
 
-const handleCompleteBooking = async (booking) => {
-  try {
-    // Perform the logic to complete the booking, such as updating the status in the database
-    console.log("Completing booking:", booking);
-    // For example, you can make an API call to update the booking status
-    // await axios.put(`http://localhost:3000/completeBooking/${booking._id}`);
-    
-    // Update the state of the booking to indicate it has been completed
-    // This will automatically render the "Completed" button
-    const updatedBookingData = bookingData.map((item) =>
-      item._id === booking._id ? { ...item, status: "Completed" } : item
-    );
-    setBookingData(updatedBookingData);
+  const [formData, setFormData] = useState({
+    plateNumber: "",
+     name: "",
 
-    // Close the modal after completing the booking
-    handleCloseModal();
-  } catch (error) {
-    console.error("Error completing booking:", error);
-  }
+  });
+
+  console.log("Complete booking: ", formData)
+
+
+  const handleCompleteBooking = async (booking, formData) => {
+    // Here you can access both booking and formData
+    console.log("Booking details:", booking);
+    console.log("Form data:", formData);
+
+    try {
+      const response = await fetch("http://localhost:3000/completed-bookings", {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+        },
+        body: JSON.stringify(formData),
+      });
+
+      if (response.ok) {
+        // Handle success, e.g., clear the form or close the modal
+        setFormData({
+          bookingID: "",
+          plateNumber: "",
+          name: "",
+          clientName: "",
+          passengerNames: "",
+          destination: "WOS",
+          boundFor: "",
+          timeAndDate: "",
+        });
+
+        setCompletedBookings([...completedBookings, booking._id]); // Update completedBookings state
+        console.log("Updated completed bookings:", [...completedBookings, booking._id]);
+        alert("Completed");
+        window.location.reload();
+      } else {
+        // Handle error
+        console.error("Error while submitting the form");
+      }
+    } catch (error) {
+      // Handle network error
+      console.error("Network error:", error);
+    }
+
 };
 
   // Function to handle vehicle click
@@ -374,6 +464,7 @@ const handleCompleteBooking = async (booking) => {
       } else {
         console.log("No plate number selected");
       }
+
       const bookingDetails = filteredData.find(
         (booking) => booking.plateNumber === plateNumber
       );
@@ -499,27 +590,35 @@ const handleCompleteBooking = async (booking) => {
 
   const handleChange = (e, key) => {
     const { value } = e.target;
-    setEditableData((prevState) => ({
-      ...prevState,
-      [key]: value,
-    }));
+    setEditableData((prevState) => {
+      const updatedData = {
+        ...prevState,
+        [key]: value,
+      };
+      console.log("Updated editable data:", updatedData);
+      return updatedData;
+    });
   };
 
-  const handleSubmit = async (index) => {
+
+  const handleSubmit = async () => {
     try {
       // Update data in the database
       await axios.put(
-        `http://localhost:3000/editbook/${editableData._id}`,
+        `http://localhost:3000/editbook/${selectedBooking._id}`, // Include the ID in the URL
         editableData
       );
-
+  
       // Update data in the UI
       const updatedBookingData = [...bookingData];
-      updatedBookingData[index] = editableData;
+      //const index = updatedBookingData.findIndex(item => item._id === selectedBooking._id);
+      //updatedBookingData[index] = editableData;
       setBookingData(updatedBookingData);
-
+  
       // Clear editable data
       setEditableData({});
+      setShowEditModal(false); // Close the modal
+      window.location.reload();
     } catch (error) {
       console.error("Error updating booking data:", error);
     }
@@ -717,11 +816,32 @@ const handleCompleteBooking = async (booking) => {
     const selectedDriverId = event.target.value;
     console.log("selected driver: ", selectedDriverId);
     setSelectedDriver(selectedDriverId);
+    setFormData({ ...formData, name: selectedDriverId });
     setSelectedDriverStatus(""); // Reset the driver status when a new driver is selected
     // Retrieve and set the status of the selected driver
     const status = availableDrivers.find(({ name }) => name === selectedDriverId) ? "Available" : "Unavailable";
     setSelectedDriverStatus(status);
   };
+
+  useEffect(() => {
+    const fetchCompletedBookings = async () => {
+      try {
+        const response = await fetch("http://localhost:3000/get-all-completedbookings");
+        if (response.ok) {
+          const data = await response.json();
+          console.log("Completed bookings data:", data);
+          setCompletedBooking(data);
+        } else {
+          console.error("Failed to fetch completed bookings from the server");
+        }
+      } catch (error) {
+        console.error("Error during fetch:", error);
+      }
+    };
+
+    fetchCompletedBookings();
+  }, []);
+
 
   return (
     <>
@@ -831,14 +951,36 @@ const handleCompleteBooking = async (booking) => {
                     )}
                   </td>
                   <td>
-                  <button
+                  {completedBookings.find(completedBooking => completedBooking.bookingID === booking._id) ? (
+                    <button
+                      type="button"
+                      className="btn btn-success btn-sm"
+                      style={{ width: "100px" }}
+                      disabled // Disable the button if already completed
+                    >
+                      Completed
+                    </button>
+                  ) : (
+                    <button
+                      type="button"
+                      className="btn btn-warning btn-sm"
+                      style={{ width: "100px" }}
+                      onClick={() => handleOpenModal(booking)}
+                    >
+                      Pending
+                    </button>
+                  )}
+                  {/* Add console logs here */}
+              {console.log('Booking:', booking.clientName)}
+              {console.log('Completed bookings:', completedBookings)}
+                  {/* <button
                       type="button"
                       className="btn btn-warning btn-sm"
                       style={{ width: "100px" }} // Adjust width as needed
                       onClick={() => handleOpenModal(booking)}
                     >
                       Pending
-                    </button>
+                    </button> */}
                   </td>
                   <td>
                   {/* <div className="btn-group"> */}
@@ -901,39 +1043,75 @@ const handleCompleteBooking = async (booking) => {
           )}
         </table>
       </div>
+      <div className="TableReportContainer">
+        <h3>Completed Bookings</h3>
+        <table className="reportTable">
+          <thead>
+            <tr>
+              <th>Booking ID</th>
+              <th>Passenger Names</th>
+              <th>Client Name</th>
+              <th>Destination</th>
+              <th>Time and Date</th>
+              <th>Return Date</th>
+            </tr>
+          </thead>
+          <tbody>
+            {completedBooking.map((booking) => (
+              <tr key={booking._id}>
+                <td>{booking._id}</td>
+                <td>{booking.passengerNames}</td>
+                <td>{booking.clientName}</td>
+                <td>{booking.destination}</td>
+                {/* <td>{booking.boundFor}</td> */}
+                <td>{booking.timeAndDate}</td>
+                <td>{booking.returnDate}</td>
+              </tr>
+            ))}
+          </tbody>
+        </table>
+      </div>
         {/* Edit Booking Modal */}
       <Modal show={showEditModal} onHide={handleEditCloseModal}>
         <Modal.Header closeButton>
           <Modal.Title>Edit Report</Modal.Title>
         </Modal.Header>
         <Modal.Body>
-        <form>
-          <div className="form-group">
-            <label htmlFor="plateNumber">Plate Number</label>
-            <select className="form-control" id="plateNumber">
-              {/* Populate options for plate numbers here */}
-              <option value="plateNumber1">Plate Number 1</option>
-              <option value="plateNumber2">Plate Number 2</option>
-              <option value="plateNumber3">Plate Number 3</option>
-            </select>
+        <form >
+        <div className="form-group">
+        <label>
+            Booking ID:
+            <input type="text"  className="bookingInput" value={selectedBooking ? selectedBooking._id : ''} readOnly />
+          </label>
           </div>
           <div className="form-group">
-            <label htmlFor="destination">Destination</label>
-            <input type="text" className="form-control" id="destination" />
+          <label>
+            Destination:
+          
+            <input type="text" className="bookingInput" value={editableData.boundFor !== undefined ? editableData.boundFor : (selectedBooking ? selectedBooking.boundFor : '')} onChange={(e) => handleChange(e, 'boundFor')} />
+          </label>
+            
           </div>
           <div className="form-group">
-            <label htmlFor="office">Office</label>
-            <input type="text" className="form-control" id="office" />
+          <label>
+            Office:
+            <input type="text" className="bookingInput" value={editableData.clientName !== undefined ? editableData.clientName : (selectedBooking ? selectedBooking.clientName : '')} onChange={(e) => handleChange(e, 'clientName')} />
+          </label>
           </div>
-        </form>
-        </Modal.Body>
-        <Modal.Footer>
+          {/* <div className="form-group">
+            {/* //<label htmlFor="office">Office</label> */}
+            {/* <input type="text" className="form-control" id="office" /> */}
+          {/* </div> */} 
           <Button variant="secondary" onClick={handleEditCloseModal}>
             Cancel
           </Button>
-          <Button variant="primary" onClick={handleEditCloseModal}>
+        &nbsp;
+          <Button variant="primary"  onClick={handleSubmit}>
             Save Changes
           </Button>
+        </form>
+        </Modal.Body>
+        <Modal.Footer>
         </Modal.Footer>
       </Modal>
 
@@ -943,8 +1121,50 @@ const handleCompleteBooking = async (booking) => {
           <Modal.Title>Complete Booking</Modal.Title>
         </Modal.Header>
         <Modal.Body>
-          <p>Complete the booking for /NAME SA CLIENT DAPAT/</p>
-          <form>
+        <p>Complete the booking for: {selectedBooking ? selectedBooking.clientName : ''}</p>
+          {/* <p>Complete the booking for /NAME SA CLIENT DAPAT/</p> */}
+          <form onSubmit={handleCompleteBooking}>
+          <label>
+            Booking ID:
+            <input type="text"  className="bookingInput" value={selectedBooking ? selectedBooking._id : ''} readOnly />
+          </label>
+          <label>
+            Passenger Names:
+            <input type="text"  className="bookingInput" value={selectedBooking ? selectedBooking.passengerNames : ''} readOnly />
+          </label>
+          <br />
+          <label>
+            Client Name:
+            <input type="text" className="bookingInput" value={selectedBooking ? selectedBooking.clientName : ''} readOnly />
+          </label>
+          <br />
+          <label>
+            Destination:
+            <input type="text" className="bookingInput" value={selectedBooking ? selectedBooking.destination : ''} readOnly />
+          </label>
+          <br />
+          <label>
+            Bound For:
+            <input type="text" className="bookingInput" value={selectedBooking ? selectedBooking.boundFor : ''} readOnly />
+          </label>
+          <br />
+          <label>
+            Time and Date:
+            <input
+              type="text"
+              className="bookingInput"
+              value={
+                selectedBooking
+                  ? `${new Date(selectedBooking.timeAndDate).toLocaleDateString()} ${new Date(selectedBooking.timeForBound).toLocaleTimeString()}`
+                  : ''
+              }
+              readOnly
+            />
+          </label>
+          <label>
+            Return Date:
+            <input type="text" className="bookingInput" value={selectedBooking ? selectedBooking.returnDate : ''} readOnly />
+          </label>
             <label>
               Plate Number
               <select className="bookingInput"  value={selectedPlateNumber} onChange={handlePlateNumberChange} required>
@@ -980,13 +1200,16 @@ const handleCompleteBooking = async (booking) => {
                 {selectedDriverStatus}
               </p>
             </label>
-          </form>
+            <div>
           <Button variant="secondary" onClick={handleCloseModal}>
             Cancel
           </Button>{" "}
-          <Button variant="success" onClick={handleCompleteBooking}>
-            Complete Booking
+          <Button variant="success" onClick={() => handleCompleteBooking(selectedBooking, formData)}>
+              Complete Booking
           </Button>
+
+          </div>
+          </form>
         </Modal.Body>
       </Modal>
     </>
