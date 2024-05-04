@@ -1,4 +1,5 @@
 const Driver = require("../models/Driver");
+const CompletedBooking = require('../models/CompletedBooking');
 
 /// Create a new driver
 // exports.createDriver = async (req, res) => {
@@ -91,36 +92,67 @@ exports.activateDriver = async (req, res) => {
   }
 };
 
+// exports.driverStatus = async (req, res) => {
+//   try {
+//     console.log("Fetching driver status...");
+//     // Fetch all drivers from the Driver model
+//     const drivers = await Driver.find();
+
+//     const statusObject = {};
+
+//     // Iterate over each driver
+//     drivers.forEach((driver) => {
+//       // Check if the driver is active and not assigned to any trip
+//       if (driver.status === "active") {
+//         statusObject[driver._id] = {
+//           name: driver.name,
+//           status: "Available"
+//         };
+//       } else {
+//         statusObject[driver._id] = {
+//           name: driver.name,
+//           status: "Unavailable"
+//         };
+//       }
+//     });
+
+//     console.log("Driver status object:", statusObject);
+
+//     // Send the driver status as JSON response
+//     res.json(statusObject);
+//   } catch (error) {
+//     console.error("Error fetching driver status:", error);
+//     res.status(500).json({ error: "Internal server error" });
+//   }
+// };
+
 exports.driverStatus = async (req, res) => {
   try {
-    console.log("Fetching driver status...");
+    console.log("Fetching driver status based on completed bookings...");
     // Fetch all drivers from the Driver model
     const drivers = await Driver.find();
+
+    // Fetch completed bookings from the CompletedBooking model
+    const completedBookings = await CompletedBooking.find({}, "name"); // Assuming clientName is used to match with driver name
 
     const statusObject = {};
 
     // Iterate over each driver
     drivers.forEach((driver) => {
-      // Check if the driver is active and not assigned to any trip
-      if (driver.status === "active") {
-        statusObject[driver._id] = {
-          name: driver.name,
-          status: "Available"
-        };
-      } else {
-        statusObject[driver._id] = {
-          name: driver.name,
-          status: "Unavailable"
-        };
-      }
+      // Check if the driver's name is present in completed bookings
+      const isDriving = completedBookings.some(booking => booking.name === driver.name);
+      statusObject[driver._id] = {
+        name: driver.name,
+        status: isDriving ? "Currently Driving" : "Available"
+      };
     });
 
-    console.log("Driver status object:", statusObject);
+    console.log("Driver status object based on completed bookings:", statusObject);
 
     // Send the driver status as JSON response
     res.json(statusObject);
   } catch (error) {
-    console.error("Error fetching driver status:", error);
+    console.error("Error fetching driver status based on completed bookings:", error);
     res.status(500).json({ error: "Internal server error" });
   }
 };

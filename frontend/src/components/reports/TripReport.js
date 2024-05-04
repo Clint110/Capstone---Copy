@@ -68,19 +68,23 @@ const TripReport = () => {
   };
 
   const handleOpenModal = (booking) => {
-    const { clientName, passengerNames, destination, boundFor, timeAndDate, timeForBound } = booking;
+    const {_id, clientName, passengerNames, destination, boundFor, timeAndDate, timeForBound, returnDate } = booking;
      // Combine date and timeForBound
   const combinedDate = new Date(timeAndDate);
   combinedDate.setHours(new Date(timeForBound).getHours());
   combinedDate.setMinutes(new Date(timeForBound).getMinutes());
 
+  const bookingID = _id;
+
   setFormData({
+    bookingID: bookingID,
     plateNumber: booking.plateNumber, // Include plateNumber
     name: booking.name,
     clientName: clientName,
     passengerNames: passengerNames.join(", "), // Convert array to string
     destination: destination,
     timeAndDate: combinedDate.toISOString(), // Use the combined date
+    returnDate: returnDate
 });
 
     setSelectedBooking(booking);
@@ -119,6 +123,7 @@ const TripReport = () => {
       if (response.ok) {
         // Handle success, e.g., clear the form or close the modal
         setFormData({
+          bookingID: "",
           plateNumber: "",
           name: "",
           clientName: "",
@@ -899,7 +904,7 @@ const TripReport = () => {
                     )}
                   </td>
                   <td>
-                  {completedBookings.find(completedBooking => completedBooking.clientName === booking.clientName) ? (
+                  {completedBookings.find(completedBooking => completedBooking.bookingID === booking._id) ? (
                     <button
                       type="button"
                       className="btn btn-success btn-sm"
@@ -1035,6 +1040,10 @@ const TripReport = () => {
           {/* <p>Complete the booking for /NAME SA CLIENT DAPAT/</p> */}
           <form onSubmit={handleCompleteBooking}>
           <label>
+            Booking ID:
+            <input type="text"  className="bookingInput" value={selectedBooking ? selectedBooking._id : ''} readOnly />
+          </label>
+          <label>
             Passenger Names:
             <input type="text"  className="bookingInput" value={selectedBooking ? selectedBooking.passengerNames : ''} readOnly />
           </label>
@@ -1066,6 +1075,10 @@ const TripReport = () => {
               }
               readOnly
             />
+          </label>
+          <label>
+            Return Date:
+            <input type="text" className="bookingInput" value={selectedBooking ? selectedBooking.returnDate : ''} readOnly />
           </label>
             <label>
               Plate Number

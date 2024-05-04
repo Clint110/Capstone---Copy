@@ -95,8 +95,37 @@ function Drivers() {
   // };
 
 
+  // const fetchDrivers = async () => {
+  //   try {
+  //     const statusResponse = await axios.get("http://localhost:3000/driverstatus");
+  //     console.log("Driver status based on completed bookings:", statusResponse.data);
+      
+
+  //     let response;
+  //     if (filter === "active") {
+  //       response = await axios.get("http://localhost:3000/drivers/active");
+  //     } else if (filter === "archived") {
+  //       response = await axios.get("http://localhost:3000/drivers/archived");
+  //     } else {
+  //       response = await axios.get("http://localhost:3000/drivers");
+  //     }
+  //     setDrivers(response.data);
+  //   } catch (error) {
+  //     console.error("Error fetching drivers:", error);
+  //   }
+  // };
+
+  // useEffect(() => {
+  //   fetchDrivers();
+  // }, [filter]);
+
   const fetchDrivers = async () => {
     try {
+      const statusResponse = await axios.get("http://localhost:3000/driverstatus");
+      console.log("Driver status based on completed bookings:", statusResponse.data);
+  
+      const statusObject = statusResponse.data; // Store the status object
+  
       let response;
       if (filter === "active") {
         response = await axios.get("http://localhost:3000/drivers/active");
@@ -105,7 +134,14 @@ function Drivers() {
       } else {
         response = await axios.get("http://localhost:3000/drivers");
       }
-      setDrivers(response.data);
+  
+      // Update each driver's status based on the status object
+      const driversWithStatus = response.data.map(driver => ({
+        ...driver,
+        status: statusObject[driver._id] ? statusObject[driver._id].status : "Available"
+      }));
+  
+      setDrivers(driversWithStatus);
     } catch (error) {
       console.error("Error fetching drivers:", error);
     }
@@ -305,12 +341,12 @@ function Drivers() {
                   <table className="tableDriver">
                     <tbody className="driver-tbody">
                     {filteredDrivers.map((driver) => (
-                      <tr>
+                      <tr key={driver._id}>
                         <td>
                           <strong>{driver.name}</strong>
                         </td>
                         <td>
-                        {driver.isActive ? "Active" : "Inactive"}
+                        {driver.status === "Currently Driving" ? "On Travel" : "Available"}
                         </td>
                         <td>
                           {/* Edit and Delete Buttons */}

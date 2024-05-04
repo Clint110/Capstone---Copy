@@ -2,14 +2,16 @@ const CompletedBooking = require('../models/CompletedBooking');
 
 exports.createCompletedBooking = async (req, res) => {
     try {
-        const { plateNumber, name, clientName, passengerNames, destination, timeAndDate } = req.body;
+        const { bookingID, plateNumber, name, clientName, passengerNames, destination, timeAndDate, returnDate } = req.body;
         const completedBooking = new CompletedBooking({
+            bookingID,
             plateNumber,
             name,
             clientName,
             passengerNames,
             destination,
             timeAndDate,
+            returnDate
             // Add other fields as needed
         });
         await completedBooking.save();
@@ -22,7 +24,7 @@ exports.createCompletedBooking = async (req, res) => {
 
 exports.checkCompletedBookings = async (req, res) => {
     try {
-      const completedBookings = await CompletedBooking.find({}, 'clientName'); // Use '_id' instead of 'id'
+      const completedBookings = await CompletedBooking.find({}, 'bookingID'); // Use '_id' instead of 'id'
       console.log(completedBookings);
       res.json({ completedBookings });
     } catch (error) {
