@@ -1,5 +1,6 @@
 const Vehicle = require("../models/Vehicle");
 const Booking = require("../models/BookingModel");
+const CompletedBooking = require('../models/CompletedBooking');
 
 exports.addvehicle = async (req, res) => {
   try {
@@ -73,7 +74,7 @@ exports.vecstatus = async (req, res) => {
       plateNumbersInVehicles.map(async (plateNumber) => {
         console.log("Checking plate number:", plateNumber);
         // Find the latest booking for the plate number
-        const latestBooking = await Booking.findOne({ plateNumber }).sort({
+        const latestBooking = await CompletedBooking.findOne({ plateNumber }).sort({
           returnDate: -1,
         });
         console.log("Latest booking:", latestBooking);
@@ -243,7 +244,7 @@ exports.markAvailable = async (req, res) => {
     }
 
     // Find the latest booking for the plate number
-    const latestBooking = await Booking.findOne({ plateNumber }).sort({
+    const latestBooking = await CompletedBooking.findOne({ plateNumber }).sort({
       returnDate: -1,
     });
 
