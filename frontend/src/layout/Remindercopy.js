@@ -291,7 +291,7 @@ function Reminder() {
                   )}
                    {expanded && latestCompletedBooking && (
                     <div>
-                      Latest Completed Booking: <br />
+                      Latest Booking: <br />
                       {`Driver: ${latestCompletedBooking.name}, Destination: ${latestCompletedBooking.boundFor}, Time and Date: ${formatTime2(latestCompletedBooking.timeAndDate)}`}
                     </div>
                   )}
@@ -328,7 +328,7 @@ function Reminder() {
                     <h5>Plate Number: {selectedPlateNumber}</h5>
                     {latestCompletedBooking && (
                     <div>
-                      Latest Completed Booking: <br />
+                      Latest Booking: <br />
                       {`Driver: ${latestCompletedBooking.name}, Destination: ${latestCompletedBooking.boundFor}, Time and Date: ${formatTime2(latestCompletedBooking.timeAndDate)}`}
                     </div>
                        )}
