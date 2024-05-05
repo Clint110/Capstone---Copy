@@ -292,7 +292,7 @@ function Reminder() {
                    {expanded && latestCompletedBooking && (
                     <div>
                       Latest Completed Booking: <br />
-                      {`Name: ${latestCompletedBooking.name}, Destination: ${latestCompletedBooking.destination}, Time and Date: ${formatTime2(latestCompletedBooking.timeAndDate)}`}
+                      {`Driver: ${latestCompletedBooking.name}, Destination: ${latestCompletedBooking.boundFor}, Time and Date: ${formatTime2(latestCompletedBooking.timeAndDate)}`}
                     </div>
                   )}
                 </td>
@@ -329,7 +329,7 @@ function Reminder() {
                     {latestCompletedBooking && (
                     <div>
                       Latest Completed Booking: <br />
-                      {`Name: ${latestCompletedBooking.name}, Destination: ${latestCompletedBooking.destination}, Time and Date: ${formatTime2(latestCompletedBooking.timeAndDate)}`}
+                      {`Driver: ${latestCompletedBooking.name}, Destination: ${latestCompletedBooking.boundFor}, Time and Date: ${formatTime2(latestCompletedBooking.timeAndDate)}`}
                     </div>
                        )}
                     {/* Add your map component here */}
