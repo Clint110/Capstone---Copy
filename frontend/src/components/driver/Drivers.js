@@ -28,12 +28,27 @@ function Drivers() {
   const [editedDriverName, setEditedDriverName] = useState("");
   const [searchInput, setSearchInput] = useState("");
  
+  const filterOptions = [
+    { label: "All", value: "all" },
+    { label: "Available", value: "available" },
+    { label: "On Travel", value: "onTravel" },
+  ];
+
 
   // Handler function for filter buttons
   const handleFilter = (selectedFilter) => {
+    console.log("Selected Filter:", selectedFilter);
     setFilter(selectedFilter);
+    // Pass the correct filter values here
+    if (selectedFilter === "available") {
+      fetchDrivers("active"); // Pass "active" for "available" filter
+    }
+     else if (selectedFilter === "onTravel") {
+      fetchDrivers("onTravel"); // Pass "onTravel" for "Currently Driving" filter
+    } else {
+      fetchDrivers("all"); // Pass "all" for other filters
+    }
   };
-  
 
   const isActive = (selectedFilter) => {
     return selectedFilter === filter ? "active" : "";
@@ -120,6 +135,35 @@ function Drivers() {
   //   fetchDrivers();
   // }, [filter]);
 
+  // const fetchDrivers = async () => {
+  //   try {
+  //     const statusResponse = await axios.get("http://localhost:3000/driverstatus");
+  //     console.log("Driver status based on completed bookings:", statusResponse.data);
+  
+  //     const statusObject = statusResponse.data; // Store the status object
+  
+  //     let response;
+  //     if (filter === "active") {
+  //       response = await axios.get("http://localhost:3000/drivers/active");
+  //     } else if (filter === "archived") {
+  //       response = await axios.get("http://localhost:3000/drivers/archived");
+  //     } else {
+  //       response = await axios.get("http://localhost:3000/drivers");
+  //     }
+  
+  //     // Update each driver's status based on the status object
+  //     const driversWithStatus = response.data.map(driver => ({
+  //       ...driver,
+  //       status: statusObject[driver._id] ? statusObject[driver._id].status : "Available"
+  //     }));
+  
+  //     setDrivers(driversWithStatus);
+  //   } catch (error) {
+  //     console.error("Error fetching drivers:", error);
+  //   }
+  // };
+
+
   const fetchDrivers = async () => {
     try {
       const statusResponse = await axios.get("http://localhost:3000/driverstatus");
@@ -129,20 +173,42 @@ function Drivers() {
   
       let response;
       if (filter === "active") {
-        response = await axios.get("http://localhost:3000/drivers/active");
-      } else if (filter === "archived") {
-        response = await axios.get("http://localhost:3000/drivers/archived");
+            response = await axios.get("http://localhost:3000/drivers/active");
+      }else if (filter === "archived") {
+           response = await axios.get("http://localhost:3000/drivers/archived");
+      }else if (filter === "available") {
+        response = await axios.get("http://localhost:3000/drivers/available");
+      } else if (filter === "onTravel") {
+        response = await axios.get("http://localhost:3000/drivers/onTravel");
       } else {
-        response = await axios.get("http://localhost:3000/drivers");
+        response = await axios.get("http://localhost:3000/drivers/active");
       }
   
+      console.log("Fetched drivers:", response.data); // Log fetched drivers
+  
+      // Convert the object of drivers into an array
+      const driversArray = Object.keys(response.data).map(key => ({
+        _id: key,
+        ...response.data[key]
+      }));
+  
       // Update each driver's status based on the status object
-      const driversWithStatus = response.data.map(driver => ({
+      const driversWithStatus = driversArray.map(driver => ({
         ...driver,
         status: statusObject[driver._id] ? statusObject[driver._id].status : "Available"
       }));
   
-      setDrivers(driversWithStatus);
+      // Filter the drivers based on the selected filter
+      const filteredDrivers = driversWithStatus.filter(driver => {
+        if (filter === "available") {
+          return driver.status === "Available";
+        } else if (filter === "onTravel") {
+          return driver.status === "Currently Driving";
+        }
+        return true; // Return all drivers for other filters
+      });
+  
+      setDrivers(filteredDrivers);
     } catch (error) {
       console.error("Error fetching drivers:", error);
     }
@@ -283,24 +349,24 @@ function Drivers() {
 
            
             <div style={{ display: 'flex', alignItems: 'center' }}>
-                <button
-                  className={`button-all ${isActive("all")}`}
-                  onClick={() => handleFilter("all")}
-                >
-                  All
-                </button>
-                <button
-                  className={`button-available ${isActive("available")}`}
-                  onClick={() => handleFilter("available")}
-                >
-                  Available
-                </button>
-                <button
-                  className={`button-used ${isActive("used")}`}
-                  onClick={() => handleFilter("used")}
-                >
-                  On Travel
-                </button>
+            <button
+                className={`button-all ${filter === "all" ? "active" : ""}`}
+                onClick={() => handleFilter("all")}
+              >
+                All
+              </button>
+              <button
+                className={`button-available ${filter === "available" ? "active" : ""}`}
+                onClick={() => handleFilter("available")}
+              >
+                Available
+              </button>
+              <button
+                className={`button-used ${filter === "onTravel" ? "active" : ""}`}
+                onClick={() => handleFilter("onTravel")}
+              >
+                On Travel
+              </button>
                 <DropdownButton
                     id="dropdown-basic-button"
                     title="Driver Status"
@@ -390,7 +456,7 @@ function Drivers() {
                           >
                             Delete
                           </Button> */}
-                        {filter === "active" && (
+                        {(filter === "active" || filter === "all" || filter === "available" || filter === "onTravel")  &&  (
                         <Button
                             variant="warning"
                             onClick={() => {
@@ -411,6 +477,7 @@ function Drivers() {
                             Archive
                         </Button>
                     )}
+                   
                      {filter === "archived" && (
                       <Button
                           variant="success"

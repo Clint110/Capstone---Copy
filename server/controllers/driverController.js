@@ -124,12 +124,50 @@ exports.activateDriver = async (req, res) => {
 //   }
 // };
 
+// exports.driverStatus = async (req, res) => {
+//   try {
+//     console.log("Fetching driver status based on completed bookings...");
+    
+//     // Fetch all drivers from the Driver model
+//     const drivers = await Driver.find();
+    
+//     // Fetch latest completed bookings for each driver
+//     const latestCompletedBookings = await CompletedBooking.aggregate([
+//       { $group: { _id: "$name", latestBooking: { $last: "$$ROOT" } } }
+//     ]);
+    
+//     const statusObject = {};
+    
+//     // Iterate over each driver
+//     drivers.forEach((driver) => {
+//       // Find the latest completed booking for the driver
+//       const latestBooking = latestCompletedBookings.find(booking => booking._id === driver.name)?.latestBooking;
+      
+//       // Check if the latest completed booking exists and if the return date has passed
+//       const isAvailable = !latestBooking || new Date(latestBooking.returnDate) <= new Date();
+      
+//       statusObject[driver._id] = {
+//         name: driver.name,
+//         status: isAvailable ? "Available" : "Currently Driving"
+//       };
+//     });
+
+//     console.log("Driver status object based on completed bookings:", statusObject);
+
+//     // Send the driver status as JSON response
+//     res.json(statusObject);
+//   } catch (error) {
+//     console.error("Error fetching driver status based on completed bookings:", error);
+//     res.status(500).json({ error: "Internal server error" });
+//   }
+// };
+
 exports.driverStatus = async (req, res) => {
   try {
     console.log("Fetching driver status based on completed bookings...");
     
-    // Fetch all drivers from the Driver model
-    const drivers = await Driver.find();
+    // Fetch all active drivers from the Driver model
+    const activeDrivers = await Driver.find({ status: "active" });
     
     // Fetch latest completed bookings for each driver
     const latestCompletedBookings = await CompletedBooking.aggregate([
@@ -138,8 +176,8 @@ exports.driverStatus = async (req, res) => {
     
     const statusObject = {};
     
-    // Iterate over each driver
-    drivers.forEach((driver) => {
+    // Iterate over each active driver
+    activeDrivers.forEach((driver) => {
       // Find the latest completed booking for the driver
       const latestBooking = latestCompletedBookings.find(booking => booking._id === driver.name)?.latestBooking;
       
@@ -159,5 +197,53 @@ exports.driverStatus = async (req, res) => {
   } catch (error) {
     console.error("Error fetching driver status based on completed bookings:", error);
     res.status(500).json({ error: "Internal server error" });
+  }
+};
+
+
+exports.getAvailableDrivers = async (req, res) => {
+  try {
+    const activeDrivers = await Driver.find({ status: "active" });
+
+    res.json(activeDrivers);
+  } catch (error) {
+    console.error(error);
+    res.status(500).json({ success: false, message: "Internal server error" });
+  }
+};
+
+exports.getUsedDrivers = async (req, res) => {
+  try {
+    
+    const activeDrivers = await Driver.find({ status: "active" });
+
+   // Fetch latest completed bookings for each driver
+   const latestCompletedBookings = await CompletedBooking.aggregate([
+    { $group: { _id: "$name", latestBooking: { $last: "$$ROOT" } } }
+  ]);
+  
+  const statusObject = {};
+  
+  // Iterate over each active driver
+  activeDrivers.forEach((driver) => {
+    // Find the latest completed booking for the driver
+    const latestBooking = latestCompletedBookings.find(booking => booking._id === driver.name)?.latestBooking;
+    
+    // Check if the latest completed booking exists and if the return date has passed
+    const isAvailable = !latestBooking || new Date(latestBooking.returnDate) <= new Date();
+    
+    statusObject[driver._id] = {
+      name: driver.name,
+      status: isAvailable ? "Available" : "Currently Driving"
+    };
+  });
+
+  console.log("Driver status object based on completed bookings:", statusObject);
+
+  // Send the driver status as JSON response
+  res.json(statusObject);
+  } catch (error) {
+    console.error(error);
+    res.status(500).json({ success: false, message: "Internal server error" });
   }
 };
