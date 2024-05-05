@@ -1147,6 +1147,7 @@ try {
               <th>Passenger Names</th>
               <th>Client Name</th>
               <th>Destination</th>
+              <th>Bound For</th>
               <th>Time and Date</th>
               <th>Return Date</th>
             </tr>
@@ -1160,7 +1161,7 @@ try {
                 <td>{booking.passengerNames}</td>
                 <td>{booking.clientName}</td>
                 <td>{booking.destination}</td>
-                {/* <td>{booking.boundFor}</td> */}
+                <td>{booking.boundFor}</td>
                 <td>{booking.timeAndDate}</td>
                 <td>{booking.returnDate}</td>
               </tr>

@@ -1217,6 +1217,7 @@ function TripReport() {
               <th>Passenger Names</th>
               <th>Client Name</th>
               <th>Destination</th>
+              <th>Bound For</th>
               <th>Time and Date</th>
               <th>Return Date</th>
             </tr>
