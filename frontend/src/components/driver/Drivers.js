@@ -371,7 +371,7 @@ function Drivers() {
                     id="dropdown-basic-button"
                     title="Driver Status"
                     style={{
-                      marginLeft: "20px", // Adjust margin left as needed
+                      marginLeft: "60px", // Adjust margin left as needed
                       fontSize: "12px" 
                     }}
                   >
