@@ -1136,7 +1136,7 @@ try {
         </table>
       </div>
       <div className="TableReportContainer">
-        <h3>Completed Bookings</h3>
+        <h3>COMPLETED BOOKINGS</h3>
         <table className="reportTable">
           <thead>
             <tr>
