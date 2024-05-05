@@ -305,7 +305,8 @@ function Drivers() {
                     id="dropdown-basic-button"
                     title="Driver Status"
                     style={{
-                      marginLeft: "20px" // Adjust margin left as needed
+                      marginLeft: "20px", // Adjust margin left as needed
+                      fontSize: "12px" 
                     }}
                   >
                   <Dropdown.Item
@@ -313,7 +314,8 @@ function Drivers() {
                     style={{
                       backgroundColor: filter === "active" ? "grey" : "transparent",
                       color: filter === "active" ? "white" : "inherit",
-                      padding: "10px 10px" // Adjust padding as needed
+                      padding: "10px 20px", // Adjust padding as needed
+                      fontSize: "15px" 
                     }}
                   >
                     Show Active Drivers
@@ -323,7 +325,8 @@ function Drivers() {
                     style={{
                       backgroundColor: filter === "archived" ? "grey" : "transparent",
                       color: filter === "archived" ? "white" : "inherit",
-                      padding: "10px 10px" // Adjust padding as needed
+                      padding: "10px 20px", // Adjust padding as needed
+                      fontSize: "15px" 
                     }}
                   >
                     Show Archived Drivers
@@ -367,8 +370,8 @@ function Drivers() {
                         <td>
                           <strong>{driver.name}</strong>
                         </td>
-                        <td>
-                        {driver.status === "Currently Driving" ? "On Travel" : "Available"}
+                        <td style={{ color: driver.status === "Currently Driving" ? "#f80f0f" : "#1adf1a" }}>
+                          {driver.status === "Currently Driving" ? "On Travel" : "Available"}
                         </td>
                         <td>
                           {/* Edit and Delete Buttons */}
@@ -387,31 +390,49 @@ function Drivers() {
                           >
                             Delete
                           </Button> */}
-                          { filter === "active" && (
-                                 <Button
-                                 variant="warning"
-                                 onClick={() => handleArchive(driver)}
-                                 style={{ padding: "5px 10px", fontSize: "14px", backgroundColor: "#b90000", borderColor: "#b90000", color: "white", marginLeft: "5px" }}
-                               >
-                                 Archive
-                               </Button>
-                              )}
-                          {filter === "archived" && (
-                       <Button
-                       variant="success"
-                       onClick={() => handleActivate(driver)}
-                       style={{
-                         padding: "5px 10px",
-                         fontSize: "14px",
-                         backgroundColor: "#015c14e1",
-                         borderColor: "#015c14e1",
-                         color: "white",
-                         marginLeft: "5px" // Adjust margin-left as needed
-                       }}
-                     >
-                       Activate
-                     </Button>
-                        )}
+                        {filter === "active" && (
+                        <Button
+                            variant="warning"
+                            onClick={() => {
+                                const confirmArchive = window.confirm("Are you sure you want to archive this driver?");
+                                if (confirmArchive) {
+                                    handleArchive(driver);
+                                }
+                            }}
+                            style={{
+                                padding: "5px 10px",
+                                fontSize: "14px",
+                                backgroundColor: "#b90000",
+                                borderColor: "#b90000",
+                                color: "white",
+                                marginLeft: "5px"
+                            }}
+                        >
+                            Archive
+                        </Button>
+                    )}
+                     {filter === "archived" && (
+                      <Button
+                          variant="success"
+                          onClick={() => {
+                              const confirmActivate = window.confirm("Are you sure you want to activate this driver?");
+                              if (confirmActivate) {
+                                  handleActivate(driver);
+                              }
+                          }}
+                          style={{
+                              padding: "5px 10px",
+                              fontSize: "14px",
+                              backgroundColor: "#015c14e1",
+                              borderColor: "#015c14e1",
+                              color: "white",
+                              marginLeft: "5px" // Adjust margin-left as needed
+                          }}
+                      >
+                          Activate
+                      </Button>
+                  )}
+                        
                         </td>
                       </tr>
                        ))}
