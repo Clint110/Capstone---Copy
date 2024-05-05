@@ -228,3 +228,12 @@ justify-content: space-between;
   padding: 5px;
   font-size: 14px;
 }
+
+.TableReportContainer th {
+  text-align: center;
+}
+
+.TableReportContainer tbody {
+  text-align: center;
+  justify-content: center;
+}
