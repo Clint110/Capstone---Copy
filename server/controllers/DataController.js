@@ -41,10 +41,21 @@ exports.getData = async (req, res) => {
   }
 };
 
+// exports.getLatestData = async (req, res) => {
+//   try {
+//     // Fetch latest data from the database
+//     const latestData = await Data.findOne({}, {}, { sort: { createdAt: -1 } });
+//     res.json({ success: true, data: latestData });
+//   } catch (error) {
+//     console.error("Error fetching latest data:", error);
+//     res.status(500).json({ success: false, error: "Internal server error" });
+//   }
+// };
+
 exports.getLatestData = async (req, res) => {
   try {
-    // Fetch latest data from the database
-    const latestData = await Data.findOne({}, {}, { sort: { createdAt: -1 } });
+    // Fetch latest data from the database, sorted by time in descending order
+    const latestData = await Data.findOne({}, {}, { sort: { time: -1 } });
     res.json({ success: true, data: latestData });
   } catch (error) {
     console.error("Error fetching latest data:", error);

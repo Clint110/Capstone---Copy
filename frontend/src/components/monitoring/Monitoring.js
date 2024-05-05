@@ -208,8 +208,7 @@ function Monitoring() {
         const details = detailsResponse.data;
 
         console.log("Details:", detailsResponse.data.vehicle.vehicleName);
-        // alert(`Vehicle with the Plate Number: ${plateNumber} is in use.`);
-        // Fetch latitude and longitude based on plate number
+        
         const locationResponse = await axios.get(
           `http://localhost:3000/get-data-plate/${plateNumber}`
         );
@@ -235,7 +234,30 @@ function Monitoring() {
       // Refresh the list of vehicles
       await fetchVehicleStatus();
       // Show alert indicating that the vehicle is now available
-      alert(`Vehicle with the Plate Number: ${plateNumber} is now available.`);
+      // alert(`Vehicle with the Plate Number: ${plateNumber} is now available.`);
+      const detailsResponse = await axios.get(
+        `http://localhost:3000/vehicle/details/${plateNumber}`
+      );
+      const details = detailsResponse.data;
+
+      console.log("Details:", detailsResponse.data.vehicle.vehicleName);
+      
+      const locationResponse = await axios.get(
+        `http://localhost:3000/get-data-plate/${plateNumber}`
+      );
+      const locationData = locationResponse.data;
+
+      console.log("Details: is this:", details);
+      console.log("Latitude:", locationData.latitude);
+      console.log("Longitude:", locationData.longitude);
+
+      console.log("Details plate:", details.vehicle.vehicleName);
+
+      setSelectedPlateNumber(plateNumber);
+      setSelectedVehicleDetails(details);
+
+      console.log("Selected Vehicle Details:", selectedVehicleDetails);
+      // setShowVecModal(true);
     } catch (error) {
       // If there's an error or the booking details are not found, it means the vehicle is available
       // Check the status of the vehicle to determine the alert message

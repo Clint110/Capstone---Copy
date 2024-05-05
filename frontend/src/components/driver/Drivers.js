@@ -251,14 +251,35 @@ function Drivers() {
     }
   };
 
+  // const handleArchive = async (driver) => {
+  //   console.log("Selected Driver for Archiving:", driver);
+  //   try {
+  //     if (driver) { // Check if selectedDriver is not null
+  //       const response = await axios.put(`http://localhost:3000/drivers/${driver._id}/archive`);
+  //       console.log("Archive driver:", response.data);
+  //       fetchDrivers();
+  //       handleClose();
+  //     }
+  //   } catch (error) {
+  //     console.error("Error archiving driver:", error);
+  //   }
+  // };
+
   const handleArchive = async (driver) => {
     console.log("Selected Driver for Archiving:", driver);
     try {
       if (driver) { // Check if selectedDriver is not null
-        const response = await axios.put(`http://localhost:3000/drivers/${driver._id}/archive`);
-        console.log("Archive driver:", response.data);
-        fetchDrivers();
-        handleClose();
+        // Check if the driver status is not "On Travel"
+        if (driver.status !== "Currently Driving") {
+          // If the status is not "On Travel", proceed with archiving
+          const response = await axios.put(`http://localhost:3000/drivers/${driver._id}/archive`);
+          console.log("Archive driver:", response.data);
+          fetchDrivers();
+          handleClose();
+        } else {
+          // If the status is "On Travel", show an alert
+          alert("The Driver is on travel and it cannot be Archived");
+        }
       }
     } catch (error) {
       console.error("Error archiving driver:", error);

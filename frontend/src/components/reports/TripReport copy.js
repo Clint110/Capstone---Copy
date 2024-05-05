@@ -624,6 +624,7 @@ function TripReport() {
     clientName: clientName,
     passengerNames: passengerNames.join(", "), // Convert array to string
     destination: destination,
+    boundFor: boundFor,
     timeAndDate: combinedDate.toISOString(), // Use the combined date
     returnDate: returnDate
 });
@@ -1229,7 +1230,7 @@ function TripReport() {
                 <td>{booking.passengerNames}</td>
                 <td>{booking.clientName}</td>
                 <td>{booking.destination}</td>
-                {/* <td>{booking.boundFor}</td> */}
+                <td>{booking.boundFor}</td>
                 <td>{booking.timeAndDate}</td>
                 <td>{booking.returnDate}</td>
               </tr>
@@ -1259,6 +1260,12 @@ function TripReport() {
           <div className="form-group">
           <label>
             Destination:
+            <input type="text" className="bookingInput" value={editableData.destination !== undefined ? editableData.destination : (selectedBooking ? selectedBooking.boundFor : '')} onChange={(e) => handleChange(e, 'boundFor')} />
+          </label>
+          </div>
+          <div className="form-group">
+          <label>
+            Bound For:
             <input type="text" className="bookingInput" value={editableData.boundFor !== undefined ? editableData.boundFor : (selectedBooking ? selectedBooking.boundFor : '')} onChange={(e) => handleChange(e, 'boundFor')} />
           </label>
           </div>

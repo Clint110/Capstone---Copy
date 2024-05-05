@@ -5,6 +5,8 @@ const completedBookingController = require('../controllers/completedBookingContr
 // POST request to create a completed booking
 router.post('/completed-bookings', completedBookingController.createCompletedBooking);
 router.get('/check-completed-bookings', completedBookingController.checkCompletedBookings);
+router.get('/check-completed-bookings2', completedBookingController.checkCompletedBookings2);
 router.get('/get-all-completedbookings', completedBookingController.getAllCompletedBookings);
+router.get('/get-latest-completed-booking', completedBookingController.getLatestCompletedBooking);
 
 module.exports = router;

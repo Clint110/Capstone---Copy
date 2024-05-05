@@ -7,6 +7,7 @@ const completedBookingSchema = new mongoose.Schema({
     clientName: { type: String, required: true },
     passengerNames: { type: String, required: true },
     destination: { type: String, required: true },
+    boundFor: { type: String, required: true },
     timeAndDate: { type: Date, required: true },
     returnDate: { type: Date },
     // Add other fields as needed

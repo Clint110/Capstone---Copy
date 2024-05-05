@@ -1,4 +1,5 @@
 const Booking = require("../models/BookingModel");
+const CompletedBooking = require("../models/CompletedBooking");
 
 // exports.getAllBookings = async (req, res) => {
 //   try {
@@ -75,7 +76,7 @@ exports.getBookingDetailsByPlateNumber = async (req, res) => {
   try {
     const plateNumber = req.params.plateNumber;
     // Find booking details based on the provided plate number
-    const bookingDetails = await Booking.findOne({ plateNumber });
+    const bookingDetails = await CompletedBooking.findOne({ plateNumber });
 
     if (!bookingDetails) {
       return res.status(404).json({

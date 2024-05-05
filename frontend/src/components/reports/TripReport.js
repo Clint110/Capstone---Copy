@@ -102,6 +102,7 @@ const TripReport = () => {
     clientName: clientName,
     passengerNames: passengerNames.join(", "), // Convert array to string
     destination: destination,
+    boundFor: boundFor,
     timeAndDate: combinedDate.toISOString(), // Use the combined date
     returnDate: returnDate
 });
@@ -1189,6 +1190,12 @@ try {
           <div className="form-group">
           <label>
             Destination:
+            <input type="text" className="bookingInput" value={editableData.destination !== undefined ? editableData.boundFor : (selectedBooking ? selectedBooking.destination : '')} onChange={(e) => handleChange(e, 'boundFor')} />
+          </label>
+          </div>
+          <div className="form-group">
+          <label>
+            Bound For:
             <input type="text" className="bookingInput" value={editableData.boundFor !== undefined ? editableData.boundFor : (selectedBooking ? selectedBooking.boundFor : '')} onChange={(e) => handleChange(e, 'boundFor')} />
           </label>
           </div>

@@ -2,7 +2,7 @@ const CompletedBooking = require('../models/CompletedBooking');
 
 exports.createCompletedBooking = async (req, res) => {
     try {
-        const { bookingID, plateNumber, name, clientName, passengerNames, destination, timeAndDate, returnDate } = req.body;
+        const { bookingID, plateNumber, name, clientName, passengerNames, destination, boundFor, timeAndDate, returnDate } = req.body;
         const completedBooking = new CompletedBooking({
             bookingID,
             plateNumber,
@@ -10,6 +10,7 @@ exports.createCompletedBooking = async (req, res) => {
             clientName,
             passengerNames,
             destination,
+            boundFor,
             timeAndDate,
             returnDate
             // Add other fields as needed
@@ -33,6 +34,17 @@ exports.checkCompletedBookings = async (req, res) => {
     }
   };
 
+  exports.checkCompletedBookings2 = async (req, res) => {
+    try {
+      const completedBookings = await CompletedBooking.find(); // Fetch all fields
+      console.log(completedBookings);
+      res.json({ completedBookings });
+    } catch (error) {
+      console.error("Error fetching completed bookings:", error);
+      res.status(500).json({ error: "Error fetching completed bookings" });
+    }
+};
+
   exports.getAllCompletedBookings = async (req, res) => {
     try {
         const completedBookings = await CompletedBooking.find();
@@ -40,5 +52,17 @@ exports.checkCompletedBookings = async (req, res) => {
     } catch (error) {
         console.error("Error fetching completed bookings:", error);
         res.status(500).json({ error: "Error fetching completed bookings" });
+    }
+};
+
+exports.getLatestCompletedBooking = async (req, res) => {
+    try {
+        const { plateNumber } = req.query;
+        const currentDate = new Date();
+        const latestCompletedBooking = await CompletedBooking.findOne({ plateNumber, returnDate: { $gte: currentDate } }).sort({ returnDate: -1 });
+        res.json({ latestCompletedBooking });
+    } catch (error) {
+        console.error("Error fetching latest completed booking:", error);
+        res.status(500).json({ error: "Error fetching latest completed booking" });
     }
 };
