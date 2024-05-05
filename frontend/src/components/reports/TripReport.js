@@ -1258,12 +1258,13 @@ try {
               className="bookingInput"
               value={
                 selectedBooking
-                  ? `${new Date(selectedBooking.timeAndDate).toLocaleDateString()} ${new Date(selectedBooking.timeForBound).toLocaleTimeString()}`
+                  ? `${new Date(selectedBooking.timeAndDate).toISOString().split('T')[0]} ${new Date(selectedBooking.timeForBound).toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' })}`
                   : ''
               }
               readOnly
             />
           </label>
+
           <label>
             Return Date:
             <input type="text" className="bookingInput" value={selectedBooking ? selectedBooking.returnDate : ''} readOnly />

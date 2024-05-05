@@ -265,22 +265,29 @@ function Booking() {
       const d2 = new Date(newEvent.start);
       const d3 = new Date(allEvents[i].end);
       const d4 = new Date(newEvent.end);
-
+  
       // Check if there is an overlap
       if ((d1 < d4 && d2 < d3) || (d2 < d3 && d4 < d3)) {
         clash = true;
         break;
       }
     }
-
-    setAllEvents([...allEvents, newEvent]);
+  
+    if (!clash) {
+      // Add the new event to the calendar
+      setAllEvents((prevEvents) => [...prevEvents, newEvent]);
+    } else {
+      console.log("There is a clash with existing events.");
+    }
   }
 
   const EventComponent = ({ event, height }) => {
+    const startTime = formatTime(event.timeAndDate);
     return (
       <div className="EventComponent" style={{ height }}>
-        {/* Display only the plate number */}
         <div>{`Plate Number: ${event.plateNumber}`}</div>
+        <div >{`Time: ${startTime}`}</div>
+        <div>{`Destination: ${event.destination}`}</div>
       </div>
     );
   };
@@ -373,6 +380,23 @@ function Booking() {
       alert("Upcoming event: " + upcomingEvents[0].title);
     }
   };
+  
+  const formatDate = (dateObject) => {
+    const options = { year: 'numeric', month: 'long', day: 'numeric' };
+    return dateObject.toLocaleDateString('en-US', options);
+};
+
+  const formatDateTime = (timeAndDateString) => {
+    if (!timeAndDateString) {
+        return "";
+    }
+
+    const dateTimeObject = new Date(timeAndDateString);
+    const formattedDate = formatDate(dateTimeObject);
+    const formattedTime = formatTime(dateTimeObject);
+
+    return `${formattedDate} ${formattedTime}`;
+};
 
   return (
     <>
@@ -414,9 +438,9 @@ function Booking() {
                       <tr key={event.id}>
                         <td>
                           {`${event.plateNumber} is scheduled to depart ${
-                            event.timeForBound
-                              ? ` at ${formatTime(event.timeForBound)}`
-                              : ""
+                            event.timeAndDate
+                            ? ` at ${formatDateTime(event.timeAndDate)}`
+                            : ""
                           } ${event.boundFor ? ` for ${event.boundFor}` : ""}
         ${
           event.start instanceof Date ? ` on ${event.start.toDateString()}` : ""
