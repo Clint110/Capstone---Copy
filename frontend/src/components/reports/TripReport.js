@@ -1086,8 +1086,8 @@ try {
                           Cancel
                         </button>
                       </>
-                    ) : (
-                      <button
+                    ) : !completedBookings.find(completedBooking => completedBooking.bookingID === booking._id) && ( // Check if booking is not completed
+                    <button
                       type="button"
                       className="btn btn-sm"
                       onClick={() => handleEditOpen(booking)}
