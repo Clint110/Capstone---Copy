@@ -17,6 +17,7 @@ import { faCircleUser } from "@fortawesome/free-solid-svg-icons";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import otherLogo from "../another-logo.png";
 import { FcDownload } from "react-icons/fc";
+import { Modal, Button } from "react-bootstrap";
 
 function formatDateTime(dateTimeString) {
   const options = {
@@ -38,8 +39,23 @@ function TripReport() {
   const [searchField, setSearchField] = useState("plateNumber");
   const [vehicleName, setVehicleName] = useState("");
   const [showArchived, setShowArchived] = useState(false);
+  const [formEditData, setFormEditData] = useState({});
+  const [modalOpen, setModalOpen] = useState(false);
+  const [showModal, setShowModal] = useState(false);
+  const [selectedBooking, setSelectedBooking] = useState(null);
+  const [showEditModal, setShowEditModal] = useState(false);
+  const [completedBookings, setCompletedBookings] = useState([]);
+  const [completedBooking, setCompletedBooking] = useState([]);
+  const [selectedPlateNumberStatus, setSelectedPlateNumberStatus] = useState("");
+
+  
+
   const toggle = () => {
     setIsOpen(!isOpen);
+  };
+
+  const handleEditCloseModal = () => {
+    setShowEditModal(false);
   };
 
   const showAnimation = {
@@ -234,12 +250,6 @@ function TripReport() {
       doc.setFontSize(17); // doc.setFont('helvetica', 'bold'); // Set font to bold
       doc.text("BUKIDNON STATE UNIVERSITY", 57, 25);
 
-      // const tableData = bookingData.map((booking, index) => [
-      //   booking.vehicleName,
-      //   booking.plateNumber,
-      //   booking.destination,
-      // ]);
-      //Brendyl Ani
 
       // Calculate total number of trips per vehicle
       const tripsPerVehicle = {};
@@ -418,24 +428,6 @@ function TripReport() {
     }
   };
 
-  // useEffect(() => {
-  //   // Fetch booking data from the server
-  //   const fetchBookingData = async () => {
-  //     try {
-  //       const response = await axios.get("http://localhost:3000/allbook"); // Replace with your actual API endpoint
-  //       const data = response.data;
-
-  //       // Update the state with the fetched data
-  //       setBookingData(data);
-  //     } catch (error) {
-  //       console.error("Error fetching booking data:", error);
-  //     }
-  //   };
-
-  //   // Call the fetch function
-  //   fetchBookingData();
-  // }, []);
-
   useEffect(() => {
     // Fetch booking data from the server
     const fetchBookingData = async () => {
@@ -459,37 +451,21 @@ function TripReport() {
     fetchBookingData();
   }, [showArchived]);
 
-  const handleEdit = (index) => {
-    setEditableData({ ...bookingData[index] });
+
+  const handleEditOpen = (booking) => {
+    const { clientName,  destination } = booking;
+
+    setFormEditData({
+      clientName: clientName,
+      destination: destination,
+  });
+
+    // Logic for handling edit action goes here
+    setSelectedBooking(booking);
+    console.log("Booking Details:", booking);
+    setShowEditModal(true);
   };
 
-  const handleChange = (e, key) => {
-    const { value } = e.target;
-    setEditableData((prevState) => ({
-      ...prevState,
-      [key]: value,
-    }));
-  };
-
-  const handleSubmit = async (index) => {
-    try {
-      // Update data in the database
-      await axios.put(
-        `http://localhost:3000/editbook/${editableData._id}`,
-        editableData
-      );
-
-      // Update data in the UI
-      const updatedBookingData = [...bookingData];
-      updatedBookingData[index] = editableData;
-      setBookingData(updatedBookingData);
-
-      // Clear editable data
-      setEditableData({});
-    } catch (error) {
-      console.error("Error updating booking data:", error);
-    }
-  };
 
   const handleDeleteBooking = async (plateNumber) => {
     // Ask for confirmation before deleting
@@ -563,9 +539,16 @@ function TripReport() {
   };
 
   const filteredData = bookingData
-  .filter((booking) =>
-    booking[searchField].toLowerCase().includes(searchQuery.toLowerCase())
-  )
+  .filter((booking) => {
+    const fieldValue = booking[searchField];
+    // Modify the filtering logic to check the passengerNames field
+    return (
+      fieldValue &&
+      (searchField !== "passengerNames"
+        ? fieldValue.toLowerCase().includes(searchQuery.toLowerCase())
+        : fieldValue.join(" ").toLowerCase().includes(searchQuery.toLowerCase()))
+    );
+  })
   .filter((booking) => (showArchived ? true : !booking.isArchived));
   
 
@@ -604,6 +587,321 @@ function TripReport() {
     const now = new Date();
     return new Date(bookingDate) < now;
   };
+
+  useEffect(() => {
+    fetchCompletedBookings();
+    // Add any other necessary initialization logic here
+  }, []);
+
+  const fetchCompletedBookings = async () => {
+    try {
+      const response = await fetch("http://localhost:3000/check-completed-bookings");
+      if (response.ok) {
+        const data = await response.json();
+        setCompletedBookings(data.completedBookings);
+        console.log("completed bookings: ", data.completedBookings);
+      } else {
+        console.error("Failed to fetch completed bookings");
+      }
+    } catch (error) {
+      console.error("Error fetching completed bookings:", error);
+    }
+  };
+
+  const handleOpenModal = (booking) => {
+    const {_id, clientName, passengerNames, destination, boundFor, timeAndDate, timeForBound, returnDate } = booking;
+     // Combine date and timeForBound
+  const combinedDate = new Date(timeAndDate);
+  combinedDate.setHours(new Date(timeForBound).getHours());
+  combinedDate.setMinutes(new Date(timeForBound).getMinutes());
+
+  const bookingID = _id;
+
+  setFormData({
+    bookingID: bookingID,
+    plateNumber: booking.plateNumber, // Include plateNumber
+    name: booking.name,
+    clientName: clientName,
+    passengerNames: passengerNames.join(", "), // Convert array to string
+    destination: destination,
+    timeAndDate: combinedDate.toISOString(), // Use the combined date
+    returnDate: returnDate
+});
+
+    setSelectedBooking(booking);
+    console.log("Booking Details:", booking);
+    setShowModal(true);
+  };
+
+  const handleCloseModal = () => {
+    setShowModal(false);
+    setSelectedBooking(null);
+    
+  };
+
+
+  const [formData, setFormData] = useState({
+    plateNumber: "",
+     name: "",
+
+  });
+
+  console.log("Complete booking: ", formData)
+
+  const handleCompleteBooking = async (booking, formData, selectedPlateNumberStatus, passengerNames) => {
+    // Here you can access both booking and formData
+    console.log("Booking details:", booking);
+    console.log("Form data:", formData);
+    console.log("Passenger names:", passengerNames);
+    // Function to validate booking based on available seats
+    const validateBooking = (selectedPlateNumberStatus, passengerNames) => {
+      // Check if selectedPlateNumberStatus is defined
+      if (!selectedPlateNumberStatus) {
+          console.error("Error: selectedPlateNumberStatus is undefined.");
+          return false;
+      }
+  
+      // Extract availability status and available seats from selectedPlateNumberStatus
+      const [status, availableSeatsString] = selectedPlateNumberStatus.split(". Seats: ");
+      const availableSeats = parseInt(availableSeatsString.trim());
+  
+      // Extract passenger names from the array
+      const passengerNamesString = passengerNames[0];
+  
+      // Split the string of passenger names into an array
+      const passengerNamesArray = passengerNamesString.split(", ");
+  
+      console.log("Availability status:", status);
+      console.log("Available seats:", availableSeats);
+      console.log("Passengers:", passengerNamesArray.length);
+  
+      // Check if the number of passengers exceeds available seats
+      if (passengerNamesArray.length > availableSeats) {
+          // If so, return false to indicate that booking is not valid
+          return false;
+      }
+  
+      // Otherwise, return true to indicate that booking is valid
+      return true;
+  };
+  
+  try {
+  
+        // Proceed with booking submission
+        const isValidBooking = validateBooking(selectedPlateNumberStatus, passengerNames);
+  
+        if (isValidBooking) {
+  
+          const response = await fetch("http://localhost:3000/completed-bookings", {
+            method: "POST",
+            headers: {
+                "Content-Type": "application/json",
+            },
+            body: JSON.stringify(formData),
+        });
+      
+            // Handle success, e.g., clear the form or close the modal
+            setFormData({
+                bookingID: "",
+                plateNumber: "",
+                name: "",
+                clientName: "",
+                passengerNames: "",
+                destination: "WOS",
+                boundFor: "",
+                timeAndDate: "",
+            });
+  
+            setCompletedBookings([...completedBookings, booking._id]); // Update completedBookings state
+            console.log("Updated completed bookings:", [...completedBookings, booking._id]);
+            alert("Completed");
+            window.location.reload();
+            } else {
+                // Display error message to the user indicating that the booking exceeds available seats
+                alert('The number of passengers exceeds the available seats. Please select a different vehicle or reduce the number of passengers.');
+            }
+    } catch (error) {
+        // Handle network error
+        console.error("Network error:", error);
+    }
+  };
+
+  useEffect(() => {
+    // Fetch booking data from the server
+    const fetchBookingData = async () => {
+      try {
+        let endpoint;
+        if (showArchived) {
+          endpoint = "http://localhost:3000/archivedbook";
+        } else {
+          endpoint = "http://localhost:3000/allbook";
+        }
+        const response = await axios.get(endpoint);
+        const data = response.data;
+        // Update the state with the fetched data
+        setBookingData(data);
+      } catch (error) {
+        console.error("Error fetching booking data:", error);
+      }
+    };
+  
+    // Call the fetch function
+    fetchBookingData();
+  }, [showArchived]);
+
+
+  const [plateNumbers, setPlateNumbers] = useState([]);
+  const [plateNumberStatuses, setPlateNumberStatuses] = useState({});
+
+  const [selectedPlateNumber, setSelectedPlateNumber] = useState(null);
+  const [availablePlateNumbers, setAvailablePlateNumbers] = useState([]);
+  const [selectedDriver, setSelectedDriver] = useState(null);
+  const [selectedDriverStatus, setSelectedDriverStatus] = useState("");
+  const [availableDrivers, setAvailableDrivers] = useState([]);
+  const [selectedPlateNumberSeats, setSelectedPlateNumberSeats] = useState(null);
+
+  const handleChange = (e, key) => {
+    const { value } = e.target;
+    setEditableData((prevState) => {
+      const updatedData = {
+        ...prevState,
+        [key]: value,
+      };
+      console.log("Updated editable data:", updatedData);
+      return updatedData;
+    });
+  };
+
+
+  const handleSubmit = async () => {
+    try {
+      // Update data in the database
+      await axios.put(
+        `http://localhost:3000/editbook/${selectedBooking._id}`, // Include the ID in the URL
+        editableData
+      );
+  
+      // Update data in the UI
+      const updatedBookingData = [...bookingData];
+      //const index = updatedBookingData.findIndex(item => item._id === selectedBooking._id);
+      //updatedBookingData[index] = editableData;
+      setBookingData(updatedBookingData);
+  
+      // Clear editable data
+      setEditableData({});
+      setShowEditModal(false); // Close the modal
+      window.location.reload();
+    } catch (error) {
+      console.error("Error updating booking data:", error);
+    }
+  };
+  
+
+  useEffect(() => {
+    const fetchPlateNumbers = async () => {
+      try {
+        const response = await fetch("http://localhost:3000/vehiclestatus");
+        if (response.ok) {
+          const data = await response.json();
+          console.log(data);
+          // const plateNumbers = data.map(vehicle => vehicle.plateNumber);
+
+          const plateNumberStatuses = data;
+          const plateNumberArray = Object.keys(data).map((plateNumber) => ({
+            plateNumber: plateNumber,
+            status: data[plateNumber],
+            availableSeats: data[plateNumber].availableSeats
+          }));
+
+          console.log("Hello", plateNumberArray);
+          setPlateNumbers(plateNumberArray);
+          setPlateNumberStatuses(plateNumberStatuses);
+        } else {
+          console.error("Failed to fetch plate numbers from the server");
+        }
+      } catch (error) {
+        console.error("Error during fetch:", error);
+      }
+    };
+
+    fetchPlateNumbers();
+  }, []);
+
+  const handlePlateNumberChange = (event) => {
+    const selectedPlateNumber = event.target.value;
+    console.log("selected:", selectedPlateNumber);
+    const selectedPlate = plateNumbers.find((plate) => plate.plateNumber === selectedPlateNumber);
+    
+    if (selectedPlate) {
+      console.log("Selected Plate:", selectedPlate);
+      setSelectedPlateNumber(selectedPlateNumber);
+      setSelectedPlateNumberStatus(selectedPlate.status);
+      setSelectedPlateNumberSeats(selectedPlate.availableSeats); // Set the selected plate number's available seats
+      setFormData({ ...formData, plateNumber: selectedPlateNumber });
+    }
+  };
+
+  useEffect(() => {
+    // Filter available plate numbers only if plateNumbers is not empty
+    if (plateNumbers.length > 0) {
+      const availableNumbers = plateNumbers.filter(({ status }) => status.includes("Available"));
+      console.log("Avail:", availableNumbers);
+      setAvailablePlateNumbers(availableNumbers);
+    }
+  }, [plateNumbers]);
+
+  useEffect(() => {
+    const fetchDriverStatus = async () => {
+      try {
+        const response = await fetch("http://localhost:3000/driverstatus");
+        if (response.ok) {
+          const data = await response.json();
+          console.log("Received driver data:", data);
+          const availableDrivers = Object.values(data)
+            .filter(driver => driver.status === "Available")
+            .map(driver => ({ name: driver.name }));
+          setAvailableDrivers(availableDrivers);
+        } else {
+          console.error("Failed to fetch driver status from the server");
+        }
+      } catch (error) {
+        console.error("Error during fetch:", error);
+      }
+    };
+  
+    fetchDriverStatus();
+  }, []);
+
+  const handleDriverChange = (event) => {
+    const selectedDriverId = event.target.value;
+    console.log("selected driver: ", selectedDriverId);
+    setSelectedDriver(selectedDriverId);
+    setFormData({ ...formData, name: selectedDriverId });
+    setSelectedDriverStatus(""); // Reset the driver status when a new driver is selected
+    // Retrieve and set the status of the selected driver
+    const status = availableDrivers.find(({ name }) => name === selectedDriverId) ? "Available" : "Unavailable";
+    setSelectedDriverStatus(status);
+  };
+
+  useEffect(() => {
+    const fetchCompletedBookings = async () => {
+      try {
+        const response = await fetch("http://localhost:3000/get-all-completedbookings");
+        if (response.ok) {
+          const data = await response.json();
+          console.log("Completed bookings data:", data);
+          setCompletedBooking(data);
+        } else {
+          console.error("Failed to fetch completed bookings from the server");
+        }
+      } catch (error) {
+        console.error("Error during fetch:", error);
+      }
+    };
+
+    fetchCompletedBookings();
+  }, []);
+
 
   return (
     <div className="main-container">
@@ -680,7 +978,7 @@ function TripReport() {
             value={searchField}
             onChange={(e) => setSearchField(e.target.value)}
           >
-            <option value="plateNumber">PLATE NO.</option>
+            <option value="passengerNames">PASSENGER NAMES</option>
             <option value="boundFor"> DESTINATION</option>
             <option value="timeForBound">DEPARTURE</option>
             <option value="returnDate">RETURN</option>
@@ -707,11 +1005,12 @@ function TripReport() {
           <table className="reportTable">
             <thead>
               <tr>
-                <th>PLATE NO.</th>
+                <th>PASSENGER NAMES</th>
                 <th>DEPARTURE</th>
                 <th>DESTINATION</th>
                 <th>DEPARTURE</th>
                 <th>RETURN</th>
+                <th>STATUS</th>
                 <th>ACTION</th>
               </tr>
             </thead>
@@ -721,16 +1020,16 @@ function TripReport() {
                 {filteredData.map((booking, index) => (
                   <tr key={booking._id}>
                     <td>
-                      {editableData._id === booking._id ? (
-                        <input
-                          type="text"
-                          value={editableData.plateNumber}
-                          onChange={(e) => handleChange(e, "plateNumber")}
-                          required
-                        />
-                      ) : (
-                        booking.plateNumber
-                      )}
+                     {editableData._id === booking._id ? (
+                      <input
+                        type="text"
+                        value={editableData.passengerNames}
+                        onChange={(e) => handleChange(e, "passengerNames")}
+                        required
+                      />
+                    ) : (
+                      booking.passengerNames
+                    )}
                     </td>
                     <td>
                       {editableData._id === booking._id ? (
@@ -781,6 +1080,38 @@ function TripReport() {
                       )}
                     </td>
                     <td>
+                  {completedBookings.find(completedBooking => completedBooking.bookingID === booking._id) ? (
+                    <button
+                      type="button"
+                      className="btn btn-success btn-sm"
+                      style={{ width: "100px" }}
+                      disabled // Disable the button if already completed
+                    >
+                      Completed
+                    </button>
+                  ) : (
+                    <button
+                      type="button"
+                      className="btn btn-warning btn-sm"
+                      style={{ width: "100px" }}
+                      onClick={() => handleOpenModal(booking)}
+                    >
+                      Pending
+                    </button>
+                  )}
+                  {/* Add console logs here */}
+              {console.log('Booking:', booking.clientName)}
+              {console.log('Completed bookings:', completedBookings)}
+                  {/* <button
+                      type="button"
+                      className="btn btn-warning btn-sm"
+                      style={{ width: "100px" }} // Adjust width as needed
+                      onClick={() => handleOpenModal(booking)}
+                    >
+                      Pending
+                    </button> */}
+                  </td>
+                    <td>
                       {editableData._id === booking._id ? (
                         <>
                           <button
@@ -803,7 +1134,7 @@ function TripReport() {
                         <button
                           type="button"
                           class="btn btn-warning btn-sm"
-                          onClick={() => handleEdit(index)}
+                          onClick={() => handleEditOpen(booking)}
                         >
                           Edit
                         </button>
@@ -814,22 +1145,32 @@ function TripReport() {
                     </button> */}
                       &nbsp;{" "}
                       {showArchived && (
-                          // Render only the "Activate" button when showing archived data
-                          <button
+                        // Render only the "Activate" button when showing archived data
+                        <button
                             className="action-btn activate-btn"
-                            onClick={() => handleActivateBooking(booking.plateNumber)}
-                          >
+                            onClick={() => {
+                                const confirmed = window.confirm("Are you sure you want to activate this data?");
+                                if (confirmed) {
+                                    handleActivateBooking(booking.plateNumber);
+                                }
+                            }}
+                        >
                             Activate
-                          </button>
+                        </button>
                     )}
                     {!showArchived && (
-                        <button
-                          type="button"
-                          className="btn btn-danger btn-sm"
-                          onClick={() => handleArchiveBooking(booking.plateNumber)}
-                        >
-                          Archive
-                        </button>
+                          <button
+                              type="button"
+                              className="btn btn-sm"
+                              onClick={() => {
+                                  if (window.confirm("Are you sure you want to archive this data?")) {
+                                      handleArchiveBooking(booking.plateNumber);
+                                  }
+                              }}
+                              style={{ backgroundColor: '#b90000', color: 'white' }}
+                          >
+                              Archive
+                          </button>
                       )}
                       {/* <button
                       type="button"
@@ -863,6 +1204,185 @@ function TripReport() {
           {/* </div>
 </div> */}
         </div>
+        <div className="TableReportContainer">
+        <h3>Completed Bookings</h3>
+        <table className="reportTable">
+          <thead>
+            <tr>
+              <th>Booking ID</th>
+              <th>Plate Number</th>
+              <th>Driver</th>
+              <th>Passenger Names</th>
+              <th>Client Name</th>
+              <th>Destination</th>
+              <th>Time and Date</th>
+              <th>Return Date</th>
+            </tr>
+          </thead>
+          <tbody>
+            {completedBooking.map((booking) => (
+              <tr key={booking._id}>
+                <td>{booking._id}</td>
+                <td>{booking.plateNumber}</td>
+                <td>{booking.name}</td>
+                <td>{booking.passengerNames}</td>
+                <td>{booking.clientName}</td>
+                <td>{booking.destination}</td>
+                {/* <td>{booking.boundFor}</td> */}
+                <td>{booking.timeAndDate}</td>
+                <td>{booking.returnDate}</td>
+              </tr>
+            ))}
+          </tbody>
+        </table>
+      </div>
+       {/* Edit Booking Modal */}
+       <Modal show={showEditModal} onHide={handleEditCloseModal}>
+        <Modal.Header closeButton>
+          <Modal.Title style={{ fontSize: "20px" }}>Edit Report</Modal.Title>
+        </Modal.Header>
+        <Modal.Body>
+        <form >
+        <div className="form-group">
+        <label>
+            Booking ID:
+            <input type="text"  className="bookingInput" value={selectedBooking ? selectedBooking._id : ''} readOnly />
+          </label>
+          </div>
+          <div className="form-group">
+            <label>
+              Passenger Names:
+              <input type="text" className="bookingInput" value={editableData.passengerNames !== undefined ? editableData.passengerNames : (selectedBooking ? selectedBooking.passengerNames : '')} onChange={(e) => handleChange(e, 'passengerNames')} />
+            </label>
+          </div>
+          <div className="form-group">
+          <label>
+            Destination:
+            <input type="text" className="bookingInput" value={editableData.boundFor !== undefined ? editableData.boundFor : (selectedBooking ? selectedBooking.boundFor : '')} onChange={(e) => handleChange(e, 'boundFor')} />
+          </label>
+          </div>
+          <div className="form-group">
+          <label>
+            Office:
+            <input type="text" className="bookingInput" value={editableData.clientName !== undefined ? editableData.clientName : (selectedBooking ? selectedBooking.clientName : '')} onChange={(e) => handleChange(e, 'clientName')} />
+          </label>
+          </div>
+          {/* <div className="form-group">
+            {/* //<label htmlFor="office">Office</label> */}
+            {/* <input type="text" className="form-control" id="office" /> */}
+          {/* </div> */} 
+          <Button variant="secondary" onClick={handleEditCloseModal}>
+            Cancel
+          </Button>
+        &nbsp;
+          <Button variant="primary"  onClick={handleSubmit}
+          style={{
+            marginLeft: "7px" // Adjust margin-left as needed
+          }}>
+            Save Changes
+          </Button>
+        </form>
+        </Modal.Body>
+        <Modal.Footer>
+        </Modal.Footer>
+      </Modal>
+ {/* Modal for completing booking */}
+ <Modal show={showModal} onHide={handleCloseModal}>
+        <Modal.Header closeButton>
+          <Modal.Title>Complete Booking</Modal.Title>
+        </Modal.Header>
+        <Modal.Body>
+        <p>Complete the booking for: {selectedBooking ? selectedBooking.clientName : ''}</p>
+          {/* <p>Complete the booking for /NAME SA CLIENT DAPAT/</p> */}
+          <form onSubmit={handleCompleteBooking}>
+          <label>
+            Booking ID:
+            <input type="text"  className="bookingInput" value={selectedBooking ? selectedBooking._id : ''} readOnly />
+          </label>
+          <label>
+            Passenger Names:
+            <input type="text"  className="bookingInput" value={selectedBooking ? selectedBooking.passengerNames : ''} readOnly />
+          </label>
+          <br />
+          <label>
+            Client Name:
+            <input type="text" className="bookingInput" value={selectedBooking ? selectedBooking.clientName : ''} readOnly />
+          </label>
+          <br />
+          <label>
+            Destination:
+            <input type="text" className="bookingInput" value={selectedBooking ? selectedBooking.destination : ''} readOnly />
+          </label>
+          <br />
+          <label>
+            Bound For:
+            <input type="text" className="bookingInput" value={selectedBooking ? selectedBooking.boundFor : ''} readOnly />
+          </label>
+          <br />
+          <label>
+            Time and Date:
+            <input
+              type="text"
+              className="bookingInput"
+              value={
+                selectedBooking
+                  ? `${new Date(selectedBooking.timeAndDate).toLocaleDateString()} ${new Date(selectedBooking.timeForBound).toLocaleTimeString()}`
+                  : ''
+              }
+              readOnly
+            />
+          </label>
+          <label>
+            Return Date:
+            <input type="text" className="bookingInput" value={selectedBooking ? selectedBooking.returnDate : ''} readOnly />
+          </label>
+            <label>
+              Plate Number
+              <select className="bookingInput"  value={selectedPlateNumber} onChange={handlePlateNumberChange} required>
+                <option value="" disabled>
+                  Select Plate Number
+                </option>
+                {availablePlateNumbers.map(({ plateNumber}) => (
+                  <option key={plateNumber} value={plateNumber}>
+                    {plateNumber}
+                  </option>
+                ))}
+              </select>
+              <p>
+                Status: {selectedPlateNumberStatus}
+              </p>
+              {/* <p>Seats: {selectedPlateNumberSeats} </p> */}
+            </label>
+
+            <label>
+              Drivers
+              <select className="bookingInput" onChange={handleDriverChange} required>
+                <option value="" disabled>
+                  Select Driver
+                </option>
+                {availableDrivers.map(({ name }) => (
+                  <option key={name} value={name}>
+                    {name}
+                  </option>
+                ))}
+              </select>
+              <p>
+                Status:
+                {selectedDriverStatus}
+              </p>
+            </label>
+            <div>
+          <Button variant="secondary" onClick={handleCloseModal}>
+            Cancel
+          </Button>{" "}
+          <Button variant="success" onClick={() => handleCompleteBooking(selectedBooking, formData,  selectedPlateNumberStatus, selectedBooking.passengerNames)}>
+              Complete Booking
+          </Button>
+
+          </div>
+          </form>
+        </Modal.Body>
+      </Modal>
       </main>
     </div>
   );

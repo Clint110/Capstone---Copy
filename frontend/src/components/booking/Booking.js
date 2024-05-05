@@ -170,9 +170,10 @@ function Booking() {
   useEffect(() => {
     const fetchData = async () => {
       try {
-        const response = await fetch("http://localhost:3000/allbook");
+        const response = await fetch("http://localhost:3000/get-all-completedbookings");
         if (response.ok) {
           const data = await response.json();
+          console.log("Data2", data);
 
           // Ensure consistent property names for time and date
           const formattedEvents = data.map((event) => ({
@@ -197,24 +198,50 @@ function Booking() {
   const [allReminders, setAllReminders] = useState([]);
 
   // Fetch reminders from the server
+  // useEffect(() => {
+  //   const fetchReminders = async () => {
+  //     try {
+  //       const response = await fetch("http://localhost:3000/allbook");
+  //       if (response.ok) {
+  //         const data = await response.json();
+
+  //         // Ensure consistent property names for time and date
+  //         const formattedReminders = data.map((reminder) => ({
+  //           ...reminder,
+  //           start: new Date(reminder.timeAndDate),
+  //           end: new Date(reminder.returnDate),
+  //           type: "reminder", // Adding a type to differentiate reminders
+  //         }));
+
+  //         setAllReminders(formattedReminders);
+  //       } else {
+  //         console.error("Failed to fetch reminders from the server");
+  //       }
+  //     } catch (error) {
+  //       console.error("Error during fetch:", error);
+  //     }
+  //   };
+
+  //   fetchReminders();
+  // }, []);
+
   useEffect(() => {
     const fetchReminders = async () => {
       try {
-        const response = await fetch("http://localhost:3000/allbook");
+        const response = await fetch("http://localhost:3000/get-all-completedbookings");
         if (response.ok) {
           const data = await response.json();
-
-          // Ensure consistent property names for time and date
+          console.log("Hello", data);
           const formattedReminders = data.map((reminder) => ({
             ...reminder,
             start: new Date(reminder.timeAndDate),
             end: new Date(reminder.returnDate),
-            type: "reminder", // Adding a type to differentiate reminders
+            type: "reminder",
           }));
-
           setAllReminders(formattedReminders);
+          console.log("reminders", formattedReminders);
         } else {
-          console.error("Failed to fetch reminders from the server");
+          console.error("Failed to fetch completed bookings from the server");
         }
       } catch (error) {
         console.error("Error during fetch:", error);
