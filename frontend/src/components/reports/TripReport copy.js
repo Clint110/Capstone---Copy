@@ -1130,14 +1130,15 @@ function TripReport() {
                             Cancel
                           </button>
                         </>
-                      ) : (
-                        <button
-                          type="button"
-                          class="btn btn-warning btn-sm"
-                          onClick={() => handleEditOpen(booking)}
-                        >
-                          Edit
-                        </button>
+                      ) : !completedBookings.find(completedBooking => completedBooking.bookingID === booking._id) && ( // Check if booking is not completed
+                      <button
+                        type="button"
+                        className="btn btn-sm"
+                        onClick={() => handleEditOpen(booking)}
+                        style={{ backgroundColor: "#1D5D9B", color: "white" }} // Change background color to blue
+                      >
+                        Edit
+                      </button>
                       )}
                       {/* &nbsp;
                     <button type="button" class="btn btn-danger btn-sm">
