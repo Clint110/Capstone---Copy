@@ -176,6 +176,7 @@ exports.vehicdetails = async (req, res) => {
         plateNumber: vehicleDetails.plateNumber,
         vehicleName: vehicleDetails.vehicleName,
         carImage: `http://localhost:3000/imagesforupload/${vehicleDetails.carImage}`,
+        availableSeats: vehicleDetails.availableSeats
       },
     };
 

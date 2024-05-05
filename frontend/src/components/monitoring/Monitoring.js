@@ -309,6 +309,21 @@ function Monitoring() {
 
   console.log(formData);
 
+  // const validatePlateNumber = (plateNumber) => {
+  //   const plateRegex = /^(?=.*[0-9])(?=.*[a-zA-Z])[a-zA-Z0-9]{5,9}$/;
+  //   return plateRegex.test(plateNumber);
+  // };
+
+  const validatePlateNumber = (plateNumber2) => {
+    // Remove spaces from the plate number for validation
+    const plateNumberWithoutSpaces = plateNumber2.replace(/\s/g, '');
+
+    // Check if the plate number has 5-9 characters with letters and numbers
+    const plateRegex = /^(?=.*[0-9])(?=.*[a-zA-Z])[a-zA-Z0-9 ]{5,9}$/;
+    return plateRegex.test(plateNumberWithoutSpaces);
+};
+
+
   const handlesubmitvec = async (e) => {
     e.preventDefault();
 
@@ -316,11 +331,10 @@ function Monitoring() {
 
     if (!validatePlateNumber(formData.plateNumber2)) {
       setPlateNumberError(
-        "Plate number must have 5-9 characters with letters and numbers."
+          "Plate number must have 5-9 characters with letters and numbers."
       );
-
       return;
-    }
+  }
 
     // Use FormData to handle file uploads
     const formDataForUpload = new FormData();
@@ -354,10 +368,6 @@ function Monitoring() {
     }
   };
 
-  const validatePlateNumber = (plateNumber) => {
-    const plateRegex = /^(?=.*[0-9])(?=.*[a-zA-Z])[a-zA-Z0-9]{5,9}$/;
-    return plateRegex.test(plateNumber);
-  };
 
   const formatDate = (date) => {
     // Convert date to string format
@@ -864,10 +874,7 @@ function Monitoring() {
                                 </h4>
                                 <p className="vehicle-details">
                                   Seats:{" "}
-                                  {
-                                    selectedVehicleDetails.vehicle
-                                      .availableSeats
-                                  }
+                                  {selectedVehicleDetails.vehicle.availableSeats}
                                 </p>{" "}
                                 {/* Display availableSeats */}
                               </div>
