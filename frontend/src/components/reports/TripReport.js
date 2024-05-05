@@ -1090,7 +1090,7 @@ try {
                       <button
                       type="button"
                       className="btn btn-sm"
-                      onClick={() => handleEditOpen(index)}
+                      onClick={() => handleEditOpen(booking)}
                       style={{ backgroundColor: "#1D5D9B", color: "white" }} // Change background color to blue
                     >
                       Edit
