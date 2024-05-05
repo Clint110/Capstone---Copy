@@ -105,9 +105,8 @@ function AddBook() {
   ]);
 
   const [formData, setFormData] = useState({
-    plateNumber: "",
     clientName: "",
-    passengerQuantity: "",
+    passengerNames: "",
     destination: "WOS",
     boundFor: "",
     timeAndDate: "",
@@ -123,6 +122,7 @@ function AddBook() {
   const [plateNumberStatuses, setPlateNumberStatuses] = useState({});
   const [selectedPlateNumberStatus, setSelectedPlateNumberStatus] =
     useState("");
+    const [passengerNames, setPassengerNames] = useState([]);
 
   useEffect(() => {
     const fetchPlateNumbers = async () => {
@@ -174,6 +174,7 @@ function AddBook() {
         timeAndDate: formData.timeAndDate.toISOString(),
         returnDate: formData.returnDate.toISOString(),
         timeForBound: formData.timeForBound,
+        passengerNames: passengerNames.join(", "),
       };
 
       const newBookingEvent = {
@@ -188,9 +189,8 @@ function AddBook() {
 
       // Clear the form fields
       setFormData({
-        plateNumber: "",
         clientName: "",
-        passengerQuantity: "",
+        passengerNames: "",
         destination: "WOS",
         boundFor: "",
         timeAndDate: "",
@@ -246,9 +246,10 @@ function AddBook() {
   useEffect(() => {
     const fetchData = async () => {
       try {
-        const response = await fetch("http://localhost:3000/allbook");
+        const response = await fetch("http://localhost:3000/get-all-completedbookings");
         if (response.ok) {
           const data = await response.json();
+          console.log("Data2", data);
 
           // Ensure consistent property names for time and date
           const formattedEvents = data.map((event) => ({
@@ -276,21 +277,20 @@ function AddBook() {
   useEffect(() => {
     const fetchReminders = async () => {
       try {
-        const response = await fetch("http://localhost:3000/allbook");
+        const response = await fetch("http://localhost:3000/get-all-completedbookings");
         if (response.ok) {
           const data = await response.json();
-
-          // Ensure consistent property names for time and date
+          console.log("Hello", data);
           const formattedReminders = data.map((reminder) => ({
             ...reminder,
             start: new Date(reminder.timeAndDate),
             end: new Date(reminder.returnDate),
-            type: "reminder", // Adding a type to differentiate reminders
+            type: "reminder",
           }));
-
           setAllReminders(formattedReminders);
+          console.log("reminders", formattedReminders);
         } else {
-          console.error("Failed to fetch reminders from the server");
+          console.error("Failed to fetch completed bookings from the server");
         }
       } catch (error) {
         console.error("Error during fetch:", error);
@@ -304,7 +304,27 @@ function AddBook() {
   const combinedEvents = [...allEvents, ...allReminders];
 
   function handleAddEvent() {
-    setAllEvents([...allEvents, newEvent]);
+    let clash = false;
+    // Loop through all existing events to check for clashes
+    for (let i = 0; i < allEvents.length; i++) {
+      const d1 = new Date(allEvents[i].start);
+      const d2 = new Date(newEvent.start);
+      const d3 = new Date(allEvents[i].end);
+      const d4 = new Date(newEvent.end);
+  
+      // Check if there is an overlap
+      if ((d1 < d4 && d2 < d3) || (d2 < d3 && d4 < d3)) {
+        clash = true;
+        break;
+      }
+    }
+  
+    if (!clash) {
+      // Add the new event to the calendar
+      setAllEvents((prevEvents) => [...prevEvents, newEvent]);
+    } else {
+      console.log("There is a clash with existing events.");
+    }
   }
 
   const routes = [
@@ -382,6 +402,23 @@ function AddBook() {
     return formattedTime;
   };
 
+  const formatDate = (dateObject) => {
+    const options = { year: 'numeric', month: 'long', day: 'numeric' };
+    return dateObject.toLocaleDateString('en-US', options);
+};
+
+  const formatDateTime = (timeAndDateString) => {
+    if (!timeAndDateString) {
+        return "";
+    }
+
+    const dateTimeObject = new Date(timeAndDateString);
+    const formattedDate = formatDate(dateTimeObject);
+    const formattedTime = formatTime(dateTimeObject);
+
+    return `${formattedDate} ${formattedTime}`;
+};
+
   return (
     <div className="main-container">
       <motion.div className={`sidebar `}>
@@ -413,6 +450,8 @@ function AddBook() {
               );
             }
 
+          
+
             return (
               <NavLink
                 to={route.path}
@@ -440,6 +479,8 @@ function AddBook() {
           })}
         </section>
       </motion.div>
+
+      
       <main>
         <div className="header-wrapper">
           <div className="header-container">
@@ -470,24 +511,24 @@ function AddBook() {
               <div className="reminder-container" style={{ height: "390px" }}>
                 <div className="reminder-content">
                   <tbody className="BookingList">
-                    {allEvents
-                      .slice(0)
-                      // .reverse()
-                      .sort((a, b) => new Date(a.start) - new Date(b.start)) // Sort events by start date
-                      .map((event, index) => (
-                        <tr key={event.id}>
-                          <td>
-                            {`${event.plateNumber} is scheduled to depart ${
-                              event.timeForBound
-                                ? ` at ${formatTime(event.timeForBound)}`
-                                : ""
-                            } ${event.boundFor ? ` for ${event.boundFor}` : ""}
+                  {allEvents
+                    .slice(0)
+                    //.reverse()
+                    .sort((a, b) => new Date(a.start) - new Date(b.start)) // Sort events by start date
+                    .map((event, index) => (
+                      <tr key={event.id}>
+                        <td>
+                          {`${event.plateNumber} is scheduled to depart ${
+                            event.timeAndDate
+                            ? ` at ${formatDateTime(event.timeAndDate)}`
+                            : ""
+                          } ${event.boundFor ? ` for ${event.boundFor}` : ""}
         ${
           event.start instanceof Date ? ` on ${event.start.toDateString()}` : ""
         }`}
-                          </td>
-                        </tr>
-                      ))}
+                        </td>
+                      </tr>
+                    ))}
                   </tbody>
                 </div>
               </div>
@@ -578,20 +619,16 @@ function AddBook() {
                             />
                           </label>
                           <label>
-                            Name of Passenger
-                            <input
-                              type="text"
-                              className="bookingInput"
-                              style={{ height: "100px" }}
-                              value={formData.passengerQuantity}
-                              onChange={(e) =>
-                                setFormData({
-                                  ...formData,
-                                  passengerQuantity: e.target.value,
-                                })
-                              }
-                              required
-                            />
+                          Name of Passengers
+                           <input
+                                  type="text"
+                                  className="bookingInput"
+                                  style={{ height: "100px", verticalAlign: "top" }}
+                                  value={passengerNames.join(", ")} // Display the names as a comma-separated string
+                                  onChange={(e) =>
+                                      setPassengerNames(e.target.value.split(",").map(name => name.trim()))
+                                  } // Split the input by commas and trim each resulting name
+                              />
                           </label>
                           <label>
                             Bound For:
