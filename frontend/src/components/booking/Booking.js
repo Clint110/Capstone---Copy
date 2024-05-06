@@ -302,17 +302,24 @@ function Booking() {
       console.log("There is a clash with existing events.");
     }
   }
-
   const EventComponent = ({ event, height }) => {
+    const fontSize = 10.5; // Define your desired font size here
     const startTime = formatTime(event.timeAndDate);
     return (
-      <div className="EventComponent" style={{ height }}>
-        <div>{`Plate Number: ${event.plateNumber}`}</div>
-        <div >{`Time: ${startTime}`}</div>
-        <div>{`Destination: ${event.destination}`}</div>
+      <div className="EventComponent" style={{ height, fontSize: `${fontSize}px` }}>
+        <div>{`Plate Number: `}
+          <span style={{ fontWeight: 'bold' }}>{event.plateNumber}</span>
+        </div>
+        <div>{`Departure Time: `}
+        <span style={{ fontWeight: 'bold' }}>{startTime}</span>
+      </div>
       </div>
     );
   };
+  
+  
+
+  
   
   
 
