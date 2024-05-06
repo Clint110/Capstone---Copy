@@ -832,8 +832,8 @@ const generateTableData = async (bookingData) => {
         if (showArchived) {
           endpoint = "http://localhost:3000/archivedbook";
         } else {
-           endpoint = "http://localhost:3000/allbook";
-         // endpoint = "http://localhost:3000/get-all-completedbookings2";
+          endpoint = "http://localhost:3000/allbook";
+         //endpoint = "http://localhost:3000/get-all-completedbookings2";
         }
         const response = await axios.get(endpoint);
         const data = response.data;
@@ -889,13 +889,16 @@ const generateTableData = async (bookingData) => {
   };
 
 
-  const handleArchiveBooking = async (plateNumber) => {
+  const handleArchiveBooking = async (_id) => {
+    console.log("hi: ", _id)
+    const booking_id = _id;
+    
     try {
-      const response = await axios.post(`http://localhost:3000/archive/${plateNumber}`);
+      const response = await axios.post(`http://localhost:3000/archive/${booking_id}`);
       if (response.data.success) {
         // Remove the archived booking from the state
         setBookingData((prevData) =>
-          prevData.filter((booking) => booking.plateNumber !== plateNumber)
+          prevData.filter((booking) => booking._id !== booking_id)
         );
       }
     } catch (error) {
@@ -903,15 +906,16 @@ const generateTableData = async (bookingData) => {
     }
   };
 
-  const handleActivateBooking = async (plateNumber) => {
+  const handleActivateBooking = async (_id) => {
+    const booking_id = _id;
     try {
       const response = await axios.put(
-        `http://localhost:3000/activatebook/${plateNumber}`
+        `http://localhost:3000/activatebook/${booking_id}`
       );
       if (response.data.success) {
         // Remove the activated booking from the state
         setBookingData((prevData) =>
-          prevData.filter((booking) => booking.plateNumber !== plateNumber)
+          prevData.filter((booking) => booking._id !== booking_id)
         );
       }
     } catch (error) {
@@ -1123,6 +1127,19 @@ const generateTableData = async (bookingData) => {
     fetchCompletedBookings();
   }, []);
 
+  // const [bookingData2, setBookingData2] = useState([]);
+
+  // useEffect(() => {
+  //   // Fetch all booking details when the component mounts
+  //   axios.get('http://localhost:3000/allbook')
+  //     .then(response => {
+  //       setBookingData2(response.data);
+  //     })
+  //     .catch(error => {
+  //       console.error('Error fetching booking details:', error);
+  //     });
+  // }, []);
+
   return (
     <>
   
@@ -1233,6 +1250,12 @@ const generateTableData = async (bookingData) => {
                       booking.timeAndDate
                     )}
                   </td>
+                  {/* {bookingData2.map(booking => (
+            <tr key={booking._id}>
+              <td>{booking.passengerNames}</td>
+              <td>{booking.boundFor}</td>
+              <td>{booking.clientName}</td>
+              <td>{booking.timeAndDate}</td> */}
                   <td>
                   {completedBookings.find(completedBooking => completedBooking.bookingID === booking._id) ? (
                     <button
@@ -1273,7 +1296,7 @@ const generateTableData = async (bookingData) => {
                         <button
                           type="button"
                           className="btn btn-success btn-sm"
-                          onClick={() => handleSubmit(index)}
+                          onClick={() => handleSubmit()}
                         >
                           Submit
                         </button>
@@ -1305,7 +1328,7 @@ const generateTableData = async (bookingData) => {
                             onClick={() => {
                                 const confirmed = window.confirm("Are you sure you want to activate this data?");
                                 if (confirmed) {
-                                    handleActivateBooking(booking.plateNumber);
+                                    handleActivateBooking(booking._id);
                                 }
                             }}
                         >
@@ -1318,7 +1341,7 @@ const generateTableData = async (bookingData) => {
                               className="btn btn-sm"
                               onClick={() => {
                                   if (window.confirm("Are you sure you want to archive this data?")) {
-                                      handleArchiveBooking(booking.plateNumber);
+                                      handleArchiveBooking(booking._id);
                                   }
                               }}
                               style={{ backgroundColor: '#b90000', color: 'white' }}

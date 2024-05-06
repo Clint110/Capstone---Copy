@@ -508,13 +508,16 @@ function TripReport() {
   //   booking[searchField].toLowerCase().includes(searchQuery.toLowerCase())
   // );
 
-  const handleArchiveBooking = async (plateNumber) => {
+  const handleArchiveBooking = async (_id) => {
+    console.log("hi: ", _id)
+    const booking_id = _id;
+    
     try {
-      const response = await axios.post(`http://localhost:3000/archive/${plateNumber}`);
+      const response = await axios.post(`http://localhost:3000/archive/${booking_id}`);
       if (response.data.success) {
         // Remove the archived booking from the state
         setBookingData((prevData) =>
-          prevData.filter((booking) => booking.plateNumber !== plateNumber)
+          prevData.filter((booking) => booking._id !== booking_id)
         );
       }
     } catch (error) {
@@ -522,15 +525,16 @@ function TripReport() {
     }
   };
 
-  const handleActivateBooking = async (plateNumber) => {
+  const handleActivateBooking = async (_id) => {
+    const booking_id = _id;
     try {
       const response = await axios.put(
-        `http://localhost:3000/activatebook/${plateNumber}`
+        `http://localhost:3000/activatebook/${booking_id}`
       );
       if (response.data.success) {
         // Remove the activated booking from the state
         setBookingData((prevData) =>
-          prevData.filter((booking) => booking.plateNumber !== plateNumber)
+          prevData.filter((booking) => booking._id !== booking_id)
         );
       }
     } catch (error) {
@@ -1112,7 +1116,7 @@ function TripReport() {
                       Pending
                     </button> */}
                   </td>
-                    <td>
+                    <td colSpan={'5'}>
                       {editableData._id === booking._id ? (
                         <>
                           <button
@@ -1153,7 +1157,7 @@ function TripReport() {
                             onClick={() => {
                                 const confirmed = window.confirm("Are you sure you want to activate this data?");
                                 if (confirmed) {
-                                    handleActivateBooking(booking.plateNumber);
+                                    handleActivateBooking(booking._id);
                                 }
                             }}
                         >
@@ -1166,7 +1170,7 @@ function TripReport() {
                               className="btn btn-sm"
                               onClick={() => {
                                   if (window.confirm("Are you sure you want to archive this data?")) {
-                                      handleArchiveBooking(booking.plateNumber);
+                                      handleArchiveBooking(booking._id);
                                   }
                               }}
                               style={{ backgroundColor: '#b90000', color: 'white' }}

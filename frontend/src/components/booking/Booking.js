@@ -65,6 +65,24 @@ function Booking() {
     },
   ]);
 
+  const [clientName, setClientName] = useState("");
+  const [suggestions, setSuggestions] = useState([]);
+  
+  // Sample suggestion data
+  const sampleSuggestions = ["COT", "COB", "CON", "COP", "COR"];
+
+
+  useEffect(() => {
+    const filteredSuggestions = sampleSuggestions.filter(suggestion =>
+      suggestion.toLowerCase().includes(clientName.toLowerCase())
+    );
+    setSuggestions(filteredSuggestions);
+  }, [clientName]);
+
+  const handleClientNameChange = (e) => {
+    setClientName(e.target.value);
+  };
+
   const handlePassengerNameChange = (e) => {
     // Split the input value by commas and trim each resulting name
     const names = e.target.value.split(",").map((name) => name.trim());
@@ -96,7 +114,11 @@ function Booking() {
       returnDate: formData.returnDate.toISOString(),
       timeForBound: formData.timeForBound,
       passengerNames: passengerNames.join(", "),
+      clientName: clientName, // Include clientName from state
+  
     };
+
+    console.log("KANI:", formattedFormData);
 
     console.log("Start Date:", new Date(formData.timeAndDate));
     console.log("End Date:", new Date(formData.returnDate));
@@ -520,14 +542,25 @@ function Booking() {
                           <input
                             type="text"
                             className="bookingInput"
-                            value={formData.clientName}
-                            onChange={(e) =>
-                              setFormData({
-                                ...formData,
-                                clientName: e.target.value,
-                              })
-                            }
+                            // value={formData.clientName}
+                            // onChange={(e) =>
+                            //   setFormData({
+                            //     ...formData,
+                            //     clientName: e.target.value,
+                            //   })
+                            // }
+                            value={clientName}
+                           onChange={handleClientNameChange}
                           />
+                           {suggestions.length > 0 && (
+                                <ul>
+                                  {suggestions.map((suggestion, index) => (
+                                    <li key={index} onClick={() => setClientName(suggestion)}>
+                                      {suggestion}
+                                    </li>
+                                  ))}
+                                </ul>
+                              )}
                         </label>
                         <label>
                           {/* Name of Passengers

@@ -170,11 +170,13 @@ exports.deleteBooking = async (req, res) => {
 
 exports.archiveBooking = async (req, res) => {
   try {
-    const plateNumber = req.params.plateNumber;
+    const _id = req.params.booking_id;
+
+    console.log("_id ni: ", _id);
 
     // Find the booking by plate number and update its status to "archived"
     const archivedBooking = await Booking.findOneAndUpdate(
-      { plateNumber, status: "active" }, // Find active booking with plate number
+      { _id, status: "active" }, // Find active booking with plate number
       { $set: { status: "archived" } }, // Set status to "archived"
       { new: true } // Return the updated document
     );
@@ -196,11 +198,11 @@ exports.archiveBooking = async (req, res) => {
 
 exports.activateBooking = async (req, res) => {
   try {
-    const plateNumber = req.params.plateNumber;
+    const _id = req.params.booking_id;
 
     // Find the booking by plate number and update its status to "active"
     const activatedBooking = await Booking.findOneAndUpdate(
-      { plateNumber, status: "archived" }, // Find archived booking with plate number
+      { _id, status: "archived" }, // Find archived booking with plate number
       { $set: { status: "active" } }, // Set status to "active"
       { new: true } // Return the updated document
     );

@@ -10,8 +10,8 @@ router.post("/addbook", BookingController.addBooking);
 router.get("/booking-details/:plateNumber", BookingController.getBookingDetailsByPlateNumber);
 router.put("/editbook/:id", BookingController.editBooking);
 router.delete("/deletebook/:plateNumber", BookingController.deleteBooking);
-router.post("/archive/:plateNumber", BookingController.archiveBooking);
+router.post("/archive/:booking_id", BookingController.archiveBooking);
 router.get("/archivedbook", BookingController.getArchivedBookings);
-router.put("/activatebook/:plateNumber", BookingController.activateBooking);
+router.put("/activatebook/:booking_id", BookingController.activateBooking);
 
 module.exports = router;
