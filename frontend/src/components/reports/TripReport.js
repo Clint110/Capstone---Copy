@@ -89,18 +89,27 @@ const TripReport = () => {
   const handleOpenModal = (booking) => {
     const {_id, clientName, passengerNames, destination, boundFor, timeAndDate, timeForBound, returnDate } = booking;
      // Combine date and timeForBound
+
+     console.log("type: ", typeof passengerNames);
+  console.log("timeAndDate value:", timeAndDate);
+  console.log("timeForBound value:", timeForBound);
+  
   const combinedDate = new Date(timeAndDate);
   combinedDate.setHours(new Date(timeForBound).getHours());
   combinedDate.setMinutes(new Date(timeForBound).getMinutes());
 
   const bookingID = _id;
 
+  console.log("type: ", typeof passengerNames);
+  console.log("timeAndDate value:", timeAndDate);
+
   setFormData({
     bookingID: bookingID,
     plateNumber: booking.plateNumber, // Include plateNumber
     name: booking.name,
     clientName: clientName,
-    passengerNames: passengerNames.join(", "), // Convert array to string
+    // passengerNames: passengerNames.join(", "), // Convert array to string
+    passengerNames: Array.isArray(passengerNames) ? passengerNames.join(", ") : "",
     destination: destination,
     boundFor: boundFor,
     timeAndDate: combinedDate.toISOString(), // Use the combined date
@@ -823,7 +832,8 @@ const generateTableData = async (bookingData) => {
         if (showArchived) {
           endpoint = "http://localhost:3000/archivedbook";
         } else {
-          endpoint = "http://localhost:3000/get-all-completedbookings2";
+           endpoint = "http://localhost:3000/allbook";
+         // endpoint = "http://localhost:3000/get-all-completedbookings2";
         }
         const response = await axios.get(endpoint);
         const data = response.data;
@@ -1454,7 +1464,7 @@ const generateTableData = async (bookingData) => {
               type="text"
               className="bookingInput"
               value={
-                selectedBooking
+                selectedBooking && selectedBooking.timeAndDate && selectedBooking.timeForBound
                   ? `${new Date(selectedBooking.timeAndDate).toISOString().split('T')[0]} ${new Date(selectedBooking.timeForBound).toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' })}`
                   : ''
               }
