@@ -355,14 +355,105 @@ try {
 
       //BELOW THE TABLE
       let yPos = 45;
+
+      // Function to add driver names with proper formatting
+const addDriverNames = (driverNames, xPos, yPos) => {
+  const maxLineLength = 40; // Maximum characters per line
+  let currentLine = ''; // Initialize current line
+
+  // Iterate over driver names
+  driverNames.forEach((driverName, index) => {
+    if (typeof driverName === 'string' && driverName.trim() !== '') {
+      // Check if driver name is a non-empty string
+      if ((currentLine + driverName).length > maxLineLength) {
+        // If adding the driver name exceeds the maximum line length, add a new line
+        doc.text(currentLine, xPos, yPos);
+        yPos += 5; // Increment y-position
+        currentLine = ''; // Reset current line
+      }
+      currentLine += `${driverName}, `; // Add driver name to current line
+    }
+  });
+
+  // Add remaining driver names
+  if (currentLine.trim() !== '') {
+    doc.text(currentLine, xPos, yPos);
+  }
+};
+
+const generateTableData = async (bookingData) => {
+  // Fetch vehicle names based on plate numbers
+  const getVehicleName = async (plateNumber) => {
+    try {
+      const response = await axios.get(`http://localhost:3000/vehicle/details/${plateNumber}`);
+      return response.data.vehicle.vehicleName || "Unknown";
+    } catch (error) {
+      console.error("Error fetching vehicle name:", error);
+      return "Unknown";
+    }
+  };
+
+  // Fetch driver names based on plate numbers
+  const getDriverNames = async (plateNumbers) => {
+    const driverNamesPromises = plateNumbers.map(async (plateNumber) => {
+      try {
+        const response = await axios.get(`http://localhost:3000/driver/details/${plateNumber}`);
+        if (response.data.success && response.data.driverNames && response.data.driverNames.length > 0) {
+          return response.data.driverNames;
+        } else {
+          console.warn(`Driver names not found for plate number ${plateNumber}`);
+          return ['Unknown']; // Return an array with 'Unknown' if driver names not found
+        }
+      } catch (error) {
+        console.error(`Error fetching driver names for plate number ${plateNumber}: ${error.message}`);
+        return ['Unknown']; // Return an array with 'Unknown' if there's an error fetching driver names
+      }
+    });
+    return await Promise.all(driverNamesPromises);
+  };
+
+  // Fetch vehicle names for all plate numbers
+  const plateNumbers = bookingData.map((booking) => booking.plateNumber);
+  const vehicleNamesPromises = plateNumbers.map(async (plateNumber) => {
+    return getVehicleName(plateNumber);
+  });
+  const vehicleNames = await Promise.all(vehicleNamesPromises);
+
+  // Fetch driver names for all plate numbers
+  const driverNames = await getDriverNames(plateNumbers);
+
+  // Prepare table data
+  const tableData = bookingData.map((booking, index) => {
+    const plateNumber = booking.plateNumber;
+    const vehicleName = vehicleNames[index];
+    const drivers = driverNames[index];
+    const driverNamesFormatted = Array.isArray(drivers) ? drivers.join(', ') : drivers;
+    let wosTrips = 0;
+    let bosTrips = 0;
+    // Count trips based on service type
+    bookingData.forEach((booking) => {
+      if (booking.plateNumber === plateNumber) {
+        if (booking.destination === "WOS") {
+          wosTrips++;
+        } else if (booking.destination === "BOS") {
+          bosTrips++;
+        }
+      }
+    });
+    return [plateNumber, driverNamesFormatted, vehicleName, wosTrips, bosTrips];
+  });
+
+  return tableData;
+};
+
       // doc.text("Prepared by:", 15, textYPos);
       doc.setFontSize(12); // Adjust font size here
-      doc.text("Prepared by:", 15, yPos + 110);
+      doc.text("Prepared by:", 15, yPos + 130);
       yPos += 15; // Adjust margin as needed
 
       doc.setFontSize(11); // Adjust font size here
-      doc.text("Administrative Aide III", 25, 167);
-      let yPos1 = 180;
+      doc.text("Administrative Aide III", 25, 195);
+      let yPos1 = 210;
       const leftMarginVerifiedBy = 10; // Adjust the left margin for "Verified by:" as needed
       doc.setFontSize(12); // Adjust font size here
       doc.text("Verified by:", 15 + leftMarginVerifiedBy, yPos1); // Adjusted x-coordinate
@@ -372,23 +463,23 @@ try {
       doc.text(
         "Supervisor,Transportation Service (Motorpool Section)",
         22,
-        200
+        230
       );
 
-      let yPos2 = 180;
+      let yPos2 = 210;
       const leftMarginNotedBy = 130; // Adjust the left margin for "Verified by:" as needed
       doc.setFontSize(12); // Adjust font size here
       doc.text("Noted by:", 15 + leftMarginNotedBy, yPos2); // Adjusted x-coordinate
       yPos1 += 10; // Adjust margin as needed
 
       doc.setFontSize(11); // Adjust font size here
-      doc.text("Head, GSU", 160, 200);
+      doc.text("Head, GSU", 160, 230);
 
       doc.setFontSize(12); // Adjust font size here
-      doc.text("SNIFFY L. TIMONES", 25, 162);
+      doc.text("SNIFFY L. TIMONES", 25, 189);
       const textWidth = doc.getStringUnitWidth("SNIFFY L. TIMONES") * 4.5; // Adjust 12 to the font size used
       const startX = 24; // Adjust as needed
-      const startY = 162 + 1; // Adjust to position the underline below the text
+      const startY = 190 + 1; // Adjust to position the underline below the text
       doc.line(startX, startY, startX + textWidth, startY); // Draw a line below the text
 
       const topMargin = 10; // Adjust the top margin as needed
@@ -397,8 +488,8 @@ try {
       const text = "ERIC L. GULTIANO";
       const textWidth3 = doc.getStringUnitWidth(text) * 4.5; // Adjust 12 to the font size used
       const startX3 = 24 + leftMargin; // Adjust as needed
-      const startY3 = 186 + topMargin; // Adjust to position the text below the top margin
-      doc.text(text, 25 + leftMargin, 185 + topMargin); // Adjusted y-coordinate for the text
+      const startY3 = 215 + topMargin; // Adjust to position the text below the top margin
+      doc.text(text, 25 + leftMargin, 213 + topMargin); // Adjusted y-coordinate for the text
       doc.line(startX3, startY3, startX3 + textWidth3, startY3); // Adjusted start and end positions for the line
 
       const topMarginNew = 10; // Adjust the top margin as needed for the new copy
@@ -407,8 +498,8 @@ try {
       const textNew = "KRISTINE FIVI O. GEWAN";
       const textWidthNew = doc.getStringUnitWidth(textNew) * 4.5; // Adjust 12 to the font size used for the new copy
       const startXNew = 24 + leftMarginNew; // Adjust as needed for the new copy
-      const startYNew = 186 + topMarginNew; // Adjust to position the text below the top margin for the new copy
-      doc.text(textNew, 25 + leftMarginNew, 185 + topMarginNew); // Adjusted y-coordinate for the text for the new copy
+      const startYNew = 215 + topMarginNew; // Adjust to position the text below the top margin for the new copy
+      doc.text(textNew, 25 + leftMarginNew, 213 + topMarginNew); // Adjusted y-coordinate for the text for the new copy
       doc.line(startXNew, startYNew, startXNew + textWidthNew, startYNew); // Adjusted start and end positions for the line for the new copy
       
       //Brendyl Ani
@@ -436,6 +527,23 @@ try {
         }
       };
 
+      // Fetch driver names based on plate numbers
+      const getDriverName = async (plateNumber) => {
+        try {
+            const response = await axios.get(`http://localhost:3000/driver/details/${plateNumber}`);
+            console.log("Response from backend:", response.data);
+            if (response.data.success && response.data.driverNames && response.data.driverNames.length > 0) {
+                // Extract the first driver name from the array of driver names
+                return response.data.driverNames[0];
+            } else {
+                console.error("Driver name not found in response:", response.data);
+                return "Unknown";
+            }
+        } catch (error) {
+            console.error("Error fetching driver name:", error);
+            return "Unknown";
+        }
+    };
       // Prepare data for the table
       const plateNumbers = bookingData.map((booking) => booking.plateNumber);
       const uniquePlateNumbers = new Set(plateNumbers);
@@ -443,41 +551,99 @@ try {
       let totalTrips = 0;
       // Inside your tableData mapping function
 
-      const tableData = await Promise.all(
-        Array.from(uniquePlateNumbers).map(async (plateNumber) => {
-          const vehicleName = await getVehicleName(plateNumber);
-          let wosTrips = 0;
-          let bosTrips = 0;
+      // Fetch driver names for all plate numbers concurrently
+      const driverNamesPromises = Array.from(uniquePlateNumbers).map(async (plateNumber) => {
+        return getDriverName(plateNumber);
+    });
+    
+    const driverNames = await Promise.all(driverNamesPromises);
+    console.log("Driver Names:", driverNames);
 
-          // Count trips based on service type
-          bookingData.forEach((booking) => {
-            if (booking.plateNumber === plateNumber) {
-              if (booking.destination === "WOS") {
-                wosTrips++;
-              } else if (booking.destination === "BOS") {
-                bosTrips++;
-              }
-            }
-          });
-          // Increment total trips
-          totalTrips += wosTrips + bosTrips;
+      // const tableData = await Promise.all(
+      //   Array.from(uniquePlateNumbers).map(async (plateNumber) => {
+      //     const vehicleName = await getVehicleName(plateNumber);
+      //     const driverName = await getDriverName(plateNumber);
+      //     let wosTrips = 0;
+      //     let bosTrips = 0;
 
-          return [plateNumber, vehicleName, wosTrips, bosTrips];
-        })
-      );
+      //     // Count trips based on service type
+      //     bookingData.forEach((booking) => {
+      //       if (booking.plateNumber === plateNumber) {
+      //         if (booking.destination === "WOS") {
+      //           wosTrips++;
+      //         } else if (booking.destination === "BOS") {
+      //           bosTrips++;
+      //         }
+      //       }
+      //     });
+      //     // Increment total trips
+      //     totalTrips += wosTrips + bosTrips;
 
-      // Add a row for total trips
-      tableData.push(["TOTAL TRIPS:", totalTrips]);
+      //     return [plateNumber, driverName, vehicleName, wosTrips, bosTrips];
+      //   })
+      // );
+
+      // Generate table data with multiple driver names
+      const tableData = await generateTableData(bookingData);
+
+    //    // Prepare table data
+    //    const tableData = await Promise.all(
+    //     Array.from(uniquePlateNumbers).map(async (plateNumber, index) => {
+    //         const vehicleName = await getVehicleName(plateNumber);
+    //         const driverName = driverNames[index];
+    //         console.log(`Plate Number: ${plateNumber}, Driver Name: ${driverName}`);
+    //         let wosTrips = 0;
+    //         let bosTrips = 0;
+    
+    //         // Count trips based on service type
+    //         bookingData.forEach((booking) => {
+    //             if (booking.plateNumber === plateNumber) {
+    //                 if (booking.destination === "WOS") {
+    //                     wosTrips++;
+    //                 } else if (booking.destination === "BOS") {
+    //                     bosTrips++;
+    //                 }
+    //             }
+    //         });
+    //         // Increment total trips
+    //         totalTrips += wosTrips + bosTrips;
+    
+    //         return [plateNumber, driverName, vehicleName, wosTrips, bosTrips];
+    //     })
+    // );
+
+    //   // Add a row for total trips
+    //   tableData.push(["TOTAL TRIPS:", totalTrips]);
     
       ///here taman
+      // doc.autoTable({
+      //   // startY: 78,
+      //   startY: yPos + 10,
+      //   head: [
+      //     [
+      //       { content: "Plate Number", styles: { fontStyle: "bold" } },
+      //       { content: "Driver", styles: { fontStyle: "bold" } },
+      //       { content: "Vehicle", styles: { fontStyle: "bold" } },
+      //       // { content: "TOTAL NO. OF TRIP", styles: { fontStyle: "bold" } },
+      //       {
+      //         content: "Within Official Station",
+      //         styles: { fontStyle: "bold" },
+      //       },
+      //       {
+      //         content: "Beyond Official Station",
+      //         styles: { fontStyle: "bold" },
+      //       },
+      //     ],
+      //   ],
+      //   body: tableData,
+      // Draw table with multiple driver names
       doc.autoTable({
-        // startY: 78,
         startY: yPos + 10,
         head: [
           [
             { content: "Plate Number", styles: { fontStyle: "bold" } },
+            { content: "Driver", styles: { fontStyle: "bold" } },
             { content: "Vehicle", styles: { fontStyle: "bold" } },
-            // { content: "TOTAL NO. OF TRIP", styles: { fontStyle: "bold" } },
             {
               content: "Within Official Station",
               styles: { fontStyle: "bold" },
@@ -488,7 +654,13 @@ try {
             },
           ],
         ],
-        body: tableData,
+        body: tableData.map(([plateNumber, driverNames, vehicleName, wosTrips, bosTrips]) => [
+          plateNumber,
+          Array.isArray(driverNames) ? driverNames.join(', ') : driverNames, // Join multiple driver names with comma
+          vehicleName,
+          wosTrips,
+          bosTrips
+        ]),
 
         headStyles: {
           fillColor: [255, 255, 255], // White background for header
@@ -651,7 +823,7 @@ try {
         if (showArchived) {
           endpoint = "http://localhost:3000/archivedbook";
         } else {
-          endpoint = "http://localhost:3000/allbook";
+          endpoint = "http://localhost:3000/get-all-completedbookings2";
         }
         const response = await axios.get(endpoint);
         const data = response.data;
@@ -756,18 +928,35 @@ try {
     return new Date(dateTimeString).toLocaleDateString("en-US", options);
   };
 
-  const filteredData = bookingData
-  .filter((booking) => {
+  // const filteredData = bookingData
+  // .filter((booking) => {
+  //   const fieldValue = booking[searchField];
+  //   // Modify the filtering logic to check the passengerNames field
+  //   return (
+  //     fieldValue &&
+  //     (searchField !== "passengerNames"
+  //       ? fieldValue.toLowerCase().includes(searchQuery.toLowerCase())
+  //       : fieldValue.join(" ").toLowerCase().includes(searchQuery.toLowerCase()))
+  //   );
+  // })
+  // .filter((booking) => (showArchived ? true : !booking.isArchived));
+
+  const filteredData = bookingData.filter((booking) => {
     const fieldValue = booking[searchField];
+    if (!fieldValue) return false; // If fieldValue is falsy, return false
+  
+    // Convert fieldValue to lowercase for case-insensitive comparison
+    const fieldValueLower = Array.isArray(fieldValue)
+      ? fieldValue.join(" ").toLowerCase()
+      : fieldValue.toString().toLowerCase();
+  
     // Modify the filtering logic to check the passengerNames field
-    return (
-      fieldValue &&
-      (searchField !== "passengerNames"
-        ? fieldValue.toLowerCase().includes(searchQuery.toLowerCase())
-        : fieldValue.join(" ").toLowerCase().includes(searchQuery.toLowerCase()))
-    );
-  })
-  .filter((booking) => (showArchived ? true : !booking.isArchived));
+    if (searchField === "passengerNames") {
+      return fieldValueLower.includes(searchQuery.toLowerCase());
+    } else {
+      return fieldValueLower.includes(searchQuery.toLowerCase());
+    }
+  }).filter((booking) => (showArchived ? true : !booking.isArchived));
 
   const handleToggleBooking = async (booking) => {
     const action = booking.isActive ? "archive" : "activate";
@@ -956,7 +1145,7 @@ try {
         >
           <option value="passengerNames">PASSENGER NAMES</option>
           <option value="boundFor"> DESTINATION</option>
-          <option value="timeForBound">DEPARTURE</option>
+          <option value="timeAndDate">DEPARTURE</option>
           <option value="returnDate">RETURN</option>
         </select>
 

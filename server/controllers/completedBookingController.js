@@ -55,6 +55,16 @@ exports.checkCompletedBookings = async (req, res) => {
     }
 };
 
+exports.getAllCompletedBookings2 = async (req, res) => {
+  try {
+      const completedBookings = await CompletedBooking.find();
+      res.json(completedBookings);
+  } catch (error) {
+      console.error("Error fetching completed bookings:", error);
+      res.status(500).json({ error: "Error fetching completed bookings" });
+  }
+};
+
 exports.getLatestCompletedBooking = async (req, res) => {
     try {
         const { plateNumber } = req.query;

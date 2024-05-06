@@ -247,3 +247,53 @@ exports.getUsedDrivers = async (req, res) => {
     res.status(500).json({ success: false, message: "Internal server error" });
   }
 };
+
+// exports.getDriverDetailsByPlateNumber = async (req, res) => {
+//   try {
+//     const plateNumber = req.params.plateNumber;
+    
+//     console.log("Fetching driver details for plate number:", plateNumber); // Add this line to log plate number
+    
+//     // Find any completed bookings associated with the given plate number
+//     const associatedBookings = await CompletedBooking.find({ plateNumber });
+
+//     if (associatedBookings.length === 0) {
+//       console.log(`Driver with plate number ${plateNumber} not found in completed bookings`);
+//       return res.status(404).json({ success: false, message: "Driver not found in completed bookings" });
+//     }
+
+//     // Extract the driver's name from one of the bookings (assuming the name field exists in CompletedBooking)
+//     const driverName = associatedBookings[0].name;
+
+//     console.log(`Driver with plate number ${plateNumber} found with name ${driverName}`);
+//     res.status(200).json({ success: true, driverName });
+//   } catch (error) {
+//     console.error(error);
+//     res.status(500).json({ success: false, message: "Internal server error" });
+//   }
+// };
+
+exports.getDriverDetailsByPlateNumber = async (req, res) => {
+  try {
+    const plateNumber = req.params.plateNumber;
+    
+    console.log("Fetching driver details for plate number:", plateNumber);
+    
+    // Find any completed bookings associated with the given plate number
+    const associatedBookings = await CompletedBooking.find({ plateNumber });
+
+    if (associatedBookings.length === 0) {
+      console.log(`Driver with plate number ${plateNumber} not found in completed bookings`);
+      return res.status(404).json({ success: false, message: "Driver not found in completed bookings" });
+    }
+
+    // Extract the driver names from all the bookings
+    const driverNames = associatedBookings.map(booking => booking.name);
+
+    console.log(`Driver(s) with plate number ${plateNumber} found with name(s):`, driverNames);
+    res.status(200).json({ success: true, driverNames });
+  } catch (error) {
+    console.error(error);
+    res.status(500).json({ success: false, message: "Internal server error" });
+  }
+};

@@ -8,5 +8,6 @@ router.get('/check-completed-bookings', completedBookingController.checkComplete
 router.get('/check-completed-bookings2', completedBookingController.checkCompletedBookings2);
 router.get('/get-all-completedbookings', completedBookingController.getAllCompletedBookings);
 router.get('/get-latest-completed-booking', completedBookingController.getLatestCompletedBooking);
+router.get('/get-all-completedbookings2', completedBookingController.getAllCompletedBookings2);
 
 module.exports = router;

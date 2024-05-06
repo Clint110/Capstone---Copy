@@ -12,5 +12,6 @@ router.put("/drivers/:id/activate", driverController.activateDriver);
 router.get('/driverstatus', driverController.driverStatus);
 router.get("/drivers/onTravel", driverController.getUsedDrivers);
 router.get("/drivers/available", driverController.getAvailableDrivers);
+router.get("/driver/details/:plateNumber", driverController.getDriverDetailsByPlateNumber);
 
 module.exports = router;
