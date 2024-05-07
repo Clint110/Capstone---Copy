@@ -305,24 +305,31 @@ function Reminder() {
  {latestEvent ? (
               <tr onClick={toggleExpand}>
                 <td>
-                  <div style={{ display: "flex", alignItems: "center" }}>
-                    <span style={{ cursor: "pointer", marginRight: "10px" }} onClick={() => handleClick(latestEvent.plateNumber)}>Plate Number: {latestEvent.plateNumber}</span>
-                    {expanded && (
-                      <div>
-                        <div>
-                          {`Plate Number: ${latestEvent.plateNumber} is currently at ${locationName ? locationName : "Unknown Location"}, Time: ${formatTime(latestEvent.time)}`}
-                        </div>
-                        {latestCompletedBooking ? (
-                          <div>
-                            Latest Booking: <br />
-                            {`Driver: ${latestCompletedBooking.name}, Destination: ${latestCompletedBooking.boundFor}, Time and Date: ${formatTime2(latestCompletedBooking.timeAndDate)}`}
-                          </div>
-                        ) : (
-                          <div style={{ color: "red" }}>Unregistered Booking</div> // Display "Unregistered Booking" in red using inline styling
-                        )}
-                      </div>
-                    )}
-                  </div>
+                <div style={{ display: "flex", alignItems: "center", flexDirection: "column" }}>
+    <div style={{ display: "flex", justifyContent: "flex-start", width: "100%", textAlign: "justify" }}>
+        <span style={{ cursor: "pointer", marginRight: "10px" }} onClick={() => handleClick(latestEvent.plateNumber)}>
+            <strong>Plate Number:</strong> {latestEvent.plateNumber}
+        </span>
+    </div>
+    {expanded && (
+        <div style={{ textAlign: "justify" }}>
+            <div>
+                <strong>Location:</strong> {locationName ? locationName : "Unknown Location"}, <br></br> <strong>Time:</strong> {formatTime(latestEvent.time)}
+            </div>
+            <div>
+                {latestCompletedBooking ? (
+                    <div>
+                        <strong>Latest Booking:</strong> <br />
+                        Driver: {latestCompletedBooking.name}, Destination: {latestCompletedBooking.boundFor}, Time and Date: {formatTime2(latestCompletedBooking.timeAndDate)}
+                    </div>
+                ) : (
+                    <div style={{ color: "red" }}><strong>UNREGISTERED BOOKING</strong></div>
+                )}
+            </div>
+        </div>
+    )}
+</div>
+
                 </td>
               </tr>
             ) : (
