@@ -314,13 +314,13 @@ function Reminder() {
     {expanded && (
         <div style={{ textAlign: "justify" }}>
             <div>
-                <strong>Location:</strong> {locationName ? locationName : "Unknown Location"}, <br></br> <strong>Time:</strong> {formatTime(latestEvent.time)}
+                <strong>Location:</strong> {locationName ? locationName : "Unknown Location"} <br></br> <strong>Time:</strong> {formatTime(latestEvent.time)}
             </div>
             <div>
                 {latestCompletedBooking ? (
                     <div>
-                        <strong>Latest Booking:</strong> <br />
-                        Driver: {latestCompletedBooking.name}, Destination: {latestCompletedBooking.boundFor}, Time and Date: {formatTime2(latestCompletedBooking.timeAndDate)}
+                    <strong style={{ color: "green" }}>LATEST BOOKING</strong> <br />
+                    <strong>Driver:</strong> {latestCompletedBooking.name} <br></br>  <strong>Destination:</strong> {latestCompletedBooking.boundFor} <br></br> <strong>Time and Date:</strong> {formatTime2(latestCompletedBooking.timeAndDate)}
                     </div>
                 ) : (
                     <div style={{ color: "red" }}><strong>UNREGISTERED BOOKING</strong></div>
