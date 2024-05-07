@@ -78,7 +78,9 @@ const localizer = dateFnsLocalizer({
 
 function AddBook() {
   const [scrollableModal, setScrollableModal] = useState(false);
-
+  const [clientName, setClientName] = useState("");
+  const [suggestions, setSuggestions] = useState([]);
+  
   const localizer = globalizeLocalizer(globalize);
 
   const [newEvent, setNewEvent] = useState({
@@ -103,6 +105,22 @@ function AddBook() {
       end: new Date(2024, 0, 1),
     },
   ]);
+
+  const sampleSuggestions = ["COT", "COB", "CON", "Alumni Relations Unit", "Admission and Testing Unit", "Botanical Gardens and Herbarium", "Bukidnon State University - Baungon Campus", "Bukidnon State University - Cabanglasan Campus", "Bukidnon State University - Damulog Campus", "Bukidnon State University - Impasugong Campus", "Bukidnon State University - Kadingilan Campus",
+   "Bukidnon State University - Kalilangan Campus", "Bukidnon State University - Malitbog Campus", "Bukidnon State University - Medina Campus", "Bukidnon State University - San Fernando Campus", "Bukidnon State University - Talakag Campus", "Bukidnon State University - Talisayan Campus", "Bukidnon Studies Center", "BukSU Hostel", "BukSU Hotel Laboratory", "Business Affairs Unit",
+    "CAS - Community Development Department", "CAS - Economics Department", "CAS - General Education Courses Department", "CAS - Language and Letters Department", "CAS - MA Sociology", "CAS - Mathematics Department", "CAS - National Sciences Department", "CAS - Philosophy Department", "CAS - Sociology and Social Science", ];
+
+
+  useEffect(() => {
+    const filteredSuggestions = sampleSuggestions.filter(suggestion =>
+      suggestion.toLowerCase().includes(clientName.toLowerCase())
+    );
+    setSuggestions(filteredSuggestions);
+  }, [clientName]);
+
+  const handleClientNameChange = (e) => {
+    setClientName(e.target.value);
+  };
 
   const [formData, setFormData] = useState({
     clientName: "",
@@ -175,6 +193,7 @@ function AddBook() {
         returnDate: formData.returnDate.toISOString(),
         timeForBound: formData.timeForBound,
         passengerNames: passengerNames.join(", "),
+        clientName: clientName,
       };
 
       const newBookingEvent = {
@@ -603,20 +622,25 @@ function AddBook() {
          DRIVER’s NAME
             <input type="text" className='bookingInput' value={formData.driverName} onChange={(e) => setFormData({ ...formData, driverName: e.target.value })}/>
         </label> */}
-                          <label>
+                           <label style={{ position: 'relative' }}>
                             Client Name(Office)
                             <input
                               type="text"
                               className="bookingInput"
-                              value={formData.clientName}
-                              onChange={(e) =>
-                                setFormData({
-                                  ...formData,
-                                  clientName: e.target.value,
-                                })
-                              }
-                              required
+                              value={clientName}
+                              onChange={handleClientNameChange}
                             />
+                           {clientName && (
+                            <ul style={{ position: 'absolute', top: '100%', left: 0, zIndex: 999, backgroundColor: '#fff', border: '1px solid #ccc', borderRadius: '4px', padding: '4px 8px', boxShadow: '0 2px 4px rgba(0,0,0,0.1)', listStyle: 'none', margin: 0, paddingInlineStart: 0 }}>
+                              {suggestions.map((suggestion, index) => (
+                                (clientName.toLowerCase() !== suggestion.toLowerCase()) && (
+                                  <li key={index} onClick={() => setClientName(suggestion)} style={{ paddingLeft: '8px', whiteSpace: 'nowrap' }}>
+                                    {suggestion}
+                                  </li>
+                                )
+                              ))}
+                            </ul>
+                          )}
                           </label>
                           <label>
                           Name of Passengers
