@@ -314,7 +314,7 @@ function Reminder() {
     {expanded && (
         <div style={{ textAlign: "justify" }}>
             <div>
-                <strong>Location:</strong> {locationName ? locationName : "Unknown Location"} <br></br> <strong>Time:</strong> {formatTime(latestEvent.time)}
+                <strong>Location:</strong> {locationName ? locationName : "Unknown Location"}, <br></br> <strong>Time:</strong> {formatTime(latestEvent.time)}
             </div>
             <div>
                 {latestCompletedBooking ? (
@@ -349,7 +349,7 @@ function Reminder() {
           <MDBModalDialog style={{ maxWidth: "750px" }}>
             <MDBModalContent>
               <MDBModalHeader>
-                <MDBModalTitle>Vehicle's Wherabouts</MDBModalTitle>
+              <MDBModalTitle style={{ color: "black" }}>Vehicle's Wherabouts</MDBModalTitle>
                 <button
                   className="btn-close"
                   onClick={handleCancelEdit}
@@ -360,18 +360,20 @@ function Reminder() {
                 {selectedVehicleDetails && (
                   <div>
                     {/* <h5>Vehicle Name: {selectedVehicleDetails.vehicleName}</h5> */}
-                    <h5>Plate Number: {selectedPlateNumber}</h5>
+                    <h5 style={{ color: "black" }}>Plate Number: {selectedPlateNumber}</h5>
                     {latestCompletedBooking && (
-                    <div>
-                      Latest Booking: <br />
-                      {`Driver: ${latestCompletedBooking.name}, Destination: ${latestCompletedBooking.boundFor}, Time and Date: ${formatTime2(latestCompletedBooking.timeAndDate)}`}
-                    </div>
+                    <div style={{ textAlign: "left" }}>
+                   <strong> LATEST BOOKING </strong><br />
+                   <div style={{ textAlign: "left", color: "black" }}>
+                  <strong>Driver:</strong> {latestCompletedBooking.name}, <strong>Destination:</strong> {latestCompletedBooking.boundFor}, <strong>Time and Date:</strong> {formatTime2(latestCompletedBooking.timeAndDate)}
+                  </div>
+                </div>
                        )}
                     {/* Add your map component here */}
                     {/* Below is just a placeholder */}
                     {locationData && (
                       <div
-                        style={{ height: "250px", backgroundColor: "#f0f0f0" }}
+                        style={{ height: "245px", backgroundColor: "#f0f0f0" }}
                       >
                         {/* Map Component Goes Here */}
                         <iframe
