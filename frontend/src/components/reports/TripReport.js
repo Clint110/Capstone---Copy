@@ -39,7 +39,8 @@ const TripReport = () => {
   const [completedBooking, setCompletedBooking] = useState([]);
   const [selectedPlateNumberStatus, setSelectedPlateNumberStatus] = useState("");
   const [formEditData, setFormEditData] = useState({});
-
+  const [bookingData2, setBookingData2] = useState([]);
+  
   console.log("Complete Edit booking: ", formEditData)
 
   
@@ -390,7 +391,7 @@ const addDriverNames = (driverNames, xPos, yPos) => {
   }
 };
 
-const generateTableData = async (bookingData) => {
+const generateTableData = async (bookingData2) => {
   // Fetch vehicle names based on plate numbers
   const getVehicleName = async (plateNumber) => {
     try {
@@ -422,7 +423,7 @@ const generateTableData = async (bookingData) => {
   };
 
   // Fetch vehicle names for all plate numbers
-  const plateNumbers = bookingData.map((booking) => booking.plateNumber);
+  const plateNumbers = bookingData2.map((booking) => booking.plateNumber);
   const vehicleNamesPromises = plateNumbers.map(async (plateNumber) => {
     return getVehicleName(plateNumber);
   });
@@ -432,7 +433,7 @@ const generateTableData = async (bookingData) => {
   const driverNames = await getDriverNames(plateNumbers);
 
   // Prepare table data
-  const tableData = bookingData.map((booking, index) => {
+  const tableData = bookingData2.map((booking, index) => {
     const plateNumber = booking.plateNumber;
     const vehicleName = vehicleNames[index];
     const drivers = driverNames[index];
@@ -440,7 +441,7 @@ const generateTableData = async (bookingData) => {
     let wosTrips = 0;
     let bosTrips = 0;
     // Count trips based on service type
-    bookingData.forEach((booking) => {
+    bookingData2.forEach((booking) => {
       if (booking.plateNumber === plateNumber) {
         if (booking.destination === "WOS") {
           wosTrips++;
@@ -515,7 +516,7 @@ const generateTableData = async (bookingData) => {
       //TABLE
       // Calculate total number of trips per vehicle
       const tripsPerVehicle = {};
-      bookingData.forEach((booking) => {
+      bookingData2.forEach((booking) => {
         const plateNumber = booking.plateNumber;
         if (!tripsPerVehicle[plateNumber]) {
           tripsPerVehicle[plateNumber] = 0;
@@ -554,7 +555,7 @@ const generateTableData = async (bookingData) => {
         }
     };
       // Prepare data for the table
-      const plateNumbers = bookingData.map((booking) => booking.plateNumber);
+      const plateNumbers = bookingData2.map((booking) => booking.plateNumber);
       const uniquePlateNumbers = new Set(plateNumbers);
       // Initialize total trips
       let totalTrips = 0;
@@ -593,7 +594,7 @@ const generateTableData = async (bookingData) => {
       // );
 
       // Generate table data with multiple driver names
-      const tableData = await generateTableData(bookingData);
+      const tableData = await generateTableData(bookingData2);
 
     //    // Prepare table data
     //    const tableData = await Promise.all(
@@ -1127,18 +1128,18 @@ const generateTableData = async (bookingData) => {
     fetchCompletedBookings();
   }, []);
 
-  // const [bookingData2, setBookingData2] = useState([]);
+  
 
-  // useEffect(() => {
-  //   // Fetch all booking details when the component mounts
-  //   axios.get('http://localhost:3000/allbook')
-  //     .then(response => {
-  //       setBookingData2(response.data);
-  //     })
-  //     .catch(error => {
-  //       console.error('Error fetching booking details:', error);
-  //     });
-  // }, []);
+  useEffect(() => {
+    // Fetch all booking details when the component mounts
+    axios.get('http://localhost:3000/get-all-completedbookings2')
+      .then(response => {
+        setBookingData2(response.data);
+      })
+      .catch(error => {
+        console.error('Error fetching booking details:', error);
+      });
+  }, []);
 
   return (
     <>

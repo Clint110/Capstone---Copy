@@ -103,260 +103,8 @@ function TripReport() {
 
   // const TripReport = () => {
   const [bookingData, setBookingData] = useState([]);
+  const [bookingData2, setBookingData2] = useState([]);
 
-  const generatePDF = async () => {
-    try {
-      const doc = new jsPDF();
-
-      // Track page number
-      let pageNumber = 1;
-
-      // Function to add page number
-
-      let issueNumber = 0; // Initialize issue number
-
-      const addPageNumber = () => {
-        // Position at 15 mm from bottom
-        doc.setFontSize(10);
-        const pageNumberText = `Page ${pageNumber} of ${pageNumber}`;
-        const issueDate = new Date().toLocaleDateString(); // Get current date
-        issueNumber++; // Increment issue number
-        const issueNumberText = `Issue No. ${issueNumber}`; // Issue number text
-
-        // Calculate the width of the text
-        const pageNumberWidth =
-          doc.getStringUnitWidth(pageNumberText) * doc.internal.getFontSize();
-        const issueDateWidth =
-          doc.getStringUnitWidth(issueDate) * doc.internal.getFontSize();
-        const issueNumberWidth =
-          doc.getStringUnitWidth(issueNumberText) * doc.internal.getFontSize();
-
-        // Calculate x-positions for each element
-        const pageXPos = doc.internal.pageSize.width - 20 - pageNumberWidth;
-        const issueDateXPos = pageXPos - 15 - issueDateWidth;
-        const issueNumberXPos = issueDateXPos - 10 - issueNumberWidth;
-
-        // Draw the text
-        doc.text(pageNumberText, pageXPos, doc.internal.pageSize.height - 10);
-        doc.text(
-          `Issue Date: ${issueDate}`,
-          issueDateXPos,
-          doc.internal.pageSize.height - 10
-        );
-        doc.text(
-          issueNumberText,
-          issueNumberXPos,
-          doc.internal.pageSize.height - 10
-        );
-
-        // Adding TOTAL TRIPS row
-        const totalTripsText = "TOTAL TRIPS:";
-        const totalTripsXPos = 15; // Adjust X position as needed
-        const totalTripsYPos = 10; // Adjust Y position as needed
-        doc.setFontSize(12); // Adjust font size
-        doc.setFont(undefined, "bold"); // Set font weight to bold
-        doc.text(totalTripsText, totalTripsXPos, totalTripsYPos);
-        doc.text(totalTrips.toString(), totalTripsXPos + 50, totalTripsYPos); // Adjust X position accordingly
-      };
-
-      // Function to add a new page with a page number
-      const addPageWithNumber = () => {
-        if (pageNumber > 1) {
-          // Add new page except for the first page
-          doc.addPage();
-        }
-
-        // Add page number
-        addPageNumber();
-      };
-
-      // Add a page with the page number
-      addPageWithNumber();
-
-      doc.setFontSize(10); // Adjust font size here
-      doc.text("Fortich St. Malaybalay City, Bukidnon", 77, 30);
-
-      doc.addImage(logo, "PNG", 30, 15, 20, 18);
-      doc.addImage(otherLogo, "PNG", 157, 15, 20, 18);
-
-      let yPos = 140;
-      doc.setFontSize(12); // Adjust font size here
-      doc.text("Prepared by:", 15, yPos);
-      yPos += 10; // Adjust margin as needed
-
-      let yPos1 = 180;
-      const leftMarginVerifiedBy = 10; // Adjust the left margin for "Verified by:" as needed
-      doc.setFontSize(12); // Adjust font size here
-      doc.text("Verified by:", 15 + leftMarginVerifiedBy, yPos1); // Adjusted x-coordinate
-      yPos1 += 10; // Adjust margin as needed
-
-      let yPos2 = 180;
-      const leftMarginNotedBy = 130; // Adjust the left margin for "Verified by:" as needed
-      doc.setFontSize(12); // Adjust font size here
-      doc.text("Noted by:", 15 + leftMarginNotedBy, yPos2); // Adjusted x-coordinate
-      yPos1 += 10; // Adjust margin as needed
-
-      doc.setFontSize(14); // Adjust font size here
-      doc.text("NUMBER OF TRIP PER VEHICLE", 68, 60);
-
-      doc.setFontSize(11); // Adjust font size here
-      doc.text("Administrative Aide III", 25, 158);
-
-      doc.setFontSize(11); // Adjust font size here
-      doc.text(
-        "Supervisor,Transportation Service (Motorpool Section)",
-        22,
-        200
-      );
-
-      doc.setFontSize(11); // Adjust font size here
-      doc.text("Head, GSU", 160, 200);
-
-      doc.setFontSize(14); // Adjust font size here
-      doc.setFont(undefined, "bold"); // Set font weight to bold
-      doc.text("Month of April 2024", 85, 67);
-
-      doc.setFontSize(12); // Adjust font size here
-      doc.text("SNIFFY L. TIMONES", 25, 153);
-      const textWidth = doc.getStringUnitWidth("SNIFFY L. TIMONES") * 4.5; // Adjust 12 to the font size used
-      const startX = 24; // Adjust as needed
-      const startY = 152 + 1; // Adjust to position the underline below the text
-      doc.line(startX, startY, startX + textWidth, startY); // Draw a line below the text
-
-      const topMargin = 10; // Adjust the top margin as needed
-      const leftMargin = 25; // Adjust the left margin as needed
-      doc.setFontSize(12); // Adjust font size here
-      const text = "ERIC L. GULTIANO";
-      const textWidth3 = doc.getStringUnitWidth(text) * 4.5; // Adjust 12 to the font size used
-      const startX3 = 24 + leftMargin; // Adjust as needed
-      const startY3 = 185 + topMargin; // Adjust to position the text below the top margin
-      doc.text(text, 25 + leftMargin, 185 + topMargin); // Adjusted y-coordinate for the text
-      doc.line(startX3, startY3, startX3 + textWidth3, startY3); // Adjusted start and end positions for the line
-
-      const topMarginNew = 10; // Adjust the top margin as needed for the new copy
-      const leftMarginNew = 120; // Adjust the left margin as needed for the new copy
-      doc.setFontSize(12); // Adjust font size here for the new copy
-      const textNew = "KRISTINE FIVI O. GEWAN";
-      const textWidthNew = doc.getStringUnitWidth(textNew) * 4.5; // Adjust 12 to the font size used for the new copy
-      const startXNew = 24 + leftMarginNew; // Adjust as needed for the new copy
-      const startYNew = 185 + topMarginNew; // Adjust to position the text below the top margin for the new copy
-      doc.text(textNew, 25 + leftMarginNew, 185 + topMarginNew); // Adjusted y-coordinate for the text for the new copy
-      doc.line(startXNew, startYNew, startXNew + textWidthNew, startYNew); // Adjusted start and end positions for the line for the new copy
-
-      doc.setFontSize(12); // Adjust font size here
-      doc.text("GSU - Motorpool Section", 83, 45);
-
-      doc.setFont("times"); // Set font to Times New Roman
-      doc.setFontSize(17); // doc.setFont('helvetica', 'bold'); // Set font to bold
-      doc.text("BUKIDNON STATE UNIVERSITY", 57, 25);
-
-
-      // Calculate total number of trips per vehicle
-      const tripsPerVehicle = {};
-      bookingData.forEach((booking) => {
-        const plateNumber = booking.plateNumber;
-        if (!tripsPerVehicle[plateNumber]) {
-          tripsPerVehicle[plateNumber] = 0;
-        }
-        tripsPerVehicle[plateNumber]++;
-      });
-
-      // Fetch vehicle names based on plate numbers
-      const getVehicleName = async (plateNumber) => {
-        try {
-          const response = await axios.get(
-            `http://localhost:3000/vehicle/details/${plateNumber}`
-          );
-          return response.data.vehicle.vehicleName || "Unknown";
-        } catch (error) {
-          console.error("Error fetching vehicle name:", error);
-          return "Unknown";
-        }
-      };
-
-      // Prepare data for the table
-      const plateNumbers = bookingData.map((booking) => booking.plateNumber);
-      const uniquePlateNumbers = new Set(plateNumbers);
-      // Initialize total trips
-      let totalTrips = 0;
-      // Inside your tableData mapping function
-
-      const tableData = await Promise.all(
-        Array.from(uniquePlateNumbers).map(async (plateNumber) => {
-          const vehicleName = await getVehicleName(plateNumber);
-          let wosTrips = 0;
-          let bosTrips = 0;
-
-          // Count trips based on service type
-          bookingData.forEach((booking) => {
-            if (booking.plateNumber === plateNumber) {
-              if (booking.destination === "WOS") {
-                wosTrips++;
-              } else if (booking.destination === "BOS") {
-                bosTrips++;
-              }
-            }
-          });
-
-          // Increment total trips
-          totalTrips += wosTrips + bosTrips;
-
-          return [plateNumber, vehicleName, wosTrips, bosTrips];
-        })
-      );
-
-      // Add a row for total trips
-      tableData.push(["TOTAL TRIPS:", totalTrips]);
-      ///here taman
-      doc.autoTable({
-        startY: 78,
-        head: [
-          [
-            { content: "Plate Number", styles: { fontStyle: "bold" } },
-            { content: "Vehicle", styles: { fontStyle: "bold" } },
-            // { content: "TOTAL NO. OF TRIP", styles: { fontStyle: "bold" } },
-            { content: "WOS", styles: { fontStyle: "bold" } },
-            { content: "BOS", styles: { fontStyle: "bold" } },
-          ],
-        ],
-        body: tableData,
-
-        headStyles: {
-          fillColor: [255, 255, 255], // White background for header
-          textColor: [0, 0, 0], // Black text color for header
-          lineColor: [0, 0, 0], // Set header cell border color
-          lineWidth: 0.2, // Set header cell border width
-          halign: "center", // Center align the header content horizontally
-          fontSize: 12, // Adjust font size of the header
-          fontStyle: "arialnarrow", // Set font style to Arial Narrow
-        },
-        bodyStyles: {
-          fillColor: false, // Remove background color for body cells
-          // fontStyle: 'bold',
-          fontSize: 11,
-          textColor: [0, 0, 0], // Black text color for body
-          lineColor: [0, 0, 0], // Set body cell border color
-          lineWidth: 0.2, // Set body cell border width
-        },
-        tableLineWidth: 0.2, // Set table border width
-        tableLineColor: [0, 0, 0], // Set table border color
-        margin: { top: 0 }, // Adjust table margin if needed
-      });
-
-      // Convert the PDF content into a data URL
-      const dataUri = doc.output("datauristring");
-
-      // Create a new HTML file with the PDF content
-      const htmlContent = `<html><head><title>Monthly Trip Report</title></head><body><iframe width="100%" height="100%" src="${dataUri}"></iframe></body></html>`;
-      const blob = new Blob([htmlContent], { type: "text/html" });
-      const url = URL.createObjectURL(blob);
-
-      // Open the new HTML file in a new tab
-      window.open(url, "_blank");
-    } catch (error) {
-      console.error("Error generating PDF:", error);
-    }
-  };
 
   const handleGenerateReport = () => {
     try {
@@ -428,6 +176,453 @@ function TripReport() {
     }
   };
 
+
+  const generatePDF = async () => {
+    try {
+      const doc = new jsPDF();
+      //FOOTER
+      // Track page number
+      let pageNumber = 1;
+
+      // Function to add page number
+
+      let issueNumber = 0; // Initialize issue number
+
+      const addPageNumber = () => {
+        // Position at 15 mm from bottom
+        doc.setFontSize(10);
+        const pageNumberText = `Page ${pageNumber} of ${pageNumber}`;
+        const issueDate = new Date().toLocaleDateString(); // Get current date
+        issueNumber++; // Increment issue number
+        const issueNumberText = `Issue No. ${issueNumber}`; // Issue number text
+
+        // Calculate the width of the text
+        const pageNumberWidth =
+          doc.getStringUnitWidth(pageNumberText) * doc.internal.getFontSize();
+        const issueDateWidth =
+          doc.getStringUnitWidth(issueDate) * doc.internal.getFontSize();
+        const issueNumberWidth =
+          doc.getStringUnitWidth(issueNumberText) * doc.internal.getFontSize();
+
+        // Calculate x-positions for each element
+        const pageXPos = doc.internal.pageSize.width - 20 - pageNumberWidth;
+        const issueDateXPos = pageXPos - 15 - issueDateWidth;
+        const issueNumberXPos = issueDateXPos - 10 - issueNumberWidth;
+
+        // Draw the text
+        doc.text(pageNumberText, pageXPos, doc.internal.pageSize.height - 10);
+        doc.text(
+          `Issue Date: ${issueDate}`,
+          issueDateXPos,
+          doc.internal.pageSize.height - 10
+        );
+        doc.text(
+          issueNumberText,
+          issueNumberXPos,
+          doc.internal.pageSize.height - 10
+        );
+      };
+
+      // Function to add a new page with a page number
+      const addPageWithNumber = () => {
+        if (pageNumber > 1) {
+          // Add new page except for the first page
+          doc.addPage();
+        }
+
+        // Add page number
+        addPageNumber();
+      };
+
+      // Add a page with the page number
+      addPageWithNumber();
+
+      // Header content
+      doc.setFontSize(10);
+      doc.text("Fortich St. Malaybalay City, Bukidnon 8700", 74, 30);
+      doc.addImage(logo, "PNG", 30, 15, 20, 18);
+      doc.addImage(otherLogo, "PNG", 157, 15, 20, 18);
+
+      const currentDate = new Date();
+      const currentMonth = currentDate.toLocaleString('default', { month: 'long' });
+      const currentYear = currentDate.getFullYear();
+      doc.setFontSize(13);
+      doc.text(
+        `NUMBER OF TRIP PER VEHICLE FOR THE MONTH OF ${currentMonth.toUpperCase()} ${currentYear}`,
+          34,
+          55
+      );
+
+      doc.setFontSize(13);
+      doc.text(
+        `Within and Beyond Official Station`,
+          73,
+          62
+      );
+      
+      doc.setFont(undefined, "bold");
+      doc.setFontSize(12);
+      doc.text("GSU - Motorpool Section", 80, 45);
+
+      doc.setFont("times");
+      doc.setFontSize(17);
+      doc.text("BUKIDNON STATE UNIVERSITY", 58, 25);
+
+      //BELOW THE TABLE
+      let yPos = 45;
+
+      // Function to add driver names with proper formatting
+const addDriverNames = (driverNames, xPos, yPos) => {
+  const maxLineLength = 40; // Maximum characters per line
+  let currentLine = ''; // Initialize current line
+
+  // Iterate over driver names
+  driverNames.forEach((driverName, index) => {
+    if (typeof driverName === 'string' && driverName.trim() !== '') {
+      // Check if driver name is a non-empty string
+      if ((currentLine + driverName).length > maxLineLength) {
+        // If adding the driver name exceeds the maximum line length, add a new line
+        doc.text(currentLine, xPos, yPos);
+        yPos += 5; // Increment y-position
+        currentLine = ''; // Reset current line
+      }
+      currentLine += `${driverName}, `; // Add driver name to current line
+    }
+  });
+
+  // Add remaining driver names
+  if (currentLine.trim() !== '') {
+    doc.text(currentLine, xPos, yPos);
+  }
+};
+
+const generateTableData = async (bookingData2) => {
+  // Fetch vehicle names based on plate numbers
+  const getVehicleName = async (plateNumber) => {
+    try {
+      const response = await axios.get(`http://localhost:3000/vehicle/details/${plateNumber}`);
+      return response.data.vehicle.vehicleName || "Unknown";
+    } catch (error) {
+      console.error("Error fetching vehicle name:", error);
+      return "Unknown";
+    }
+  };
+
+  // Fetch driver names based on plate numbers
+  const getDriverNames = async (plateNumbers) => {
+    const driverNamesPromises = plateNumbers.map(async (plateNumber) => {
+      try {
+        const response = await axios.get(`http://localhost:3000/driver/details/${plateNumber}`);
+        if (response.data.success && response.data.driverNames && response.data.driverNames.length > 0) {
+          return response.data.driverNames;
+        } else {
+          console.warn(`Driver names not found for plate number ${plateNumber}`);
+          return ['Unknown']; // Return an array with 'Unknown' if driver names not found
+        }
+      } catch (error) {
+        console.error(`Error fetching driver names for plate number ${plateNumber}: ${error.message}`);
+        return ['Unknown']; // Return an array with 'Unknown' if there's an error fetching driver names
+      }
+    });
+    return await Promise.all(driverNamesPromises);
+  };
+
+  // Fetch vehicle names for all plate numbers
+  const plateNumbers = bookingData2.map((booking) => booking.plateNumber);
+  const vehicleNamesPromises = plateNumbers.map(async (plateNumber) => {
+    return getVehicleName(plateNumber);
+  });
+  const vehicleNames = await Promise.all(vehicleNamesPromises);
+
+  // Fetch driver names for all plate numbers
+  const driverNames = await getDriverNames(plateNumbers);
+
+  // Prepare table data
+  const tableData = bookingData2.map((booking, index) => {
+    const plateNumber = booking.plateNumber;
+    const vehicleName = vehicleNames[index];
+    const drivers = driverNames[index];
+    const driverNamesFormatted = Array.isArray(drivers) ? drivers.join(', ') : drivers;
+    let wosTrips = 0;
+    let bosTrips = 0;
+    // Count trips based on service type
+    bookingData2.forEach((booking) => {
+      if (booking.plateNumber === plateNumber) {
+        if (booking.destination === "WOS") {
+          wosTrips++;
+        } else if (booking.destination === "BOS") {
+          bosTrips++;
+        }
+      }
+    });
+    return [plateNumber, driverNamesFormatted, vehicleName, wosTrips, bosTrips];
+  });
+
+  return tableData;
+};
+
+      // doc.text("Prepared by:", 15, textYPos);
+      doc.setFontSize(12); // Adjust font size here
+      doc.text("Prepared by:", 15, yPos + 130);
+      yPos += 15; // Adjust margin as needed
+
+      doc.setFontSize(11); // Adjust font size here
+      doc.text("Administrative Aide III", 25, 195);
+      let yPos1 = 210;
+      const leftMarginVerifiedBy = 10; // Adjust the left margin for "Verified by:" as needed
+      doc.setFontSize(12); // Adjust font size here
+      doc.text("Verified by:", 15 + leftMarginVerifiedBy, yPos1); // Adjusted x-coordinate
+
+      yPos1 += 10; // Adjust margin as needed
+      doc.setFontSize(11); // Adjust font size here
+      doc.text(
+        "Supervisor,Transportation Service (Motorpool Section)",
+        22,
+        230
+      );
+
+      let yPos2 = 210;
+      const leftMarginNotedBy = 130; // Adjust the left margin for "Verified by:" as needed
+      doc.setFontSize(12); // Adjust font size here
+      doc.text("Noted by:", 15 + leftMarginNotedBy, yPos2); // Adjusted x-coordinate
+      yPos1 += 10; // Adjust margin as needed
+
+      doc.setFontSize(11); // Adjust font size here
+      doc.text("Head, GSU", 160, 230);
+
+      doc.setFontSize(12); // Adjust font size here
+      doc.text("SNIFFY L. TIMONES", 25, 189);
+      const textWidth = doc.getStringUnitWidth("SNIFFY L. TIMONES") * 4.5; // Adjust 12 to the font size used
+      const startX = 24; // Adjust as needed
+      const startY = 190 + 1; // Adjust to position the underline below the text
+      doc.line(startX, startY, startX + textWidth, startY); // Draw a line below the text
+
+      const topMargin = 10; // Adjust the top margin as needed
+      const leftMargin = 25; // Adjust the left margin as needed
+      doc.setFontSize(12); // Adjust font size here
+      const text = "ERIC L. GULTIANO";
+      const textWidth3 = doc.getStringUnitWidth(text) * 4.5; // Adjust 12 to the font size used
+      const startX3 = 24 + leftMargin; // Adjust as needed
+      const startY3 = 215 + topMargin; // Adjust to position the text below the top margin
+      doc.text(text, 25 + leftMargin, 213 + topMargin); // Adjusted y-coordinate for the text
+      doc.line(startX3, startY3, startX3 + textWidth3, startY3); // Adjusted start and end positions for the line
+
+      const topMarginNew = 10; // Adjust the top margin as needed for the new copy
+      const leftMarginNew = 120; // Adjust the left margin as needed for the new copy
+      doc.setFontSize(12); // Adjust font size here for the new copy
+      const textNew = "KRISTINE FIVI O. GEWAN";
+      const textWidthNew = doc.getStringUnitWidth(textNew) * 4.5; // Adjust 12 to the font size used for the new copy
+      const startXNew = 24 + leftMarginNew; // Adjust as needed for the new copy
+      const startYNew = 215 + topMarginNew; // Adjust to position the text below the top margin for the new copy
+      doc.text(textNew, 25 + leftMarginNew, 213 + topMarginNew); // Adjusted y-coordinate for the text for the new copy
+      doc.line(startXNew, startYNew, startXNew + textWidthNew, startYNew); // Adjusted start and end positions for the line for the new copy
+      
+      //Brendyl Ani
+      //TABLE
+      // Calculate total number of trips per vehicle
+      const tripsPerVehicle = {};
+      bookingData2.forEach((booking) => {
+        const plateNumber = booking.plateNumber;
+        if (!tripsPerVehicle[plateNumber]) {
+          tripsPerVehicle[plateNumber] = 0;
+        }
+        tripsPerVehicle[plateNumber]++;
+      });
+
+      // Fetch vehicle names based on plate numbers
+      const getVehicleName = async (plateNumber) => {
+        try {
+          const response = await axios.get(
+            `http://localhost:3000/vehicle/details/${plateNumber}`
+          );
+          return response.data.vehicle.vehicleName || "Unknown";
+        } catch (error) {
+          console.error("Error fetching vehicle name:", error);
+          return "Unknown";
+        }
+      };
+
+      // Fetch driver names based on plate numbers
+      const getDriverName = async (plateNumber) => {
+        try {
+            const response = await axios.get(`http://localhost:3000/driver/details/${plateNumber}`);
+            console.log("Response from backend:", response.data);
+            if (response.data.success && response.data.driverNames && response.data.driverNames.length > 0) {
+                // Extract the first driver name from the array of driver names
+                return response.data.driverNames[0];
+            } else {
+                console.error("Driver name not found in response:", response.data);
+                return "Unknown";
+            }
+        } catch (error) {
+            console.error("Error fetching driver name:", error);
+            return "Unknown";
+        }
+    };
+      // Prepare data for the table
+      const plateNumbers = bookingData2.map((booking) => booking.plateNumber);
+      const uniquePlateNumbers = new Set(plateNumbers);
+      // Initialize total trips
+      let totalTrips = 0;
+      // Inside your tableData mapping function
+
+      // Fetch driver names for all plate numbers concurrently
+      const driverNamesPromises = Array.from(uniquePlateNumbers).map(async (plateNumber) => {
+        return getDriverName(plateNumber);
+    });
+    
+    const driverNames = await Promise.all(driverNamesPromises);
+    console.log("Driver Names:", driverNames);
+
+      // const tableData = await Promise.all(
+      //   Array.from(uniquePlateNumbers).map(async (plateNumber) => {
+      //     const vehicleName = await getVehicleName(plateNumber);
+      //     const driverName = await getDriverName(plateNumber);
+      //     let wosTrips = 0;
+      //     let bosTrips = 0;
+
+      //     // Count trips based on service type
+      //     bookingData.forEach((booking) => {
+      //       if (booking.plateNumber === plateNumber) {
+      //         if (booking.destination === "WOS") {
+      //           wosTrips++;
+      //         } else if (booking.destination === "BOS") {
+      //           bosTrips++;
+      //         }
+      //       }
+      //     });
+      //     // Increment total trips
+      //     totalTrips += wosTrips + bosTrips;
+
+      //     return [plateNumber, driverName, vehicleName, wosTrips, bosTrips];
+      //   })
+      // );
+
+      // Generate table data with multiple driver names
+      const tableData = await generateTableData(bookingData2);
+
+    //    // Prepare table data
+    //    const tableData = await Promise.all(
+    //     Array.from(uniquePlateNumbers).map(async (plateNumber, index) => {
+    //         const vehicleName = await getVehicleName(plateNumber);
+    //         const driverName = driverNames[index];
+    //         console.log(`Plate Number: ${plateNumber}, Driver Name: ${driverName}`);
+    //         let wosTrips = 0;
+    //         let bosTrips = 0;
+    
+    //         // Count trips based on service type
+    //         bookingData.forEach((booking) => {
+    //             if (booking.plateNumber === plateNumber) {
+    //                 if (booking.destination === "WOS") {
+    //                     wosTrips++;
+    //                 } else if (booking.destination === "BOS") {
+    //                     bosTrips++;
+    //                 }
+    //             }
+    //         });
+    //         // Increment total trips
+    //         totalTrips += wosTrips + bosTrips;
+    
+    //         return [plateNumber, driverName, vehicleName, wosTrips, bosTrips];
+    //     })
+    // );
+
+    //   // Add a row for total trips
+    //   tableData.push(["TOTAL TRIPS:", totalTrips]);
+    
+      ///here taman
+      // doc.autoTable({
+      //   // startY: 78,
+      //   startY: yPos + 10,
+      //   head: [
+      //     [
+      //       { content: "Plate Number", styles: { fontStyle: "bold" } },
+      //       { content: "Driver", styles: { fontStyle: "bold" } },
+      //       { content: "Vehicle", styles: { fontStyle: "bold" } },
+      //       // { content: "TOTAL NO. OF TRIP", styles: { fontStyle: "bold" } },
+      //       {
+      //         content: "Within Official Station",
+      //         styles: { fontStyle: "bold" },
+      //       },
+      //       {
+      //         content: "Beyond Official Station",
+      //         styles: { fontStyle: "bold" },
+      //       },
+      //     ],
+      //   ],
+      //   body: tableData,
+      // Draw table with multiple driver names
+      doc.autoTable({
+        startY: yPos + 10,
+        head: [
+          [
+            { content: "Plate Number", styles: { fontStyle: "bold" } },
+            { content: "Driver", styles: { fontStyle: "bold" } },
+            { content: "Vehicle", styles: { fontStyle: "bold" } },
+            {
+              content: "Within Official Station",
+              styles: { fontStyle: "bold" },
+            },
+            {
+              content: "Beyond Official Station",
+              styles: { fontStyle: "bold" },
+            },
+          ],
+        ],
+        body: tableData.map(([plateNumber, driverNames, vehicleName, wosTrips, bosTrips]) => [
+          plateNumber,
+          Array.isArray(driverNames) ? driverNames.join(', ') : driverNames, // Join multiple driver names with comma
+          vehicleName,
+          wosTrips,
+          bosTrips
+        ]),
+
+        headStyles: {
+          fillColor: [255, 255, 255], // White background for header
+          textColor: [0, 0, 0], // Black text color for header
+          lineColor: [0, 0, 0], // Set header cell border color
+          lineWidth: 0.2, // Set header cell border width
+          halign: "center", // Center align the header content horizontally
+          fontSize: 12, // Adjust font size of the header
+          fontStyle: "arialnarrow", // Set font style to Arial Narrow
+        },
+        bodyStyles: {
+          fillColor: false, // Remove background color for body cells
+          // fontStyle: 'bold',
+          fontSize: 11,
+          textColor: [0, 0, 0], // Black text color for body
+          lineColor: [0, 0, 0], // Set body cell border color
+          lineWidth: 0.2, // Set body cell border width
+        },
+        tableLineWidth: 0.2, // Set table border width
+        tableLineColor: [0, 0, 0], // Set table border color
+        margin: { top: 0 }, // Adjust table margin if needed
+        didDrawPage: function (data) {
+          const tableHeight = doc.autoTable.previous.finalY;
+          const bottomMargin = 20; // Adjust the bottom margin as needed
+          const pageHeight = doc.internal.pageSize.height;
+          if (tableHeight + bottomMargin >= pageHeight) {
+            doc.addPage();
+          }
+        },
+      });
+
+      
+      // Convert the PDF content into a data URL
+      const dataUri = doc.output("datauristring");
+
+      // Create a new HTML file with the PDF content
+      const htmlContent = `<html><head><title>Monthly Trip Report</title></head><body><iframe width="100%" height="100%" src="${dataUri}"></iframe></body></html>`;
+      const blob = new Blob([htmlContent], { type: "text/html" });
+      const url = URL.createObjectURL(blob);
+
+      // Open the new HTML file in a new tab
+      window.open(url, "_blank");
+    } catch (error) {
+      console.error("Error generating PDF:", error);
+    }
+  };
+
   useEffect(() => {
     // Fetch booking data from the server
     const fetchBookingData = async () => {
@@ -450,6 +645,17 @@ function TripReport() {
     // Call the fetch function
     fetchBookingData();
   }, [showArchived]);
+
+  useEffect(() => {
+    // Fetch all booking details when the component mounts
+    axios.get('http://localhost:3000/get-all-completedbookings2')
+      .then(response => {
+        setBookingData2(response.data);
+      })
+      .catch(error => {
+        console.error('Error fetching booking details:', error);
+      });
+  }, []);
 
 
   const handleEditOpen = (booking) => {
@@ -1137,13 +1343,13 @@ function TripReport() {
                         </>
                       ) : !completedBookings.find(completedBooking => completedBooking.bookingID === booking._id) && ( // Check if booking is not completed
                       <button
-                           type="button"
-                               className="btn btn-sm"
-                           onClick={() => handleEditOpen(booking)}
-                             style={{ backgroundColor: "#1D5D9B", color: "white", marginLeft: "-40px" }}
-                                   >
-                         Edit
-                                  </button>
+                        type="button"
+                        className="btn btn-sm"
+                        onClick={() => handleEditOpen(booking)}
+                        style={{ backgroundColor: "#1D5D9B", color: "white" }} // Change background color to blue
+                      >
+                        Edit
+                      </button>
                       )}
                       {/* &nbsp;
                     <button type="button" class="btn btn-danger btn-sm">
@@ -1153,31 +1359,30 @@ function TripReport() {
                       {showArchived && (
                         // Render only the "Activate" button when showing archived data
                         <button
-                        className="action-btn activate-btn"
-                        onClick={() => {
-                            const confirmed = window.confirm("Are you sure you want to activate this data?");
-                            if (confirmed) {
-                                handleActivateBooking(booking._id);
-                            }
-                        }}
-                        style={{ backgroundColor: '#b90000', color: 'white', marginRight: "-50px"  }}
-                    >
-                        Activate
-                    </button>
+                            className="action-btn activate-btn"
+                            onClick={() => {
+                                const confirmed = window.confirm("Are you sure you want to activate this data?");
+                                if (confirmed) {
+                                    handleActivateBooking(booking._id);
+                                }
+                            }}
+                        >
+                            Activate
+                        </button>
                     )}
                     {!showArchived && (
-                           <button
-                           type="button"
-                            className="btn btn-sm"
-                            onClick={() => {
-                         if (window.confirm("Are you sure you want to archive this data?")) {
-                            handleArchiveBooking(booking._id);
-                              }
-                                            }}
-                                     style={{ backgroundColor: '#b90000', color: 'white', marginRight: "-50px"  }}
-                                               >
-                                 Archive
-                           </button>
+                          <button
+                              type="button"
+                              className="btn btn-sm"
+                              onClick={() => {
+                                  if (window.confirm("Are you sure you want to archive this data?")) {
+                                      handleArchiveBooking(booking._id);
+                                  }
+                              }}
+                              style={{ backgroundColor: '#b90000', color: 'white' }}
+                          >
+                              Archive
+                          </button>
                       )}
                       {/* <button
                       type="button"
