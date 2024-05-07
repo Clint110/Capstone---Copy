@@ -1345,7 +1345,7 @@ const generateTableData = async (bookingData) => {
                     handleArchiveBooking(booking._id);
                       }
                                     }}
-                             style={{ backgroundColor: '#b90000', color: 'white'  }}
+                             style={{ backgroundColor: '#b90000', color: 'white', marginRight: "-50px"  }}
                                        >
                          Archive
     </button>
