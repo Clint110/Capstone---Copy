@@ -105,7 +105,77 @@ function TripReport() {
   const [bookingData, setBookingData] = useState([]);
   const [bookingData2, setBookingData2] = useState([]);
 
-  
+
+  const handleGenerateReport = () => {
+    try {
+      const doc = new jsPDF();
+
+      doc.addImage(logo, "PNG", 50, 15, 20, 18);
+
+      // doc.setFont('helvetica', 'bold'); // Set font to bold
+      doc.text("Bukidnon State University", 75, 25);
+
+      doc.setFontSize(10); // Adjust font size here
+      doc.text("Malaybalay City, Bukidnon", 86, 32);
+
+      doc.setFontSize(12); // Adjust font size here
+      doc.text("GSU - Motorpool Section", 83, 50);
+
+      doc.setFontSize(14); // Adjust font size here
+      doc.text("NUMBER OF TRIP VEHICLE FOR THE MONTH OF APRIL 2024", 35, 60);
+
+      doc.setFontSize(13); // Adjust font size here
+      doc.text("Within and Beyond Official Station", 72, 67);
+
+      const tableData = bookingData.map((booking, index) => [
+        booking.plateNumber,
+        booking.boundFor,
+        booking.destination,
+        formatDateTime(booking.timeForBound),
+        formatDateTime(booking.returnDate),
+      ]);
+
+      doc.autoTable({
+        startY: 87,
+        head: [
+          [
+            "Plate Number",
+            "Bound For",
+            "Destination",
+            "Time For Bound",
+            "Return Date",
+          ],
+        ],
+        body: tableData,
+        headStyles: {
+          fillColor: [255, 255, 255], // White background for header
+          textColor: [0, 0, 0], // Black text color for header
+          lineColor: [0, 0, 0], // Set header cell border color
+          lineWidth: 0.2, // Set header cell border width
+          halign: "center", // Center align the header content horizontally
+          fontSize: 11, // Adjust font size of the header
+          fontStyle: "arialnarrow", // Set font style to Arial Narrow
+        },
+        bodyStyles: {
+          fillColor: false, // Remove background color for body cells
+          // fontStyle: 'bold',
+          // fontSize: 11,
+          textColor: [0, 0, 0], // Black text color for body
+          lineColor: [0, 0, 0], // Set body cell border color
+          lineWidth: 0.2, // Set body cell border width
+        },
+        tableLineWidth: 0.2, // Set table border width
+        tableLineColor: [0, 0, 0], // Set table border color
+        margin: { top: 0 }, // Adjust table margin if needed
+      });
+
+      // Save the PDF
+      doc.save("Monthly Trip Report.pdf");
+    } catch (error) {
+      console.error("Error generating PDF:", error);
+    }
+  };
+
 
   const generatePDF = async () => {
     try {
@@ -548,76 +618,6 @@ const generateTableData = async (bookingData2) => {
 
       // Open the new HTML file in a new tab
       window.open(url, "_blank");
-    } catch (error) {
-      console.error("Error generating PDF:", error);
-    }
-  };
-
-  const handleGenerateReport = () => {
-    try {
-      const doc = new jsPDF();
-
-      doc.addImage(logo, "PNG", 50, 15, 20, 18);
-
-      // doc.setFont('helvetica', 'bold'); // Set font to bold
-      doc.text("Bukidnon State University", 75, 25);
-
-      doc.setFontSize(10); // Adjust font size here
-      doc.text("Malaybalay City, Bukidnon", 86, 32);
-
-      doc.setFontSize(12); // Adjust font size here
-      doc.text("GSU - Motorpool Section", 83, 50);
-
-      doc.setFontSize(14); // Adjust font size here
-      doc.text("NUMBER OF TRIP VEHICLE FOR THE MONTH OF APRIL 2024", 35, 60);
-
-      doc.setFontSize(13); // Adjust font size here
-      doc.text("Within and Beyond Official Station", 72, 67);
-
-      const tableData = bookingData.map((booking, index) => [
-        booking.plateNumber,
-        booking.boundFor,
-        booking.destination,
-        formatDateTime(booking.timeForBound),
-        formatDateTime(booking.returnDate),
-      ]);
-
-      doc.autoTable({
-        startY: 87,
-        head: [
-          [
-            "Plate Number",
-            "Bound For",
-            "Destination",
-            "Time For Bound",
-            "Return Date",
-          ],
-        ],
-        body: tableData,
-        headStyles: {
-          fillColor: [255, 255, 255], // White background for header
-          textColor: [0, 0, 0], // Black text color for header
-          lineColor: [0, 0, 0], // Set header cell border color
-          lineWidth: 0.2, // Set header cell border width
-          halign: "center", // Center align the header content horizontally
-          fontSize: 11, // Adjust font size of the header
-          fontStyle: "arialnarrow", // Set font style to Arial Narrow
-        },
-        bodyStyles: {
-          fillColor: false, // Remove background color for body cells
-          // fontStyle: 'bold',
-          // fontSize: 11,
-          textColor: [0, 0, 0], // Black text color for body
-          lineColor: [0, 0, 0], // Set body cell border color
-          lineWidth: 0.2, // Set body cell border width
-        },
-        tableLineWidth: 0.2, // Set table border width
-        tableLineColor: [0, 0, 0], // Set table border color
-        margin: { top: 0 }, // Adjust table margin if needed
-      });
-
-      // Save the PDF
-      doc.save("Monthly Trip Report.pdf");
     } catch (error) {
       console.error("Error generating PDF:", error);
     }
@@ -1213,11 +1213,6 @@ const generateTableData = async (bookingData2) => {
     <div className='report-wrapper'> */}
 
         <div className="TableReportContainer">
-        <div>
-          <button onClick={generatePDF} className="generate-button">
-            Generate Report
-          </button>
-        </div>
           <table className="reportTable">
             <thead>
               <tr>
@@ -1348,13 +1343,13 @@ const generateTableData = async (bookingData2) => {
                         </>
                       ) : !completedBookings.find(completedBooking => completedBooking.bookingID === booking._id) && ( // Check if booking is not completed
                       <button
-                           type="button"
-                               className="btn btn-sm"
-                           onClick={() => handleEditOpen(booking)}
-                             style={{ backgroundColor: "#1D5D9B", color: "white", marginLeft: "-40px" }}
-                                   >
-                         Edit
-                      </button>
+                      type="button"
+                          className="btn btn-sm"
+                      onClick={() => handleEditOpen(booking)}
+                        style={{ backgroundColor: "#1D5D9B", color: "white", marginLeft: "-40px" }}
+                              >
+                    Edit
+                    </button>
                       )}
                       {/* &nbsp;
                     <button type="button" class="btn btn-danger btn-sm">
@@ -1388,7 +1383,7 @@ const generateTableData = async (bookingData2) => {
                                     style={{ backgroundColor: '#b90000', color: 'white', marginRight: "-50px"  }}
                                               >
                                 Archive
-           </button>
+                          </button>
                       )}
                       {/* <button
                       type="button"
