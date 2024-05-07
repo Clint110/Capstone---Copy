@@ -69,7 +69,9 @@ function Booking() {
   const [suggestions, setSuggestions] = useState([]);
   
   // Sample suggestion data
-  const sampleSuggestions = ["COT", "COB", "CON", "COP", "COR"];
+  const sampleSuggestions = ["COT", "COB", "CON", "Alumni Relations Unit", "Admission and Testing Unit", "Botanical Gardens and Herbarium", "Bukidnon State University - Baungon Campus", "Bukidnon State University - Cabanglasan Campus", "Bukidnon State University - Damulog Campus", "Bukidnon State University - Impasugong Campus", "Bukidnon State University - Kadingilan Campus",
+   "Bukidnon State University - Kalilangan Campus", "Bukidnon State University - Malitbog Campus", "Bukidnon State University - Medina Campus", "Bukidnon State University - San Fernando Campus", "Bukidnon State University - Talakag Campus", "Bukidnon State University - Talisayan Campus", "Bukidnon Studies Center", "BukSU Hostel", "BukSU Hotel Laboratory", "Business Affairs Unit",
+    "CAS - Community Development Department", "CAS - Economics Department", "CAS - General Education Courses Department", "CAS - Language and Letters Department", "CAS - MA Sociology", "CAS - Mathematics Department", "CAS - National Sciences Department", "CAS - Philosophy Department", "CAS - Sociology and Social Science", ];
 
 
   useEffect(() => {
@@ -526,25 +528,6 @@ function Booking() {
     </div> */}
                       <form id="addbook" onSubmit={handlebookingsub}>
                         {/* <label>
-                          Plate Number
-                          <select
-                            className="bookingInput"
-                            value={selectedPlateNumber}
-                            onChange={handlePlateNumberChange}
-                            required
-                          >
-                            <option value="" disabled>
-                              Select Plate Number
-                            </option>
-                            {plateNumbers.map(({ plateNumber }) => (
-                              <option key={plateNumber} value={plateNumber}>
-                                {plateNumber}
-                              </option>
-                            ))}
-                          </select>
-                          <p>Status: {selectedPlateNumberStatus}</p>
-                        </label> */}
-                        <label>
                           Client Name(Office)
                           <input
                             type="text"
@@ -559,16 +542,25 @@ function Booking() {
                             value={clientName}
                            onChange={handleClientNameChange}
                           />
-                           {suggestions.length > 0 && (
-                                <ul>
-                                  {suggestions.map((suggestion, index) => (
-                                    <li key={index} onClick={() => setClientName(suggestion)}>
-                                      {suggestion}
-                                    </li>
-                                  ))}
-                                </ul>
-                              )}
-                        </label>
+                        </label> */}
+                        <label style={{ position: 'relative' }}>
+                            Client Name(Office)
+                            <input
+                              type="text"
+                              className="bookingInput"
+                              value={clientName}
+                              onChange={handleClientNameChange}
+                            />
+                            {clientName && (
+                              <ul style={{ position: 'absolute', top: '100%', left: 0, zIndex: 999, backgroundColor: '#fff', border: '1px solid #ccc', borderRadius: '4px', padding: '4px 8px', boxShadow: '0 2px 4px rgba(0,0,0,0.1)', listStyleType: 'none', margin: 0, paddingInlineStart: 0 }}>
+                                {suggestions.map((suggestion, index) => (
+                                  <li key={index} onClick={() => setClientName(suggestion)} style={{ paddingLeft: '8px' }}>
+                                    {suggestion}
+                                  </li>
+                                ))}
+                              </ul>
+                            )}
+                          </label>
                         <label>
                           {/* Name of Passengers
                           <input
