@@ -551,15 +551,17 @@ function Booking() {
                               value={clientName}
                               onChange={handleClientNameChange}
                             />
-                            {clientName && (
-                              <ul style={{ position: 'absolute', top: '100%', left: 0, zIndex: 999, backgroundColor: '#fff', border: '1px solid #ccc', borderRadius: '4px', padding: '4px 8px', boxShadow: '0 2px 4px rgba(0,0,0,0.1)', listStyleType: 'none', margin: 0, paddingInlineStart: 0 }}>
-                                {suggestions.map((suggestion, index) => (
-                                  <li key={index} onClick={() => setClientName(suggestion)} style={{ paddingLeft: '8px' }}>
+                           {clientName && (
+                            <ul style={{ position: 'absolute', top: '100%', left: 0, zIndex: 999, backgroundColor: '#fff', border: '1px solid #ccc', borderRadius: '4px', padding: '4px 8px', boxShadow: '0 2px 4px rgba(0,0,0,0.1)', listStyle: 'none', margin: 0, paddingInlineStart: 0 }}>
+                              {suggestions.map((suggestion, index) => (
+                                (clientName.toLowerCase() !== suggestion.toLowerCase()) && (
+                                  <li key={index} onClick={() => setClientName(suggestion)} style={{ paddingLeft: '8px', whiteSpace: 'nowrap' }}>
                                     {suggestion}
                                   </li>
-                                ))}
-                              </ul>
-                            )}
+                                )
+                              ))}
+                            </ul>
+                          )}
                           </label>
                         <label>
                           {/* Name of Passengers
@@ -575,6 +577,7 @@ function Booking() {
                               })
                             }
                           /> */}
+                          <br />
                            Name of Passengers
                            <input
                                   type="text"
