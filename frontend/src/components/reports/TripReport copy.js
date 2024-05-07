@@ -1137,13 +1137,13 @@ function TripReport() {
                         </>
                       ) : !completedBookings.find(completedBooking => completedBooking.bookingID === booking._id) && ( // Check if booking is not completed
                       <button
-                        type="button"
-                        className="btn btn-sm"
-                        onClick={() => handleEditOpen(booking)}
-                        style={{ backgroundColor: "#1D5D9B", color: "white" }} // Change background color to blue
-                      >
-                        Edit
-                      </button>
+                           type="button"
+                               className="btn btn-sm"
+                           onClick={() => handleEditOpen(booking)}
+                             style={{ backgroundColor: "#1D5D9B", color: "white", marginLeft: "-40px" }}
+                                   >
+                         Edit
+                                  </button>
                       )}
                       {/* &nbsp;
                     <button type="button" class="btn btn-danger btn-sm">
@@ -1153,30 +1153,31 @@ function TripReport() {
                       {showArchived && (
                         // Render only the "Activate" button when showing archived data
                         <button
-                            className="action-btn activate-btn"
-                            onClick={() => {
-                                const confirmed = window.confirm("Are you sure you want to activate this data?");
-                                if (confirmed) {
-                                    handleActivateBooking(booking._id);
-                                }
-                            }}
-                        >
-                            Activate
-                        </button>
+                        className="action-btn activate-btn"
+                        onClick={() => {
+                            const confirmed = window.confirm("Are you sure you want to activate this data?");
+                            if (confirmed) {
+                                handleActivateBooking(booking._id);
+                            }
+                        }}
+                        style={{ backgroundColor: '#b90000', color: 'white', marginRight: "-50px"  }}
+                    >
+                        Activate
+                    </button>
                     )}
                     {!showArchived && (
-                          <button
-                              type="button"
-                              className="btn btn-sm"
-                              onClick={() => {
-                                  if (window.confirm("Are you sure you want to archive this data?")) {
-                                      handleArchiveBooking(booking._id);
-                                  }
-                              }}
-                              style={{ backgroundColor: '#b90000', color: 'white' }}
-                          >
-                              Archive
-                          </button>
+                           <button
+                           type="button"
+                            className="btn btn-sm"
+                            onClick={() => {
+                         if (window.confirm("Are you sure you want to archive this data?")) {
+                            handleArchiveBooking(booking._id);
+                              }
+                                            }}
+                                     style={{ backgroundColor: '#b90000', color: 'white', marginRight: "-50px"  }}
+                                               >
+                                 Archive
+                           </button>
                       )}
                       {/* <button
                       type="button"
