@@ -63,12 +63,32 @@ exports.getLatestData = async (req, res) => {
   }
 };
 
+// exports.getDataPlate = async (req, res) => {
+//   // Changed function name
+//   try {
+//     // Fetch all data from the database
+//     const data = await Data.find({}, "plateNumber latitude longitude time"); // Modified query to include all required fields
+//     res.json({ success: true, data });
+//   } catch (error) {
+//     console.error("Error fetching data:", error);
+//     res.status(500).json({ success: false, error: "Internal server error" });
+//   }
+// };
+
 exports.getDataPlate = async (req, res) => {
-  // Changed function name
   try {
-    // Fetch all data from the database
-    const data = await Data.find({}, "plateNumber latitude longitude time"); // Modified query to include all required fields
-    res.json({ success: true, data });
+    const { plateNumber } = req.params; // Get plate number from request parameters
+
+    // Fetch the latest data for the specified plate number
+    const latestData = await Data.findOne({ plateNumber })
+      .sort({ _id: -1 }) // Sort by _id in descending order to get the latest entry
+      .select("plateNumber latitude longitude time"); // Select the required fields
+
+    if (!latestData) {
+      return res.status(404).json({ success: false, error: "Data not found" });
+    }
+
+    res.json({ success: true, data: latestData });
   } catch (error) {
     console.error("Error fetching data:", error);
     res.status(500).json({ success: false, error: "Internal server error" });
@@ -86,14 +106,43 @@ exports.getData2 = async (req, res) => {
   }
 };
 
+// exports.getDataByPlateNumber = async (req, res) => {
+//   try {
+//     const { plateNumber } = req.params;
+
+//     // Find the data in the database by plateNumber
+//     const data = await Data.findOne({ plateNumber });
+
+//     if (!data) {
+//       return res.status(404).json({
+//         success: false,
+//         error: "Data not found for the given plate number",
+//       });
+//     }
+
+//     // Respond with the latitude and longitude data
+//     res.json({
+//       success: true,
+//       latitude: data.latitude,
+//       longitude: data.longitude,
+//     });
+//   } catch (error) {
+//     console.error("Error fetching data by plate number:", error);
+//     res.status(500).json({ success: false, error: "Internal server error" });
+//   }
+// };
+
+
 exports.getDataByPlateNumber = async (req, res) => {
   try {
-    const { plateNumber } = req.params;
+    const { plateNumber } = req.params; // Extract plate number from request parameters
 
-    // Find the data in the database by plateNumber
-    const data = await Data.findOne({ plateNumber });
+    // Find the latest data in the database by plateNumber
+    const latestData = await Data.findOne({ plateNumber })
+      .sort({ _id: -1 }) // Sort by _id in descending order to get the latest entry
+      .select("latitude longitude"); // Select only the required fields
 
-    if (!data) {
+    if (!latestData) {
       return res.status(404).json({
         success: false,
         error: "Data not found for the given plate number",
@@ -103,8 +152,8 @@ exports.getDataByPlateNumber = async (req, res) => {
     // Respond with the latitude and longitude data
     res.json({
       success: true,
-      latitude: data.latitude,
-      longitude: data.longitude,
+      latitude: latestData.latitude,
+      longitude: latestData.longitude,
     });
   } catch (error) {
     console.error("Error fetching data by plate number:", error);
