@@ -91,7 +91,7 @@ function Map() {
      
  
   // Establish connection with Flask SocketIO server
-  const socket = io('http://192.168.1.243:8766'); // Adjust the URL to match your Flask server's IP and port
+  const socket = io('http://192.168.254.102:8766'); // Adjust the URL to match your Flask server's IP and port
 
   // Handle connection
   socket.on('connect', () => {
@@ -108,15 +108,29 @@ function Map() {
     console.log('Received message from Flask SocketIO server: kani', messageData);
     // Handle the received message as needed in your React component
 
+
   if (
     messageData &&
     messageData.longitude === 125.1253695 &&
     messageData.latitude === 8.1569808
-    
-  ) {
+    ) 
+    {
     // alert("The vehicle is now outside the school area or premises");
     setShowModal(true);
-  }
+    } 
+     else if( 
+    messageData &&
+    messageData.longitude === 125.1251912 &&
+    messageData.latitude === 8.1569013) 
+    {
+      alert("The vehicle is now outside the school area or premises");
+    } 
+      else if (messageData &&
+      messageData.longitude === 125.1251544 &&
+      messageData.latitude === 8.1570703) 
+      {
+        alert("The vehicle is now outside the school area or premises");
+      }
 });
 
   // Cleanup function
@@ -193,7 +207,7 @@ function Map() {
   
 useEffect(() => {
   // Establish connection with Flask SocketIO server
-  const socket = io('http://192.168.1.243:8766'); // Adjust the URL to match your Flask server's IP and port
+  const socket = io('http://192.168.254.102:8766'); // Adjust the URL to match your Flask server's IP and port
 
   // Handle connection
   socket.on('connect', () => {
@@ -247,7 +261,7 @@ useEffect(() => {
       }
     });
 
-    console.log('Plate Number:', plateNumber); // Log plateNumber to check its value
+    console.log('Plate Number ni:', plateNumber); // Log plateNumber to check its value
     console.log('Latitude:', latitude); // Log latitude to check its value
     console.log('Longitude:', longitude);
 

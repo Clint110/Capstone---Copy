@@ -1,6 +1,7 @@
 import React, { useState, useEffect } from "react";
 import loginImage from "../images/login.png";
-import logo from "../images/buksu-new-logo.png";
+// import logo from "../images/buksu-new-logo.png";
+import logo from "../images/BRAND LOGO-03.png";
 import { TfiEmail } from "react-icons/tfi";
 import { RiLockPasswordLine } from "react-icons/ri";
 import { useNavigate } from "react-router-dom";

@@ -589,15 +589,22 @@ function Booking() {
                           /> */}
                           <br />
                            Name of Passengers
-                           <input
-                                  type="text"
-                                  className="bookingInput"
-                                  style={{ height: "100px", verticalAlign: "top" }}
-                                  value={passengerNames.join(", ")} // Display the names as a comma-separated string
-                                  onChange={(e) =>
-                                      setPassengerNames(e.target.value.split(",").map(name => name.trim()))
-                                  } // Split the input by commas and trim each resulting name
-                              />
+                           <textarea
+                              className="bookingInput"
+                              style={{ 
+                                height: "100px",
+                                width: "220%",
+                                boxSizing: "border-box",
+                                padding: "8px",
+                                border: "1px solid #ccc",
+                                resize: "vertical", // Allows the user to resize the textarea vertically
+                                overflow: "auto", // Allows scrolling if content exceeds the height
+                              }}
+                              value={passengerNames.join(", ")} // Display the names as a comma-separated string
+                              onChange={(e) =>
+                                setPassengerNames(e.target.value.split(",").map(name => name.trim()))
+                              } // Split the input by commas and trim each resulting name
+                            />
                         </label>
                         <label>
                           Bound For
@@ -675,20 +682,30 @@ function Booking() {
                           />
                         </label>
                         <label>
-                          Purpose
-                          <input
-                            type="text"
-                            className="bookingInput"
-                            style={{ height: "100px" }}
-                            value={formData.purpose}
-                            onChange={(e) =>
-                              setFormData({
-                                ...formData,
-                                purpose: e.target.value,
-                              })
-                            }
-                          />
+                        Purpose
+                            <textarea
+                              className="bookingInput"
+                              style={{ 
+                                height: "100px",
+                                width: "220%", // Ensure it takes full width
+                                boxSizing: "border-box", // Include padding and border in the width and height
+                                padding: "8px",
+                          
+                                border: "1px solid #ccc",
+                                resize: "vertical", // Allows vertical resizing
+                                overflow: "auto", // Show scrollbar if needed
+                              }}
+                              value={formData.purpose}
+                              onChange={(e) =>
+                                setFormData({
+                                  ...formData,
+                                  purpose: e.target.value,
+                                })
+                              }
+                              required
+                            />
                         </label>
+                        <div>
                         <button
                           className="submitBooking"
                           onClick={handleAddEvent}
@@ -703,6 +720,7 @@ function Booking() {
                         >
                           Cancel{" "}
                         </button>
+                        </div>
                       </form>
                     </MDBModalBody>
                   </MDBModalContent>

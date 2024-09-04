@@ -8,7 +8,8 @@ import { BiLogOut, BiSearch } from "react-icons/bi";
 import { AnimatePresence, motion } from "framer-motion";
 import { FaRegCalendarCheck } from "react-icons/fa";
 import { FaRegFileLines } from "react-icons/fa6";
-import logo from "../sidebaraddbooking/images/buksu-new-logo.png";
+// import logo from "../sidebaraddbooking/images/buksu-new-logo.png";
+import logo from "../sidebaraddbooking/images/BRAND LOGO-03.png";
 import { AiFillSchedule } from "react-icons/ai";
 import { FaBars } from "react-icons/fa";
 import jsPDF from "jspdf";
@@ -1128,7 +1129,7 @@ const generateTableData = async (bookingData2) => {
             src={logo} // Make sure to import your logo and replace "logo" with the actual variable holding your logo image path
             className="image"
             height="140"
-            width="167"
+            width="155"
           />{" "}
           <div className="logo-text">MoniTour</div>
         </div>
@@ -1173,11 +1174,22 @@ const generateTableData = async (bookingData2) => {
         </section>
       </motion.div>
       <main>
-        <div>
-          <button onClick={generatePDF} className="generate-button">
-            Generate Report
-          </button>
+       
+        <div className="header-wrapper">
+          <div className="header-container">
+            <h4>
+              <strong>REPORT</strong>{" "}
+            </h4>{" "}
+            <span className="userName">
+              <span className="userName-text">Secretary</span>{" "}
+              <FontAwesomeIcon icon={faCircleUser} className="icon-circle" />
+            </span>
+          </div>
         </div>
+
+        <div className="report-container">
+        <div className="report-wrapper">
+
         <div className="report_search">
           <input
             type="text"
@@ -1194,21 +1206,19 @@ const generateTableData = async (bookingData2) => {
             <option value="timeForBound">DEPARTURE</option>
             <option value="returnDate">RETURN</option>
           </select>
-          <button onClick={handleToggleArchive} className="archived-button">
+
+          <button onClick={handleToggleArchive} className={`archived-button ${showArchived ? 'active' : ''}`}>
           {showArchived ? "Show Active Data" : "Show Archived Data"}
         </button>
+
+        <div>
+          <button onClick={generatePDF} className="generate-button">
+            Generate Report
+          </button>
         </div>
-        <div className="header-wrapper">
-          <div className="header-container">
-            <h4>
-              <strong>REPORT</strong>{" "}
-            </h4>{" "}
-            <span className="userName">
-              <span className="userName-text">Secretary</span>{" "}
-              <FontAwesomeIcon icon={faCircleUser} className="icon-circle" />
-            </span>
-          </div>
+
         </div>
+
         {/* <div className='Report-container'>
     <div className='report-wrapper'> */}
 
@@ -1366,7 +1376,7 @@ const generateTableData = async (bookingData2) => {
                                     handleActivateBooking(booking._id);
                                 }
                             }}
-                            style={{ backgroundColor: '#b90000', color: 'white', marginRight: "-50px"  }}
+                            style={{ backgroundColor: 'darkgreen', color: 'white', marginRight: "-50px"  }}
                         >
                             Activate
                         </button>
@@ -1603,6 +1613,8 @@ const generateTableData = async (bookingData2) => {
           </form>
         </Modal.Body>
       </Modal>
+      </div>
+      </div>
       </main>
     </div>
   );

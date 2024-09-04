@@ -1,7 +1,7 @@
 const mongoose = require("mongoose");
 
 const dataSchema = new mongoose.Schema({
-  plateNumber: { type: Number, required: true },
+  plateNumber: { type: String, required: true },
   latitude: { type: Number, required: true },
   longitude: { type: Number, required: true },
   time: { type: String, required: true }, // Adding time field

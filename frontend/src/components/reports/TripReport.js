@@ -1332,7 +1332,7 @@ const generateTableData = async (bookingData2) => {
                                     handleActivateBooking(booking._id);
                                 }
                             }}
-                            style={{ backgroundColor: '#b90000', color: 'white', marginRight: "-50px"  }}
+                            style={{ backgroundColor: 'darkgreen', color: 'white', marginRight: "-50px"  }}
                         >
                             Activate
                         </button>

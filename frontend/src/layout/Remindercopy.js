@@ -118,7 +118,7 @@ function Reminder() {
       try {
         const eventResponse = await axios.get("http://localhost:3000/get-latest-data");
         if (eventResponse.status === 200) {
-          const latestEventData = eventResponse.data.data; // Assuming the latest data is stored under the 'data' property
+          const latestEventData = eventResponse.data.data; 
           setLatestEvent(latestEventData);
           console.log("Latest Data Fetched:", latestEventData);
     

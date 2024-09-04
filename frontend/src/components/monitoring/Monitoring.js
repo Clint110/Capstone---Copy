@@ -397,41 +397,81 @@ function Monitoring() {
     return formattedDate;
   };
 
+  // const [filter, setFilter] = useState("all"); // Default filter is 'all'
+
+  // // Handler function for filter buttons
+  // const handleFilter = (selectedFilter) => {
+  //   setFilter(selectedFilter);
+  // };
+
+  // // Function to determine if a button should be active based on the current filter
+  // const isActive = (selectedFilter) => {
+  //   return selectedFilter === filter ? "active" : "";
+  // };
+
+  // // Filter the vehicles based on the selected filter and search input
+  // useEffect(() => {
+  //   console.log("Filter:", filter); // Log selected filter
+  //   console.log("Search input:", searchInput); // Log search input
+
+  //   setFilteredVehicleList(
+  //     Object.keys(vehicleStatus).filter((plateNumber) => {
+  //       if (filter === "all" || filter === "") {
+  //         return plateNumber.toLowerCase().includes(searchInput.toLowerCase());
+  //       } else if (filter === "available") {
+  //         return (
+  //           vehicleStatus[plateNumber] === "Available" &&
+  //           plateNumber.toLowerCase().includes(searchInput.toLowerCase())
+  //         );
+  //       } else if (filter === "used") {
+  //         return (
+  //           vehicleStatus[plateNumber] === "Used" &&
+  //           plateNumber.toLowerCase().includes(searchInput.toLowerCase())
+  //         );
+  //       }
+  //     })
+  //   );
+  // }, [filter, searchInput, vehicleStatus]);
+
+
   const [filter, setFilter] = useState("all"); // Default filter is 'all'
 
-  // Handler function for filter buttons
-  const handleFilter = (selectedFilter) => {
-    setFilter(selectedFilter);
-  };
+// Handler function for filter buttons
+const handleFilter = (selectedFilter) => {
+  setFilter(selectedFilter);
+};
 
-  // Function to determine if a button should be active based on the current filter
-  const isActive = (selectedFilter) => {
-    return selectedFilter === filter ? "active" : "";
-  };
+// Function to determine if a button should be active based on the current filter
+const isActive = (selectedFilter) => {
+  return selectedFilter === filter ? "active" : "";
+};
 
-  // Filter the vehicles based on the selected filter and search input
-  useEffect(() => {
-    console.log("Filter:", filter); // Log selected filter
-    console.log("Search input:", searchInput); // Log search input
+// Filter the vehicles based on the selected filter and search input
+useEffect(() => {
+  console.log("Filter:", filter); // Log selected filter
+  console.log("Search input:", searchInput); // Log search input
 
-    setFilteredVehicleList(
-      Object.keys(vehicleStatus).filter((plateNumber) => {
-        if (filter === "all" || filter === "") {
-          return plateNumber.toLowerCase().includes(searchInput.toLowerCase());
-        } else if (filter === "available") {
-          return (
-            vehicleStatus[plateNumber] === "Available" &&
-            plateNumber.toLowerCase().includes(searchInput.toLowerCase())
-          );
-        } else if (filter === "used") {
-          return (
-            vehicleStatus[plateNumber] === "Used" &&
-            plateNumber.toLowerCase().includes(searchInput.toLowerCase())
-          );
-        }
-      })
-    );
-  }, [filter, searchInput, vehicleStatus]);
+  setFilteredVehicleList(
+    Object.keys(vehicleStatus).filter((plateNumber) => {
+      const status = vehicleStatus[plateNumber];
+
+      if (filter === "all" || filter === "") {
+        return plateNumber.toLowerCase().includes(searchInput.toLowerCase());
+      } else if (filter === "available") {
+        return (
+          status.toLowerCase().includes("available") && // Check if "Available" is part of the status string
+          plateNumber.toLowerCase().includes(searchInput.toLowerCase())
+        );
+      } else if (filter === "used") {
+        return (
+          status.toLowerCase().includes("used") && // Similarly, check for "Used"
+          plateNumber.toLowerCase().includes(searchInput.toLowerCase())
+        );
+      }
+      return false;
+    })
+  );
+}, [filter, searchInput, vehicleStatus]);
 
   // const handleCancelDelete = () => {
   //   console.log("Delete canceled");

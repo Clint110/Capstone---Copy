@@ -24,7 +24,7 @@ import { FaRegCalendarCheck } from "react-icons/fa";
 import { FaRegFileLines } from "react-icons/fa6";
 import { faCircleUser } from "@fortawesome/free-solid-svg-icons";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
-import logo from "../sidebaraddbooking/images/buksu-new-logo.png";
+import logo from "../sidebaraddbooking/images/BRAND LOGO-03.png";
 import "react-big-calendar/lib/css/react-big-calendar.css";
 import "react-big-calendar/lib/addons/dragAndDrop/styles.css";
 import { AiFillSchedule } from "react-icons/ai";
@@ -452,7 +452,7 @@ function AddBook() {
             src={logo} // Make sure to import your logo and replace "logo" with the actual variable holding your logo image path
             className="image"
             height="140"
-            width="167"
+            width="155"
           />{" "}
           <div className="logo-text">MoniTour</div>
         </div>
@@ -644,15 +644,22 @@ function AddBook() {
                           </label>
                           <label>
                           Name of Passengers
-                           <input
-                                  type="text"
-                                  className="bookingInput"
-                                  style={{ height: "100px", verticalAlign: "top" }}
-                                  value={passengerNames.join(", ")} // Display the names as a comma-separated string
-                                  onChange={(e) =>
-                                      setPassengerNames(e.target.value.split(",").map(name => name.trim()))
-                                  } // Split the input by commas and trim each resulting name
-                              />
+                          <textarea
+                              className="bookingInput"
+                              style={{ 
+                                height: "100px",
+                                width: "220%",
+                                boxSizing: "border-box",
+                                padding: "8px",
+                                border: "1px solid #ccc",
+                                resize: "vertical", // Allows the user to resize the textarea vertically
+                                overflow: "auto", // Allows scrolling if content exceeds the height
+                              }}
+                              value={passengerNames.join(", ")} // Display the names as a comma-separated string
+                              onChange={(e) =>
+                                setPassengerNames(e.target.value.split(",").map(name => name.trim()))
+                              } // Split the input by commas and trim each resulting name
+                            />
                           </label>
                           <label>
                             Bound For:
@@ -741,11 +748,19 @@ function AddBook() {
                             />
                           </label>
                           <label>
-                            Purpose
-                            <input
-                              type="text"
+                        Purpose
+                            <textarea
                               className="bookingInput"
-                              style={{ height: "100px" }}
+                              style={{ 
+                                height: "100px",
+                                width: "220%", // Ensure it takes full width
+                                boxSizing: "border-box", // Include padding and border in the width and height
+                                padding: "8px",
+                          
+                                border: "1px solid #ccc",
+                                resize: "vertical", // Allows vertical resizing
+                                overflow: "auto", // Show scrollbar if needed
+                              }}
                               value={formData.purpose}
                               onChange={(e) =>
                                 setFormData({
@@ -755,13 +770,15 @@ function AddBook() {
                               }
                               required
                             />
-                          </label>
+                        </label>
+                        <div>
                           <button
                             className="submitBooking"
                             onClick={handleAddEvent}
                           >
                             Add
                           </button>
+                        
                           <button
                             className="cancelBooking"
                             onClick={() =>
@@ -770,6 +787,7 @@ function AddBook() {
                           >
                             Cancel{" "}
                           </button>
+                          </div>
                         </form>
                       </MDBModalBody>
                     </MDBModalContent>
