@@ -1359,7 +1359,7 @@ const generateTableData = async (bookingData2) => {
                         style={{ backgroundColor: "#1D5D9B", color: "white", marginLeft: "-40px" }}
                               >
                     Edit
-                    </button>
+                             </button>
                       )}
                       {/* &nbsp;
                     <button type="button" class="btn btn-danger btn-sm">
@@ -1369,17 +1369,17 @@ const generateTableData = async (bookingData2) => {
                       {showArchived && (
                         // Render only the "Activate" button when showing archived data
                         <button
-                            className="action-btn activate-btn"
-                            onClick={() => {
-                                const confirmed = window.confirm("Are you sure you want to activate this data?");
-                                if (confirmed) {
-                                    handleActivateBooking(booking._id);
-                                }
-                            }}
-                            style={{ backgroundColor: 'darkgreen', color: 'white', marginRight: "-50px"  }}
-                        >
-                            Activate
-                        </button>
+                        className="action-btn activate-btn"
+                        onClick={() => {
+                            const confirmed = window.confirm("Are you sure you want to activate this data?");
+                            if (confirmed) {
+                                handleActivateBooking(booking._id);
+                            }
+                        }}
+                        style={{ backgroundColor: '#b90000', color: 'white', marginRight: "-50px"  }}
+                    >
+                        Activate
+                    </button>
                     )}
                     {!showArchived && (
                           <button
@@ -1393,7 +1393,7 @@ const generateTableData = async (bookingData2) => {
                                     style={{ backgroundColor: '#b90000', color: 'white', marginRight: "-50px"  }}
                                               >
                                 Archive
-                          </button>
+           </button>
                       )}
                       {/* <button
                       type="button"

@@ -536,16 +536,14 @@ function AddBook() {
                     .sort((a, b) => new Date(a.start) - new Date(b.start)) // Sort events by start date
                     .map((event, index) => (
                       <tr key={event.id}>
-                        <td>
-                          {`${event.plateNumber} is scheduled to depart ${
-                            event.timeAndDate
-                            ? ` at ${formatDateTime(event.timeAndDate)}`
-                            : ""
-                          } ${event.boundFor ? ` for ${event.boundFor}` : ""}
-        ${
-          event.start instanceof Date ? ` on ${event.start.toDateString()}` : ""
-        }`}
-                        </td>
+                        <td style={{ textAlign: "left", textJustify: "inter-word" }}>  <strong>{`${event.plateNumber}`}</strong>
+    {` is scheduled to depart`}
+    <strong>
+    {`${event.timeAndDate ? ` at ${formatDateTime(event.timeAndDate)}` : ""}`}
+    {`${event.boundFor ? ` for ${event.boundFor}` : ""}`}
+    {`${event.start instanceof Date ? ` on ${event.start.toDateString()}` : ""}`}
+  </strong>
+</td>
                       </tr>
                     ))}
                   </tbody>
