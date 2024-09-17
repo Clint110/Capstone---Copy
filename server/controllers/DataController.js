@@ -55,7 +55,7 @@ exports.getData = async (req, res) => {
 exports.getLatestData = async (req, res) => {
   try {
     // Fetch latest data from the database, sorted by time in descending order
-    const latestData = await Data.findOne({}, {}, { sort: { time: -1 } });
+    const latestData = await Data.findOne({}, {}, { sort: { _id: -1 } });
     res.json({ success: true, data: latestData });
   } catch (error) {
     console.error("Error fetching latest data:", error);
