@@ -1128,6 +1128,7 @@ const generateTableData = async (bookingData2) => {
     fetchCompletedBookings();
   }, []);
 
+
   
 
   useEffect(() => {
@@ -1140,6 +1141,7 @@ const generateTableData = async (bookingData2) => {
         console.error('Error fetching booking details:', error);
       });
   }, []);
+
 
   return (
     <>
@@ -1262,8 +1264,10 @@ const generateTableData = async (bookingData2) => {
                     <button
                       type="button"
                       className="btn btn-success btn-sm"
-                      style={{ width: "100px" }}
-                      disabled // Disable the button if already completed
+                      style={{ 
+                        width: "100px"
+                      }}
+                     // disabled // Disable the button if already completed
                     >
                       Completed
                     </button>
