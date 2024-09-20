@@ -37,7 +37,7 @@ function TripReport() {
   const [isOpen, setIsOpen] = useState(false);
   const [editableData, setEditableData] = useState({});
   const [searchQuery, setSearchQuery] = useState("");
-  const [searchField, setSearchField] = useState("plateNumber");
+  const [searchField, setSearchField] = useState("passengerNames");
   const [vehicleName, setVehicleName] = useState("");
   const [showArchived, setShowArchived] = useState(false);
   const [formEditData, setFormEditData] = useState({});
@@ -1568,7 +1568,7 @@ const generateTableData = async (bookingData2) => {
           </label>
             <label>
               Plate Number
-              <select className="bookingInput"  value={selectedPlateNumber} onChange={handlePlateNumberChange} required>
+              <select className="bookingInput"   value={selectedPlateNumber || ""} onChange={handlePlateNumberChange} required>
                 <option value="" disabled>
                   Select Plate Number
                 </option>
@@ -1586,7 +1586,7 @@ const generateTableData = async (bookingData2) => {
 
             <label>
               Drivers
-              <select className="bookingInput" onChange={handleDriverChange} required>
+              <select className="bookingInput" value={selectedDriver || ""} onChange={handleDriverChange} required>
                 <option value="" disabled>
                   Select Driver
                 </option>
