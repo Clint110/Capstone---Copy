@@ -1306,7 +1306,7 @@ const generateTableData = async (bookingData2) => {
                       type="button"
                       className="btn btn-success btn-sm"
                       style={{ width: "100px" }}
-                      disabled // Disable the button if already completed
+                      //disabled // Disable the button if already completed
                     >
                       Completed
                     </button>
