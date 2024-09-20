@@ -408,7 +408,7 @@ function Booking() {
 
     if (upcomingEvents.length > 0) {
       // Trigger alert or notification
-      alert("Upcoming event: Booked Vehicle is about to leave!");
+      alert("Upcoming event: Booked Vehicle is about to leave!" + upcomingEvents[0].title);
     }
   };
   
