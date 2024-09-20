@@ -532,13 +532,14 @@ function AddBook() {
                 <tbody className="BookingList">
                   {allEvents
                     .filter((event) => {
-                      const eventDate = new Date(event.start); // Convert the event start time to a Date object
+                      const returnDate = new Date(event.returnDate); // Convert return date to a Date object
                       const now = new Date(); // Get the current time
 
-                      console.log("Event Date:", eventDate);
+                      console.log("Return Date:", returnDate);
                       console.log("Current Date:", now);
 
-                      return eventDate >= now; // Only include future or ongoing events
+                      // Only include events where the return date is in the future
+                      return returnDate > now; // Exclude today
                     })
                     .sort((a, b) => new Date(a.start) - new Date(b.start)) // Sort events by start date
                     .map((event, index) => (

@@ -408,7 +408,7 @@ function Booking() {
 
     if (upcomingEvents.length > 0) {
       // Trigger alert or notification
-      alert("Upcoming event: " + upcomingEvents[0].title);
+      alert("Upcoming event: Booked Vehicle is about to leave!");
     }
   };
   
@@ -479,34 +479,35 @@ function Booking() {
                     ))}
                 </tbody>
               </div> */}
-              <div className="reminder-content">
-                <tbody className="BookingList">
-                  {allEvents
-                    .filter((event) => {
-                      const eventDate = new Date(event.start); // Convert the event start time to a Date object
-                      const now = new Date(); // Get the current time
+             <div className="reminder-content">
+              <tbody className="BookingList">
+                {allEvents
+                  .filter((event) => {
+                    const returnDate = new Date(event.returnDate); // Convert return date to a Date object
+                    const now = new Date(); // Get the current time
 
-                      console.log("Event Date:", eventDate);
-                      console.log("Current Date:", now);
+                    console.log("Return Date:", returnDate);
+                    console.log("Current Date:", now);
 
-                      return eventDate >= now; // Only include future or ongoing events
-                    })
-                    .sort((a, b) => new Date(a.start) - new Date(b.start)) // Sort events by start date
-                    .map((event, index) => (
-                      <tr key={event.id}>
-                        <td style={{ textAlign: "left", textJustify: "inter-word" }}>
-                          <strong>{`${event.plateNumber}`}</strong>
-                          {` is scheduled to depart`}
-                          <strong>
-                            {`${event.timeAndDate ? ` at ${formatDateTime(event.timeAndDate)}` : ""}`}
-                            {`${event.boundFor ? ` for ${event.boundFor}` : ""}`}
-                            {`${event.start instanceof Date ? ` on ${event.start.toDateString()}` : ""}`}
-                          </strong>
-                        </td>
-                      </tr>
-                    ))}
-                </tbody>
-              </div>
+                    // Only include events where the return date is in the future
+                    return returnDate > now; // Exclude today
+                  })
+                  .sort((a, b) => new Date(a.start) - new Date(b.start)) // Sort events by start date
+                  .map((event, index) => (
+                    <tr key={event.id}>
+                      <td style={{ textAlign: "left", textJustify: "inter-word" }}>
+                        <strong>{`${event.plateNumber}`}</strong>
+                        {` is scheduled to depart`}
+                        <strong>
+                          {`${event.timeAndDate ? ` at ${formatDateTime(event.timeAndDate)}` : ""}`}
+                          {`${event.boundFor ? ` for ${event.boundFor}` : ""}`}
+                          {`${event.start instanceof Date ? ` on ${event.start.toDateString()}` : ""}`}
+                        </strong>
+                      </td>
+                    </tr>
+                  ))}
+              </tbody>
+            </div>
             </div>
 
             <MDBModal
