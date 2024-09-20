@@ -459,7 +459,7 @@ function Booking() {
             </div>
 
             <div className="reminder-container" style={{ height: "390px" }}>
-              <div className="reminder-content">
+              {/* <div className="reminder-content">
                 <tbody className="BookingList">
                   {allEvents
                     .slice(0)
@@ -467,26 +467,42 @@ function Booking() {
                     .sort((a, b) => new Date(a.start) - new Date(b.start)) // Sort events by start date
                     .map((event, index) => (
                       <tr key={event.id}>
-                        {/* <td>
-                          {`${event.plateNumber} is scheduled to depart ${
-                            event.timeAndDate
-                            ? ` at ${formatDateTime(event.timeAndDate)}`
-                            : ""
-                          } ${event.boundFor ? ` for ${event.boundFor}` : ""}
-        ${
-          event.start instanceof Date ? ` on ${event.start.toDateString()}` : ""
-        }`}
-                        </td> */}
-<td style={{ textAlign: "left", textJustify: "inter-word" }}>  <strong>{`${event.plateNumber}`}</strong>
-    {` is scheduled to depart`}
-    <strong>
-    {`${event.timeAndDate ? ` at ${formatDateTime(event.timeAndDate)}` : ""}`}
-    {`${event.boundFor ? ` for ${event.boundFor}` : ""}`}
-    {`${event.start instanceof Date ? ` on ${event.start.toDateString()}` : ""}`}
-  </strong>
-</td>
+                          <td style={{ textAlign: "left", textJustify: "inter-word" }}>  <strong>{`${event.plateNumber}`}</strong>
+                              {` is scheduled to depart`}
+                              <strong>
+                              {`${event.timeAndDate ? ` at ${formatDateTime(event.timeAndDate)}` : ""}`}
+                              {`${event.boundFor ? ` for ${event.boundFor}` : ""}`}
+                              {`${event.start instanceof Date ? ` on ${event.start.toDateString()}` : ""}`}
+                            </strong>
+                          </td>
+                      </tr>
+                    ))}
+                </tbody>
+              </div> */}
+              <div className="reminder-content">
+                <tbody className="BookingList">
+                  {allEvents
+                    .filter((event) => {
+                      const eventDate = new Date(event.start); // Convert the event start time to a Date object
+                      const now = new Date(); // Get the current time
 
+                      console.log("Event Date:", eventDate);
+                      console.log("Current Date:", now);
 
+                      return eventDate >= now; // Only include future or ongoing events
+                    })
+                    .sort((a, b) => new Date(a.start) - new Date(b.start)) // Sort events by start date
+                    .map((event, index) => (
+                      <tr key={event.id}>
+                        <td style={{ textAlign: "left", textJustify: "inter-word" }}>
+                          <strong>{`${event.plateNumber}`}</strong>
+                          {` is scheduled to depart`}
+                          <strong>
+                            {`${event.timeAndDate ? ` at ${formatDateTime(event.timeAndDate)}` : ""}`}
+                            {`${event.boundFor ? ` for ${event.boundFor}` : ""}`}
+                            {`${event.start instanceof Date ? ` on ${event.start.toDateString()}` : ""}`}
+                          </strong>
+                        </td>
                       </tr>
                     ))}
                 </tbody>
@@ -729,7 +745,8 @@ function Booking() {
             </MDBModal>
           </div>
         </div>
-        <div className="rbc-calendar">
+        
+        {/* <div className="rbc-calendar">
           <BigCalendar
             localizer={localizer}
             events={combinedEvents}
@@ -745,11 +762,11 @@ function Booking() {
               width: "63vw", // 70% of the viewport width
             }}
             defaultView={"month"}
-            views={["month", "week", "day"]}
+            views={["month", "week", "day"]} */}
 
-            // defaultView={Views.WEEK}
-            // view={Views.MONTH}
-          />
+            {/* // defaultView={Views.WEEK}
+            // view={Views.MONTH} */}
+          {/* /> */}
 
           {/* AREA NI IF MAG BUTANG SA CALENDAR DKO KABALO IF NAKA MODAL SYA UNSAON PAG BUTANG */}
           {/* <div>
@@ -770,7 +787,32 @@ function Booking() {
 
                 </form>
             </div> */}
-        </div>
+        {/* </div> */}
+        <div className="rbc-calendar">
+              <BigCalendar
+                localizer={localizer}
+                events={combinedEvents
+                  .filter((event) => {
+                    const eventDate = new Date(event.start);
+                    const now = new Date();
+                    return eventDate >= now; // Filter out past events
+                  })
+                  .sort((a, b) => new Date(a.start) - new Date(b.start)) // Sort events by start date
+                }
+                driverAccessor="driver"
+                startAccessor="start"
+                endAccessor="end"
+                components={{
+                  event: (props) => <EventComponent {...props} height={20} />, // Set the height here
+                }}
+                style={{
+                  height: "77.5vh", // 95% of the viewport height
+                  width: "63vw", // 70% of the viewport width
+                }}
+                defaultView={"month"}
+                views={["month", "week", "day"]}
+              />
+            </div>
       </div>
     </>
   );
