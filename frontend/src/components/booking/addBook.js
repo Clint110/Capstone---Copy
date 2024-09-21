@@ -372,19 +372,27 @@ function AddBook() {
 
   const [userRole, setUserRole] = useState("");
 
-  const EventComponent = ({ event }) => {
+  const EventComponent = ({ event, height }) => {
+    const fontSize = 10.5; // Define your desired font size here
+    const startTime = formatTime(event.timeAndDate);
     return (
-      <div className="EventComponent">
-        <strong>{event.title}</strong>
-        Platenumber: {`${event.plateNumber}`}
-        <br />
-        <span className="timeForBound">{`${
-          event.timeForBound ? `Time: ${formatTime(event.timeForBound)} -` : ""
-        } ${event.boundFor ? `Bound For: ${event.boundFor}` : ""}`}</span>
+      <div className="EventComponent" style={{ height, fontSize: `${fontSize}px` }}>
+        <div>
+          <strong>{event.title}</strong>
+        </div>
+        <div>{`Plate Number: `} 
+          <span style={{ fontWeight: 'bold' }}>{event.plateNumber}</span>
+        </div>
+        <div>
+          {event.timeForBound ? `Time: ${formatTime(event.timeForBound)} -` : ""} 
+          {event.boundFor ? `Bound For: ${event.boundFor}` : ""}
+        </div>
+        <div>{`Departure Time: `}
+          <span style={{ fontWeight: 'bold' }}>{startTime}</span>
+        </div>
       </div>
     );
   };
-
   // const formatTime = (timeString) => {
   //   // Check if timeString is null or undefined
   //   if (!timeString) {
