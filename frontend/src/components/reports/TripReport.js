@@ -29,7 +29,7 @@ const TripReport = () => {
   const [bookingData, setBookingData] = useState([]);
   const [editableData, setEditableData] = useState({});
   const [searchQuery, setSearchQuery] = useState("");
-  const [searchField, setSearchField] = useState("plateNumber");
+  const [searchField, setSearchField] = useState("passengerNames");
   const [showArchived, setShowArchived] = useState(false);
   const [modalOpen, setModalOpen] = useState(false);
   const [showModal, setShowModal] = useState(false);
@@ -1017,7 +1017,7 @@ const generateTableData = async (bookingData2) => {
 
   const [selectedPlateNumber, setSelectedPlateNumber] = useState(null);
   const [availablePlateNumbers, setAvailablePlateNumbers] = useState([]);
-  const [selectedDriver, setSelectedDriver] = useState(null);
+  const [selectedDriver, setSelectedDriver] = useState("");
   const [selectedDriverStatus, setSelectedDriverStatus] = useState("");
   const [availableDrivers, setAvailableDrivers] = useState([]);
   const [selectedPlateNumberSeats, setSelectedPlateNumberSeats] = useState(null);
@@ -1128,6 +1128,7 @@ const generateTableData = async (bookingData2) => {
     fetchCompletedBookings();
   }, []);
 
+
   
 
   useEffect(() => {
@@ -1140,6 +1141,7 @@ const generateTableData = async (bookingData2) => {
         console.error('Error fetching booking details:', error);
       });
   }, []);
+
 
   return (
     <>
@@ -1262,8 +1264,10 @@ const generateTableData = async (bookingData2) => {
                     <button
                       type="button"
                       className="btn btn-success btn-sm"
-                      style={{ width: "100px" }}
-                      disabled // Disable the button if already completed
+                      style={{ 
+                        width: "100px"
+                      }}
+                     // disabled // Disable the button if already completed
                     >
                       Completed
                     </button>
@@ -1356,7 +1360,9 @@ const generateTableData = async (bookingData2) => {
               ))}
             </tbody>
           ) : (
-            <p>No data available</p>
+            <tr>
+              <td colSpan="6" style={{ textAlign: 'center' }}>No data available</td>
+            </tr>
           )}
         </table>
       </div>
@@ -1503,7 +1509,10 @@ const generateTableData = async (bookingData2) => {
           </label>
             <label>
               Plate Number
-              <select className="bookingInput"  value={selectedPlateNumber} onChange={handlePlateNumberChange} required>
+              <select className="bookingInput"  
+             // value={selectedPlateNumber} 
+              value={selectedPlateNumber || ""}
+              onChange={handlePlateNumberChange} required>
                 <option value="" disabled>
                   Select Plate Number
                 </option>
@@ -1521,7 +1530,7 @@ const generateTableData = async (bookingData2) => {
 
             <label>
               Drivers
-              <select className="bookingInput" onChange={handleDriverChange} required>
+              <select className="bookingInput" value={selectedDriver || ""} onChange={handleDriverChange} required>
                 <option value="" disabled>
                   Select Driver
                 </option>
