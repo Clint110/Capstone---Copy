@@ -88,56 +88,157 @@ function Map() {
     ////BRENDYL BRENDYL BRENDYL 
     // Set up interval to fetch data every 20 seconds
     const interval = setInterval(fetchDataFromDatabase, 20000);
-     
- 
-  // Establish connection with Flask SocketIO server
-  const socket = io('http://192.168.254.102:8766'); // Adjust the URL to match your Flask server's IP and port
+    
+///CLINT LYOD M. GALLARDO
+ // Function to calculate the distance between two coordinates in meters
+  function calculateDistance(lat1, lon1, lat2, lon2) {
+  const R = 6371000; // Radius of the Earth in meters
+  const toRadians = (degrees) => degrees * (Math.PI / 180);
 
-  // Handle connection
-  socket.on('connect', () => {
-    console.log('Connected to Flask SocketIO server');
-  });
+  const dLat = toRadians(lat2 - lat1);
+  const dLon = toRadians(lon2 - lon1);
 
-  // Handle disconnection
-  socket.on('disconnect', () => {
-    console.log('Disconnected from Flask SocketIO server');
-  });
+  const a = Math.sin(dLat / 2) * Math.sin(dLat / 2) +
+            Math.cos(toRadians(lat1)) * Math.cos(toRadians(lat2)) *
+            Math.sin(dLon / 2) * Math.sin(dLon / 2);
+  
+  const c = 2 * Math.atan2(Math.sqrt(a), Math.sqrt(1 - a));
+  const distance = R * c; // Distance in meters
 
-  // Handle received message
-  socket.on('received_message', (messageData) => {
-    console.log('Received message from Flask SocketIO server: kani', messageData);
-    // Handle the received message as needed in your React component
+  return distance;
+}
 
+// List of known locations (school premises, etc.)
+const locations = [
+  { latitude: 8.156850500000001, longitude: 125.1251065 },
+  //{ latitude: 8.1564525, longitude: 125.12471583333334 },
+  //{ latitude: 8.156774166666667, longitude: 125.12510933333333 }
+];
 
-  if (
-    messageData &&
-    messageData.longitude === 125.1253695 &&
-    messageData.latitude === 8.1569808
-    ) 
-    {
-    // alert("The vehicle is now outside the school area or premises");
-    setShowModal(true);
-    } 
-     else if( 
-    messageData &&
-    messageData.longitude === 125.1251912 &&
-    messageData.latitude === 8.1569013) 
-    {
-      alert("The vehicle is now outside the school area or premises");
-    } 
-      else if (messageData &&
-      messageData.longitude === 125.1251544 &&
-      messageData.latitude === 8.1570703) 
-      {
-        alert("The vehicle is now outside the school area or premises");
-      }
+// Increase the threshold to 10 meters to account for minor variations
+const distanceThreshold = 250; // 10 meters
+
+// Function to parse latitude and longitude from the message content
+function parseCoordinates(content) {
+  const latMatch = content.match(/lat:(-?\d+\.\d+)/);
+  const lonMatch = content.match(/long:(-?\d+\.\d+)/);
+
+  if (latMatch && lonMatch) {
+    const latitude = parseFloat(latMatch[1]);
+    const longitude = parseFloat(lonMatch[1]);
+    return { latitude, longitude };
+  }
+
+  return null; // If parsing fails
+}
+
+// Establish connection with Flask SocketIO server
+const socket = io('http://192.168.254.102:8766'); // Adjust the URL to match your Flask server's IP and port
+
+// Handle connection
+socket.on('connect', () => {
+  console.log('Connected to Flask SocketIO server');
 });
 
-  // Cleanup function
-  return () => {
-    socket.disconnect(); // Disconnect the socket when the component unmounts
-  };
+// Handle disconnection
+socket.on('disconnect', () => {
+  console.log('Disconnected from Flask SocketIO server');
+});
+
+// Handle received message
+socket.on('received_message', (messageData) => {
+  console.log('Received message from Flask SocketIO server:', messageData);
+  
+  // Ensure messageData is not null or undefined
+  if (messageData && messageData.content) {
+    // Parse latitude and longitude from the message content
+    const parsedCoordinates = parseCoordinates(messageData.content);
+
+    if (parsedCoordinates) {
+      const messageLat = parsedCoordinates.latitude;
+      const messageLon = parsedCoordinates.longitude;
+
+      // Iterate through each known location to see if the vehicle is within the distance threshold
+      let withinRange = false;
+
+      locations.forEach((location) => {
+        const distance = calculateDistance(location.latitude, location.longitude, messageLat, messageLon);
+        
+        console.log(`Distance to location (lat: ${location.latitude}, lon: ${location.longitude}): ${distance} meters`);
+
+        // If the vehicle is within the distance threshold of any known location
+        if (distance <= distanceThreshold) {
+          withinRange = true;
+          alert(`The vehicle is within ${distanceThreshold} meters of the school area or premises.`);
+        }
+      });
+
+      // If vehicle is outside the range of all known locations
+      if (!withinRange) {
+        alert("The vehicle is now outside the school area or premises");
+      }
+    } else {
+      console.error("Failed to parse latitude and longitude from the message content.");
+    }
+  }
+});
+
+// Cleanup function
+return () => {
+  socket.disconnect(); // Disconnect the socket when the component unmounts
+  clearInterval(interval); // Clear interval on component unmount
+};
 }, []); // Empty dependency array ensures this effect runs only once
+     
+ 
+//   // Establish connection with Flask SocketIO server
+//   const socket = io('http://192.168.254.102:8766'); // Adjust the URL to match your Flask server's IP and port
+
+//   // Handle connection
+//   socket.on('connect', () => {
+//     console.log('Connected to Flask SocketIO server');
+//   });
+
+//   // Handle disconnection
+//   socket.on('disconnect', () => {
+//     console.log('Disconnected from Flask SocketIO server');
+//   });
+
+//   // Handle received message
+//   socket.on('received_message', (messageData) => {
+//     console.log('Received message from Flask SocketIO server: kani', messageData);
+//     // Handle the received message as needed in your React component
+
+
+//   if (
+//     messageData &&
+//     messageData.longitude === 125.1253695 &&
+//     messageData.latitude === 8.1569808
+//     ) 
+//     {
+//      alert("The vehicle is now outside the school area or premises");
+//     setShowModal(true);
+//     } 
+//      else if( 
+//     messageData &&
+//     messageData.longitude === 125.1251912 &&
+//     messageData.latitude === 8.1569013) 
+//     {
+//       alert("The vehicle is now outside the school area or premises");
+//     } 
+//       else if (messageData &&
+//       messageData.longitude === 125.1251544 &&
+//       messageData.latitude === 8.1570703) 
+//       {
+//         alert("The vehicle is now outside the school area or premises");
+//       }
+// });
+
+//   // Cleanup function
+//   return () => {
+//     socket.disconnect(); // Disconnect the socket when the component unmounts
+//   };
+// }, []); // Empty dependency array ensures this effect runs only once
 
 
 

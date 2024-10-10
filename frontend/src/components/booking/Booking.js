@@ -408,7 +408,7 @@ function Booking() {
 
     if (upcomingEvents.length > 0) {
       // Trigger alert or notification
-      alert("Upcoming event: Booked Vehicle is about to leave!" + upcomingEvents[0].title);
+      alert("Upcoming event: Booked Vehicle is about to leave!");
     }
   };
   
@@ -789,7 +789,7 @@ function Booking() {
                 </form>
             </div> */}
         {/* </div> */}
-        <div className="rbc-calendar">
+        {/* <div className="rbc-calendar">
               <BigCalendar
                 localizer={localizer}
                 events={combinedEvents
@@ -797,6 +797,35 @@ function Booking() {
                     const eventDate = new Date(event.start);
                     const now = new Date();
                     return eventDate >= now; // Filter out past events
+                  })
+                  .sort((a, b) => new Date(a.start) - new Date(b.start)) // Sort events by start date
+                }
+                driverAccessor="driver"
+                startAccessor="start"
+                endAccessor="end"
+                components={{
+                  event: (props) => <EventComponent {...props} height={20} />, // Set the height here
+                }}
+                style={{
+                  height: "77.5vh", // 95% of the viewport height
+                  width: "63vw", // 70% of the viewport width
+                }}
+                defaultView={"month"}
+                views={["month", "week", "day"]}
+              />
+            </div> */}
+            <div className="rbc-calendar">
+              <BigCalendar
+                localizer={localizer}
+                events={combinedEvents
+                  .filter((event) => {
+                    const eventStartDate = new Date(event.start); // Start date of the event
+                    const returnDate = new Date(event.returnDate); // Return date of the event (assumed as event.returnDate)
+                    const now = new Date();
+                    now.setHours(0, 0, 0, 0); // Set 'now' to the start of the day to exclude today's return dates
+
+                    // Check if the return date is in the future and exclude if it's today
+                    return eventStartDate >= now && returnDate > now;
                   })
                   .sort((a, b) => new Date(a.start) - new Date(b.start)) // Sort events by start date
                 }

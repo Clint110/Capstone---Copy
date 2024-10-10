@@ -320,7 +320,7 @@ function AddBook() {
   }, []);
 
   // Combine reminders and events
-  const combinedEvents = [...allEvents, ...allReminders];
+  const combinedEvents = [...allEvents];
 
   function handleAddEvent() {
     let clash = false;
@@ -332,7 +332,11 @@ function AddBook() {
       const d4 = new Date(newEvent.end);
   
       // Check if there is an overlap
-      if ((d1 < d4 && d2 < d3) || (d2 < d3 && d4 < d3)) {
+      // if ((d1 < d4 && d2 < d3) || (d2 < d3 && d4 < d3)) {
+      //   clash = true;
+      //   break;
+      // }
+      if ((d1 < d4 && d2 < d3)) {
         clash = true;
         break;
       }
@@ -376,21 +380,29 @@ function AddBook() {
     const fontSize = 10.5; // Define your desired font size here
     const startTime = formatTime(event.timeAndDate);
     return (
+      // <div className="EventComponent" style={{ height, fontSize: `${fontSize}px` }}>
+      //   <div>
+      //     <strong>{event.title}</strong>
+      //   </div>
+      //   <div>{`Plate Number: `} 
+      //     <span style={{ fontWeight: 'bold' }}>{event.plateNumber}</span>
+      //   </div>
+      //   <div>
+      //     {event.timeForBound ? `Time: ${formatTime(event.timeForBound)} -` : ""} 
+      //     {event.boundFor ? `Bound For: ${event.boundFor}` : ""}
+      //   </div>
+      //   <div>{`Departure Time: `}
+      //     <span style={{ fontWeight: 'bold' }}>{startTime}</span>
+      //   </div>
+      // </div>
       <div className="EventComponent" style={{ height, fontSize: `${fontSize}px` }}>
-        <div>
-          <strong>{event.title}</strong>
-        </div>
-        <div>{`Plate Number: `} 
-          <span style={{ fontWeight: 'bold' }}>{event.plateNumber}</span>
-        </div>
-        <div>
-          {event.timeForBound ? `Time: ${formatTime(event.timeForBound)} -` : ""} 
-          {event.boundFor ? `Bound For: ${event.boundFor}` : ""}
-        </div>
-        <div>{`Departure Time: `}
-          <span style={{ fontWeight: 'bold' }}>{startTime}</span>
-        </div>
+      <div>{`Plate Number: `}
+        <span style={{ fontWeight: 'bold' }}>{event.plateNumber}</span>
       </div>
+      <div>{`Departure Time: `}
+      <span style={{ fontWeight: 'bold' }}>{startTime}</span>
+    </div>
+    </div>
     );
   };
   // const formatTime = (timeString) => {
@@ -811,7 +823,7 @@ function AddBook() {
               </MDBModal>
             </div>
           </div>
-          <div className="rbc-calendar">
+          {/* <div className="rbc-calendar">
               <BigCalendar
                 localizer={localizer}
                 events={combinedEvents
@@ -835,7 +847,36 @@ function AddBook() {
                 defaultView={"month"}
                 views={["month", "week", "day"]}
               />
-            </div>
+            </div> */}
+            <div className="rbc-calendar">
+                <BigCalendar
+                  localizer={localizer}
+                  events={combinedEvents
+                    .filter((event) => {
+                      const eventStartDate = new Date(event.start); // Start date of the event
+                      const returnDate = new Date(event.returnDate); // Return date of the event (assumed as event.returnDate)
+                      const now = new Date();
+                      now.setHours(0, 0, 0, 0); // Set 'now' to the start of the day to exclude today's return dates
+
+                      // Check if the return date is in the future and exclude if it's today
+                      return eventStartDate >= now && returnDate > now;
+                    })
+                    .sort((a, b) => new Date(a.start) - new Date(b.start)) // Sort events by start date
+                  }
+                  driverAccessor="driver"
+                  startAccessor="start"
+                  endAccessor="end"
+                  components={{
+                    event: (props) => <EventComponent {...props} height={20} />, // Set the height here
+                  }}
+                  style={{
+                    height: "77.5vh", // 95% of the viewport height
+                    width: "63vw", // 70% of the viewport width
+                  }}
+                  defaultView={"month"}
+                  views={["month", "week", "day"]}
+                />
+              </div>
           {/* Add your content here */}
         </div>
       </main>
