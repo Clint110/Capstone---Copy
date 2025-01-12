@@ -41,22 +41,13 @@ exports.getData = async (req, res) => {
   }
 };
 
-// exports.getLatestData = async (req, res) => {
-//   try {
-//     // Fetch latest data from the database
-//     const latestData = await Data.findOne({}, {}, { sort: { createdAt: -1 } });
-//     res.json({ success: true, data: latestData });
-//   } catch (error) {
-//     console.error("Error fetching latest data:", error);
-//     res.status(500).json({ success: false, error: "Internal server error" });
-//   }
-// };
 
 exports.getLatestData = async (req, res) => {
   try {
     // Fetch latest data from the database, sorted by time in descending order
     const latestData = await Data.findOne({}, {}, { sort: { _id: -1 } });
-    res.json({ success: true, data: latestData });
+    console.log("Latest data fetched for map:", latestData);
+    res.json({success: true, data: latestData });
   } catch (error) {
     console.error("Error fetching latest data:", error);
     res.status(500).json({ success: false, error: "Internal server error" });
@@ -132,17 +123,20 @@ exports.getData2 = async (req, res) => {
 //   }
 // };
 
-
 exports.getDataByPlateNumber = async (req, res) => {
   try {
-    const { plateNumber } = req.params; // Extract plate number from request parameters
-
-    // Find the latest data in the database by plateNumber
+    const { plateNumber } = req.params;
+    console.log(`Fetching data from MongoDB for plate number: ${plateNumber}`);
+    
+    // Fetch data from MongoDB
     const latestData = await Data.findOne({ plateNumber })
-      .sort({ _id: -1 }) // Sort by _id in descending order to get the latest entry
-      .select("latitude longitude"); // Select only the required fields
-
+      .sort({ _id: -1 })
+      .select("latitude longitude time");
+    
+    console.log("Latest data found:", latestData); // Log the data retrieved
+    
     if (!latestData) {
+      console.log(`No data found in MongoDB for plate number: ${plateNumber}`);
       return res.status(404).json({
         success: false,
         error: "Data not found for the given plate number",
@@ -152,14 +146,45 @@ exports.getDataByPlateNumber = async (req, res) => {
     // Respond with the latitude and longitude data
     res.json({
       success: true,
-      latitude: latestData.latitude,
-      longitude: latestData.longitude,
+      data: {
+        latitude: latestData.latitude,
+        longitude: latestData.longitude,
+        time: latestData.time
+      },
     });
   } catch (error) {
     console.error("Error fetching data by plate number:", error);
     res.status(500).json({ success: false, error: "Internal server error" });
   }
 };
+
+// exports.getDataByPlateNumber = async (req, res) => {
+//   try {
+//     const { plateNumber } = req.params; // Extract plate number from request parameters
+//     console.log(`Fetching data from MongoDB for plate number: ${plateNumber}`);
+//     // Find the latest data in the database by plateNumber
+//     const latestData = await Data.findOne({ plateNumber })
+//       .sort({ _id: -1 }) // Sort by _id in descending order to get the latest entry
+//       .select("latitude longitude"); // Select only the required fields
+
+//     if (!latestData) {
+//       return res.status(404).json({
+//         success: false,
+//         error: "Data not found for the given plate number",
+//       });
+//     }
+
+//     // Respond with the latitude and longitude data
+//     res.json({
+//       success: true,
+//       latitude: latestData.latitude,
+//       longitude: latestData.longitude,
+//     });
+//   } catch (error) {
+//     console.error("Error fetching data by plate number:", error);
+//     res.status(500).json({ success: false, error: "Internal server error" });
+//   }
+// };
 
 // exports.checkPlate = async (req, res) => {
 //   try {
